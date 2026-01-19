@@ -13,13 +13,49 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with WidgetsBindingObserver {
+  late final GameBloc _gameBloc;
+  late final WorldBloc _worldBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _gameBloc = GameBloc()..add(const GameInitialize());
+    _worldBloc = WorldBloc();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _gameBloc.close();
+    _worldBloc.close();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        // Auto-save when app goes to background
+        _gameBloc.add(const GameSave());
+        break;
+      case AppLifecycleState.resumed:
+        // App resumed - could refresh state if needed
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => GameBloc()..add(const GameInitialize())),
-        BlocProvider(create: (_) => WorldBloc()),
+        BlocProvider.value(value: _gameBloc),
+        BlocProvider.value(value: _worldBloc),
       ],
       child: const _AppContent(),
     );
