@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_database/app_database.dart';
 
@@ -124,14 +125,17 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   Future<void> _createNewCharacter() async {
-    final name = await _showCreateCharacterDialog();
-    if (name == null || name.isEmpty) return;
+    final result = await _showCreateCharacterDialog();
+    if (result == null) return;
 
-    final character = CharacterModel.create(name: name);
+    final character = CharacterModel.create(
+      name: result.name,
+      gender: result.gender,
+    );
     await _storage.save(character);
-    
+
     if (!mounted) return;
-    
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => const GameScreen(),
@@ -139,43 +143,85 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     );
   }
 
-  Future<String?> _showCreateCharacterDialog() async {
+  Future<_CharacterCreationResult?> _showCreateCharacterDialog() async {
     final controller = TextEditingController();
-    
-    return showDialog<String>(
+    Gender selectedGender = Gender.male;
+
+    return showDialog<_CharacterCreationResult>(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A2E),
-        title: const Text(
-          'Create New Character',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: 'Enter character name',
-            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.cyan.shade400),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: const Color(0xFF1A1A2E),
+          title: const Text(
+            'Create New Character',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Gender selection
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _GenderOption(
+                    gender: Gender.male,
+                    isSelected: selectedGender == Gender.male,
+                    onTap: () => setDialogState(() => selectedGender = Gender.male),
+                  ),
+                  const SizedBox(width: 24),
+                  _GenderOption(
+                    gender: Gender.female,
+                    isSelected: selectedGender == Gender.female,
+                    onTap: () => setDialogState(() => selectedGender = Gender.female),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Name input
+              TextField(
+                controller: controller,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: 'Enter character name',
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan.shade400),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan.shade300, width: 2),
+                  ),
+                ),
+                onSubmitted: (value) {
+                  if (value.isNotEmpty) {
+                    Navigator.of(context).pop(
+                      _CharacterCreationResult(name: value, gender: selectedGender),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.cyan.shade300, width: 2),
+            FilledButton(
+              onPressed: () {
+                if (controller.text.isNotEmpty) {
+                  Navigator.of(context).pop(
+                    _CharacterCreationResult(
+                      name: controller.text,
+                      gender: selectedGender,
+                    ),
+                  );
+                }
+              },
+              child: const Text('Create'),
             ),
-          ),
-          onSubmitted: (value) => Navigator.of(context).pop(value),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(controller.text),
-            child: const Text('Create'),
-          ),
-        ],
       ),
     );
   }
@@ -215,10 +261,15 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
+    return Focus(
       focusNode: _focusNode,
       autofocus: true,
-      onKeyEvent: _handleKeyEvent,
+      onKeyEvent: (node, event) {
+        if (event is KeyDownEvent) {
+          return _handleKeyEvent(event);
+        }
+        return KeyEventResult.ignored;
+      },
       child: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
@@ -310,20 +361,23 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     );
   }
 
-  void _handleKeyEvent(KeyEvent event) {
-    if (event is! KeyDownEvent) return;
-
+  KeyEventResult _handleKeyEvent(KeyDownEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
       _navigateUp();
+      return KeyEventResult.handled;
     } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
       _navigateDown();
+      return KeyEventResult.handled;
     } else if (event.logicalKey == LogicalKeyboardKey.enter ||
         event.logicalKey == LogicalKeyboardKey.space) {
       _confirmSelection();
+      return KeyEventResult.handled;
     } else if (event.logicalKey == LogicalKeyboardKey.delete ||
         event.logicalKey == LogicalKeyboardKey.backspace) {
       _deleteSelected();
+      return KeyEventResult.handled;
     }
+    return KeyEventResult.ignored;
   }
 
   Widget _buildContent() {
@@ -374,6 +428,78 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 }
 
+/// Result from character creation dialog
+class _CharacterCreationResult {
+  final String name;
+  final Gender gender;
+
+  _CharacterCreationResult({required this.name, required this.gender});
+}
+
+/// Gender selection option widget
+class _GenderOption extends StatelessWidget {
+  final Gender gender;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _GenderOption({
+    required this.gender,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final spritePath = gender == Gender.male
+        ? 'packages/game_asset_sprites/assets/boy.png'
+        : 'packages/game_asset_sprites/assets/girl.png';
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 80,
+        height: 100,
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.cyan.shade800 : const Color(0xFF252540),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Colors.cyan.shade400 : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Sprite preview (first frame)
+            ClipRect(
+              child: Align(
+                alignment: Alignment.topLeft,
+                widthFactor: 1 / 8, // 8 columns in sprite sheet
+                heightFactor: 1 / 3, // 3 rows in sprite sheet
+                child: Image.asset(
+                  spritePath,
+                  width: 80 * 8,
+                  height: 60 * 3,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              gender == Gender.male ? 'Male' : 'Female',
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected ? Colors.white : Colors.white70,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CharacterCard extends StatelessWidget {
   final CharacterModel character;
   final bool isSelected;
@@ -396,7 +522,7 @@ class _CharacterCard extends StatelessWidget {
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
-    
+
     if (diff.inDays == 0) return 'Today';
     if (diff.inDays == 1) return 'Yesterday';
     if (diff.inDays < 7) return '${diff.inDays} days ago';
@@ -421,29 +547,33 @@ class _CharacterCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Avatar
+              // Character sprite avatar
               Container(
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: Colors.cyan.shade800,
-                  borderRadius: BorderRadius.circular(28),
+                  color: Colors.cyan.shade900,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                  child: Text(
-                    character.name.isNotEmpty 
-                        ? character.name[0].toUpperCase() 
-                        : '?',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: ClipRect(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      widthFactor: 1 / 8,
+                      heightFactor: 1 / 3,
+                      child: Image.asset(
+                        character.spritePath,
+                        width: 56 * 8,
+                        height: 56 * 3,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 16),
-              
+
               // Info
               Expanded(
                 child: Column(
@@ -492,7 +622,7 @@ class _CharacterCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Level badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -509,7 +639,7 @@ class _CharacterCard extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Delete button
               IconButton(
                 onPressed: onDelete,
