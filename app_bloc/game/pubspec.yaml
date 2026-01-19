@@ -1,0 +1,22 @@
+name: app_bloc_game
+description: Flutter/UI-level BLoC for game state management
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+  app_lib_core:
+    path: ../../app_lib/core
+  app_lib_engine:
+    path: ../../app_lib/engine
+  app_lib_persistence:
+    path: ../../app_lib/persistence
+  flutter:
+    sdk: flutter

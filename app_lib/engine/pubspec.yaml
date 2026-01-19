@@ -1,0 +1,14 @@
+name: app_lib_engine
+description: Game engine with domain models and reducers
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  equatable: ^2.0.7
+  app_lib_core:
+    path: ../core

@@ -1,0 +1,252 @@
+import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart' show KeyEventResult;
+import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:game_bloc_world/game_bloc_world.dart';
+import 'package:game_objects_room/game_objects_room.dart';
+import 'package:game_objects_character/game_objects_character.dart';
+import 'package:game_objects_devices/game_objects_devices.dart';
+
+/// Main Flame game for Homelab Simulator
+class HomelabGame extends FlameGame
+    with HasKeyboardHandlerComponents, TapCallbacks, MouseMovementDetector {
+  final GameBloc gameBloc;
+  final WorldBloc worldBloc;
+
+  late final RoomComponent _room;
+  late final PlayerComponent _player;
+  PlacementGhostComponent? _placementGhost;
+
+  final List<DeviceComponent> _deviceComponents = [];
+
+  HomelabGame({
+    required this.gameBloc,
+    required this.worldBloc,
+  });
+
+  @override
+  Future<void> onLoad() async {
+    // Add BLoC providers
+    await add(
+      FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [
+          _buildWorld(),
+        ],
+      ),
+    );
+
+    // Listen to game state changes
+    gameBloc.stream.listen(_onGameStateChanged);
+  }
+
+  Component _buildWorld() {
+    return Component(
+      children: [
+        _room = RoomComponent(),
+        _player = PlayerComponent(
+          initialPosition: _getInitialPlayerPosition(),
+        ),
+      ],
+    );
+  }
+
+  GridPosition _getInitialPlayerPosition() {
+    final state = gameBloc.state;
+    if (state is GameReady) {
+      return state.model.playerPosition;
+    }
+    return GameConstants.playerStartPosition;
+  }
+
+  void _onGameStateChanged(GameState state) {
+    if (state is! GameReady) return;
+
+    final model = state.model;
+
+    // Update player position if changed externally
+    if (_player.gridPosition != model.playerPosition) {
+      _player.moveTo(model.playerPosition);
+    }
+
+    // Handle placement mode
+    if (model.placementMode == PlacementMode.placing &&
+        model.selectedTemplate != null) {
+      _showPlacementGhost(model.selectedTemplate!);
+    } else {
+      _hidePlacementGhost();
+    }
+
+    // Sync devices
+    _syncDevices(model.currentRoom.devices);
+  }
+
+  void _showPlacementGhost(DeviceTemplate template) {
+    if (_placementGhost == null) {
+      _placementGhost = PlacementGhostComponent();
+      add(FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [_placementGhost!],
+      ));
+    }
+    _placementGhost!.setTemplate(template);
+  }
+
+  void _hidePlacementGhost() {
+    _placementGhost?.removeFromParent();
+    _placementGhost = null;
+  }
+
+  void _syncDevices(List<DeviceModel> devices) {
+    // Remove components for deleted devices
+    final deviceIds = devices.map((d) => d.id).toSet();
+    _deviceComponents.removeWhere((comp) {
+      if (!deviceIds.contains(comp.device.id)) {
+        comp.removeFromParent();
+        return true;
+      }
+      return false;
+    });
+
+    // Add components for new devices
+    final existingIds = _deviceComponents.map((c) => c.device.id).toSet();
+    for (final device in devices) {
+      if (!existingIds.contains(device.id)) {
+        final comp = DeviceComponent(device: device);
+        _deviceComponents.add(comp);
+        add(FlameBlocProvider<WorldBloc, WorldState>.value(
+          value: worldBloc,
+          children: [comp],
+        ));
+      }
+    }
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    final state = gameBloc.state;
+    if (state is! GameReady) return;
+
+    final model = state.model;
+    final worldPos = event.localPosition;
+    final gridPos = pixelToGrid(worldPos.x, worldPos.y);
+
+    if (!isWithinBounds(gridPos)) return;
+
+    // In placement mode, place device
+    if (model.placementMode == PlacementMode.placing &&
+        model.selectedTemplate != null) {
+      if (model.currentRoom.canPlaceDevice(
+        gridPos,
+        model.selectedTemplate!.width,
+        model.selectedTemplate!.height,
+      )) {
+        gameBloc.add(GamePlaceDevice(gridPos));
+      }
+      return;
+    }
+
+    // Check if tapping terminal
+    if (gridPos == model.currentRoom.terminalPosition &&
+        _player.gridPosition.isAdjacentTo(gridPos)) {
+      worldBloc.add(const InteractionRequested('terminal', InteractionType.terminal));
+      gameBloc.add(const GameToggleShop(isOpen: true));
+      return;
+    }
+
+    // Otherwise, move player
+    if (!model.currentRoom.isCellOccupied(gridPos)) {
+      gameBloc.add(GameMovePlayerTo(gridPos));
+      _player.moveTo(gridPos);
+    }
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    final state = gameBloc.state;
+    if (state is! GameReady) return KeyEventResult.ignored;
+
+    // Escape to cancel placement
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      if (state.model.placementMode == PlacementMode.placing) {
+        gameBloc.add(const GameCancelPlacement());
+        return KeyEventResult.handled;
+      }
+      if (state.model.shopOpen) {
+        gameBloc.add(const GameToggleShop(isOpen: false));
+        return KeyEventResult.handled;
+      }
+    }
+
+    // Movement keys
+    Direction? direction;
+    if (event.logicalKey == LogicalKeyboardKey.keyW ||
+        event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      direction = Direction.up;
+    } else if (event.logicalKey == LogicalKeyboardKey.keyS ||
+        event.logicalKey == LogicalKeyboardKey.arrowDown) {
+      direction = Direction.down;
+    } else if (event.logicalKey == LogicalKeyboardKey.keyA ||
+        event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+      direction = Direction.left;
+    } else if (event.logicalKey == LogicalKeyboardKey.keyD ||
+        event.logicalKey == LogicalKeyboardKey.arrowRight) {
+      direction = Direction.right;
+    }
+
+    if (direction != null) {
+      gameBloc.add(GameMovePlayer(direction));
+      _player.moveInDirection(direction);
+      return KeyEventResult.handled;
+    }
+
+    // E to interact
+    if (event.logicalKey == LogicalKeyboardKey.keyE) {
+      final worldState = worldBloc.state;
+      if (worldState.canInteract &&
+          worldState.availableInteraction == InteractionType.terminal) {
+        gameBloc.add(const GameToggleShop(isOpen: true));
+        return KeyEventResult.handled;
+      }
+    }
+
+    return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onMouseMove(PointerHoverInfo info) {
+    _room.onHoverPosition(info.eventPosition.widget);
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    // Update placement ghost validity
+    if (_placementGhost != null) {
+      final state = gameBloc.state;
+      if (state is GameReady && state.model.selectedTemplate != null) {
+        final pos = _placementGhost!.currentPosition;
+        if (pos != null) {
+          final valid = state.model.currentRoom.canPlaceDevice(
+            pos,
+            state.model.selectedTemplate!.width,
+            state.model.selectedTemplate!.height,
+          );
+          _placementGhost!.setValid(valid);
+          _room.setPlacementValid(valid);
+        }
+      }
+    }
+  }
+}

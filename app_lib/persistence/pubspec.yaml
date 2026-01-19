@@ -1,0 +1,16 @@
+name: app_lib_persistence
+description: Save/load functionality for game state
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  path_provider: ^2.1.5
+  app_lib_core:
+    path: ../core
+  app_lib_engine:
+    path: ../engine

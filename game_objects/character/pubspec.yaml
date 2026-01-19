@@ -1,0 +1,19 @@
+name: game_objects_character
+description: Player character Flame component with movement
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.29.0
+  flame_bloc: ^1.12.1
+  app_lib_core:
+    path: ../../app_lib/core
+  game_bloc_world:
+    path: ../../game_bloc/world

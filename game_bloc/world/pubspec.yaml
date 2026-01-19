@@ -1,0 +1,15 @@
+name: game_bloc_world
+description: Flame-level BLoC for world state (selection, hover, interaction)
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+  app_lib_core:
+    path: ../../app_lib/core

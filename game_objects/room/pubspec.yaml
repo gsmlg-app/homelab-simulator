@@ -1,0 +1,21 @@
+name: game_objects_room
+description: Room grid and terminal Flame components
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.29.0
+  flame_bloc: ^1.12.1
+  app_lib_core:
+    path: ../../app_lib/core
+  app_lib_engine:
+    path: ../../app_lib/engine
+  game_bloc_world:
+    path: ../../game_bloc/world

@@ -1,0 +1,108 @@
+name: homelab_simulator
+description: A Homelab Simulator game built with Flutter and Flame
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.9.0
+  flutter: '>=3.32.0'
+
+# Melos 7.0+ workspace packages
+workspace:
+  - app_bloc/game
+  - game_bloc/world
+  - app_lib/core
+  - app_lib/engine
+  - app_lib/persistence
+  - app_widget/common
+  - game_widgets/hud
+  - game_widgets/shop
+  - game_widgets/panels
+  - game_objects/world
+  - game_objects/room
+  - game_objects/character
+  - game_objects/devices
+  - game_audio/sfx
+  - game_asset/sprites
+  - third_party/placeholder
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.29.0
+  flame_bloc: ^1.12.1
+  flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+  path_provider: ^2.1.5
+  uuid: ^4.5.1
+
+  # Local packages
+  app_lib_core:
+    path: app_lib/core
+  app_lib_engine:
+    path: app_lib/engine
+  app_lib_persistence:
+    path: app_lib/persistence
+  app_bloc_game:
+    path: app_bloc/game
+  game_bloc_world:
+    path: game_bloc/world
+  game_objects_world:
+    path: game_objects/world
+  game_objects_room:
+    path: game_objects/room
+  game_objects_character:
+    path: game_objects/character
+  game_objects_devices:
+    path: game_objects/devices
+  game_widgets_hud:
+    path: game_widgets/hud
+  game_widgets_shop:
+    path: game_widgets/shop
+  game_widgets_panels:
+    path: game_widgets/panels
+  game_asset_sprites:
+    path: game_asset/sprites
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  melos: ^7.0.0
+
+# Melos 7.0+ configuration
+melos:
+  repository: https://github.com/gsmlg-app/homelab_simulator
+
+  scripts:
+    analyze:
+      run: melos exec -- dart analyze .
+      description: Run dart analyze in all packages
+
+    format:
+      run: melos exec -- dart format .
+      description: Run dart format in all packages
+
+    format:check:
+      run: melos exec -- dart format --set-exit-if-changed .
+      description: Check dart format in all packages
+
+    test:
+      run: melos exec -- flutter test
+      packageFilters:
+        dirExists: test
+      description: Run flutter test in all packages with tests
+
+    clean:
+      run: melos exec -- flutter clean
+      description: Run flutter clean in all packages
+
+    build:runner:
+      run: melos exec -- dart run build_runner build --delete-conflicting-outputs
+      packageFilters:
+        dependsOn: build_runner
+      description: Run build_runner in packages that depend on it
+
+flutter:
+  uses-material-design: true

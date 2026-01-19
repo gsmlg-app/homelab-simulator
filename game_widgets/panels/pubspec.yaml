@@ -1,0 +1,20 @@
+name: game_widgets_panels
+description: Panel widgets for game info display
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  app_bloc_game:
+    path: ../../app_bloc/game
+  app_lib_core:
+    path: ../../app_lib/core
+  app_lib_engine:
+    path: ../../app_lib/engine
