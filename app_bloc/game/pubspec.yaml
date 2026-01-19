@@ -16,7 +16,7 @@ dependencies:
     path: ../../app_lib/core
   app_lib_engine:
     path: ../../app_lib/engine
-  app_lib_persistence:
-    path: ../../app_lib/persistence
+  app_database:
+    path: ../../app_lib/database
   flutter:
     sdk: flutter

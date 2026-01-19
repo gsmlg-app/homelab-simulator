@@ -12,8 +12,11 @@ workspace:
   - app_bloc/game
   - game_bloc/world
   - app_lib/core
+  - app_lib/database
   - app_lib/engine
-  - app_lib/persistence
+  - app_lib/locale
+  - app_lib/logging
+  - app_lib/secure_storage
   - app_widget/common
   - game_widgets/hud
   - game_widgets/shop
@@ -41,10 +44,16 @@ dependencies:
   # Local packages
   app_lib_core:
     path: app_lib/core
+  app_database:
+    path: app_lib/database
   app_lib_engine:
     path: app_lib/engine
-  app_lib_persistence:
-    path: app_lib/persistence
+  app_locale:
+    path: app_lib/locale
+  app_logging:
+    path: app_lib/logging
+  app_secure_storage:
+    path: app_lib/secure_storage
   app_bloc_game:
     path: app_bloc/game
   game_bloc_world:
