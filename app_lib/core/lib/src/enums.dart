@@ -31,6 +31,12 @@ enum Direction {
   none,
 }
 
+/// Character gender
+enum Gender {
+  male,
+  female,
+}
+
 /// Interaction type
 enum InteractionType {
   terminal,
