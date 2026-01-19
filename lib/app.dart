@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
-import 'router.dart';
-import 'theme.dart';
+import 'screens/start_menu_screen.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -67,16 +66,18 @@ class _AppContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = AppRouter.router;
-
-    return MaterialApp.router(
+    return MaterialApp(
       key: const Key('homelab_simulator_app'),
       debugShowCheckedModeBanner: false,
-      routerConfig: router,
       title: 'Homelab Simulator',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0D0D1A),
+        colorScheme: ColorScheme.dark(
+          primary: Colors.cyan.shade400,
+          secondary: Colors.green.shade400,
+        ),
+      ),
+      home: const StartMenuScreen(),
     );
   }
 }
