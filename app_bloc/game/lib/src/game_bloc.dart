@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
-import 'package:app_lib_persistence/app_lib_persistence.dart';
+import 'package:app_database/app_database.dart';
 
 import 'game_event.dart';
 import 'game_state.dart';
