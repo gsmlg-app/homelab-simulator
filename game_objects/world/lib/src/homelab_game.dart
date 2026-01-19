@@ -12,6 +12,8 @@ import 'package:game_objects_room/game_objects_room.dart';
 import 'package:game_objects_character/game_objects_character.dart';
 import 'package:game_objects_devices/game_objects_devices.dart';
 
+import 'gamepad_handler.dart';
+
 /// Main Flame game for Homelab Simulator
 class HomelabGame extends FlameGame
     with HasKeyboardHandlerComponents, TapCallbacks, MouseMovementDetector {
@@ -20,6 +22,7 @@ class HomelabGame extends FlameGame
 
   late final RoomComponent _room;
   late final PlayerComponent _player;
+  late final GamepadHandler _gamepadHandler;
   PlacementGhostComponent? _placementGhost;
 
   final List<DeviceComponent> _deviceComponents = [];
@@ -41,8 +44,65 @@ class HomelabGame extends FlameGame
       ),
     );
 
+    // Add gamepad handler
+    _gamepadHandler = GamepadHandler(
+      onDirection: _onGamepadDirection,
+      onButtonPressed: _onGamepadButtonPressed,
+    );
+    await add(_gamepadHandler);
+
     // Listen to game state changes
     gameBloc.stream.listen(_onGameStateChanged);
+  }
+
+  void _onGamepadDirection(Direction direction) {
+    final state = gameBloc.state;
+    if (state is! GameReady) return;
+    if (state.model.shopOpen) return; // Don't move when shop is open
+
+    gameBloc.add(GameMovePlayer(direction));
+    _player.moveInDirection(direction);
+  }
+
+  void _onGamepadButtonPressed(GamepadButton button) {
+    final state = gameBloc.state;
+    if (state is! GameReady) return;
+
+    switch (button) {
+      case GamepadButton.south: // A button - interact/confirm
+        final worldState = worldBloc.state;
+        if (worldState.canInteract &&
+            worldState.availableInteraction == InteractionType.terminal) {
+          gameBloc.add(const GameToggleShop(isOpen: true));
+        } else if (state.model.placementMode == PlacementMode.placing &&
+            state.model.selectedTemplate != null) {
+          // Place device at player position (or could use cursor)
+          final pos = _player.gridPosition;
+          if (state.model.currentRoom.canPlaceDevice(
+            pos,
+            state.model.selectedTemplate!.width,
+            state.model.selectedTemplate!.height,
+          )) {
+            gameBloc.add(GamePlaceDevice(pos));
+          }
+        }
+        break;
+
+      case GamepadButton.east: // B button - cancel/back
+        if (state.model.placementMode == PlacementMode.placing) {
+          gameBloc.add(const GameCancelPlacement());
+        } else if (state.model.shopOpen) {
+          gameBloc.add(const GameToggleShop(isOpen: false));
+        }
+        break;
+
+      case GamepadButton.start: // Start - toggle shop
+        gameBloc.add(GameToggleShop(isOpen: !state.model.shopOpen));
+        break;
+
+      default:
+        break;
+    }
   }
 
   Component _buildWorld() {
