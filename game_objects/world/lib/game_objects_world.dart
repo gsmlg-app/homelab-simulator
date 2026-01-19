@@ -2,3 +2,4 @@
 library;
 
 export 'src/homelab_game.dart';
+export 'src/gamepad_handler.dart';

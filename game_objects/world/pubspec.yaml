@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   flame: ^1.29.0
   flame_bloc: ^1.12.1
+  gamepads: ^0.1.9
   app_lib_core:
     path: ../../app_lib/core
   app_lib_engine:
