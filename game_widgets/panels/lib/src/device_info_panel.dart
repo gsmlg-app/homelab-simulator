@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 import 'info_panel.dart';
 
@@ -11,23 +11,11 @@ class DeviceInfoPanel extends StatelessWidget {
 
   const DeviceInfoPanel({super.key, required this.device, this.onRemove});
 
-  IconData get _deviceIcon {
-    return switch (device.type) {
-      DeviceType.server => Icons.dns,
-      DeviceType.computer => Icons.computer,
-      DeviceType.phone => Icons.phone_android,
-      DeviceType.router => Icons.router,
-      DeviceType.switch_ => Icons.hub,
-      DeviceType.nas => Icons.storage,
-      DeviceType.iot => Icons.sensors,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     return InfoPanel(
       title: 'Device Info',
-      icon: _deviceIcon,
+      icon: device.type.icon,
       children: [
         _buildRow('Name', device.name),
         _buildRow('Type', device.type.name),

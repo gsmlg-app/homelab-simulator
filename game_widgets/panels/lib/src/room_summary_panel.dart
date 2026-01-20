@@ -189,7 +189,7 @@ class RoomSummaryPanel extends StatelessWidget {
         runSpacing: 4,
         children: counts.entries.map((e) {
           return _buildCountChip(
-            _getDeviceIcon(e.key),
+            e.key.icon,
             e.value,
             Colors.blue.shade700,
           );
@@ -252,14 +252,14 @@ class RoomSummaryPanel extends StatelessWidget {
           child: Row(
             children: [
               Icon(
-                _getDeviceIcon(e.key),
+                e.key.icon,
                 size: 14,
                 color: Colors.blue.shade400,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _getDeviceTypeName(e.key),
+                  e.key.displayName,
                   style: TextStyle(color: Colors.grey.shade300, fontSize: 11),
                 ),
               ),
@@ -352,30 +352,6 @@ class RoomSummaryPanel extends StatelessWidget {
         );
       }).toList(),
     );
-  }
-
-  IconData _getDeviceIcon(DeviceType type) {
-    return switch (type) {
-      DeviceType.server => Icons.dns,
-      DeviceType.computer => Icons.computer,
-      DeviceType.phone => Icons.phone_android,
-      DeviceType.router => Icons.router,
-      DeviceType.switch_ => Icons.hub,
-      DeviceType.nas => Icons.storage,
-      DeviceType.iot => Icons.sensors,
-    };
-  }
-
-  String _getDeviceTypeName(DeviceType type) {
-    return switch (type) {
-      DeviceType.server => 'Server',
-      DeviceType.computer => 'Computer',
-      DeviceType.phone => 'Phone',
-      DeviceType.router => 'Router',
-      DeviceType.switch_ => 'Switch',
-      DeviceType.nas => 'NAS',
-      DeviceType.iot => 'IoT Device',
-    };
   }
 
   IconData _getProviderIcon(CloudProvider provider) {

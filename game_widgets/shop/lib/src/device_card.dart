@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Card displaying a device template in the shop
 class DeviceCard extends StatelessWidget {
@@ -15,33 +15,11 @@ class DeviceCard extends StatelessWidget {
     required this.onTap,
   });
 
-  Color get _deviceColor {
-    return switch (template.type) {
-      DeviceType.server => Colors.blue,
-      DeviceType.computer => Colors.purple,
-      DeviceType.phone => Colors.red,
-      DeviceType.router => Colors.orange,
-      DeviceType.switch_ => Colors.teal,
-      DeviceType.nas => Colors.blueGrey,
-      DeviceType.iot => Colors.green,
-    };
-  }
-
-  IconData get _deviceIcon {
-    return switch (template.type) {
-      DeviceType.server => Icons.dns,
-      DeviceType.computer => Icons.computer,
-      DeviceType.phone => Icons.phone_android,
-      DeviceType.router => Icons.router,
-      DeviceType.switch_ => Icons.hub,
-      DeviceType.nas => Icons.storage,
-      DeviceType.iot => Icons.sensors,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final canAfford = currentCredits >= template.cost;
+    final deviceColor = template.type.color;
+    final deviceIcon = template.type.icon;
 
     return Card(
       color: Colors.grey.shade900,
@@ -60,10 +38,10 @@ class DeviceCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _deviceColor.withValues(alpha: 0.2),
+                        color: deviceColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(_deviceIcon, color: _deviceColor, size: 32),
+                      child: Icon(deviceIcon, color: deviceColor, size: 32),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -81,7 +59,7 @@ class DeviceCard extends StatelessWidget {
                           Text(
                             template.type.name.toUpperCase(),
                             style: TextStyle(
-                              color: _deviceColor,
+                              color: deviceColor,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
