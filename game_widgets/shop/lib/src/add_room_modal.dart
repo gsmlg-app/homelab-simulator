@@ -517,8 +517,8 @@ class _AddRoomModalState extends State<AddRoomModal> {
 
   Widget _buildRoomPreview() {
     const cellSize = 20.0;
-    final width = GameConstants.roomWidth;
-    final height = GameConstants.roomHeight;
+    const width = GameConstants.roomWidth;
+    const height = GameConstants.roomHeight;
 
     return Center(
       child: Container(
@@ -595,9 +595,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
   Widget _buildFooter(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.black26,
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
