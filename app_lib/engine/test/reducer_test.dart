@@ -176,6 +176,63 @@ void main() {
 
         expect(result.currentRoom.devices.length, 0);
       });
+
+      test('checks position validity before checking credits', () {
+        // With 0 credits and invalid position, should fail on position first
+        // (no credit error thrown, just returns unchanged model)
+        final poorModel = model.copyWith(credits: 0);
+        const event = DevicePlaced(
+          templateId: 'server_basic',
+          position: GridPosition(2, 2), // Terminal position - invalid
+        );
+
+        final result = reduce(poorModel, event);
+
+        // Model unchanged - position check came first
+        expect(result.currentRoom.devices.length, 0);
+        expect(result.credits, 0);
+      });
+
+      test('deducts exact template cost', () {
+        // server_basic costs 500
+        final modelWithExactCredits = model.copyWith(credits: 500);
+        const event = DevicePlaced(
+          templateId: 'server_basic',
+          position: GridPosition(5, 5),
+        );
+
+        final result = reduce(modelWithExactCredits, event);
+
+        expect(result.currentRoom.devices.length, 1);
+        expect(result.credits, 0); // Exactly 0 after placement
+      });
+
+      test('fails when credits are one short of cost', () {
+        // server_basic costs 500, try with 499
+        final modelWithAlmostEnough = model.copyWith(credits: 499);
+        const event = DevicePlaced(
+          templateId: 'server_basic',
+          position: GridPosition(5, 5),
+        );
+
+        final result = reduce(modelWithAlmostEnough, event);
+
+        expect(result.currentRoom.devices.length, 0);
+        expect(result.credits, 499);
+      });
+
+      test('falls back to first template if templateId not found', () {
+        final modelWithCredits = model.copyWith(credits: 10000);
+        const event = DevicePlaced(
+          templateId: 'nonexistent_template',
+          position: GridPosition(5, 5),
+        );
+
+        final result = reduce(modelWithCredits, event);
+
+        // Should use first template as fallback
+        expect(result.currentRoom.devices.length, 1);
+      });
     });
 
     group('DeviceRemoved', () {
@@ -199,6 +256,30 @@ void main() {
           greaterThan(creditsAfterPlace),
         ); // Partial refund
       });
+
+      test('refunds exactly half for even cost (integer division)', () {
+        // server_basic has cost of 500, so refund should be 250
+        final modelWithCredits = model.copyWith(credits: 1000);
+        const placeEvent = DevicePlaced(
+          templateId: 'server_basic',
+          position: GridPosition(5, 5),
+        );
+        final afterPlace = reduce(modelWithCredits, placeEvent);
+        final creditsAfterPlace = afterPlace.credits;
+        final deviceId = afterPlace.currentRoom.devices.first.id;
+
+        final result = reduce(afterPlace, DeviceRemoved(deviceId));
+
+        // Expect exactly half refund (500 / 2 = 250)
+        expect(result.credits, creditsAfterPlace + 250);
+      });
+
+      test('throws StateError when removing nonexistent device', () {
+        expect(
+          () => reduce(model, const DeviceRemoved('nonexistent-device')),
+          throwsStateError,
+        );
+      });
     });
 
     group('CreditsChanged', () {
@@ -210,6 +291,22 @@ void main() {
       test('decreases credits', () {
         final result = reduce(model, const CreditsChanged(-100));
         expect(result.credits, model.credits - 100);
+      });
+
+      test('allows credits to go negative with large negative amount', () {
+        // This tests that the reducer does not prevent negative credits
+        final result = reduce(model, const CreditsChanged(-100000));
+        expect(result.credits, lessThan(0));
+      });
+
+      test('handles zero change', () {
+        final result = reduce(model, const CreditsChanged(0));
+        expect(result.credits, model.credits);
+      });
+
+      test('handles very large positive amount', () {
+        final result = reduce(model, const CreditsChanged(999999999));
+        expect(result.credits, model.credits + 999999999);
       });
     });
 

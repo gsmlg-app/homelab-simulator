@@ -212,6 +212,127 @@ void main() {
         expect(device.occupiesCell(const GridPosition(5, 4)), isFalse);
         expect(device.occupiesCell(const GridPosition(5, 6)), isFalse);
       });
+
+      group('dimension edge cases', () {
+        test('occupiedCells returns empty list for zero width', () {
+          const zeroWidth = DeviceModel(
+            id: 'dev-zero-w',
+            templateId: 'tmpl',
+            name: 'Zero Width',
+            type: DeviceType.iot,
+            position: GridPosition(5, 5),
+            width: 0,
+            height: 1,
+          );
+
+          expect(zeroWidth.occupiedCells, isEmpty);
+        });
+
+        test('occupiedCells returns empty list for zero height', () {
+          const zeroHeight = DeviceModel(
+            id: 'dev-zero-h',
+            templateId: 'tmpl',
+            name: 'Zero Height',
+            type: DeviceType.iot,
+            position: GridPosition(5, 5),
+            width: 1,
+            height: 0,
+          );
+
+          expect(zeroHeight.occupiedCells, isEmpty);
+        });
+
+        test('occupiedCells returns empty list for both zero dimensions', () {
+          const zeroSize = DeviceModel(
+            id: 'dev-zero',
+            templateId: 'tmpl',
+            name: 'Zero Size',
+            type: DeviceType.iot,
+            position: GridPosition(5, 5),
+            width: 0,
+            height: 0,
+          );
+
+          expect(zeroSize.occupiedCells, isEmpty);
+        });
+
+        test('occupiedCells handles large dimensions (10x10)', () {
+          const large = DeviceModel(
+            id: 'dev-large',
+            templateId: 'tmpl',
+            name: 'Large',
+            type: DeviceType.server,
+            position: GridPosition(0, 0),
+            width: 10,
+            height: 10,
+          );
+
+          final cells = large.occupiedCells;
+          expect(cells.length, 100);
+          expect(cells, contains(const GridPosition(0, 0)));
+          expect(cells, contains(const GridPosition(9, 9)));
+          expect(cells, contains(const GridPosition(5, 5)));
+        });
+
+        test('occupiesCell with negative coordinates returns false', () {
+          // Device at (5,5) with width=2, height=1
+          expect(device.occupiesCell(const GridPosition(-1, 5)), isFalse);
+          expect(device.occupiesCell(const GridPosition(5, -1)), isFalse);
+          expect(device.occupiesCell(const GridPosition(-5, -5)), isFalse);
+        });
+
+        test('occupiesCell boundary check at device edges', () {
+          // Device at (5,5) with width=2, height=1 occupies (5,5) and (6,5)
+          // Just before: (4,5) - should be false
+          expect(device.occupiesCell(const GridPosition(4, 5)), isFalse);
+          // First cell: (5,5) - should be true
+          expect(device.occupiesCell(const GridPosition(5, 5)), isTrue);
+          // Last cell: (6,5) - should be true
+          expect(device.occupiesCell(const GridPosition(6, 5)), isTrue);
+          // Just after: (7,5) - should be false
+          expect(device.occupiesCell(const GridPosition(7, 5)), isFalse);
+        });
+
+        test('occupiedCells with position at origin (0,0)', () {
+          const atOrigin = DeviceModel(
+            id: 'dev-origin',
+            templateId: 'tmpl',
+            name: 'At Origin',
+            type: DeviceType.iot,
+            position: GridPosition(0, 0),
+            width: 2,
+            height: 2,
+          );
+
+          final cells = atOrigin.occupiedCells;
+          expect(cells.length, 4);
+          expect(cells, contains(const GridPosition(0, 0)));
+          expect(cells, contains(const GridPosition(1, 0)));
+          expect(cells, contains(const GridPosition(0, 1)));
+          expect(cells, contains(const GridPosition(1, 1)));
+        });
+
+        test('occupiesCell for tall narrow device (1x5)', () {
+          const tall = DeviceModel(
+            id: 'dev-tall',
+            templateId: 'tmpl',
+            name: 'Tall',
+            type: DeviceType.server,
+            position: GridPosition(3, 2),
+            width: 1,
+            height: 5,
+          );
+
+          expect(tall.occupiesCell(const GridPosition(3, 2)), isTrue);
+          expect(tall.occupiesCell(const GridPosition(3, 3)), isTrue);
+          expect(tall.occupiesCell(const GridPosition(3, 4)), isTrue);
+          expect(tall.occupiesCell(const GridPosition(3, 5)), isTrue);
+          expect(tall.occupiesCell(const GridPosition(3, 6)), isTrue);
+          expect(tall.occupiesCell(const GridPosition(3, 7)), isFalse);
+          expect(tall.occupiesCell(const GridPosition(2, 4)), isFalse);
+          expect(tall.occupiesCell(const GridPosition(4, 4)), isFalse);
+        });
+      });
     });
 
     group('equality', () {
