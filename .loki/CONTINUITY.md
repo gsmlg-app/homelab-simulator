@@ -11,15 +11,16 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 18
-- **Last Commit:** 2d0d066
+- **Iteration:** 19
+- **Last Commit:** pending
 
 ## Test Coverage Summary
-- **app_lib/core:** 73 tests passing
+- **app_lib/core:** 115 tests passing
   - CharacterName: 12 tests
   - GridPosition: 25 tests
   - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 21 tests
   - IDs: 15 tests
+  - Enums: 42 tests (NEW)
 - **app_lib/engine:** 211 tests passing
   - CharacterModel: 12 tests
   - RoomModel: 28 tests
@@ -33,9 +34,11 @@ Two main feature sets from PRD.md:
   - GameStorage: 11 tests
   - CharacterStorage: 15 tests
   - app_database_test: 1 test
-- **app_lib/logging:** 22 tests passing
+- **app_lib/logging:** 82 tests passing
   - LogLevel: 8 tests
   - LogRecord: 14 tests
+  - AppLogger: 26 tests (NEW)
+  - ApiLoggingInterceptor: 34 tests (NEW)
 - **game_bloc/world:** 47 tests passing
   - WorldBloc: 23 tests
   - WorldState: 16 tests
@@ -56,7 +59,7 @@ Two main feature sets from PRD.md:
   - CharacterSpriteSheet: 12 tests
   - GameCharacters: 8 tests
   - CharacterDirection: 3 tests
-- **Total:** 507 unit tests
+- **Total:** 598 unit tests
 
 ## Completed Work
 
@@ -106,6 +109,9 @@ Two main feature sets from PRD.md:
 - `app_lib/core/test/position_test.dart` - 25 tests
 - `app_lib/core/test/helpers_test.dart` - 21 tests
 - `app_lib/core/test/ids_test.dart` - 15 tests
+- `app_lib/core/test/enums_test.dart` - 42 tests (NEW)
+- `app_lib/logging/test/app_logger_test.dart` - 26 tests (NEW)
+- `app_lib/logging/test/api_logging_interceptor_test.dart` - 34 tests (NEW)
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -131,6 +137,8 @@ Two main feature sets from PRD.md:
 1. **Use flutter_test for packages with Flame dependencies** - Pure `test` package doesn't work with Flame due to dart:ui dependencies
 2. **Run dart fix after writing tests** - Auto-fixes const usage and removes unused imports
 3. **Check existing models before creating new ones** - GameModel already contained room management, no separate WorldModel was needed
+4. **Use plain `test` package for pure Dart packages** - Packages without Flutter dependencies (like app_lib/core) should use `test:` not `flutter_test:` to avoid dart:ui issues
+5. **Singleton logger tests need unique markers** - When testing singleton loggers that use global streams, filter by unique message markers to isolate test data
 
 ## File References
 - WorldBloc: `game_bloc/world/lib/src/world_bloc.dart`
