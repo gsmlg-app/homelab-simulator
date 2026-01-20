@@ -14,6 +14,9 @@ class DoorComponent extends PositionComponent
   final double tileSize;
   bool _isHighlighted = false;
 
+  // Cached arrow path (built once in onLoad)
+  late final Path _arrowPath;
+
   // Cached paint objects for performance
   static final _framePaint = Paint()
     ..color = const Color(0xFF4A4A5A)
@@ -51,6 +54,33 @@ class DoorComponent extends PositionComponent
     await super.onLoad();
     final pos = gridPosition;
     position = Vector2(pos.x * tileSize, pos.y * tileSize);
+    _arrowPath = _buildArrowPath();
+  }
+
+  Path _buildArrowPath() {
+    final centerX = size.x / 2;
+    final centerY = size.y / 2;
+    final path = Path();
+
+    switch (door.wallSide) {
+      case WallSide.top:
+        path.moveTo(centerX - 6, centerY + 3);
+        path.lineTo(centerX, centerY - 5);
+        path.lineTo(centerX + 6, centerY + 3);
+      case WallSide.bottom:
+        path.moveTo(centerX - 6, centerY - 3);
+        path.lineTo(centerX, centerY + 5);
+        path.lineTo(centerX + 6, centerY - 3);
+      case WallSide.left:
+        path.moveTo(centerX + 3, centerY - 6);
+        path.lineTo(centerX - 5, centerY);
+        path.lineTo(centerX + 3, centerY + 6);
+      case WallSide.right:
+        path.moveTo(centerX - 3, centerY - 6);
+        path.lineTo(centerX + 5, centerY);
+        path.lineTo(centerX - 3, centerY + 6);
+    }
+    return path;
   }
 
   @override
@@ -88,29 +118,7 @@ class DoorComponent extends PositionComponent
   }
 
   void _drawArrow(Canvas canvas) {
-    final centerX = size.x / 2;
-    final centerY = size.y / 2;
-
-    final path = Path();
-    switch (door.wallSide) {
-      case WallSide.top:
-        path.moveTo(centerX - 6, centerY + 3);
-        path.lineTo(centerX, centerY - 5);
-        path.lineTo(centerX + 6, centerY + 3);
-      case WallSide.bottom:
-        path.moveTo(centerX - 6, centerY - 3);
-        path.lineTo(centerX, centerY + 5);
-        path.lineTo(centerX + 6, centerY - 3);
-      case WallSide.left:
-        path.moveTo(centerX + 3, centerY - 6);
-        path.lineTo(centerX - 5, centerY);
-        path.lineTo(centerX + 3, centerY + 6);
-      case WallSide.right:
-        path.moveTo(centerX - 3, centerY - 6);
-        path.lineTo(centerX + 5, centerY);
-        path.lineTo(centerX - 3, centerY + 6);
-    }
-    canvas.drawPath(path, _arrowPaint);
+    canvas.drawPath(_arrowPath, _arrowPaint);
   }
 
   @override
