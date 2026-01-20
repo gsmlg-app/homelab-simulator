@@ -1,5 +1,7 @@
 import 'package:app_lib_core/app_lib_core.dart';
 import 'models/game_model.dart';
+import 'models/room_model.dart';
+import 'models/door_model.dart';
 import 'models/device_model.dart';
 import 'models/device_template.dart';
 import 'events/domain_events.dart';
@@ -26,6 +28,15 @@ GameModel reduce(GameModel model, DomainEvent event) {
     GameLoaded() => model,
     RoomEntered(:final roomId, :final spawnPosition) =>
       model.enterRoom(roomId, spawnPosition),
+    RoomAdded(
+      :final name,
+      :final type,
+      :final regionCode,
+      :final doorSide,
+      :final doorPosition
+    ) =>
+      _handleRoomAdded(model, name, type, regionCode, doorSide, doorPosition),
+    RoomRemoved(:final roomId) => model.removeRoom(roomId),
   };
 }
 
@@ -92,4 +103,47 @@ GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
   return model.copyWith(
     credits: model.credits + (template.cost ~/ 2),
   ).updateRoom(updatedRoom);
+}
+
+GameModel _handleRoomAdded(
+  GameModel model,
+  String name,
+  RoomType type,
+  String? regionCode,
+  WallSide doorSide,
+  int doorPosition,
+) {
+  // Generate IDs for new room and doors
+  final newRoomId = generateRoomId();
+  final doorInCurrentRoom = generateDoorId();
+  final doorInNewRoom = generateDoorId();
+
+  // Create the new room with a door back to current room
+  final newRoom = RoomModel(
+    id: newRoomId,
+    name: name,
+    type: type,
+    parentId: model.currentRoomId,
+    regionCode: regionCode,
+    doors: [
+      DoorModel(
+        id: doorInNewRoom,
+        targetRoomId: model.currentRoomId,
+        wallSide: doorSide.opposite,
+        wallPosition: doorPosition,
+      ),
+    ],
+  );
+
+  // Add door to current room pointing to new room
+  final updatedCurrentRoom = model.currentRoom.addDoor(
+    DoorModel(
+      id: doorInCurrentRoom,
+      targetRoomId: newRoomId,
+      wallSide: doorSide,
+      wallPosition: doorPosition,
+    ),
+  );
+
+  return model.updateRoom(updatedCurrentRoom).addRoom(newRoom);
 }

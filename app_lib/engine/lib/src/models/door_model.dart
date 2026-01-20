@@ -6,7 +6,15 @@ enum WallSide {
   top,
   bottom,
   left,
-  right,
+  right;
+
+  /// Get the opposite wall side
+  WallSide get opposite => switch (this) {
+        WallSide.top => WallSide.bottom,
+        WallSide.bottom => WallSide.top,
+        WallSide.left => WallSide.right,
+        WallSide.right => WallSide.left,
+      };
 }
 
 /// A door connecting two rooms

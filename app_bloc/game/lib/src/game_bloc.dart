@@ -24,6 +24,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameChangeMode>(_onChangeMode);
     on<GameSave>(_onSave);
     on<GameEnterRoom>(_onEnterRoom);
+    on<GameAddRoom>(_onAddRoom);
+    on<GameRemoveRoom>(_onRemoveRoom);
   }
 
   GameModel? get currentModel {
@@ -163,6 +165,45 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after room transition
+    await _storage.save(newModel);
+  }
+
+  Future<void> _onAddRoom(
+    GameAddRoom event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(
+      model,
+      RoomAdded(
+        name: event.name,
+        type: event.type,
+        regionCode: event.regionCode,
+        doorSide: event.doorSide,
+        doorPosition: event.doorPosition,
+      ),
+    );
+
+    emit(GameReady(newModel));
+
+    // Auto-save after adding room
+    await _storage.save(newModel);
+  }
+
+  Future<void> _onRemoveRoom(
+    GameRemoveRoom event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, RoomRemoved(event.roomId));
+
+    emit(GameReady(newModel));
+
+    // Auto-save after removing room
     await _storage.save(newModel);
   }
 }

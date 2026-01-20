@@ -103,3 +103,32 @@ class GameEnterRoom extends GameEvent {
   @override
   List<Object?> get props => [roomId, spawnPosition];
 }
+
+/// Add a new room as a child of the current room
+class GameAddRoom extends GameEvent {
+  final String name;
+  final RoomType type;
+  final String? regionCode;
+  final WallSide doorSide;
+  final int doorPosition;
+
+  const GameAddRoom({
+    required this.name,
+    required this.type,
+    this.regionCode,
+    required this.doorSide,
+    required this.doorPosition,
+  });
+
+  @override
+  List<Object?> get props => [name, type, regionCode, doorSide, doorPosition];
+}
+
+/// Remove a room and its door
+class GameRemoveRoom extends GameEvent {
+  final String roomId;
+  const GameRemoveRoom(this.roomId);
+
+  @override
+  List<Object?> get props => [roomId];
+}

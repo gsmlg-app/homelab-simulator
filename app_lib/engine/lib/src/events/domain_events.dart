@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import '../models/device_template.dart';
+import '../models/door_model.dart';
 
 /// Base class for domain events
 sealed class DomainEvent extends Equatable {
@@ -96,4 +97,33 @@ class RoomEntered extends DomainEvent {
 
   @override
   List<Object?> get props => [roomId, spawnPosition];
+}
+
+/// Room added as a child of current room
+class RoomAdded extends DomainEvent {
+  final String name;
+  final RoomType type;
+  final String? regionCode;
+  final WallSide doorSide;
+  final int doorPosition;
+
+  const RoomAdded({
+    required this.name,
+    required this.type,
+    this.regionCode,
+    required this.doorSide,
+    required this.doorPosition,
+  });
+
+  @override
+  List<Object?> get props => [name, type, regionCode, doorSide, doorPosition];
+}
+
+/// Room removed
+class RoomRemoved extends DomainEvent {
+  final String roomId;
+  const RoomRemoved(this.roomId);
+
+  @override
+  List<Object?> get props => [roomId];
 }
