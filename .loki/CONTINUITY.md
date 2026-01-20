@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 26
-- **Last Commit:** 620ef39
+- **Iteration:** 27
+- **Last Commit:** 4711c92
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -57,8 +57,11 @@ Two main feature sets from PRD.md:
   - CreditsDisplay: 5 tests
   - InteractionHint: 8 tests
   - HudOverlay: 7 tests (NEW)
-- **game_widgets/shop:** 12 tests passing
+- **game_widgets/shop:** 58 tests passing
   - DeviceCard: 12 tests
+  - ShopModal: 18 tests (NEW)
+  - CloudServicesTab: 7 tests (NEW)
+  - AddRoomModal: 21 tests (NEW)
 - **game_asset/characters:** 23 tests passing
   - CharacterSpriteSheet: 12 tests
   - GameCharacters: 8 tests
@@ -83,7 +86,7 @@ Two main feature sets from PRD.md:
   - PlacementGhostComponent: 23 tests
 - **game_objects/world:** 23 tests passing (NEW)
   - GamepadHandler: 23 tests
-- **Total:** 868 unit tests
+- **Total:** 914 unit tests
 
 ## Completed Work
 
@@ -125,6 +128,9 @@ Two main feature sets from PRD.md:
 - `game_widgets/hud/test/credits_display_test.dart` - 5 tests
 - `game_widgets/hud/test/interaction_hint_test.dart` - 8 tests
 - `game_widgets/shop/test/device_card_test.dart` - 12 tests
+- `game_widgets/shop/test/shop_modal_test.dart` - 18 tests (NEW)
+- `game_widgets/shop/test/cloud_services_tab_test.dart` - 7 tests (NEW)
+- `game_widgets/shop/test/add_room_modal_test.dart` - 21 tests (NEW)
 - `game_asset/characters/test/game_characters_test.dart` - 23 tests
 - `app_lib/database/test/game_storage_test.dart` - 11 tests
 - `app_lib/database/test/character_storage_test.dart` - 15 tests
@@ -201,6 +207,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 4711c92: test: add unit tests for game_widgets/shop widgets (46 tests)
 - 620ef39: test: add unit tests for HudOverlay widget (7 tests)
 - f76a4d7: docs: update CONTINUITY.md with test coverage (861 tests total)
 - 7f449ad: test: add unit tests for game_objects packages (99 tests)
