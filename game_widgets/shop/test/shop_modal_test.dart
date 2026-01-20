@@ -102,7 +102,9 @@ void main() {
       await tester.tap(find.byIcon(Icons.close));
       await tester.pump();
 
-      verify(() => mockGameBloc.add(const GameToggleShop(isOpen: false))).called(1);
+      verify(
+        () => mockGameBloc.add(const GameToggleShop(isOpen: false)),
+      ).called(1);
     });
 
     testWidgets('tapping background closes shop', (tester) async {
@@ -115,7 +117,9 @@ void main() {
       await tester.tapAt(const Offset(10, 10));
       await tester.pump();
 
-      verify(() => mockGameBloc.add(const GameToggleShop(isOpen: false))).called(1);
+      verify(
+        () => mockGameBloc.add(const GameToggleShop(isOpen: false)),
+      ).called(1);
     });
 
     testWidgets('displays three tabs', (tester) async {
@@ -150,8 +154,13 @@ void main() {
       expect(find.byType(DeviceCard), findsWidgets);
     });
 
-    testWidgets('tapping device card dispatches GameSelectTemplate', (tester) async {
-      final model = GameModel.initial().copyWith(shopOpen: true, credits: 10000);
+    testWidgets('tapping device card dispatches GameSelectTemplate', (
+      tester,
+    ) async {
+      final model = GameModel.initial().copyWith(
+        shopOpen: true,
+        credits: 10000,
+      );
       when(() => mockGameBloc.state).thenReturn(GameReady(model));
 
       await tester.pumpWidget(buildTestWidget());
@@ -163,7 +172,9 @@ void main() {
       await tester.tap(deviceCards.first);
       await tester.pump();
 
-      verify(() => mockGameBloc.add(any(that: isA<GameSelectTemplate>()))).called(1);
+      verify(
+        () => mockGameBloc.add(any(that: isA<GameSelectTemplate>())),
+      ).called(1);
     });
 
     testWidgets('Rooms tab shows current room info', (tester) async {

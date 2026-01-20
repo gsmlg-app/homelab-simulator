@@ -74,10 +74,7 @@ void main() {
       });
 
       test('handles origin position', () {
-        final component = DeviceComponent(
-          device: routerDevice,
-          tileSize: 32.0,
-        );
+        final component = DeviceComponent(device: routerDevice, tileSize: 32.0);
 
         expect(component.position, Vector2(0, 0));
       });

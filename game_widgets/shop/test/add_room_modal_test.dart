@@ -42,9 +42,7 @@ void main() {
         child: Scaffold(
           body: BlocProvider<GameBloc>.value(
             value: mockGameBloc,
-            child: AddRoomModal(
-              onClose: () => closeCalled = true,
-            ),
+            child: AddRoomModal(onClose: () => closeCalled = true),
           ),
         ),
       ),
@@ -109,7 +107,9 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
     });
 
-    testWidgets('selecting provider with regions shows region selector', (tester) async {
+    testWidgets('selecting provider with regions shows region selector', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestWidget());
 
       // Tap AWS (has regions)
@@ -144,7 +144,9 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
 
-    testWidgets('Next button disabled when no provider selected', (tester) async {
+    testWidgets('Next button disabled when no provider selected', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestWidget());
 
       final nextButton = find.widgetWithText(ElevatedButton, 'Next');
@@ -154,7 +156,9 @@ void main() {
       expect(button.onPressed, isNull);
     });
 
-    testWidgets('Next button enabled when provider without regions selected', (tester) async {
+    testWidgets('Next button enabled when provider without regions selected', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestWidget());
 
       // Select Cloudflare (no regions)
@@ -166,7 +170,9 @@ void main() {
       expect(button.onPressed, isNotNull);
     });
 
-    testWidgets('Next button disabled when provider selected but region not', (tester) async {
+    testWidgets('Next button disabled when provider selected but region not', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestWidget());
 
       // Select AWS (has regions)
@@ -178,7 +184,9 @@ void main() {
       expect(button.onPressed, isNull);
     });
 
-    testWidgets('Next button enabled when provider and region selected', (tester) async {
+    testWidgets('Next button enabled when provider and region selected', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(800, 1200));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -280,7 +288,9 @@ void main() {
       expect(find.text('Select Provider'), findsOneWidget);
     });
 
-    testWidgets('Create Room button dispatches GameAddRoom event', (tester) async {
+    testWidgets('Create Room button dispatches GameAddRoom event', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestWidget());
 
       // Select Cloudflare and go to next step
@@ -315,7 +325,9 @@ void main() {
       expect(find.textContaining('Position:'), findsOneWidget);
     });
 
-    testWidgets('shows provider icon and color in door placement', (tester) async {
+    testWidgets('shows provider icon and color in door placement', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(800, 1200));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 

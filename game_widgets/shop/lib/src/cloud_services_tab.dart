@@ -63,11 +63,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
         color: Colors.black26,
         child: Row(
           children: [
-            Icon(
-              roomProvider.icon,
-              color: roomProvider.color,
-              size: 20,
-            ),
+            Icon(roomProvider.icon, color: roomProvider.color, size: 20),
             const SizedBox(width: 8),
             Text(
               '${roomProvider.displayName} Services',
@@ -181,8 +177,8 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
     final baseServices = roomProvider != null
         ? CloudServiceCatalog.getServicesForProvider(roomProvider)
         : _selectedProvider != null
-            ? CloudServiceCatalog.getServicesForProvider(_selectedProvider!)
-            : CloudServiceCatalog.allServices;
+        ? CloudServiceCatalog.getServicesForProvider(_selectedProvider!)
+        : CloudServiceCatalog.allServices;
 
     // Filter by category if selected
     final services = _selectedCategory != null

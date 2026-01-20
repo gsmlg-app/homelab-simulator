@@ -14,15 +14,17 @@ void main() {
   late MockGameBloc mockGameBloc;
 
   setUpAll(() {
-    registerFallbackValue(const GameSelectCloudService(
-      CloudServiceTemplate(
-        name: 'Test',
-        description: 'Test',
-        provider: CloudProvider.aws,
-        category: ServiceCategory.compute,
-        serviceType: 'EC2',
+    registerFallbackValue(
+      const GameSelectCloudService(
+        CloudServiceTemplate(
+          name: 'Test',
+          description: 'Test',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+        ),
       ),
-    ));
+    );
   });
 
   setUp(() {
@@ -54,7 +56,9 @@ void main() {
       expect(find.byType(FilterChip), findsNothing);
     });
 
-    testWidgets('renders services list when state is GameReady', (tester) async {
+    testWidgets('renders services list when state is GameReady', (
+      tester,
+    ) async {
       final model = GameModel.initial();
       when(() => mockGameBloc.state).thenReturn(GameReady(model));
 
@@ -78,7 +82,9 @@ void main() {
       expect(find.text('Azure'), findsWidgets);
     });
 
-    testWidgets('shows only provider services for provider room', (tester) async {
+    testWidgets('shows only provider services for provider room', (
+      tester,
+    ) async {
       // Create an AWS room
       const room = RoomModel(
         id: 'aws-room',
@@ -110,7 +116,9 @@ void main() {
       expect(find.text('Network'), findsWidgets);
     });
 
-    testWidgets('shows no services message when filter yields empty', (tester) async {
+    testWidgets('shows no services message when filter yields empty', (
+      tester,
+    ) async {
       // Create a custom room with no associated services
       const room = RoomModel(
         id: 'custom-room',

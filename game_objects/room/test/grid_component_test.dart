@@ -56,8 +56,7 @@ void main() {
       test('defaults to full room size', () {
         final grid = GridComponent();
 
-        const expectedWidth =
-            GameConstants.roomWidth * GameConstants.tileSize;
+        const expectedWidth = GameConstants.roomWidth * GameConstants.tileSize;
         const expectedHeight =
             GameConstants.roomHeight * GameConstants.tileSize;
 
@@ -65,11 +64,7 @@ void main() {
       });
 
       test('handles different tile sizes', () {
-        final grid = GridComponent(
-          gridWidth: 5,
-          gridHeight: 5,
-          tileSize: 16.0,
-        );
+        final grid = GridComponent(gridWidth: 5, gridHeight: 5, tileSize: 16.0);
 
         expect(grid.size, Vector2(80.0, 80.0));
       });

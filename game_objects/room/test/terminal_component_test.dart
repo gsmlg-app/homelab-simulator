@@ -76,8 +76,10 @@ void main() {
       test('uses default terminal position for pixel calculation', () {
         final component = TerminalComponent();
 
-        final expectedX = GameConstants.terminalPosition.x * GameConstants.tileSize;
-        final expectedY = GameConstants.terminalPosition.y * GameConstants.tileSize;
+        final expectedX =
+            GameConstants.terminalPosition.x * GameConstants.tileSize;
+        final expectedY =
+            GameConstants.terminalPosition.y * GameConstants.tileSize;
 
         expect(component.position, Vector2(expectedX, expectedY));
       });

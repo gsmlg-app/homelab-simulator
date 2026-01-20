@@ -64,12 +64,15 @@ void main() {
     });
 
     group('blocked word edge cases', () {
-      test('blocks words that contain blocked substring (grass contains ass)', () {
-        // Current implementation uses contains(), so 'grass' will be blocked
-        final result = validateCharacterName('grass');
-        expect(result.isValid, isFalse);
-        expect(result.errorMessage, contains('inappropriate'));
-      });
+      test(
+        'blocks words that contain blocked substring (grass contains ass)',
+        () {
+          // Current implementation uses contains(), so 'grass' will be blocked
+          final result = validateCharacterName('grass');
+          expect(result.isValid, isFalse);
+          expect(result.errorMessage, contains('inappropriate'));
+        },
+      );
 
       test('blocks name with blocked word at start', () {
         final result = validateCharacterName('assemble');

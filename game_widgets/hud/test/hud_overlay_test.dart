@@ -48,8 +48,9 @@ void main() {
       });
 
       test('accepts terminal interaction type', () {
-        const overlay =
-            HudOverlay(currentInteraction: InteractionType.terminal);
+        const overlay = HudOverlay(
+          currentInteraction: InteractionType.terminal,
+        );
 
         expect(overlay.currentInteraction, InteractionType.terminal);
       });
@@ -72,8 +73,9 @@ void main() {
         expect(find.byType(CreditsDisplay), findsNothing);
       });
 
-      testWidgets('does not show interaction hint when loading',
-          (tester) async {
+      testWidgets('does not show interaction hint when loading', (
+        tester,
+      ) async {
         when(() => mockGameBloc.state).thenReturn(const GameLoading());
 
         await tester.pumpWidget(buildWidget());
