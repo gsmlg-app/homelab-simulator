@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 35
-- **Last Commit:** e9a3d77
+- **Iteration:** 36
+- **Last Commit:** bda8140
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -43,14 +43,16 @@ Two main feature sets from PRD.md:
   - ErrorDisplay: 19 tests
   - ErrorReportingService: 26 tests (NEW)
   - CrashReportingWidget/ErrorScreen: 18 tests (NEW)
-- **game_bloc/world:** 93 tests passing
+- **game_bloc/world:** 107 tests passing
   - WorldBloc: 33 tests
-  - WorldState: 27 tests (NEW)
-  - WorldEvent: 33 tests (NEW)
-- **app_bloc/game:** 104 tests passing
+  - WorldState: 27 tests
+  - WorldEvent: 33 tests
+  - Additional edge cases: 14 tests
+- **app_bloc/game:** 132 tests passing
   - GameBloc: 29 tests
-  - GameState: 21 tests (NEW)
-  - GameEvent: 54 tests (NEW)
+  - GameState: 21 tests
+  - GameEvent: 54 tests
+  - Additional edge cases: 28 tests
 - **game_widgets/panels:** 40 tests passing
   - InfoPanel: 5 tests
   - RoomSummaryPanel: 18 tests
@@ -87,9 +89,10 @@ Two main feature sets from PRD.md:
   - DeviceComponent: 17 tests
   - CloudServiceComponent: 18 tests
   - PlacementGhostComponent: 23 tests
-- **game_objects/world:** 23 tests passing (NEW)
+- **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
-- **Total:** 1138 unit tests
+  - HomelabGame: 17 tests (NEW)
+- **Total:** 1197 unit tests
 
 ## Completed Work
 
@@ -217,6 +220,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- bda8140: test: add unit tests for HomelabGame class (17 tests)
 - 960eb3d: fix: use test package instead of flutter_test in game_bloc/world tests
 - 70f3242: test: add unit tests for GameState, GameEvent, WorldState, and WorldEvent Equatable (135 tests)
 - b131491: test: add unit tests for logging and character sprite utilities (65 tests)
