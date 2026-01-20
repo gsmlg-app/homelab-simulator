@@ -13,6 +13,10 @@ dependencies:
     sdk: flutter
   flame: ^1.29.0
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
 flutter:
   assets:
     - assets/
