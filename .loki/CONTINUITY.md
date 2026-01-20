@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 15
-- **Last Commit:** fc04a03
+- **Iteration:** 17
+- **Last Commit:** 97a02b8
 
 ## Test Coverage Summary
 - **app_lib/core:** 12 tests passing
@@ -25,6 +25,13 @@ Two main feature sets from PRD.md:
   - DeviceModel/DeviceTemplate: 23 tests
   - Reducer: 26 tests
   - DomainEvents: 58 tests
+- **app_lib/database:** 27 tests passing
+  - GameStorage: 11 tests
+  - CharacterStorage: 15 tests
+  - app_database_test: 1 test
+- **app_lib/logging:** 22 tests passing
+  - LogLevel: 8 tests
+  - LogRecord: 14 tests
 - **game_bloc/world:** 47 tests passing
   - WorldBloc: 23 tests
   - WorldState: 16 tests
@@ -45,7 +52,7 @@ Two main feature sets from PRD.md:
   - CharacterSpriteSheet: 12 tests
   - GameCharacters: 8 tests
   - CharacterDirection: 3 tests
-- **Total:** 398 unit tests
+- **Total:** 446 unit tests
 
 ## Completed Work
 
@@ -88,6 +95,10 @@ Two main feature sets from PRD.md:
 - `game_widgets/hud/test/interaction_hint_test.dart` - 8 tests
 - `game_widgets/shop/test/device_card_test.dart` - 12 tests
 - `game_asset/characters/test/game_characters_test.dart` - 23 tests
+- `app_lib/database/test/game_storage_test.dart` - 11 tests
+- `app_lib/database/test/character_storage_test.dart` - 15 tests
+- `app_lib/logging/test/log_level_test.dart` - 8 tests
+- `app_lib/logging/test/log_record_test.dart` - 14 tests
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -135,6 +146,9 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 97a02b8: test: add unit tests for logging package (22 tests)
+- 695ff78: fix: resolve analyzer warnings in HUD widget tests
+- d152e3e: test: add unit tests for GameStorage and CharacterStorage (26 tests)
 - fc04a03: test: add tests for CharacterSpriteSheet and GameCharacters (23 tests)
 - 192c418: test: add widget tests for DeviceCard (12 tests)
 - 5466444: test: add widget tests for CreditsDisplay and InteractionHint (13 tests)
