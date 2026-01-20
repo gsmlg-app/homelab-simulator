@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 31
-- **Last Commit:** 960eb3d
+- **Iteration:** 32
+- **Last Commit:** a89e348
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -21,12 +21,12 @@ Two main feature sets from PRD.md:
   - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 21 tests
   - IDs: 15 tests
   - Enums: 42 tests
-- **app_lib/engine:** 211 tests passing
+- **app_lib/engine:** 226 tests passing
   - CharacterModel: 12 tests
-  - RoomModel: 28 tests
+  - RoomModel: 38 tests (+10 edge case tests)
   - DoorModel: 16 tests
   - CloudServiceModel: 26 tests
-  - GameModel: 22 tests
+  - GameModel: 27 tests (+5 cascade delete tests)
   - DeviceModel/DeviceTemplate: 23 tests
   - Reducer: 26 tests
   - DomainEvents: 58 tests
@@ -89,7 +89,7 @@ Two main feature sets from PRD.md:
   - PlacementGhostComponent: 23 tests
 - **game_objects/world:** 23 tests passing (NEW)
   - GamepadHandler: 23 tests
-- **Total:** 1072 unit tests
+- **Total:** 1087 unit tests
 
 ## Completed Work
 
