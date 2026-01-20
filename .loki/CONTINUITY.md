@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 23
-- **Last Commit:** ccfd9c9
+- **Iteration:** 25
+- **Last Commit:** 7f449ad
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -68,7 +68,21 @@ Two main feature sets from PRD.md:
 - **app_lib/locale:** 9 tests passing
   - AppLocale: 4 tests
   - AppLocalizations integration: 5 tests (NEW)
-- **Total:** 690 unit tests
+- **game_objects/room:** 72 tests passing
+  - GridComponent: 13 tests
+  - DoorComponent: 17 tests
+  - HoverCellComponent: 11 tests
+  - TerminalComponent: 17 tests
+  - RoomComponent: 14 tests
+- **game_objects/character:** 18 tests passing (NEW)
+  - PlayerComponent: 18 tests
+- **game_objects/devices:** 58 tests passing (NEW)
+  - DeviceComponent: 17 tests
+  - CloudServiceComponent: 18 tests
+  - PlacementGhostComponent: 23 tests
+- **game_objects/world:** 23 tests passing (NEW)
+  - GamepadHandler: 23 tests
+- **Total:** 861 unit tests
 
 ## Completed Work
 
@@ -124,6 +138,16 @@ Two main feature sets from PRD.md:
 - `game_widgets/panels/test/device_info_panel_test.dart` - 17 tests (NEW)
 - `app_lib/database/test/type_converter_test.dart` - 17 tests (NEW)
 - `app_lib/logging/test/error_display_test.dart` - 19 tests (NEW)
+- `game_objects/room/test/grid_component_test.dart` - 13 tests (NEW)
+- `game_objects/room/test/door_component_test.dart` - 17 tests (NEW)
+- `game_objects/room/test/hover_cell_component_test.dart` - 11 tests (NEW)
+- `game_objects/room/test/terminal_component_test.dart` - 17 tests (NEW)
+- `game_objects/room/test/room_component_test.dart` - 14 tests
+- `game_objects/character/test/player_component_test.dart` - 18 tests (NEW)
+- `game_objects/devices/test/device_component_test.dart` - 17 tests (NEW)
+- `game_objects/devices/test/cloud_service_component_test.dart` - 18 tests (NEW)
+- `game_objects/devices/test/placement_ghost_component_test.dart` - 23 tests (NEW)
+- `game_objects/world/test/gamepad_handler_test.dart` - 23 tests (NEW)
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -151,6 +175,7 @@ Two main feature sets from PRD.md:
 3. **Check existing models before creating new ones** - GameModel already contained room management, no separate WorldModel was needed
 4. **Use plain `test` package for pure Dart packages** - Packages without Flutter dependencies (like app_lib/core) should use `test:` not `flutter_test:` to avoid dart:ui issues
 5. **Singleton logger tests need unique markers** - When testing singleton loggers that use global streams, filter by unique message markers to isolate test data
+6. **Always read model definitions before writing tests** - CloudServiceModel uses `serviceType` not `templateId`, DeviceTemplate uses `cost` not `baseCost`, CloudServiceTemplate has no `id` field - check actual constructors first
 
 ## File References
 - WorldBloc: `game_bloc/world/lib/src/world_bloc.dart`
@@ -173,6 +198,10 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 7f449ad: test: add unit tests for game_objects packages (99 tests)
+- 19ed0eb: test: add unit tests for game_objects/room components (72 tests)
+- 9bedcec: style: apply dart format and dart fix across codebase
+- f0bbf5a: docs: update CONTINUITY.md with test coverage (690 tests total)
 - ccfd9c9: test: add unit tests for TypeConverter and ErrorDisplay (36 tests)
 - 33182a0: test: add widget tests for DeviceInfoPanel (17 tests)
 - 7381cdc: style: rename character constants to lowerCamelCase
