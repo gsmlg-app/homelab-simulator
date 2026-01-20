@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 28
-- **Last Commit:** b42077e
+- **Iteration:** 30
+- **Last Commit:** 70f3242
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -35,20 +35,22 @@ Two main feature sets from PRD.md:
   - CharacterStorage: 15 tests
   - app_database_test: 1 test
   - TypeConverter: 17 tests (NEW)
-- **app_lib/logging:** 101 tests passing
+- **app_lib/logging:** 145 tests passing
   - LogLevel: 8 tests
   - LogRecord: 14 tests
   - AppLogger: 26 tests
   - ApiLoggingInterceptor: 34 tests
-  - ErrorDisplay: 19 tests (NEW)
-- **game_bloc/world:** 47 tests passing
-  - WorldBloc: 23 tests
-  - WorldState: 16 tests
-  - WorldEvent: 8 tests
-- **app_bloc/game:** 57 tests passing
-  - GameBloc: 32 tests
-  - GameState: 8 tests
-  - GameEvent: 17 tests
+  - ErrorDisplay: 19 tests
+  - ErrorReportingService: 26 tests (NEW)
+  - CrashReportingWidget/ErrorScreen: 18 tests (NEW)
+- **game_bloc/world:** 93 tests passing
+  - WorldBloc: 33 tests
+  - WorldState: 27 tests (NEW)
+  - WorldEvent: 33 tests (NEW)
+- **app_bloc/game:** 104 tests passing
+  - GameBloc: 29 tests
+  - GameState: 21 tests (NEW)
+  - GameEvent: 54 tests (NEW)
 - **game_widgets/panels:** 40 tests passing
   - InfoPanel: 5 tests
   - RoomSummaryPanel: 18 tests
@@ -62,10 +64,11 @@ Two main feature sets from PRD.md:
   - ShopModal: 18 tests (NEW)
   - CloudServicesTab: 7 tests (NEW)
   - AddRoomModal: 21 tests (NEW)
-- **game_asset/characters:** 23 tests passing
+- **game_asset/characters:** 44 tests passing
   - CharacterSpriteSheet: 12 tests
   - GameCharacters: 8 tests
   - CharacterDirection: 3 tests
+  - CharacterSpriteSheetFlame: 21 tests (NEW)
 - **app_lib/secure_storage:** 30 tests passing
   - VaultRepository: 10 tests
   - SecureStorageVaultRepository: 20 tests (NEW)
@@ -86,7 +89,7 @@ Two main feature sets from PRD.md:
   - PlacementGhostComponent: 23 tests
 - **game_objects/world:** 23 tests passing (NEW)
   - GamepadHandler: 23 tests
-- **Total:** 914 unit tests
+- **Total:** 1072 unit tests
 
 ## Completed Work
 
@@ -156,6 +159,13 @@ Two main feature sets from PRD.md:
 - `game_objects/devices/test/placement_ghost_component_test.dart` - 23 tests (NEW)
 - `game_objects/world/test/gamepad_handler_test.dart` - 23 tests (NEW)
 - `game_widgets/hud/test/hud_overlay_test.dart` - 7 tests (NEW)
+- `app_lib/logging/test/error_reporting_service_test.dart` - 26 tests (NEW)
+- `app_lib/logging/test/crash_reporting_widget_test.dart` - 18 tests (NEW)
+- `game_asset/characters/test/game_characters_flame_test.dart` - 21 tests (NEW)
+- `app_bloc/game/test/game_state_test.dart` - 21 tests (NEW)
+- `app_bloc/game/test/game_event_test.dart` - 54 tests (NEW)
+- `game_bloc/world/test/world_state_test.dart` - 27 tests (NEW)
+- `game_bloc/world/test/world_event_test.dart` - 33 tests (NEW)
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -207,6 +217,8 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 70f3242: test: add unit tests for GameState, GameEvent, WorldState, and WorldEvent Equatable (135 tests)
+- b131491: test: add unit tests for logging and character sprite utilities (65 tests)
 - b42077e: refactor: consolidate duplicate methods into extensions
 - 15826bd: refactor: improve code quality and safety
 - fb76475: test: add unit tests for game_widgets/shop widgets (46 tests)
