@@ -177,26 +177,17 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
   }
 
   Widget _buildServicesList(CloudProvider? roomProvider) {
-    // Get services based on filters
-    List<CloudServiceTemplate> services;
+    // Get base services based on provider filter
+    final baseServices = roomProvider != null
+        ? CloudServiceCatalog.getServicesForProvider(roomProvider)
+        : _selectedProvider != null
+            ? CloudServiceCatalog.getServicesForProvider(_selectedProvider!)
+            : CloudServiceCatalog.allServices;
 
-    if (roomProvider != null) {
-      // In a provider room, only show that provider's services
-      services = CloudServiceCatalog.getServicesForProvider(roomProvider);
-    } else if (_selectedProvider != null) {
-      // Filter by selected provider
-      services = CloudServiceCatalog.getServicesForProvider(_selectedProvider!);
-    } else {
-      // Show all services
-      services = CloudServiceCatalog.allServices;
-    }
-
-    // Filter by category
-    if (_selectedCategory != null) {
-      services = services
-          .where((s) => s.category == _selectedCategory)
-          .toList();
-    }
+    // Filter by category if selected
+    final services = _selectedCategory != null
+        ? baseServices.where((s) => s.category == _selectedCategory).toList()
+        : baseServices;
 
     if (services.isEmpty) {
       return Center(

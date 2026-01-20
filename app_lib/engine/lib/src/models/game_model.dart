@@ -110,11 +110,10 @@ class GameModel extends Equatable {
 
   /// Get room by ID
   RoomModel? getRoomById(String id) {
-    try {
-      return rooms.firstWhere((r) => r.id == id);
-    } catch (_) {
-      return null;
+    for (final room in rooms) {
+      if (room.id == id) return room;
     }
+    return null;
   }
 
   /// Get child rooms of a given parent

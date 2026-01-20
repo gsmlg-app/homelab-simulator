@@ -348,7 +348,10 @@ class _ShopModalState extends State<ShopModal>
   }
 
   Widget _buildParentRoomCard(BuildContext context, GameModel model) {
-    final parentRoom = model.getRoomById(model.currentRoom.parentId!);
+    final parentId = model.currentRoom.parentId;
+    if (parentId == null) return const SizedBox.shrink();
+
+    final parentRoom = model.getRoomById(parentId);
     if (parentRoom == null) return const SizedBox.shrink();
 
     return Container(

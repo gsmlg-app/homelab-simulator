@@ -12,7 +12,7 @@ Two main feature sets from PRD.md:
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
 - **Iteration:** 27
-- **Last Commit:** 4711c92
+- **Last Commit:** 6aff623
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -207,7 +207,8 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
-- 4711c92: test: add unit tests for game_widgets/shop widgets (46 tests)
+- 6aff623: refactor: improve code quality and safety
+- fb76475: test: add unit tests for game_widgets/shop widgets (46 tests)
 - 620ef39: test: add unit tests for HudOverlay widget (7 tests)
 - f76a4d7: docs: update CONTINUITY.md with test coverage (861 tests total)
 - 7f449ad: test: add unit tests for game_objects packages (99 tests)
