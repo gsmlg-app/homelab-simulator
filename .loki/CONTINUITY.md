@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 42
-- **Last Commit:** ee7b07d
+- **Iteration:** 43
+- **Last Commit:** 025b189
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -92,7 +92,9 @@ Two main feature sets from PRD.md:
 - **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
   - HomelabGame: 17 tests (NEW)
-- **Total:** 1198 unit tests
+- **app_widget/common:** 25 tests passing (NEW)
+  - RoomTypeUI: 25 tests
+- **Total:** 1223 unit tests
 
 ## Completed Work
 
@@ -185,6 +187,10 @@ Two main feature sets from PRD.md:
 - ✅ RoomComponent: Cached background paint as static
 - ✅ Updated .gitignore to exclude all package build folders
 
+## Recent Refactoring
+- ✅ Extracted RoomTypeUI extension to app_widget_common (icon, color, displayName)
+- ✅ Removed duplicate _getRoomTypeIcon/_getRoomTypeColor from ShopModal and RoomSummaryPanel
+
 ## Next Tasks
 1. Look for more performance optimizations
 2. Consider additional test coverage for edge cases
@@ -232,6 +238,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 025b189: refactor: extract RoomType UI utilities to shared extension
 - ee7b07d: perf: cache instance-level Paint objects in device components
 - b7a4222: fix: prevent double initialization of HomelabGame in GameScreen
 - e64720b: perf: cache arrow Path in DoorComponent onLoad
