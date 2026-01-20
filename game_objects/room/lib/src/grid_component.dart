@@ -9,26 +9,29 @@ class GridComponent extends PositionComponent {
   final double tileSize;
   final Color gridColor;
 
+  // Cached paint object for performance
+  late final Paint _gridPaint;
+
   GridComponent({
     this.gridWidth = GameConstants.roomWidth,
     this.gridHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
     this.gridColor = const Color(0x33FFFFFF),
-  }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize));
-
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()
+  }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize)) {
+    _gridPaint = Paint()
       ..color = gridColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
+  }
 
+  @override
+  void render(Canvas canvas) {
     // Draw vertical lines
     for (var x = 0; x <= gridWidth; x++) {
       canvas.drawLine(
         Offset(x * tileSize, 0),
         Offset(x * tileSize, gridHeight * tileSize),
-        paint,
+        _gridPaint,
       );
     }
 
@@ -37,7 +40,7 @@ class GridComponent extends PositionComponent {
       canvas.drawLine(
         Offset(0, y * tileSize),
         Offset(gridWidth * tileSize, y * tileSize),
-        paint,
+        _gridPaint,
       );
     }
   }

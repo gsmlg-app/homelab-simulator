@@ -11,6 +11,21 @@ class TerminalComponent extends PositionComponent
   final double tileSize;
   bool _isHighlighted = false;
 
+  // Cached paint objects for performance
+  static final _basePaint = Paint()
+    ..color = const Color(0xFF2D2D2D)
+    ..style = PaintingStyle.fill;
+  static final _screenNormalPaint = Paint()
+    ..color = const Color(0xFF00AA55)
+    ..style = PaintingStyle.fill;
+  static final _screenHighlightPaint = Paint()
+    ..color = const Color(0xFF00FF88)
+    ..style = PaintingStyle.fill;
+  static final _highlightBorderPaint = Paint()
+    ..color = const Color(0xFF00FF88)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+
   TerminalComponent({
     this.gridPosition = GameConstants.terminalPosition,
     this.tileSize = GameConstants.tileSize,
@@ -25,41 +40,28 @@ class TerminalComponent extends PositionComponent
   @override
   void render(Canvas canvas) {
     // Terminal base
-    final basePaint = Paint()
-      ..color = const Color(0xFF2D2D2D)
-      ..style = PaintingStyle.fill;
-
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
         const Radius.circular(4),
       ),
-      basePaint,
+      _basePaint,
     );
 
     // Screen
-    final screenColor = _isHighlighted
-        ? const Color(0xFF00FF88)
-        : const Color(0xFF00AA55);
-    final screenPaint = Paint()
-      ..color = screenColor
-      ..style = PaintingStyle.fill;
-
+    final screenPaint = _isHighlighted
+        ? _screenHighlightPaint
+        : _screenNormalPaint;
     canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 16), screenPaint);
 
     // Highlight border when interactable
     if (_isHighlighted) {
-      final highlightPaint = Paint()
-        ..color = const Color(0xFF00FF88)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        highlightPaint,
+        _highlightBorderPaint,
       );
     }
   }
