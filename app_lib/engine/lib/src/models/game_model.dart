@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'room_model.dart';
 import 'device_template.dart';
+import 'cloud_service_model.dart';
 
 /// Main game state model
 class GameModel extends Equatable {
@@ -12,6 +13,7 @@ class GameModel extends Equatable {
   final GameMode gameMode;
   final PlacementMode placementMode;
   final DeviceTemplate? selectedTemplate;
+  final CloudServiceTemplate? selectedCloudService;
   final bool shopOpen;
 
   const GameModel({
@@ -22,6 +24,7 @@ class GameModel extends Equatable {
     this.gameMode = GameMode.sim,
     this.placementMode = PlacementMode.none,
     this.selectedTemplate,
+    this.selectedCloudService,
     this.shopOpen = false,
   });
 
@@ -41,7 +44,9 @@ class GameModel extends Equatable {
     GameMode? gameMode,
     PlacementMode? placementMode,
     DeviceTemplate? selectedTemplate,
+    CloudServiceTemplate? selectedCloudService,
     bool clearSelectedTemplate = false,
+    bool clearSelectedCloudService = false,
     bool? shopOpen,
   }) {
     return GameModel(
@@ -53,6 +58,8 @@ class GameModel extends Equatable {
       placementMode: placementMode ?? this.placementMode,
       selectedTemplate:
           clearSelectedTemplate ? null : (selectedTemplate ?? this.selectedTemplate),
+      selectedCloudService:
+          clearSelectedCloudService ? null : (selectedCloudService ?? this.selectedCloudService),
       shopOpen: shopOpen ?? this.shopOpen,
     );
   }
@@ -180,6 +187,7 @@ class GameModel extends Equatable {
         gameMode,
         placementMode,
         selectedTemplate,
+        selectedCloudService,
         shopOpen,
       ];
 }

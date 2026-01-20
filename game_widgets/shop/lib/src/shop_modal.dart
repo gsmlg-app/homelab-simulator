@@ -6,6 +6,7 @@ import 'package:app_lib_engine/app_lib_engine.dart';
 
 import 'device_card.dart';
 import 'add_room_modal.dart';
+import 'cloud_services_tab.dart';
 
 /// Modal dialog for the device shop with tabs
 class ShopModal extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ShopModalState extends State<ShopModal>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -94,6 +95,7 @@ class _ShopModalState extends State<ShopModal>
               controller: _tabController,
               children: [
                 _buildDeviceList(context, model.credits),
+                const CloudServicesTab(),
                 _buildRoomList(context, model),
               ],
             ),
@@ -173,6 +175,7 @@ class _ShopModalState extends State<ShopModal>
         unselectedLabelColor: Colors.white70,
         tabs: const [
           Tab(icon: Icon(Icons.devices), text: 'Devices'),
+          Tab(icon: Icon(Icons.cloud), text: 'Services'),
           Tab(icon: Icon(Icons.meeting_room), text: 'Rooms'),
         ],
       ),

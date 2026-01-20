@@ -26,6 +26,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameEnterRoom>(_onEnterRoom);
     on<GameAddRoom>(_onAddRoom);
     on<GameRemoveRoom>(_onRemoveRoom);
+    on<GameSelectCloudService>(_onSelectCloudService);
+    on<GamePlaceCloudService>(_onPlaceCloudService);
+    on<GameRemoveCloudService>(_onRemoveCloudService);
   }
 
   GameModel? get currentModel {
@@ -204,6 +207,57 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after removing room
+    await _storage.save(newModel);
+  }
+
+  void _onSelectCloudService(
+    GameSelectCloudService event,
+    Emitter<GameState> emit,
+  ) {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, CloudServiceSelected(event.template));
+    emit(GameReady(newModel.copyWith(shopOpen: false)));
+  }
+
+  Future<void> _onPlaceCloudService(
+    GamePlaceCloudService event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+    if (model.selectedCloudService == null) return;
+
+    final template = model.selectedCloudService!;
+    final newModel = reduce(
+      model,
+      CloudServicePlaced(
+        provider: template.provider,
+        category: template.category,
+        serviceType: template.serviceType,
+        name: template.name,
+        position: event.position,
+      ),
+    );
+
+    emit(GameReady(newModel));
+
+    // Auto-save after placement
+    await _storage.save(newModel);
+  }
+
+  Future<void> _onRemoveCloudService(
+    GameRemoveCloudService event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, CloudServiceRemoved(event.serviceId));
+    emit(GameReady(newModel));
+
+    // Auto-save after removal
     await _storage.save(newModel);
   }
 }

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import '../models/device_template.dart';
 import '../models/door_model.dart';
+import '../models/cloud_service_model.dart';
 
 /// Base class for domain events
 sealed class DomainEvent extends Equatable {
@@ -126,4 +127,42 @@ class RoomRemoved extends DomainEvent {
 
   @override
   List<Object?> get props => [roomId];
+}
+
+/// Cloud service template selected for placement
+class CloudServiceSelected extends DomainEvent {
+  final CloudServiceTemplate template;
+  const CloudServiceSelected(this.template);
+
+  @override
+  List<Object?> get props => [template];
+}
+
+/// Cloud service placed in room
+class CloudServicePlaced extends DomainEvent {
+  final CloudProvider provider;
+  final ServiceCategory category;
+  final String serviceType;
+  final String name;
+  final GridPosition position;
+
+  const CloudServicePlaced({
+    required this.provider,
+    required this.category,
+    required this.serviceType,
+    required this.name,
+    required this.position,
+  });
+
+  @override
+  List<Object?> get props => [provider, category, serviceType, name, position];
+}
+
+/// Cloud service removed from room
+class CloudServiceRemoved extends DomainEvent {
+  final String serviceId;
+  const CloudServiceRemoved(this.serviceId);
+
+  @override
+  List<Object?> get props => [serviceId];
 }

@@ -227,20 +227,103 @@ class CloudServiceCatalog {
     ),
   ];
 
+  static const List<CloudServiceTemplate> azureServices = [
+    CloudServiceTemplate(
+      provider: CloudProvider.azure,
+      category: ServiceCategory.compute,
+      serviceType: 'VM',
+      name: 'Virtual Machine',
+      description: 'Azure virtual machine',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.azure,
+      category: ServiceCategory.storage,
+      serviceType: 'BlobStorage',
+      name: 'Blob Storage',
+      description: 'Object storage',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.azure,
+      category: ServiceCategory.database,
+      serviceType: 'CosmosDB',
+      name: 'Cosmos DB',
+      description: 'Globally distributed database',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.azure,
+      category: ServiceCategory.serverless,
+      serviceType: 'Functions',
+      name: 'Azure Functions',
+      description: 'Serverless compute',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.azure,
+      category: ServiceCategory.container,
+      serviceType: 'AKS',
+      name: 'AKS Cluster',
+      description: 'Managed Kubernetes',
+    ),
+  ];
+
+  static const List<CloudServiceTemplate> digitalOceanServices = [
+    CloudServiceTemplate(
+      provider: CloudProvider.digitalOcean,
+      category: ServiceCategory.compute,
+      serviceType: 'Droplet',
+      name: 'Droplet',
+      description: 'Virtual machine',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.digitalOcean,
+      category: ServiceCategory.storage,
+      serviceType: 'Spaces',
+      name: 'Spaces',
+      description: 'S3-compatible object storage',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.digitalOcean,
+      category: ServiceCategory.database,
+      serviceType: 'ManagedDB',
+      name: 'Managed Database',
+      description: 'Managed PostgreSQL/MySQL/Redis',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.digitalOcean,
+      category: ServiceCategory.container,
+      serviceType: 'DOKS',
+      name: 'DOKS Cluster',
+      description: 'Managed Kubernetes',
+    ),
+    CloudServiceTemplate(
+      provider: CloudProvider.digitalOcean,
+      category: ServiceCategory.serverless,
+      serviceType: 'AppPlatform',
+      name: 'App Platform',
+      description: 'PaaS for apps',
+    ),
+  ];
+
   static List<CloudServiceTemplate> getServicesForProvider(CloudProvider provider) {
-    switch (provider) {
-      case CloudProvider.aws:
-        return awsServices;
-      case CloudProvider.gcp:
-        return gcpServices;
-      case CloudProvider.vultr:
-        return vultrServices;
-      case CloudProvider.cloudflare:
-        return cloudflareServices;
-      default:
-        return [];
-    }
+    return switch (provider) {
+      CloudProvider.aws => awsServices,
+      CloudProvider.gcp => gcpServices,
+      CloudProvider.vultr => vultrServices,
+      CloudProvider.cloudflare => cloudflareServices,
+      CloudProvider.azure => azureServices,
+      CloudProvider.digitalOcean => digitalOceanServices,
+      CloudProvider.none => [],
+    };
   }
+
+  /// Get all available services from all providers
+  static List<CloudServiceTemplate> get allServices => [
+        ...awsServices,
+        ...gcpServices,
+        ...vultrServices,
+        ...cloudflareServices,
+        ...azureServices,
+        ...digitalOceanServices,
+      ];
 }
 
 /// Template for creating cloud service instances

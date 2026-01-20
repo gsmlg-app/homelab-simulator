@@ -26,6 +26,7 @@ class HomelabGame extends FlameGame
   PlacementGhostComponent? _placementGhost;
 
   final List<DeviceComponent> _deviceComponents = [];
+  final List<CloudServiceComponent> _cloudServiceComponents = [];
   final List<DoorComponent> _doorComponents = [];
   String? _currentRoomId;
 
@@ -156,6 +157,7 @@ class HomelabGame extends FlameGame
       // Full resync needed when room changes
       _syncDoors(model.currentRoom.doors);
       _syncDevices(model.currentRoom.devices);
+      _syncCloudServices(model.currentRoom.cloudServices);
     }
 
     // Update player position if changed externally
@@ -164,16 +166,20 @@ class HomelabGame extends FlameGame
     }
 
     // Handle placement mode
-    if (model.placementMode == PlacementMode.placing &&
-        model.selectedTemplate != null) {
-      _showPlacementGhost(model.selectedTemplate!);
+    if (model.placementMode == PlacementMode.placing) {
+      if (model.selectedTemplate != null) {
+        _showPlacementGhost(model.selectedTemplate!);
+      } else if (model.selectedCloudService != null) {
+        _showCloudServicePlacementGhost(model.selectedCloudService!);
+      }
     } else {
       _hidePlacementGhost();
     }
 
-    // Sync devices (incremental if room didn't change)
+    // Sync devices and cloud services (incremental if room didn't change)
     if (!roomChanged) {
       _syncDevices(model.currentRoom.devices);
+      _syncCloudServices(model.currentRoom.cloudServices);
     }
 
     // Update door interaction availability
@@ -189,6 +195,17 @@ class HomelabGame extends FlameGame
       ));
     }
     _placementGhost!.setTemplate(template);
+  }
+
+  void _showCloudServicePlacementGhost(CloudServiceTemplate template) {
+    if (_placementGhost == null) {
+      _placementGhost = PlacementGhostComponent();
+      add(FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [_placementGhost!],
+      ));
+    }
+    _placementGhost!.setCloudService(template);
   }
 
   void _hidePlacementGhost() {
@@ -213,6 +230,31 @@ class HomelabGame extends FlameGame
       if (!existingIds.contains(device.id)) {
         final comp = DeviceComponent(device: device);
         _deviceComponents.add(comp);
+        add(FlameBlocProvider<WorldBloc, WorldState>.value(
+          value: worldBloc,
+          children: [comp],
+        ));
+      }
+    }
+  }
+
+  void _syncCloudServices(List<CloudServiceModel> services) {
+    // Remove components for deleted services
+    final serviceIds = services.map((s) => s.id).toSet();
+    _cloudServiceComponents.removeWhere((comp) {
+      if (!serviceIds.contains(comp.service.id)) {
+        comp.removeFromParent();
+        return true;
+      }
+      return false;
+    });
+
+    // Add components for new services
+    final existingIds = _cloudServiceComponents.map((c) => c.service.id).toSet();
+    for (final service in services) {
+      if (!existingIds.contains(service.id)) {
+        final comp = CloudServiceComponent(service: service);
+        _cloudServiceComponents.add(comp);
         add(FlameBlocProvider<WorldBloc, WorldState>.value(
           value: worldBloc,
           children: [comp],
@@ -283,17 +325,27 @@ class HomelabGame extends FlameGame
 
     if (!isWithinBounds(gridPos)) return;
 
-    // In placement mode, place device
-    if (model.placementMode == PlacementMode.placing &&
-        model.selectedTemplate != null) {
-      if (model.currentRoom.canPlaceDevice(
-        gridPos,
-        model.selectedTemplate!.width,
-        model.selectedTemplate!.height,
-      )) {
-        gameBloc.add(GamePlaceDevice(gridPos));
+    // In placement mode, place device or cloud service
+    if (model.placementMode == PlacementMode.placing) {
+      if (model.selectedTemplate != null) {
+        if (model.currentRoom.canPlaceDevice(
+          gridPos,
+          model.selectedTemplate!.width,
+          model.selectedTemplate!.height,
+        )) {
+          gameBloc.add(GamePlaceDevice(gridPos));
+        }
+        return;
+      } else if (model.selectedCloudService != null) {
+        if (model.currentRoom.canPlaceDevice(
+          gridPos,
+          model.selectedCloudService!.width,
+          model.selectedCloudService!.height,
+        )) {
+          gameBloc.add(GamePlaceCloudService(gridPos));
+        }
+        return;
       }
-      return;
     }
 
     // Check if tapping terminal
@@ -397,14 +449,21 @@ class HomelabGame extends FlameGame
     // Update placement ghost validity
     if (_placementGhost != null) {
       final state = gameBloc.state;
-      if (state is GameReady && state.model.selectedTemplate != null) {
+      if (state is GameReady) {
         final pos = _placementGhost!.currentPosition;
         if (pos != null) {
-          final valid = state.model.currentRoom.canPlaceDevice(
-            pos,
-            state.model.selectedTemplate!.width,
-            state.model.selectedTemplate!.height,
-          );
+          int width = 1;
+          int height = 1;
+
+          if (state.model.selectedTemplate != null) {
+            width = state.model.selectedTemplate!.width;
+            height = state.model.selectedTemplate!.height;
+          } else if (state.model.selectedCloudService != null) {
+            width = state.model.selectedCloudService!.width;
+            height = state.model.selectedCloudService!.height;
+          }
+
+          final valid = state.model.currentRoom.canPlaceDevice(pos, width, height);
           _placementGhost!.setValid(valid);
           _room.setPlacementValid(valid);
         }

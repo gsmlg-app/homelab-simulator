@@ -4,6 +4,7 @@ import 'models/room_model.dart';
 import 'models/door_model.dart';
 import 'models/device_model.dart';
 import 'models/device_template.dart';
+import 'models/cloud_service_model.dart';
 import 'events/domain_events.dart';
 
 /// Pure function reducer for game state
@@ -18,6 +19,7 @@ GameModel reduce(GameModel model, DomainEvent event) {
     PlacementModeChanged(:final mode) => model.copyWith(
         placementMode: mode,
         clearSelectedTemplate: mode == PlacementMode.none,
+        clearSelectedCloudService: mode == PlacementMode.none,
       ),
     DevicePlaced(:final templateId, :final position) =>
       _handleDevicePlaced(model, templateId, position),
@@ -37,6 +39,22 @@ GameModel reduce(GameModel model, DomainEvent event) {
     ) =>
       _handleRoomAdded(model, name, type, regionCode, doorSide, doorPosition),
     RoomRemoved(:final roomId) => model.removeRoom(roomId),
+    CloudServiceSelected(:final template) => model.copyWith(
+        selectedCloudService: template,
+        placementMode: PlacementMode.placing,
+        clearSelectedTemplate: true,
+      ),
+    CloudServicePlaced(
+      :final provider,
+      :final category,
+      :final serviceType,
+      :final name,
+      :final position
+    ) =>
+      _handleCloudServicePlaced(
+          model, provider, category, serviceType, name, position),
+    CloudServiceRemoved(:final serviceId) =>
+      _handleCloudServiceRemoved(model, serviceId),
   };
 }
 
@@ -146,4 +164,39 @@ GameModel _handleRoomAdded(
   );
 
   return model.updateRoom(updatedCurrentRoom).addRoom(newRoom);
+}
+
+GameModel _handleCloudServicePlaced(
+  GameModel model,
+  CloudProvider provider,
+  ServiceCategory category,
+  String serviceType,
+  String name,
+  GridPosition position,
+) {
+  // Check if placement is valid
+  if (!model.currentRoom.canPlaceDevice(position, 1, 1)) {
+    return model;
+  }
+
+  final service = CloudServiceModel(
+    id: generateEntityId(),
+    name: name,
+    provider: provider,
+    category: category,
+    serviceType: serviceType,
+    position: position,
+  );
+
+  final updatedRoom = model.currentRoom.addCloudService(service);
+  return model.updateRoom(updatedRoom).copyWith(
+        placementMode: PlacementMode.none,
+        clearSelectedTemplate: true,
+        clearSelectedCloudService: true,
+      );
+}
+
+GameModel _handleCloudServiceRemoved(GameModel model, String serviceId) {
+  final updatedRoom = model.currentRoom.removeCloudService(serviceId);
+  return model.updateRoom(updatedRoom);
 }

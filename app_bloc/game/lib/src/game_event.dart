@@ -132,3 +132,30 @@ class GameRemoveRoom extends GameEvent {
   @override
   List<Object?> get props => [roomId];
 }
+
+/// Select a cloud service template for placement
+class GameSelectCloudService extends GameEvent {
+  final CloudServiceTemplate template;
+  const GameSelectCloudService(this.template);
+
+  @override
+  List<Object?> get props => [template];
+}
+
+/// Place a cloud service at position
+class GamePlaceCloudService extends GameEvent {
+  final GridPosition position;
+  const GamePlaceCloudService(this.position);
+
+  @override
+  List<Object?> get props => [position];
+}
+
+/// Remove a cloud service
+class GameRemoveCloudService extends GameEvent {
+  final String serviceId;
+  const GameRemoveCloudService(this.serviceId);
+
+  @override
+  List<Object?> get props => [serviceId];
+}

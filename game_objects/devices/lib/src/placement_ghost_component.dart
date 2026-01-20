@@ -5,11 +5,12 @@ import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
-/// Ghost preview for device placement
+/// Ghost preview for device or cloud service placement
 class PlacementGhostComponent extends PositionComponent
     with FlameBlocReader<WorldBloc, WorldState> {
   final double tileSize;
   DeviceTemplate? _template;
+  CloudServiceTemplate? _cloudService;
   bool _isValid = true;
   GridPosition? _currentPosition;
 
@@ -17,9 +18,10 @@ class PlacementGhostComponent extends PositionComponent
     this.tileSize = GameConstants.tileSize,
   }) : super(size: Vector2.all(tileSize));
 
-  /// Set the template to preview
+  /// Set the device template to preview
   void setTemplate(DeviceTemplate? template) {
     _template = template;
+    _cloudService = null;
     if (template != null) {
       size = Vector2(
         template.width * tileSize,
@@ -27,6 +29,24 @@ class PlacementGhostComponent extends PositionComponent
       );
     }
   }
+
+  /// Set the cloud service template to preview
+  void setCloudService(CloudServiceTemplate? template) {
+    _cloudService = template;
+    _template = null;
+    if (template != null) {
+      size = Vector2(
+        template.width * tileSize,
+        template.height * tileSize,
+      );
+    }
+  }
+
+  /// Check if currently placing a device (vs cloud service)
+  bool get isPlacingDevice => _template != null;
+
+  /// Check if currently placing a cloud service
+  bool get isPlacingCloudService => _cloudService != null;
 
   /// Set whether placement is valid at current position
   void setValid(bool valid) {
@@ -40,7 +60,7 @@ class PlacementGhostComponent extends PositionComponent
   void update(double dt) {
     super.update(dt);
 
-    if (_template == null) return;
+    if (_template == null && _cloudService == null) return;
 
     final worldState = bloc.state;
     final hoveredCell = worldState.hoveredCell;
@@ -56,7 +76,9 @@ class PlacementGhostComponent extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    if (_template == null || _currentPosition == null) return;
+    if ((_template == null && _cloudService == null) || _currentPosition == null) {
+      return;
+    }
 
     final color = _isValid
         ? const Color(0x6600FF88)
