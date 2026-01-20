@@ -11,11 +11,15 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 17
-- **Last Commit:** 97a02b8
+- **Iteration:** 18
+- **Last Commit:** 2d0d066
 
 ## Test Coverage Summary
-- **app_lib/core:** 12 tests passing
+- **app_lib/core:** 73 tests passing
+  - CharacterName: 12 tests
+  - GridPosition: 25 tests
+  - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 21 tests
+  - IDs: 15 tests
 - **app_lib/engine:** 211 tests passing
   - CharacterModel: 12 tests
   - RoomModel: 28 tests
@@ -52,7 +56,7 @@ Two main feature sets from PRD.md:
   - CharacterSpriteSheet: 12 tests
   - GameCharacters: 8 tests
   - CharacterDirection: 3 tests
-- **Total:** 446 unit tests
+- **Total:** 507 unit tests
 
 ## Completed Work
 
@@ -99,6 +103,9 @@ Two main feature sets from PRD.md:
 - `app_lib/database/test/character_storage_test.dart` - 15 tests
 - `app_lib/logging/test/log_level_test.dart` - 8 tests
 - `app_lib/logging/test/log_record_test.dart` - 14 tests
+- `app_lib/core/test/position_test.dart` - 25 tests
+- `app_lib/core/test/helpers_test.dart` - 21 tests
+- `app_lib/core/test/ids_test.dart` - 15 tests
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -146,6 +153,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 2d0d066: test: add unit tests for core utilities (61 tests)
 - 97a02b8: test: add unit tests for logging package (22 tests)
 - 695ff78: fix: resolve analyzer warnings in HUD widget tests
 - d152e3e: test: add unit tests for GameStorage and CharacterStorage (26 tests)
