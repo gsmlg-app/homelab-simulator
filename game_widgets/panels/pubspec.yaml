@@ -18,3 +18,7 @@ dependencies:
     path: ../../app_lib/core
   app_lib_engine:
     path: ../../app_lib/engine
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
