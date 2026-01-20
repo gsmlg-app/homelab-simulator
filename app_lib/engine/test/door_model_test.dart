@@ -251,5 +251,88 @@ void main() {
         expect(door1, isNot(door2));
       });
     });
+
+    group('edge cases', () {
+      test('getPosition at wall position 0', () {
+        const doorAtStart = DoorModel(
+          id: 'door-0',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.top,
+          wallPosition: 0,
+        );
+
+        final pos = doorAtStart.getPosition(20, 12);
+        expect(pos.x, 0);
+        expect(pos.y, 0);
+      });
+
+      test('getPosition at maximum wall position', () {
+        // For top/bottom walls, max position is roomWidth - 1
+        const doorAtEnd = DoorModel(
+          id: 'door-end',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.bottom,
+          wallPosition: 19, // roomWidth - 1
+        );
+
+        final pos = doorAtEnd.getPosition(20, 12);
+        expect(pos.x, 19);
+        expect(pos.y, 11);
+      });
+
+      test('getSpawnPosition at wall position 0', () {
+        const doorAtStart = DoorModel(
+          id: 'door-0',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.left,
+          wallPosition: 0,
+        );
+
+        final spawn = doorAtStart.getSpawnPosition(20, 12);
+        expect(spawn.x, 1);
+        expect(spawn.y, 0);
+      });
+
+      test('getPosition with small room dimensions', () {
+        const door = DoorModel(
+          id: 'door-small',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.bottom,
+          wallPosition: 2,
+        );
+
+        // Minimum viable room: 3x3
+        final pos = door.getPosition(3, 3);
+        expect(pos.x, 2);
+        expect(pos.y, 2);
+      });
+
+      test('getSpawnPosition with small room dimensions', () {
+        const door = DoorModel(
+          id: 'door-small',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 1,
+        );
+
+        // 3x3 room
+        final spawn = door.getSpawnPosition(3, 3);
+        expect(spawn.x, 1); // roomWidth - 2 = 1
+        expect(spawn.y, 1);
+      });
+
+      test('all WallSide values have opposite', () {
+        for (final side in WallSide.values) {
+          expect(side.opposite.opposite, side);
+        }
+      });
+
+      test('WallSide name matches enum', () {
+        expect(WallSide.top.name, 'top');
+        expect(WallSide.bottom.name, 'bottom');
+        expect(WallSide.left.name, 'left');
+        expect(WallSide.right.name, 'right');
+      });
+    });
   });
 }
