@@ -24,6 +24,8 @@ GameModel reduce(GameModel model, DomainEvent event) {
       model.copyWith(credits: model.credits + amount),
     GameModeChanged(:final mode) => model.copyWith(gameMode: mode),
     GameLoaded() => model,
+    RoomEntered(:final roomId, :final spawnPosition) =>
+      model.enterRoom(roomId, spawnPosition),
   };
 }
 

@@ -88,17 +88,86 @@ class GameModel extends Equatable {
     );
   }
 
-  /// Create initial game state
+  /// Create initial game state with default server room
   factory GameModel.initial() {
     final roomId = generateRoomId();
     return GameModel(
       currentRoomId: roomId,
       rooms: [
-        RoomModel(
+        RoomModel.serverRoom(
           id: roomId,
-          name: 'Main Room',
+          name: 'Server Room',
         ),
       ],
+    );
+  }
+
+  /// Get room by ID
+  RoomModel? getRoomById(String id) {
+    try {
+      return rooms.firstWhere((r) => r.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Get child rooms of a given parent
+  List<RoomModel> getChildRooms(String parentId) {
+    return rooms.where((r) => r.parentId == parentId).toList();
+  }
+
+  /// Get root rooms (no parent)
+  List<RoomModel> get rootRooms {
+    return rooms.where((r) => r.parentId == null).toList();
+  }
+
+  /// Add a new room to the game
+  GameModel addRoom(RoomModel room) {
+    return copyWith(rooms: [...rooms, room]);
+  }
+
+  /// Remove a room and all its children
+  GameModel removeRoom(String roomId) {
+    // Get all room IDs to remove (the room and all descendants)
+    final idsToRemove = <String>{roomId};
+    var foundNew = true;
+    while (foundNew) {
+      foundNew = false;
+      for (final room in rooms) {
+        if (room.parentId != null &&
+            idsToRemove.contains(room.parentId) &&
+            !idsToRemove.contains(room.id)) {
+          idsToRemove.add(room.id);
+          foundNew = true;
+        }
+      }
+    }
+
+    // Also remove doors pointing to removed rooms
+    final updatedRooms = rooms
+        .where((r) => !idsToRemove.contains(r.id))
+        .map((r) => r.copyWith(
+              doors: r.doors.where((d) => !idsToRemove.contains(d.targetRoomId)).toList(),
+            ))
+        .toList();
+
+    // If current room was removed, switch to first available
+    var newCurrentRoomId = currentRoomId;
+    if (idsToRemove.contains(currentRoomId) && updatedRooms.isNotEmpty) {
+      newCurrentRoomId = updatedRooms.first.id;
+    }
+
+    return copyWith(
+      rooms: updatedRooms,
+      currentRoomId: newCurrentRoomId,
+    );
+  }
+
+  /// Navigate to a different room
+  GameModel enterRoom(String roomId, GridPosition spawnPosition) {
+    return copyWith(
+      currentRoomId: roomId,
+      playerPosition: spawnPosition,
     );
   }
 

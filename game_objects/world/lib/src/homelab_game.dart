@@ -26,6 +26,8 @@ class HomelabGame extends FlameGame
   PlacementGhostComponent? _placementGhost;
 
   final List<DeviceComponent> _deviceComponents = [];
+  final List<DoorComponent> _doorComponents = [];
+  String? _currentRoomId;
 
   HomelabGame({
     required this.gameBloc,
@@ -71,10 +73,28 @@ class HomelabGame extends FlameGame
     switch (button) {
       case GamepadButton.south: // A button - interact/confirm
         final worldState = worldBloc.state;
-        if (worldState.canInteract &&
-            worldState.availableInteraction == InteractionType.terminal) {
-          gameBloc.add(const GameToggleShop(isOpen: true));
-        } else if (state.model.placementMode == PlacementMode.placing &&
+        if (worldState.canInteract) {
+          switch (worldState.availableInteraction) {
+            case InteractionType.terminal:
+              gameBloc.add(const GameToggleShop(isOpen: true));
+              return;
+            case InteractionType.door:
+              final doorId = worldState.interactableEntityId;
+              if (doorId != null) {
+                final door = state.model.currentRoom.doors.firstWhere(
+                  (d) => d.id == doorId,
+                  orElse: () => state.model.currentRoom.doors.first,
+                );
+                _enterDoor(door, state.model);
+              }
+              return;
+            case InteractionType.device:
+            case InteractionType.none:
+              break;
+          }
+        }
+        // Handle placement mode if no interaction available
+        if (state.model.placementMode == PlacementMode.placing &&
             state.model.selectedTemplate != null) {
           // Place device at player position (or could use cursor)
           final pos = _player.gridPosition;
@@ -129,6 +149,15 @@ class HomelabGame extends FlameGame
 
     final model = state.model;
 
+    // Check if room changed
+    final roomChanged = _currentRoomId != model.currentRoomId;
+    if (roomChanged) {
+      _currentRoomId = model.currentRoomId;
+      // Full resync needed when room changes
+      _syncDoors(model.currentRoom.doors);
+      _syncDevices(model.currentRoom.devices);
+    }
+
     // Update player position if changed externally
     if (_player.gridPosition != model.playerPosition) {
       _player.moveTo(model.playerPosition);
@@ -142,8 +171,13 @@ class HomelabGame extends FlameGame
       _hidePlacementGhost();
     }
 
-    // Sync devices
-    _syncDevices(model.currentRoom.devices);
+    // Sync devices (incremental if room didn't change)
+    if (!roomChanged) {
+      _syncDevices(model.currentRoom.devices);
+    }
+
+    // Update door interaction availability
+    _updateDoorInteraction(model);
   }
 
   void _showPlacementGhost(DeviceTemplate template) {
@@ -185,6 +219,57 @@ class HomelabGame extends FlameGame
         ));
       }
     }
+  }
+
+  void _syncDoors(List<DoorModel> doors) {
+    // Remove all existing door components
+    for (final comp in _doorComponents) {
+      comp.removeFromParent();
+    }
+    _doorComponents.clear();
+
+    // Add new door components
+    for (final door in doors) {
+      final comp = DoorComponent(door: door);
+      _doorComponents.add(comp);
+      add(FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [comp],
+      ));
+    }
+  }
+
+  void _updateDoorInteraction(GameModel model) {
+    final playerPos = model.playerPosition;
+    final room = model.currentRoom;
+
+    // Check if player is adjacent to any door
+    for (final door in room.doors) {
+      final doorPos = door.getPosition(room.width, room.height);
+      if (playerPos.isAdjacentTo(doorPos) || playerPos == doorPos) {
+        worldBloc.add(InteractionAvailable(door.id, InteractionType.door));
+        return;
+      }
+    }
+
+    // If player was interacting with a door but is no longer near it
+    final worldState = worldBloc.state;
+    if (worldState.availableInteraction == InteractionType.door) {
+      worldBloc.add(const InteractionUnavailable());
+    }
+  }
+
+  void _enterDoor(DoorModel door, GameModel model) {
+    final targetRoom = model.getRoomById(door.targetRoomId);
+    if (targetRoom == null) return;
+
+    // Calculate spawn position in target room
+    final spawnPos = door.getSpawnPosition(targetRoom.width, targetRoom.height);
+
+    gameBloc.add(GameEnterRoom(
+      roomId: door.targetRoomId,
+      spawnPosition: spawnPos,
+    ));
   }
 
   @override
@@ -273,10 +358,27 @@ class HomelabGame extends FlameGame
     // E to interact
     if (event.logicalKey == LogicalKeyboardKey.keyE) {
       final worldState = worldBloc.state;
-      if (worldState.canInteract &&
-          worldState.availableInteraction == InteractionType.terminal) {
-        gameBloc.add(const GameToggleShop(isOpen: true));
-        return KeyEventResult.handled;
+      if (worldState.canInteract) {
+        switch (worldState.availableInteraction) {
+          case InteractionType.terminal:
+            gameBloc.add(const GameToggleShop(isOpen: true));
+            return KeyEventResult.handled;
+          case InteractionType.door:
+            // Find the door by its ID and enter
+            final doorId = worldState.interactableEntityId;
+            if (doorId != null) {
+              final door = state.model.currentRoom.doors.firstWhere(
+                (d) => d.id == doorId,
+                orElse: () => state.model.currentRoom.doors.first,
+              );
+              _enterDoor(door, state.model);
+              return KeyEventResult.handled;
+            }
+            break;
+          case InteractionType.device:
+          case InteractionType.none:
+            break;
+        }
       }
     }
 

@@ -93,3 +93,13 @@ class GameSave extends GameEvent {
   @override
   List<Object?> get props => [];
 }
+
+/// Enter a room via door
+class GameEnterRoom extends GameEvent {
+  final String roomId;
+  final GridPosition spawnPosition;
+  const GameEnterRoom({required this.roomId, required this.spawnPosition});
+
+  @override
+  List<Object?> get props => [roomId, spawnPosition];
+}

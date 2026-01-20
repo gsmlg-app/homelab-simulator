@@ -87,3 +87,13 @@ class GameLoaded extends DomainEvent {
   @override
   List<Object?> get props => [];
 }
+
+/// Player entered a different room via door
+class RoomEntered extends DomainEvent {
+  final String roomId;
+  final GridPosition spawnPosition;
+  const RoomEntered({required this.roomId, required this.spawnPosition});
+
+  @override
+  List<Object?> get props => [roomId, spawnPosition];
+}
