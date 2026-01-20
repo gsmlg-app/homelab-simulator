@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 36
-- **Last Commit:** bda8140
+- **Iteration:** 37
+- **Last Commit:** 8249d4b
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -220,6 +220,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 8249d4b: perf: cache Paint objects in PlayerComponent render
 - bda8140: test: add unit tests for HomelabGame class (17 tests)
 - 960eb3d: fix: use test package instead of flutter_test in game_bloc/world tests
 - 70f3242: test: add unit tests for GameState, GameEvent, WorldState, and WorldEvent Equatable (135 tests)
