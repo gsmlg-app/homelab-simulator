@@ -21,7 +21,7 @@ Two main feature sets from PRD.md:
   - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 27 tests (+6 edge cases)
   - IDs: 15 tests
   - Enums: 30 tests
-- **app_lib/engine:** 252 tests passing
+- **app_lib/engine:** 246 tests passing
   - CharacterModel: 12 tests
   - RoomModel: 48 tests (+10 edge case tests)
   - DoorModel: 24 tests (+8 edge cases)
@@ -89,7 +89,7 @@ Two main feature sets from PRD.md:
   - PlacementGhostComponent: 23 tests
 - **game_objects/world:** 23 tests passing (NEW)
   - GamepadHandler: 23 tests
-- **Total:** 1144 unit tests
+- **Total:** 1138 unit tests
 
 ## Completed Work
 
