@@ -12,6 +12,15 @@ class PlayerComponent extends PositionComponent
   Vector2 _targetPosition;
   final double moveSpeed;
 
+  // Cached paint objects for performance
+  static final _bodyPaint = Paint()
+    ..color = const Color(0xFF4ECDC4)
+    ..style = PaintingStyle.fill;
+  static final _outlinePaint = Paint()
+    ..color = const Color(0xFF2E8B84)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+
   PlayerComponent({
     GridPosition initialPosition = GameConstants.playerStartPosition,
     this.tileSize = GameConstants.tileSize,
@@ -79,17 +88,12 @@ class PlayerComponent extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    // Player body
-    final bodyPaint = Paint()
-      ..color = const Color(0xFF4ECDC4)
-      ..style = PaintingStyle.fill;
-
     // Draw as a simple character
     final centerX = size.x / 2;
     final centerY = size.y / 2;
 
     // Head
-    canvas.drawCircle(Offset(centerX, centerY - 4), 8, bodyPaint);
+    canvas.drawCircle(Offset(centerX, centerY - 4), 8, _bodyPaint);
 
     // Body
     canvas.drawRRect(
@@ -101,16 +105,11 @@ class PlayerComponent extends PositionComponent
         ),
         const Radius.circular(3),
       ),
-      bodyPaint,
+      _bodyPaint,
     );
 
     // Outline
-    final outlinePaint = Paint()
-      ..color = const Color(0xFF2E8B84)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    canvas.drawCircle(Offset(centerX, centerY - 4), 8, outlinePaint);
+    canvas.drawCircle(Offset(centerX, centerY - 4), 8, _outlinePaint);
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -121,7 +120,7 @@ class PlayerComponent extends PositionComponent
         ),
         const Radius.circular(3),
       ),
-      outlinePaint,
+      _outlinePaint,
     );
   }
 }
