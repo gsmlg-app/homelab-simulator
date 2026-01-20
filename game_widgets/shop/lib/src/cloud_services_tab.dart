@@ -64,8 +64,8 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
         child: Row(
           children: [
             Icon(
-              _getProviderIcon(roomProvider),
-              color: _getProviderColor(roomProvider),
+              roomProvider.icon,
+              color: roomProvider.color,
               size: 20,
             ),
             const SizedBox(width: 8),
@@ -105,17 +105,17 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
                     avatar: Icon(
-                      _getProviderIcon(provider),
+                      provider.icon,
                       color: _selectedProvider == provider
                           ? Colors.white
-                          : _getProviderColor(provider),
+                          : provider.color,
                       size: 18,
                     ),
                     label: Text(provider.displayName),
                     selected: _selectedProvider == provider,
                     onSelected: (_) =>
                         setState(() => _selectedProvider = provider),
-                    selectedColor: _getProviderColor(provider),
+                    selectedColor: provider.color,
                     labelStyle: TextStyle(
                       color: _selectedProvider == provider
                           ? Colors.white
@@ -152,7 +152,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
               padding: const EdgeInsets.only(right: 8),
               child: FilterChip(
                 avatar: Icon(
-                  _getCategoryIcon(category),
+                  category.icon,
                   color: _selectedCategory == category
                       ? Colors.white
                       : Colors.white70,
@@ -161,7 +161,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                 label: Text(category.displayName),
                 selected: _selectedCategory == category,
                 onSelected: (_) => setState(() => _selectedCategory = category),
-                selectedColor: _getCategoryColor(category),
+                selectedColor: category.color,
                 labelStyle: TextStyle(
                   color: _selectedCategory == category
                       ? Colors.white
@@ -215,54 +215,6 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
       },
     );
   }
-
-  IconData _getProviderIcon(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => Icons.cloud,
-      CloudProvider.gcp => Icons.cloud_circle,
-      CloudProvider.cloudflare => Icons.security,
-      CloudProvider.vultr => Icons.dns,
-      CloudProvider.azure => Icons.cloud_queue,
-      CloudProvider.digitalOcean => Icons.water_drop,
-      CloudProvider.none => Icons.settings,
-    };
-  }
-
-  Color _getProviderColor(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => const Color(0xFFFF9900),
-      CloudProvider.gcp => const Color(0xFF4285F4),
-      CloudProvider.cloudflare => const Color(0xFFF38020),
-      CloudProvider.vultr => const Color(0xFF007BFC),
-      CloudProvider.azure => const Color(0xFF0078D4),
-      CloudProvider.digitalOcean => const Color(0xFF0080FF),
-      CloudProvider.none => Colors.purple,
-    };
-  }
-
-  IconData _getCategoryIcon(ServiceCategory category) {
-    return switch (category) {
-      ServiceCategory.compute => Icons.computer,
-      ServiceCategory.storage => Icons.storage,
-      ServiceCategory.database => Icons.table_chart,
-      ServiceCategory.networking => Icons.hub,
-      ServiceCategory.serverless => Icons.flash_on,
-      ServiceCategory.container => Icons.view_in_ar,
-      ServiceCategory.other => Icons.more_horiz,
-    };
-  }
-
-  Color _getCategoryColor(ServiceCategory category) {
-    return switch (category) {
-      ServiceCategory.compute => Colors.blue,
-      ServiceCategory.storage => Colors.green,
-      ServiceCategory.database => Colors.orange,
-      ServiceCategory.networking => Colors.purple,
-      ServiceCategory.serverless => Colors.yellow.shade700,
-      ServiceCategory.container => Colors.teal,
-      ServiceCategory.other => Colors.grey,
-    };
-  }
 }
 
 class _ServiceCard extends StatelessWidget {
@@ -289,14 +241,12 @@ class _ServiceCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: _getProviderColor(
-                  template.provider,
-                ).withValues(alpha: 0.2),
+                color: template.provider.color.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
-                _getCategoryIcon(template.category),
-                color: _getProviderColor(template.provider),
+                template.category.icon,
+                color: template.provider.color,
                 size: 24,
               ),
             ),
@@ -322,7 +272,7 @@ class _ServiceCard extends StatelessWidget {
                     children: [
                       _buildChip(
                         template.provider.displayName,
-                        _getProviderColor(template.provider),
+                        template.provider.color,
                       ),
                       const SizedBox(width: 4),
                       _buildChip(
@@ -358,30 +308,6 @@ class _ServiceCard extends StatelessWidget {
       ),
     );
   }
-
-  Color _getProviderColor(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => const Color(0xFFFF9900),
-      CloudProvider.gcp => const Color(0xFF4285F4),
-      CloudProvider.cloudflare => const Color(0xFFF38020),
-      CloudProvider.vultr => const Color(0xFF007BFC),
-      CloudProvider.azure => const Color(0xFF0078D4),
-      CloudProvider.digitalOcean => const Color(0xFF0080FF),
-      CloudProvider.none => Colors.purple,
-    };
-  }
-
-  IconData _getCategoryIcon(ServiceCategory category) {
-    return switch (category) {
-      ServiceCategory.compute => Icons.computer,
-      ServiceCategory.storage => Icons.storage,
-      ServiceCategory.database => Icons.table_chart,
-      ServiceCategory.networking => Icons.hub,
-      ServiceCategory.serverless => Icons.flash_on,
-      ServiceCategory.container => Icons.view_in_ar,
-      ServiceCategory.other => Icons.more_horiz,
-    };
-  }
 }
 
 extension on CloudProvider {
@@ -394,6 +320,26 @@ extension on CloudProvider {
     CloudProvider.digitalOcean => 'DigitalOcean',
     CloudProvider.none => 'None',
   };
+
+  IconData get icon => switch (this) {
+    CloudProvider.aws => Icons.cloud,
+    CloudProvider.gcp => Icons.cloud_circle,
+    CloudProvider.cloudflare => Icons.security,
+    CloudProvider.vultr => Icons.dns,
+    CloudProvider.azure => Icons.cloud_queue,
+    CloudProvider.digitalOcean => Icons.water_drop,
+    CloudProvider.none => Icons.settings,
+  };
+
+  Color get color => switch (this) {
+    CloudProvider.aws => const Color(0xFFFF9900),
+    CloudProvider.gcp => const Color(0xFF4285F4),
+    CloudProvider.cloudflare => const Color(0xFFF38020),
+    CloudProvider.vultr => const Color(0xFF007BFC),
+    CloudProvider.azure => const Color(0xFF0078D4),
+    CloudProvider.digitalOcean => const Color(0xFF0080FF),
+    CloudProvider.none => Colors.purple,
+  };
 }
 
 extension on ServiceCategory {
@@ -405,5 +351,25 @@ extension on ServiceCategory {
     ServiceCategory.serverless => 'Serverless',
     ServiceCategory.container => 'Container',
     ServiceCategory.other => 'Other',
+  };
+
+  IconData get icon => switch (this) {
+    ServiceCategory.compute => Icons.computer,
+    ServiceCategory.storage => Icons.storage,
+    ServiceCategory.database => Icons.table_chart,
+    ServiceCategory.networking => Icons.hub,
+    ServiceCategory.serverless => Icons.flash_on,
+    ServiceCategory.container => Icons.view_in_ar,
+    ServiceCategory.other => Icons.more_horiz,
+  };
+
+  Color get color => switch (this) {
+    ServiceCategory.compute => Colors.blue,
+    ServiceCategory.storage => Colors.green,
+    ServiceCategory.database => Colors.orange,
+    ServiceCategory.networking => Colors.purple,
+    ServiceCategory.serverless => Colors.yellow.shade700,
+    ServiceCategory.container => Colors.teal,
+    ServiceCategory.other => Colors.grey,
   };
 }
