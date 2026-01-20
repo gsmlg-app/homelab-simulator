@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 43
-- **Last Commit:** 025b189
+- **Iteration:** 44
+- **Last Commit:** ad6e4eb
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -92,9 +92,10 @@ Two main feature sets from PRD.md:
 - **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
   - HomelabGame: 17 tests (NEW)
-- **app_widget/common:** 25 tests passing (NEW)
+- **app_widget/common:** 47 tests passing
   - RoomTypeUI: 25 tests
-- **Total:** 1223 unit tests
+  - DeviceTypeUI: 22 tests (NEW)
+- **Total:** 1245 unit tests
 
 ## Completed Work
 
@@ -190,6 +191,8 @@ Two main feature sets from PRD.md:
 ## Recent Refactoring
 - ✅ Extracted RoomTypeUI extension to app_widget_common (icon, color, displayName)
 - ✅ Removed duplicate _getRoomTypeIcon/_getRoomTypeColor from ShopModal and RoomSummaryPanel
+- ✅ Extracted DeviceTypeUI extension to app_widget_common (icon, color, displayName)
+- ✅ Removed duplicate _getDeviceIcon/_getDeviceTypeName from DeviceCard, DeviceInfoPanel, RoomSummaryPanel
 
 ## Next Tasks
 1. Look for more performance optimizations
@@ -238,6 +241,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- ad6e4eb: refactor: extract DeviceType UI utilities to shared extension
 - 025b189: refactor: extract RoomType UI utilities to shared extension
 - ee7b07d: perf: cache instance-level Paint objects in device components
 - b7a4222: fix: prevent double initialization of HomelabGame in GameScreen
