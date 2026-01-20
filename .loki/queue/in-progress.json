@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "Game World M1: Update persistence for world data"
+      "action": "Find more performance optimizations in game_objects"
     }
   }
 ]

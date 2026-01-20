@@ -14,6 +14,29 @@ class DoorComponent extends PositionComponent
   final double tileSize;
   bool _isHighlighted = false;
 
+  // Cached paint objects for performance
+  static final _framePaint = Paint()
+    ..color = const Color(0xFF4A4A5A)
+    ..style = PaintingStyle.fill;
+  static final _doorNormalPaint = Paint()
+    ..color = const Color(0xFF3366CC)
+    ..style = PaintingStyle.fill;
+  static final _doorHighlightPaint = Paint()
+    ..color = const Color(0xFF5588FF)
+    ..style = PaintingStyle.fill;
+  static final _handlePaint = Paint()
+    ..color = const Color(0xFFFFD700)
+    ..style = PaintingStyle.fill;
+  static final _highlightBorderPaint = Paint()
+    ..color = const Color(0xFF5588FF)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+  static final _arrowPaint = Paint()
+    ..color = const Color(0xFFFFFFFF)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2
+    ..strokeCap = StrokeCap.round;
+
   DoorComponent({
     required this.door,
     this.roomWidth = GameConstants.roomWidth,
@@ -33,63 +56,38 @@ class DoorComponent extends PositionComponent
   @override
   void render(Canvas canvas) {
     // Door frame
-    final framePaint = Paint()
-      ..color = const Color(0xFF4A4A5A)
-      ..style = PaintingStyle.fill;
-
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
         const Radius.circular(4),
       ),
-      framePaint,
+      _framePaint,
     );
 
     // Door surface
-    final doorColor = _isHighlighted
-        ? const Color(0xFF5588FF)
-        : const Color(0xFF3366CC);
-    final doorPaint = Paint()
-      ..color = doorColor
-      ..style = PaintingStyle.fill;
-
+    final doorPaint = _isHighlighted ? _doorHighlightPaint : _doorNormalPaint;
     canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 12), doorPaint);
 
     // Door handle
-    final handlePaint = Paint()
-      ..color = const Color(0xFFFFD700)
-      ..style = PaintingStyle.fill;
-
     final handleX = door.wallSide == WallSide.left ? size.x - 12 : 8.0;
-    canvas.drawCircle(Offset(handleX, size.y / 2), 3, handlePaint);
+    canvas.drawCircle(Offset(handleX, size.y / 2), 3, _handlePaint);
 
     // Arrow indicator showing direction
     _drawArrow(canvas);
 
     // Highlight border when interactable
     if (_isHighlighted) {
-      final highlightPaint = Paint()
-        ..color = const Color(0xFF5588FF)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        highlightPaint,
+        _highlightBorderPaint,
       );
     }
   }
 
   void _drawArrow(Canvas canvas) {
-    final arrowPaint = Paint()
-      ..color = const Color(0xFFFFFFFF)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round;
-
     final centerX = size.x / 2;
     final centerY = size.y / 2;
 
@@ -99,24 +97,20 @@ class DoorComponent extends PositionComponent
         path.moveTo(centerX - 6, centerY + 3);
         path.lineTo(centerX, centerY - 5);
         path.lineTo(centerX + 6, centerY + 3);
-        break;
       case WallSide.bottom:
         path.moveTo(centerX - 6, centerY - 3);
         path.lineTo(centerX, centerY + 5);
         path.lineTo(centerX + 6, centerY - 3);
-        break;
       case WallSide.left:
         path.moveTo(centerX + 3, centerY - 6);
         path.lineTo(centerX - 5, centerY);
         path.lineTo(centerX + 3, centerY + 6);
-        break;
       case WallSide.right:
         path.moveTo(centerX - 3, centerY - 6);
         path.lineTo(centerX + 5, centerY);
         path.lineTo(centerX - 3, centerY + 6);
-        break;
     }
-    canvas.drawPath(path, arrowPaint);
+    canvas.drawPath(path, _arrowPaint);
   }
 
   @override

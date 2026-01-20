@@ -4,21 +4,32 @@
     "tool_id": "orchestrator-main",
     "agent_type": "orchestrator",
     "model": "sonnet",
-    "current_task": "Bash: Commit game world models",
+    "current_task": "Using TodoWrite...",
     "status": "active",
-    "spawned_at": "2026-01-20T15:44:59.930882Z",
+    "spawned_at": "2026-01-20T20:56:38.958091Z",
     "tasks_completed": [],
-    "tool_count": 141
+    "tool_count": 182
   },
   {
     "agent_id": "agent-toolu_01",
-    "tool_id": "toolu_01GoZBMEPuKdadFdQ6r4tVZh",
-    "agent_type": "Explore",
+    "tool_id": "toolu_01RhEtT7x6QFJLCJiG9iUWFP",
+    "agent_type": "Bash",
     "model": "sonnet",
-    "current_task": "Explore codebase structure",
+    "current_task": "Run tests across all packages",
     "status": "completed",
-    "spawned_at": "2026-01-20T15:45:41.510851Z",
+    "spawned_at": "2026-01-20T20:57:47.474610Z",
     "tasks_completed": [],
-    "completed_at": "2026-01-20T15:47:09.233055Z"
+    "completed_at": "2026-01-20T21:00:06.377919Z"
+  },
+  {
+    "agent_id": "agent-toolu_01",
+    "tool_id": "toolu_01YFTRMnQSN7ofdo2i2BEknz",
+    "agent_type": "Bash",
+    "model": "sonnet",
+    "current_task": "Count tests across all packages",
+    "status": "completed",
+    "spawned_at": "2026-01-20T21:03:38.749968Z",
+    "tasks_completed": [],
+    "completed_at": "2026-01-20T21:11:08.149175Z"
   }
 ]
