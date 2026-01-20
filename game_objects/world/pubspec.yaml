@@ -28,3 +28,10 @@ dependencies:
     path: ../character
   game_objects_devices:
     path: ../devices
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
+  flame_test: ^1.18.0
