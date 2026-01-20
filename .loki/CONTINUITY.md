@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 40
-- **Last Commit:** e64720b
+- **Iteration:** 41
+- **Last Commit:** b7a4222
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -232,6 +232,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- b7a4222: fix: prevent double initialization of HomelabGame in GameScreen
 - e64720b: perf: cache arrow Path in DoorComponent onLoad
 - ee2d067: perf: cache Paint objects in device components
 - efdb6fd: chore: remove build directories from git tracking
