@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 30
-- **Last Commit:** 70f3242
+- **Iteration:** 31
+- **Last Commit:** 960eb3d
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -217,6 +217,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 960eb3d: fix: use test package instead of flutter_test in game_bloc/world tests
 - 70f3242: test: add unit tests for GameState, GameEvent, WorldState, and WorldEvent Equatable (135 tests)
 - b131491: test: add unit tests for logging and character sprite utilities (65 tests)
 - b42077e: refactor: consolidate duplicate methods into extensions
