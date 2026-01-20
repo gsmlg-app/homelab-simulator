@@ -12,7 +12,7 @@ Two main feature sets from PRD.md:
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
 - **Iteration:** 23
-- **Last Commit:** pending
+- **Last Commit:** ccfd9c9
 
 ## Test Coverage Summary
 - **app_lib/core:** 103 tests passing
@@ -173,6 +173,8 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- ccfd9c9: test: add unit tests for TypeConverter and ErrorDisplay (36 tests)
+- 33182a0: test: add widget tests for DeviceInfoPanel (17 tests)
 - 7381cdc: style: rename character constants to lowerCamelCase
 - 783cd2f: test: add unit tests for secure storage and locale (28 tests)
 - 85184a0: test: add unit tests for logging and enums (91 tests)
