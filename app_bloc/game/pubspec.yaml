@@ -20,3 +20,9 @@ dependencies:
     path: ../../app_lib/database
   flutter:
     sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.0
