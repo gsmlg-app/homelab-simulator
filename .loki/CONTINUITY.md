@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 41
-- **Last Commit:** b7a4222
+- **Iteration:** 42
+- **Last Commit:** ee7b07d
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -171,18 +171,18 @@ Two main feature sets from PRD.md:
 - `game_bloc/world/test/world_event_test.dart` - 33 tests (NEW)
 
 ## In Progress
-- Performance optimizations for render() methods (Paint object caching)
+- Looking for additional improvements (code quality, performance, features)
 
 ## Recent Performance Optimizations
 - ✅ PlayerComponent: Cached body and outline paints
 - ✅ GridComponent: Cached grid paint
 - ✅ TerminalComponent: Cached base, screen, and highlight paints
-- ✅ DoorComponent: Cached frame, door, handle, highlight, and arrow paints
+- ✅ DoorComponent: Cached frame, door, handle, highlight, and arrow paints + arrow Path
 - ✅ HoverCellComponent: Cached valid/invalid fill and border paints
-- ✅ DeviceComponent: Cached selection and running light paints
-- ✅ CloudServiceComponent: Cached selection and icon paints
+- ✅ DeviceComponent: Cached selection, running light, body, and border paints (in onLoad)
+- ✅ CloudServiceComponent: Cached selection, icon, bg, body, provider, and border paints (in onLoad)
 - ✅ PlacementGhostComponent: Cached valid/invalid fill and border paints
-- ✅ DoorComponent: Cached arrow Path in onLoad (eliminates per-frame Path allocation)
+- ✅ RoomComponent: Cached background paint as static
 - ✅ Updated .gitignore to exclude all package build folders
 
 ## Next Tasks
@@ -232,6 +232,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- ee7b07d: perf: cache instance-level Paint objects in device components
 - b7a4222: fix: prevent double initialization of HomelabGame in GameScreen
 - e64720b: perf: cache arrow Path in DoorComponent onLoad
 - ee2d067: perf: cache Paint objects in device components
