@@ -41,8 +41,9 @@ class HoverCellComponent extends PositionComponent
     final fillPaint = _isValidPlacement ? _validFillPaint : _invalidFillPaint;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), fillPaint);
 
-    final borderPaint =
-        _isValidPlacement ? _validBorderPaint : _invalidBorderPaint;
+    final borderPaint = _isValidPlacement
+        ? _validBorderPaint
+        : _invalidBorderPaint;
     canvas.drawRect(Rect.fromLTWH(1, 1, size.x - 2, size.y - 2), borderPaint);
   }
 

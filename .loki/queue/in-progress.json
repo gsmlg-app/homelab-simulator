@@ -1,9 +1,9 @@
 [
   {
-    "id": "todo-0",
+    "id": "todo-1",
     "type": "todo",
     "payload": {
-      "action": "Continue finding improvements"
+      "action": "Look for more improvements - code quality, documentation, or features"
     }
   }
 ]
