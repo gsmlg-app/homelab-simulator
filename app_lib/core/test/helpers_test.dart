@@ -46,6 +46,18 @@ void main() {
       expect(result.$1, 32.0);
       expect(result.$2, 32.0);
     });
+
+    test('converts negative grid coordinates', () {
+      final result = gridToPixel(const GridPosition(-2, -3));
+      expect(result.$1, -64.0); // -2 * 32
+      expect(result.$2, -96.0); // -3 * 32
+    });
+
+    test('converts large grid coordinates', () {
+      final result = gridToPixel(const GridPosition(1000, 2000));
+      expect(result.$1, 32000.0); // 1000 * 32
+      expect(result.$2, 64000.0); // 2000 * 32
+    });
   });
 
   group('pixelToGrid', () {
@@ -71,6 +83,30 @@ void main() {
       final result = pixelToGrid(31, 63);
       expect(result.x, 0);
       expect(result.y, 1);
+    });
+
+    test('handles negative pixel values', () {
+      final result = pixelToGrid(-32, -64);
+      expect(result.x, -1); // floor(-32 / 32) = -1
+      expect(result.y, -2); // floor(-64 / 32) = -2
+    });
+
+    test('handles fractional negative values', () {
+      final result = pixelToGrid(-10, -50);
+      expect(result.x, -1); // floor(-10 / 32) = floor(-0.3125) = -1
+      expect(result.y, -2); // floor(-50 / 32) = floor(-1.5625) = -2
+    });
+
+    test('handles very large pixel values', () {
+      final result = pixelToGrid(1000000, 2000000);
+      expect(result.x, 31250); // 1000000 / 32
+      expect(result.y, 62500); // 2000000 / 32
+    });
+
+    test('handles values at exact tile boundary', () {
+      final result = pixelToGrid(32.0, 64.0);
+      expect(result.x, 1);
+      expect(result.y, 2);
     });
   });
 
