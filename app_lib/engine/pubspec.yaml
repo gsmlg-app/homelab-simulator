@@ -14,3 +14,7 @@ dependencies:
     path: ../core
   game_asset_characters:
     path: ../../game_asset/characters
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
