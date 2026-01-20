@@ -11,7 +11,7 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 22
+- **Iteration:** 23
 - **Last Commit:** pending
 
 ## Test Coverage Summary
@@ -30,15 +30,17 @@ Two main feature sets from PRD.md:
   - DeviceModel/DeviceTemplate: 23 tests
   - Reducer: 26 tests
   - DomainEvents: 58 tests
-- **app_lib/database:** 27 tests passing
+- **app_lib/database:** 44 tests passing
   - GameStorage: 11 tests
   - CharacterStorage: 15 tests
   - app_database_test: 1 test
-- **app_lib/logging:** 82 tests passing
+  - TypeConverter: 17 tests (NEW)
+- **app_lib/logging:** 101 tests passing
   - LogLevel: 8 tests
   - LogRecord: 14 tests
-  - AppLogger: 26 tests (NEW)
-  - ApiLoggingInterceptor: 34 tests (NEW)
+  - AppLogger: 26 tests
+  - ApiLoggingInterceptor: 34 tests
+  - ErrorDisplay: 19 tests (NEW)
 - **game_bloc/world:** 47 tests passing
   - WorldBloc: 23 tests
   - WorldState: 16 tests
@@ -66,7 +68,7 @@ Two main feature sets from PRD.md:
 - **app_lib/locale:** 9 tests passing
   - AppLocale: 4 tests
   - AppLocalizations integration: 5 tests (NEW)
-- **Total:** 654 unit tests
+- **Total:** 690 unit tests
 
 ## Completed Work
 
@@ -120,6 +122,8 @@ Two main feature sets from PRD.md:
 - `app_lib/logging/test/app_logger_test.dart` - 26 tests (NEW)
 - `app_lib/logging/test/api_logging_interceptor_test.dart` - 34 tests (NEW)
 - `game_widgets/panels/test/device_info_panel_test.dart` - 17 tests (NEW)
+- `app_lib/database/test/type_converter_test.dart` - 17 tests (NEW)
+- `app_lib/logging/test/error_display_test.dart` - 19 tests (NEW)
 
 ## In Progress
 - All core features complete, continuing improvements
