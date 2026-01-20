@@ -11,16 +11,16 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 20
-- **Last Commit:** 783cd2f
+- **Iteration:** 22
+- **Last Commit:** pending
 
 ## Test Coverage Summary
-- **app_lib/core:** 115 tests passing
+- **app_lib/core:** 103 tests passing
   - CharacterName: 12 tests
   - GridPosition: 25 tests
   - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 21 tests
   - IDs: 15 tests
-  - Enums: 42 tests (NEW)
+  - Enums: 42 tests
 - **app_lib/engine:** 211 tests passing
   - CharacterModel: 12 tests
   - RoomModel: 28 tests
@@ -47,9 +47,10 @@ Two main feature sets from PRD.md:
   - GameBloc: 32 tests
   - GameState: 8 tests
   - GameEvent: 17 tests
-- **game_widgets/panels:** 23 tests passing
+- **game_widgets/panels:** 40 tests passing
   - InfoPanel: 5 tests
   - RoomSummaryPanel: 18 tests
+  - DeviceInfoPanel: 17 tests (NEW)
 - **game_widgets/hud:** 13 tests passing
   - CreditsDisplay: 5 tests
   - InteractionHint: 8 tests
@@ -65,7 +66,7 @@ Two main feature sets from PRD.md:
 - **app_lib/locale:** 9 tests passing
   - AppLocale: 4 tests
   - AppLocalizations integration: 5 tests (NEW)
-- **Total:** 637 unit tests
+- **Total:** 654 unit tests
 
 ## Completed Work
 
@@ -118,6 +119,7 @@ Two main feature sets from PRD.md:
 - `app_lib/core/test/enums_test.dart` - 42 tests (NEW)
 - `app_lib/logging/test/app_logger_test.dart` - 26 tests (NEW)
 - `app_lib/logging/test/api_logging_interceptor_test.dart` - 34 tests (NEW)
+- `game_widgets/panels/test/device_info_panel_test.dart` - 17 tests (NEW)
 
 ## In Progress
 - All core features complete, continuing improvements
@@ -167,6 +169,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 7381cdc: style: rename character constants to lowerCamelCase
 - 783cd2f: test: add unit tests for secure storage and locale (28 tests)
 - 85184a0: test: add unit tests for logging and enums (91 tests)
 - 2d0d066: test: add unit tests for core utilities (61 tests)
