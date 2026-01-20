@@ -22,7 +22,11 @@ void main() {
       });
 
       test('handles special characters in strings', () {
-        final result = converter.toSql(['hello "world"', "it's", 'back\\slash']);
+        final result = converter.toSql([
+          'hello "world"',
+          "it's",
+          'back\\slash',
+        ]);
         expect(result, contains('hello'));
         expect(result, contains('world'));
       });

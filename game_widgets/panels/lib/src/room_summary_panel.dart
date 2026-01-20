@@ -35,11 +35,7 @@ class RoomSummaryPanel extends StatelessWidget {
           Colors.grey.shade400,
         ),
         if (room.regionCode != null)
-          _buildInfoRow(
-            'Region',
-            room.regionCode!,
-            Colors.cyan.shade400,
-          ),
+          _buildInfoRow('Region', room.regionCode!, Colors.cyan.shade400),
 
         const SizedBox(height: 8),
         const Divider(color: Colors.grey, height: 1),
@@ -80,7 +76,10 @@ class RoomSummaryPanel extends StatelessWidget {
         // Device counts
         if (room.devices.isNotEmpty) ...[
           _buildSectionHeader('Devices', room.devices.length),
-          if (expanded) _buildDeviceCounts() else _buildCompactCounts('devices'),
+          if (expanded)
+            _buildDeviceCounts()
+          else
+            _buildCompactCounts('devices'),
         ],
 
         // Cloud service counts
@@ -129,10 +128,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   expanded ? 'Show less' : 'Show details',
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 10,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
                 ),
               ],
             ),
@@ -150,10 +146,7 @@ class RoomSummaryPanel extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              color: Colors.grey.shade500,
-              fontSize: 11,
-            ),
+            style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
           ),
           Text(
             value,
@@ -182,10 +175,7 @@ class RoomSummaryPanel extends StatelessWidget {
         ),
         Text(
           '$count',
-          style: TextStyle(
-            color: Colors.grey.shade400,
-            fontSize: 11,
-          ),
+          style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
         ),
       ],
     );
@@ -264,15 +254,16 @@ class RoomSummaryPanel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(
             children: [
-              Icon(_getDeviceIcon(e.key), size: 14, color: Colors.blue.shade400),
+              Icon(
+                _getDeviceIcon(e.key),
+                size: 14,
+                color: Colors.blue.shade400,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   _getDeviceTypeName(e.key),
-                  style: TextStyle(
-                    color: Colors.grey.shade300,
-                    fontSize: 11,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade300, fontSize: 11),
                 ),
               ),
               Text(

@@ -198,19 +198,22 @@ void main() {
         expect(mockStorage.rawStorage['other_key'], equals('other_value'));
       });
 
-      test('readAll only returns namespaced keys with prefix stripped', () async {
-        // Add keys with namespace prefix
-        await vault.write(key: 'key1', value: 'value1');
-        await vault.write(key: 'key2', value: 'value2');
-        // Add a key without namespace prefix directly to storage
-        mockStorage._storage['other_key'] = 'other_value';
+      test(
+        'readAll only returns namespaced keys with prefix stripped',
+        () async {
+          // Add keys with namespace prefix
+          await vault.write(key: 'key1', value: 'value1');
+          await vault.write(key: 'key2', value: 'value2');
+          // Add a key without namespace prefix directly to storage
+          mockStorage._storage['other_key'] = 'other_value';
 
-        final all = await vault.readAll();
+          final all = await vault.readAll();
 
-        expect(all, equals({'key1': 'value1', 'key2': 'value2'}));
-        expect(all.containsKey('other_key'), isFalse);
-        expect(all.containsKey('myapp_key1'), isFalse);
-      });
+          expect(all, equals({'key1': 'value1', 'key2': 'value2'}));
+          expect(all.containsKey('other_key'), isFalse);
+          expect(all.containsKey('myapp_key1'), isFalse);
+        },
+      );
     });
 
     group('with empty namespace', () {
@@ -292,10 +295,7 @@ void main() {
         );
 
         await vault.write(key: 'my_api_token', value: 'secret');
-        expect(
-          mockStorage.rawStorage['myapp_my_api_token'],
-          equals('secret'),
-        );
+        expect(mockStorage.rawStorage['myapp_my_api_token'], equals('secret'));
 
         final result = await vault.read(key: 'my_api_token');
         expect(result, equals('secret'));

@@ -401,7 +401,13 @@ void main() {
           doorSide: WallSide.right,
           doorPosition: 5,
         );
-        expect(event.props, ['AWS', RoomType.aws, 'us-east-1', WallSide.right, 5]);
+        expect(event.props, [
+          'AWS',
+          RoomType.aws,
+          'us-east-1',
+          WallSide.right,
+          5,
+        ]);
       });
     });
 

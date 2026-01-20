@@ -24,11 +24,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: InfoPanel(
-              title: 'title',
-              icon: Icons.dns,
-              children: [],
-            ),
+            body: InfoPanel(title: 'title', icon: Icons.dns, children: []),
           ),
         ),
       );
@@ -43,10 +39,7 @@ void main() {
             body: InfoPanel(
               title: 'title',
               icon: Icons.info,
-              children: [
-                Text('child 1'),
-                Text('child 2'),
-              ],
+              children: [Text('child 1'), Text('child 2')],
             ),
           ),
         ),
@@ -60,11 +53,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: InfoPanel(
-              title: 'title',
-              icon: Icons.info,
-              children: [],
-            ),
+            body: InfoPanel(title: 'title', icon: Icons.info, children: []),
           ),
         ),
       );
@@ -85,11 +74,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: InfoPanel(
-              title: 'title',
-              icon: Icons.info,
-              children: [],
-            ),
+            body: InfoPanel(title: 'title', icon: Icons.info, children: []),
           ),
         ),
       );

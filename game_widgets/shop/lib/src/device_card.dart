@@ -63,11 +63,7 @@ class DeviceCard extends StatelessWidget {
                         color: _deviceColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(
-                        _deviceIcon,
-                        color: _deviceColor,
-                        size: 32,
-                      ),
+                      child: Icon(_deviceIcon, color: _deviceColor, size: 32),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -119,10 +115,7 @@ class DeviceCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   template.description,
-                  style: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
                 ),
               ],
             ),

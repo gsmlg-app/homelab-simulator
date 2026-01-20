@@ -69,16 +69,16 @@ class CloudServiceModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'provider': provider.name,
-        'category': category.name,
-        'serviceType': serviceType,
-        'position': position.toJson(),
-        'width': width,
-        'height': height,
-        'metadata': metadata,
-      };
+    'id': id,
+    'name': name,
+    'provider': provider.name,
+    'category': category.name,
+    'serviceType': serviceType,
+    'position': position.toJson(),
+    'width': width,
+    'height': height,
+    'metadata': metadata,
+  };
 
   factory CloudServiceModel.fromJson(Map<String, dynamic> json) {
     return CloudServiceModel(
@@ -96,16 +96,16 @@ class CloudServiceModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        provider,
-        category,
-        serviceType,
-        position,
-        width,
-        height,
-        metadata,
-      ];
+    id,
+    name,
+    provider,
+    category,
+    serviceType,
+    position,
+    width,
+    height,
+    metadata,
+  ];
 }
 
 /// Catalog of available cloud services
@@ -303,7 +303,9 @@ class CloudServiceCatalog {
     ),
   ];
 
-  static List<CloudServiceTemplate> getServicesForProvider(CloudProvider provider) {
+  static List<CloudServiceTemplate> getServicesForProvider(
+    CloudProvider provider,
+  ) {
     return switch (provider) {
       CloudProvider.aws => awsServices,
       CloudProvider.gcp => gcpServices,
@@ -317,13 +319,13 @@ class CloudServiceCatalog {
 
   /// Get all available services from all providers
   static List<CloudServiceTemplate> get allServices => [
-        ...awsServices,
-        ...gcpServices,
-        ...vultrServices,
-        ...cloudflareServices,
-        ...azureServices,
-        ...digitalOceanServices,
-      ];
+    ...awsServices,
+    ...gcpServices,
+    ...vultrServices,
+    ...cloudflareServices,
+    ...azureServices,
+    ...digitalOceanServices,
+  ];
 }
 
 /// Template for creating cloud service instances

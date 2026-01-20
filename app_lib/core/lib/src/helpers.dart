@@ -14,7 +14,7 @@ class GameConstants {
 (double, double) gridToPixel(GridPosition pos) {
   return (
     pos.x * GameConstants.tileSize.toDouble(),
-    pos.y * GameConstants.tileSize.toDouble()
+    pos.y * GameConstants.tileSize.toDouble(),
   );
 }
 

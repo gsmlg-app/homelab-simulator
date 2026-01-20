@@ -10,11 +10,11 @@ enum WallSide {
 
   /// Get the opposite wall side
   WallSide get opposite => switch (this) {
-        WallSide.top => WallSide.bottom,
-        WallSide.bottom => WallSide.top,
-        WallSide.left => WallSide.right,
-        WallSide.right => WallSide.left,
-      };
+    WallSide.top => WallSide.bottom,
+    WallSide.bottom => WallSide.top,
+    WallSide.left => WallSide.right,
+    WallSide.right => WallSide.left,
+  };
 }
 
 /// A door connecting two rooms
@@ -74,11 +74,11 @@ class DoorModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'targetRoomId': targetRoomId,
-        'wallSide': wallSide.name,
-        'wallPosition': wallPosition,
-      };
+    'id': id,
+    'targetRoomId': targetRoomId,
+    'wallSide': wallSide.name,
+    'wallPosition': wallPosition,
+  };
 
   factory DoorModel.fromJson(Map<String, dynamic> json) {
     return DoorModel(

@@ -16,18 +16,18 @@ class PlayerComponent extends PositionComponent
     GridPosition initialPosition = GameConstants.playerStartPosition,
     this.tileSize = GameConstants.tileSize,
     this.moveSpeed = 150,
-  })  : _gridPosition = initialPosition,
-        _targetPosition = Vector2(
-          initialPosition.x * tileSize,
-          initialPosition.y * tileSize,
-        ),
-        super(
-          position: Vector2(
-            initialPosition.x * tileSize,
-            initialPosition.y * tileSize,
-          ),
-          size: Vector2.all(tileSize),
-        );
+  }) : _gridPosition = initialPosition,
+       _targetPosition = Vector2(
+         initialPosition.x * tileSize,
+         initialPosition.y * tileSize,
+       ),
+       super(
+         position: Vector2(
+           initialPosition.x * tileSize,
+           initialPosition.y * tileSize,
+         ),
+         size: Vector2.all(tileSize),
+       );
 
   GridPosition get gridPosition => _gridPosition;
 
@@ -89,11 +89,7 @@ class PlayerComponent extends PositionComponent
     final centerY = size.y / 2;
 
     // Head
-    canvas.drawCircle(
-      Offset(centerX, centerY - 4),
-      8,
-      bodyPaint,
-    );
+    canvas.drawCircle(Offset(centerX, centerY - 4), 8, bodyPaint);
 
     // Body
     canvas.drawRRect(
@@ -114,11 +110,7 @@ class PlayerComponent extends PositionComponent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    canvas.drawCircle(
-      Offset(centerX, centerY - 4),
-      8,
-      outlinePaint,
-    );
+    canvas.drawCircle(Offset(centerX, centerY - 4), 8, outlinePaint);
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(

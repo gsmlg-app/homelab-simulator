@@ -6,21 +6,19 @@ import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 void main() {
   group('DeviceInfoPanel', () {
-    final testDevice = DeviceModel(
+    const testDevice = DeviceModel(
       id: 'device-1',
       templateId: 'template-1',
       name: 'Test Server',
       type: DeviceType.server,
-      position: const GridPosition(5, 10),
+      position: GridPosition(5, 10),
       isRunning: true,
     );
 
     testWidgets('renders device name', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 
@@ -29,10 +27,8 @@ void main() {
 
     testWidgets('renders device type', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 
@@ -41,10 +37,8 @@ void main() {
 
     testWidgets('renders device position', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 
@@ -53,25 +47,22 @@ void main() {
 
     testWidgets('shows Running status when device is running', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 
       expect(find.text('Running'), findsOneWidget);
     });
 
-    testWidgets('shows Stopped status when device is not running',
-        (tester) async {
+    testWidgets('shows Stopped status when device is not running', (
+      tester,
+    ) async {
       final stoppedDevice = testDevice.copyWith(isRunning: false);
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: stoppedDevice),
-          ),
+          home: Scaffold(body: DeviceInfoPanel(device: stoppedDevice)),
         ),
       );
 
@@ -80,10 +71,8 @@ void main() {
 
     testWidgets('renders Device Info title', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 
@@ -95,9 +84,7 @@ void main() {
         final serverDevice = testDevice.copyWith(type: DeviceType.server);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: serverDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: serverDevice)),
           ),
         );
 
@@ -108,9 +95,7 @@ void main() {
         final computerDevice = testDevice.copyWith(type: DeviceType.computer);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: computerDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: computerDevice)),
           ),
         );
 
@@ -121,9 +106,7 @@ void main() {
         final phoneDevice = testDevice.copyWith(type: DeviceType.phone);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: phoneDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: phoneDevice)),
           ),
         );
 
@@ -134,9 +117,7 @@ void main() {
         final routerDevice = testDevice.copyWith(type: DeviceType.router);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: routerDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: routerDevice)),
           ),
         );
 
@@ -147,9 +128,7 @@ void main() {
         final switchDevice = testDevice.copyWith(type: DeviceType.switch_);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: switchDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: switchDevice)),
           ),
         );
 
@@ -160,9 +139,7 @@ void main() {
         final nasDevice = testDevice.copyWith(type: DeviceType.nas);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: nasDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: nasDevice)),
           ),
         );
 
@@ -173,9 +150,7 @@ void main() {
         final iotDevice = testDevice.copyWith(type: DeviceType.iot);
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: iotDevice),
-            ),
+            home: Scaffold(body: DeviceInfoPanel(device: iotDevice)),
           ),
         );
 
@@ -186,10 +161,8 @@ void main() {
     group('remove button', () {
       testWidgets('is not rendered when onRemove is null', (tester) async {
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: DeviceInfoPanel(device: testDevice),
-            ),
+          const MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
           ),
         );
 
@@ -201,10 +174,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: DeviceInfoPanel(
-                device: testDevice,
-                onRemove: () {},
-              ),
+              body: DeviceInfoPanel(device: testDevice, onRemove: () {}),
             ),
           ),
         );
@@ -236,10 +206,8 @@ void main() {
 
     testWidgets('renders all info labels', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DeviceInfoPanel(device: testDevice),
-          ),
+        const MaterialApp(
+          home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
         ),
       );
 

@@ -56,10 +56,12 @@ class GameModel extends Equatable {
       playerPosition: playerPosition ?? this.playerPosition,
       gameMode: gameMode ?? this.gameMode,
       placementMode: placementMode ?? this.placementMode,
-      selectedTemplate:
-          clearSelectedTemplate ? null : (selectedTemplate ?? this.selectedTemplate),
-      selectedCloudService:
-          clearSelectedCloudService ? null : (selectedCloudService ?? this.selectedCloudService),
+      selectedTemplate: clearSelectedTemplate
+          ? null
+          : (selectedTemplate ?? this.selectedTemplate),
+      selectedCloudService: clearSelectedCloudService
+          ? null
+          : (selectedCloudService ?? this.selectedCloudService),
       shopOpen: shopOpen ?? this.shopOpen,
     );
   }
@@ -72,12 +74,12 @@ class GameModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'currentRoomId': currentRoomId,
-        'rooms': rooms.map((r) => r.toJson()).toList(),
-        'credits': credits,
-        'playerPosition': playerPosition.toJson(),
-        'gameMode': gameMode.name,
-      };
+    'currentRoomId': currentRoomId,
+    'rooms': rooms.map((r) => r.toJson()).toList(),
+    'credits': credits,
+    'playerPosition': playerPosition.toJson(),
+    'gameMode': gameMode.name,
+  };
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
     return GameModel(
@@ -87,7 +89,9 @@ class GameModel extends Equatable {
           .toList(),
       credits: json['credits'] as int? ?? GameConstants.startingCredits,
       playerPosition: json['playerPosition'] != null
-          ? GridPosition.fromJson(json['playerPosition'] as Map<String, dynamic>)
+          ? GridPosition.fromJson(
+              json['playerPosition'] as Map<String, dynamic>,
+            )
           : GameConstants.playerStartPosition,
       gameMode: json['gameMode'] != null
           ? GameMode.values.byName(json['gameMode'] as String)
@@ -100,12 +104,7 @@ class GameModel extends Equatable {
     final roomId = generateRoomId();
     return GameModel(
       currentRoomId: roomId,
-      rooms: [
-        RoomModel.serverRoom(
-          id: roomId,
-          name: 'Server Room',
-        ),
-      ],
+      rooms: [RoomModel.serverRoom(id: roomId, name: 'Server Room')],
     );
   }
 
@@ -153,9 +152,13 @@ class GameModel extends Equatable {
     // Also remove doors pointing to removed rooms
     final updatedRooms = rooms
         .where((r) => !idsToRemove.contains(r.id))
-        .map((r) => r.copyWith(
-              doors: r.doors.where((d) => !idsToRemove.contains(d.targetRoomId)).toList(),
-            ))
+        .map(
+          (r) => r.copyWith(
+            doors: r.doors
+                .where((d) => !idsToRemove.contains(d.targetRoomId))
+                .toList(),
+          ),
+        )
         .toList();
 
     // If current room was removed, switch to first available
@@ -164,30 +167,24 @@ class GameModel extends Equatable {
       newCurrentRoomId = updatedRooms.first.id;
     }
 
-    return copyWith(
-      rooms: updatedRooms,
-      currentRoomId: newCurrentRoomId,
-    );
+    return copyWith(rooms: updatedRooms, currentRoomId: newCurrentRoomId);
   }
 
   /// Navigate to a different room
   GameModel enterRoom(String roomId, GridPosition spawnPosition) {
-    return copyWith(
-      currentRoomId: roomId,
-      playerPosition: spawnPosition,
-    );
+    return copyWith(currentRoomId: roomId, playerPosition: spawnPosition);
   }
 
   @override
   List<Object?> get props => [
-        currentRoomId,
-        rooms,
-        credits,
-        playerPosition,
-        gameMode,
-        placementMode,
-        selectedTemplate,
-        selectedCloudService,
-        shopOpen,
-      ];
+    currentRoomId,
+    rooms,
+    credits,
+    playerPosition,
+    gameMode,
+    placementMode,
+    selectedTemplate,
+    selectedCloudService,
+    shopOpen,
+  ];
 }

@@ -23,22 +23,19 @@ class RoomComponent extends PositionComponent
     this.gridWidth = GameConstants.roomWidth,
     this.gridHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
-  }) : super(
-          size: Vector2(
-            gridWidth * tileSize,
-            gridHeight * tileSize,
-          ),
-        );
+  }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize));
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
     // Background
-    add(RectangleComponent(
-      size: size,
-      paint: Paint()..color = const Color(0xFF1A1A2E),
-    ));
+    add(
+      RectangleComponent(
+        size: size,
+        paint: Paint()..color = const Color(0xFF1A1A2E),
+      ),
+    );
 
     // Grid
     _grid = GridComponent(

@@ -51,7 +51,9 @@ void main() {
         expect(find.text('Low severity error'), findsOneWidget);
       });
 
-      testWidgets('shows DISMISS action when no retry provided', (tester) async {
+      testWidgets('shows DISMISS action when no retry provided', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(
@@ -99,7 +101,6 @@ void main() {
 
         expect(find.text('RETRY'), findsOneWidget);
       });
-
     });
 
     group('showError with medium severity', () {
@@ -308,8 +309,9 @@ void main() {
         );
       });
 
-      testWidgets('shows RESTART APP button when callback provided',
-          (tester) async {
+      testWidgets('shows RESTART APP button when callback provided', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(
@@ -371,10 +373,8 @@ void main() {
             home: Builder(
               builder: (context) => Scaffold(
                 body: ElevatedButton(
-                  onPressed: () => ErrorDisplay.showError(
-                    context,
-                    'Default severity error',
-                  ),
+                  onPressed: () =>
+                      ErrorDisplay.showError(context, 'Default severity error'),
                   child: const Text('Show Error'),
                 ),
               ),

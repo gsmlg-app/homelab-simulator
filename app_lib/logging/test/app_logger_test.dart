@@ -41,10 +41,7 @@ void main() {
       });
 
       test('can initialize with all parameters', () {
-        logger.initialize(
-          level: LogLevel.warning,
-          includeStackTrace: false,
-        );
+        logger.initialize(level: LogLevel.warning, includeStackTrace: false);
       });
     });
 

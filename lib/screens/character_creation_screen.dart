@@ -14,7 +14,8 @@ class CharacterCreationScreen extends StatefulWidget {
   bool get isEditing => existingCharacter != null;
 
   @override
-  State<CharacterCreationScreen> createState() => _CharacterCreationScreenState();
+  State<CharacterCreationScreen> createState() =>
+      _CharacterCreationScreenState();
 }
 
 class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
@@ -80,7 +81,8 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
       _skinTone = SkinTone.values[random.nextInt(SkinTone.values.length)];
       _hairStyle = HairStyle.values[random.nextInt(HairStyle.values.length)];
       _hairColor = HairColor.values[random.nextInt(HairColor.values.length)];
-      _outfitVariant = OutfitVariant.values[random.nextInt(OutfitVariant.values.length)];
+      _outfitVariant =
+          OutfitVariant.values[random.nextInt(OutfitVariant.values.length)];
     });
   }
 
@@ -224,7 +226,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             TextButton.icon(
               onPressed: _randomizeAll,
               icon: const Icon(Icons.shuffle, color: Colors.cyan),
-              label: const Text('Randomize', style: TextStyle(color: Colors.cyan)),
+              label: const Text(
+                'Randomize',
+                style: TextStyle(color: Colors.cyan),
+              ),
             ),
           ],
         ),
@@ -362,7 +367,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
               errorText: _nameError,
               errorStyle: const TextStyle(color: Colors.redAccent),
-              counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+              counterStyle: TextStyle(
+                color: Colors.white.withValues(alpha: 0.5),
+              ),
               filled: true,
               fillColor: const Color(0xFF252540),
               border: OutlineInputBorder(
@@ -392,10 +399,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           // Name suggestions
           const Text(
             'Or try one of these:',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white54,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.white54),
           ),
           const SizedBox(height: 12),
           Wrap(
@@ -426,16 +430,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
     return Row(
       children: [
         // Preview panel
-        Expanded(
-          flex: 2,
-          child: _buildPreviewPanel(),
-        ),
+        Expanded(flex: 2, child: _buildPreviewPanel()),
 
         // Options panel
-        Expanded(
-          flex: 3,
-          child: _buildOptionsPanel(),
-        ),
+        Expanded(flex: 3, child: _buildOptionsPanel()),
       ],
     );
   }
@@ -741,11 +739,26 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _buildSummaryRow('Gender', _gender == Gender.male ? 'Male' : 'Female'),
-                      _buildSummaryRow('Skin Tone', _skinTone.name.capitalize()),
-                      _buildSummaryRow('Hair Style', _hairStyle.name.capitalize()),
-                      _buildSummaryRow('Hair Color', _hairColor.name.capitalize()),
-                      _buildSummaryRow('Outfit', _outfitVariant.name.capitalize()),
+                      _buildSummaryRow(
+                        'Gender',
+                        _gender == Gender.male ? 'Male' : 'Female',
+                      ),
+                      _buildSummaryRow(
+                        'Skin Tone',
+                        _skinTone.name.capitalize(),
+                      ),
+                      _buildSummaryRow(
+                        'Hair Style',
+                        _hairStyle.name.capitalize(),
+                      ),
+                      _buildSummaryRow(
+                        'Hair Color',
+                        _hairColor.name.capitalize(),
+                      ),
+                      _buildSummaryRow(
+                        'Outfit',
+                        _outfitVariant.name.capitalize(),
+                      ),
                     ],
                   ),
                 ),
@@ -786,10 +799,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           ),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.white,
-            ),
+            style: const TextStyle(fontSize: 14, color: Colors.white),
           ),
         ],
       ),
@@ -817,7 +827,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white70,
                 side: const BorderSide(color: Colors.white30),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
               ),
             )
           else
@@ -838,9 +851,11 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           FilledButton.icon(
             onPressed: _currentStep == 2 ? _finish : _nextStep,
             icon: Icon(_currentStep == 2 ? Icons.check : Icons.arrow_forward),
-            label: Text(_currentStep == 2
-                ? (widget.isEditing ? 'Save' : 'Create')
-                : 'Next'),
+            label: Text(
+              _currentStep == 2
+                  ? (widget.isEditing ? 'Save' : 'Create')
+                  : 'Next',
+            ),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.cyan.shade600,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),

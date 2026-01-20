@@ -8,7 +8,10 @@ void main() {
       expect(validateCharacterName('CyberRunner').isValid, isTrue);
       expect(validateCharacterName('Player1').isValid, isTrue);
       expect(validateCharacterName('AB').isValid, isTrue); // minimum length
-      expect(validateCharacterName('1234567890123456').isValid, isTrue); // max length
+      expect(
+        validateCharacterName('1234567890123456').isValid,
+        isTrue,
+      ); // max length
     });
 
     test('returns invalid for empty names', () {
@@ -81,7 +84,11 @@ void main() {
       for (var i = 0; i < 100; i++) {
         final name = CharacterNameGenerator.generate();
         final result = validateCharacterName(name);
-        expect(result.isValid, isTrue, reason: 'Generated name "$name" should be valid');
+        expect(
+          result.isValid,
+          isTrue,
+          reason: 'Generated name "$name" should be valid',
+        );
       }
     });
   });

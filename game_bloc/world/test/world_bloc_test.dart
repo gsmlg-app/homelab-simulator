@@ -24,9 +24,7 @@ void main() {
     });
 
     test('uses custom terminal position', () {
-      final customBloc = WorldBloc(
-        terminalPosition: const GridPosition(5, 5),
-      );
+      final customBloc = WorldBloc(terminalPosition: const GridPosition(5, 5));
       expect(customBloc.terminalPosition, const GridPosition(5, 5));
       customBloc.close();
     });
@@ -36,9 +34,7 @@ void main() {
         'emits state with hovered cell',
         build: () => WorldBloc(),
         act: (bloc) => bloc.add(const CellHovered(GridPosition(3, 4))),
-        expect: () => [
-          const WorldState(hoveredCell: GridPosition(3, 4)),
-        ],
+        expect: () => [const WorldState(hoveredCell: GridPosition(3, 4))],
       );
 
       blocTest<WorldBloc, WorldState>(
@@ -61,9 +57,7 @@ void main() {
         build: () => WorldBloc(),
         seed: () => const WorldState(hoveredCell: GridPosition(3, 4)),
         act: (bloc) => bloc.add(const CellHoverEnded()),
-        expect: () => [
-          const WorldState(hoveredCell: null),
-        ],
+        expect: () => [const WorldState(hoveredCell: null)],
       );
     });
 
@@ -72,9 +66,7 @@ void main() {
         'emits state with selected entity',
         build: () => WorldBloc(),
         act: (bloc) => bloc.add(const EntitySelected('device-1')),
-        expect: () => [
-          const WorldState(selectedEntityId: 'device-1'),
-        ],
+        expect: () => [const WorldState(selectedEntityId: 'device-1')],
       );
 
       blocTest<WorldBloc, WorldState>(
@@ -97,9 +89,7 @@ void main() {
         build: () => WorldBloc(),
         seed: () => const WorldState(selectedEntityId: 'device-1'),
         act: (bloc) => bloc.add(const ClearSelection()),
-        expect: () => [
-          const WorldState(selectedEntityId: null),
-        ],
+        expect: () => [const WorldState(selectedEntityId: null)],
       );
     });
 
@@ -152,22 +142,16 @@ void main() {
       blocTest<WorldBloc, WorldState>(
         'updates player position',
         build: () => WorldBloc(),
-        act: (bloc) => bloc.add(
-          const PlayerPositionUpdated(GridPosition(5, 5)),
-        ),
-        expect: () => [
-          const WorldState(playerPosition: GridPosition(5, 5)),
-        ],
+        act: (bloc) =>
+            bloc.add(const PlayerPositionUpdated(GridPosition(5, 5))),
+        expect: () => [const WorldState(playerPosition: GridPosition(5, 5))],
       );
 
       blocTest<WorldBloc, WorldState>(
         'sets terminal interaction when adjacent to terminal',
-        build: () => WorldBloc(
-          terminalPosition: const GridPosition(2, 2),
-        ),
-        act: (bloc) => bloc.add(
-          const PlayerPositionUpdated(GridPosition(2, 3)),
-        ),
+        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        act: (bloc) =>
+            bloc.add(const PlayerPositionUpdated(GridPosition(2, 3))),
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(2, 3),
@@ -179,12 +163,9 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'sets terminal interaction when at terminal position',
-        build: () => WorldBloc(
-          terminalPosition: const GridPosition(2, 2),
-        ),
-        act: (bloc) => bloc.add(
-          const PlayerPositionUpdated(GridPosition(2, 2)),
-        ),
+        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        act: (bloc) =>
+            bloc.add(const PlayerPositionUpdated(GridPosition(2, 2))),
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(2, 2),
@@ -196,17 +177,14 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'clears terminal interaction when moving away from terminal',
-        build: () => WorldBloc(
-          terminalPosition: const GridPosition(2, 2),
-        ),
+        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
         seed: () => const WorldState(
           playerPosition: GridPosition(2, 3),
           interactableEntityId: 'terminal',
           availableInteraction: InteractionType.terminal,
         ),
-        act: (bloc) => bloc.add(
-          const PlayerPositionUpdated(GridPosition(10, 10)),
-        ),
+        act: (bloc) =>
+            bloc.add(const PlayerPositionUpdated(GridPosition(10, 10))),
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(10, 10),
@@ -218,17 +196,14 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'does not clear device interaction when moving away from terminal',
-        build: () => WorldBloc(
-          terminalPosition: const GridPosition(2, 2),
-        ),
+        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
         seed: () => const WorldState(
           playerPosition: GridPosition(5, 5),
           interactableEntityId: 'device-1',
           availableInteraction: InteractionType.device,
         ),
-        act: (bloc) => bloc.add(
-          const PlayerPositionUpdated(GridPosition(6, 6)),
-        ),
+        act: (bloc) =>
+            bloc.add(const PlayerPositionUpdated(GridPosition(6, 6))),
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(6, 6),
@@ -283,7 +258,9 @@ void main() {
     group('copyWith', () {
       test('updates hoveredCell', () {
         const original = WorldState();
-        final updated = original.copyWith(hoveredCell: const GridPosition(3, 4));
+        final updated = original.copyWith(
+          hoveredCell: const GridPosition(3, 4),
+        );
         expect(updated.hoveredCell, const GridPosition(3, 4));
       });
 
@@ -311,11 +288,14 @@ void main() {
         expect(updated.interactableEntityId, 'terminal');
       });
 
-      test('clears interactableEntityId with clearInteractableEntityId flag', () {
-        const original = WorldState(interactableEntityId: 'terminal');
-        final updated = original.copyWith(clearInteractableEntityId: true);
-        expect(updated.interactableEntityId, isNull);
-      });
+      test(
+        'clears interactableEntityId with clearInteractableEntityId flag',
+        () {
+          const original = WorldState(interactableEntityId: 'terminal');
+          final updated = original.copyWith(clearInteractableEntityId: true);
+          expect(updated.interactableEntityId, isNull);
+        },
+      );
 
       test('updates availableInteraction', () {
         const original = WorldState();
@@ -415,13 +395,22 @@ void main() {
 
     group('InteractionRequested', () {
       test('equal events are equal', () {
-        const event1 = InteractionRequested('terminal', InteractionType.terminal);
-        const event2 = InteractionRequested('terminal', InteractionType.terminal);
+        const event1 = InteractionRequested(
+          'terminal',
+          InteractionType.terminal,
+        );
+        const event2 = InteractionRequested(
+          'terminal',
+          InteractionType.terminal,
+        );
         expect(event1, event2);
       });
 
       test('different events are not equal', () {
-        const event1 = InteractionRequested('terminal', InteractionType.terminal);
+        const event1 = InteractionRequested(
+          'terminal',
+          InteractionType.terminal,
+        );
         const event2 = InteractionRequested('device-1', InteractionType.device);
         expect(event1, isNot(event2));
       });

@@ -33,8 +33,9 @@ class CharacterModel extends Equatable {
   });
 
   /// Get the sprite asset path for this character's gender
-  String get spritePath =>
-      gender == Gender.male ? GameCharacters.mainMale.path : GameCharacters.mainFemale.path;
+  String get spritePath => gender == Gender.male
+      ? GameCharacters.mainMale.path
+      : GameCharacters.mainFemale.path;
 
   CharacterModel copyWith({
     String? id,
@@ -67,19 +68,19 @@ class CharacterModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'gender': gender.name,
-        'skinTone': skinTone.name,
-        'hairStyle': hairStyle.name,
-        'hairColor': hairColor.name,
-        'outfitVariant': outfitVariant.name,
-        'createdAt': createdAt.toIso8601String(),
-        'lastPlayedAt': lastPlayedAt.toIso8601String(),
-        'totalPlayTime': totalPlayTime,
-        'level': level,
-        'credits': credits,
-      };
+    'id': id,
+    'name': name,
+    'gender': gender.name,
+    'skinTone': skinTone.name,
+    'hairStyle': hairStyle.name,
+    'hairColor': hairColor.name,
+    'outfitVariant': outfitVariant.name,
+    'createdAt': createdAt.toIso8601String(),
+    'lastPlayedAt': lastPlayedAt.toIso8601String(),
+    'totalPlayTime': totalPlayTime,
+    'level': level,
+    'credits': credits,
+  };
 
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
     return CharacterModel(
@@ -132,17 +133,17 @@ class CharacterModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        gender,
-        skinTone,
-        hairStyle,
-        hairColor,
-        outfitVariant,
-        createdAt,
-        lastPlayedAt,
-        totalPlayTime,
-        level,
-        credits,
-      ];
+    id,
+    name,
+    gender,
+    skinTone,
+    hairStyle,
+    hairColor,
+    outfitVariant,
+    createdAt,
+    lastPlayedAt,
+    totalPlayTime,
+    level,
+    credits,
+  ];
 }

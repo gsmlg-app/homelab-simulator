@@ -14,12 +14,7 @@ class GridComponent extends PositionComponent {
     this.gridHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
     this.gridColor = const Color(0x33FFFFFF),
-  }) : super(
-          size: Vector2(
-            gridWidth * tileSize,
-            gridHeight * tileSize,
-          ),
-        );
+  }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize));
 
   @override
   void render(Canvas canvas) {

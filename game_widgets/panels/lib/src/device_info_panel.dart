@@ -9,11 +9,7 @@ class DeviceInfoPanel extends StatelessWidget {
   final DeviceModel device;
   final VoidCallback? onRemove;
 
-  const DeviceInfoPanel({
-    super.key,
-    required this.device,
-    this.onRemove,
-  });
+  const DeviceInfoPanel({super.key, required this.device, this.onRemove});
 
   IconData get _deviceIcon {
     return switch (device.type) {
@@ -63,10 +59,7 @@ class DeviceInfoPanel extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              color: Colors.grey.shade400,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
           ),
           Text(
             value,

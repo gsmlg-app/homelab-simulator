@@ -119,13 +119,15 @@ class _AddRoomModalState extends State<AddRoomModal> {
   void _createRoom() {
     if (!_canCreate) return;
 
-    context.read<GameBloc>().add(GameAddRoom(
-          name: _roomName,
-          type: _selectedProvider!.type,
-          regionCode: _selectedRegion,
-          doorSide: _doorSide,
-          doorPosition: _doorPosition,
-        ));
+    context.read<GameBloc>().add(
+      GameAddRoom(
+        name: _roomName,
+        type: _selectedProvider!.type,
+        regionCode: _selectedRegion,
+        doorSide: _doorSide,
+        doorPosition: _doorPosition,
+      ),
+    );
 
     widget.onClose();
   }
@@ -137,10 +139,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
       child: Container(
         color: Colors.black54,
         child: Center(
-          child: GestureDetector(
-            onTap: () {},
-            child: _buildContent(context),
-          ),
+          child: GestureDetector(onTap: () {}, child: _buildContent(context)),
         ),
       ),
     );
@@ -312,8 +311,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
                       style: TextStyle(
                         color: isSelected ? Colors.white : Colors.white70,
                         fontSize: 16,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                     if (preset.regions.isNotEmpty)
@@ -346,9 +346,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
       },
       selectedColor: _selectedProvider?.color.withValues(alpha: 0.3),
       checkmarkColor: _selectedProvider?.color,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.white70,
-      ),
+      labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.white70),
       backgroundColor: Colors.black26,
       side: BorderSide(
         color: isSelected
@@ -423,10 +421,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 max: (_doorSide == WallSide.top || _doorSide == WallSide.bottom)
                     ? (GameConstants.roomWidth - 2).toDouble()
                     : (GameConstants.roomHeight - 2).toDouble(),
-                divisions: (_doorSide == WallSide.top ||
-                            _doorSide == WallSide.bottom)
-                        ? GameConstants.roomWidth - 3
-                        : GameConstants.roomHeight - 3,
+                divisions:
+                    (_doorSide == WallSide.top || _doorSide == WallSide.bottom)
+                    ? GameConstants.roomWidth - 3
+                    : GameConstants.roomHeight - 3,
                 onChanged: (value) {
                   setState(() => _doorPosition = value.round());
                 },
@@ -471,10 +469,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
         setState(() {
           _doorSide = side;
           // Reset position to middle when changing wall
-          final maxPos =
-              (side == WallSide.top || side == WallSide.bottom)
-                  ? GameConstants.roomWidth - 2
-                  : GameConstants.roomHeight - 2;
+          final maxPos = (side == WallSide.top || side == WallSide.bottom)
+              ? GameConstants.roomWidth - 2
+              : GameConstants.roomHeight - 2;
           _doorPosition = maxPos ~/ 2;
         });
       },
@@ -483,8 +480,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? (_selectedProvider?.color ?? Colors.purple)
-                  .withValues(alpha: 0.3)
+              ? (_selectedProvider?.color ?? Colors.purple).withValues(
+                  alpha: 0.3,
+                )
               : Colors.black26,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
@@ -536,10 +534,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 left: (i + 1) * cellSize,
                 top: 0,
                 bottom: 0,
-                child: Container(
-                  width: 1,
-                  color: Colors.grey.shade800,
-                ),
+                child: Container(width: 1, color: Colors.grey.shade800),
               );
             }),
             ...List.generate(height - 1, (i) {
@@ -547,10 +542,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 left: 0,
                 right: 0,
                 top: (i + 1) * cellSize,
-                child: Container(
-                  height: 1,
-                  color: Colors.grey.shade800,
-                ),
+                child: Container(height: 1, color: Colors.grey.shade800),
               );
             }),
             // Door indicator
@@ -565,8 +557,11 @@ class _AddRoomModalState extends State<AddRoomModal> {
                   border: Border.all(color: Colors.white, width: 2),
                 ),
                 child: const Center(
-                  child: Icon(Icons.door_front_door,
-                      color: Colors.white, size: 14),
+                  child: Icon(
+                    Icons.door_front_door,
+                    color: Colors.white,
+                    size: 14,
+                  ),
                 ),
               ),
             ),

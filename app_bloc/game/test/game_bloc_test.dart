@@ -127,26 +127,10 @@ void main() {
           bloc.add(const GameMovePlayer(Direction.right));
         },
         expect: () => [
-          isA<GameReady>().having(
-            (s) => s.model.playerPosition.y,
-            'y',
-            5,
-          ),
-          isA<GameReady>().having(
-            (s) => s.model.playerPosition.y,
-            'y',
-            6,
-          ),
-          isA<GameReady>().having(
-            (s) => s.model.playerPosition.x,
-            'x',
-            9,
-          ),
-          isA<GameReady>().having(
-            (s) => s.model.playerPosition.x,
-            'x',
-            10,
-          ),
+          isA<GameReady>().having((s) => s.model.playerPosition.y, 'y', 5),
+          isA<GameReady>().having((s) => s.model.playerPosition.y, 'y', 6),
+          isA<GameReady>().having((s) => s.model.playerPosition.x, 'x', 9),
+          isA<GameReady>().having((s) => s.model.playerPosition.x, 'x', 10),
         ],
       );
 
@@ -229,7 +213,11 @@ void main() {
         act: (bloc) => bloc.add(const GameSelectTemplate(template)),
         expect: () => [
           isA<GameReady>()
-              .having((s) => s.model.selectedTemplate, 'selectedTemplate', template)
+              .having(
+                (s) => s.model.selectedTemplate,
+                'selectedTemplate',
+                template,
+              )
               .having((s) => s.model.shopOpen, 'shopOpen', false)
               .having(
                 (s) => s.model.placementMode,
@@ -264,7 +252,11 @@ void main() {
                 'placementMode',
                 PlacementMode.none,
               )
-              .having((s) => s.model.selectedTemplate, 'selectedTemplate', isNull),
+              .having(
+                (s) => s.model.selectedTemplate,
+                'selectedTemplate',
+                isNull,
+              ),
         ],
       );
     });
@@ -418,18 +410,16 @@ void main() {
         act: (bloc) {
           final model = (bloc.state as GameReady).model;
           final newRoom = model.rooms.firstWhere((r) => r.name == 'AWS');
-          bloc.add(GameEnterRoom(
-            roomId: newRoom.id,
-            spawnPosition: const GridPosition(1, 5),
-          ));
+          bloc.add(
+            GameEnterRoom(
+              roomId: newRoom.id,
+              spawnPosition: const GridPosition(1, 5),
+            ),
+          );
         },
         expect: () => [
           isA<GameReady>()
-              .having(
-                (s) => s.model.currentRoom.name,
-                'room name',
-                'AWS',
-              )
+              .having((s) => s.model.currentRoom.name, 'room name', 'AWS')
               .having(
                 (s) => s.model.playerPosition,
                 'playerPosition',
@@ -445,10 +435,12 @@ void main() {
         'does nothing when room does not exist',
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(GameModel.initial()),
-        act: (bloc) => bloc.add(const GameEnterRoom(
-          roomId: 'nonexistent',
-          spawnPosition: GridPosition(1, 1),
-        )),
+        act: (bloc) => bloc.add(
+          const GameEnterRoom(
+            roomId: 'nonexistent',
+            spawnPosition: GridPosition(1, 1),
+          ),
+        ),
         expect: () => <GameState>[],
       );
     });
@@ -461,12 +453,14 @@ void main() {
         },
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(GameModel.initial()),
-        act: (bloc) => bloc.add(const GameAddRoom(
-          name: 'AWS',
-          type: RoomType.aws,
-          doorSide: WallSide.right,
-          doorPosition: 5,
-        )),
+        act: (bloc) => bloc.add(
+          const GameAddRoom(
+            name: 'AWS',
+            type: RoomType.aws,
+            doorSide: WallSide.right,
+            doorPosition: 5,
+          ),
+        ),
         expect: () => [
           isA<GameReady>()
               .having((s) => s.model.rooms.length, 'rooms count', 2)
@@ -488,16 +482,20 @@ void main() {
         },
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(GameModel.initial()),
-        act: (bloc) => bloc.add(const GameAddRoom(
-          name: 'us-east-1',
-          type: RoomType.aws,
-          regionCode: 'us-east-1',
-          doorSide: WallSide.bottom,
-          doorPosition: 8,
-        )),
+        act: (bloc) => bloc.add(
+          const GameAddRoom(
+            name: 'us-east-1',
+            type: RoomType.aws,
+            regionCode: 'us-east-1',
+            doorSide: WallSide.bottom,
+            doorPosition: 8,
+          ),
+        ),
         expect: () => [
           isA<GameReady>().having(
-            (s) => s.model.rooms.firstWhere((r) => r.name == 'us-east-1').regionCode,
+            (s) => s.model.rooms
+                .firstWhere((r) => r.name == 'us-east-1')
+                .regionCode,
             'regionCode',
             'us-east-1',
           ),
@@ -597,7 +595,8 @@ void main() {
             placementMode: PlacementMode.placing,
           ),
         ),
-        act: (bloc) => bloc.add(const GamePlaceCloudService(GridPosition(5, 5))),
+        act: (bloc) =>
+            bloc.add(const GamePlaceCloudService(GridPosition(5, 5))),
         expect: () => [
           isA<GameReady>()
               .having(
@@ -620,7 +619,8 @@ void main() {
         'does nothing when no cloud service selected',
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(GameModel.initial()),
-        act: (bloc) => bloc.add(const GamePlaceCloudService(GridPosition(5, 5))),
+        act: (bloc) =>
+            bloc.add(const GamePlaceCloudService(GridPosition(5, 5))),
         expect: () => <GameState>[],
       );
     });

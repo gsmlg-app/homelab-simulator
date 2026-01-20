@@ -81,10 +81,12 @@ void main() {
 
     test('max valid position is within bounds', () {
       expect(
-        isWithinBounds(const GridPosition(
-          GameConstants.roomWidth - 1,
-          GameConstants.roomHeight - 1,
-        )),
+        isWithinBounds(
+          const GridPosition(
+            GameConstants.roomWidth - 1,
+            GameConstants.roomHeight - 1,
+          ),
+        ),
         isTrue,
       );
     });
@@ -112,10 +114,7 @@ void main() {
     });
 
     test('center of room is within bounds', () {
-      expect(
-        isWithinBounds(const GridPosition(10, 6)),
-        isTrue,
-      );
+      expect(isWithinBounds(const GridPosition(10, 6)), isTrue);
     });
 
     test('playerStartPosition is within bounds', () {

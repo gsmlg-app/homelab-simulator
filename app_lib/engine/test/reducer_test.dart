@@ -40,7 +40,10 @@ void main() {
 
         // Try to move to occupied position
         final originalPos = modelWithDevice.playerPosition;
-        final result = reduce(modelWithDevice, const PlayerMoved(GridPosition(5, 5)));
+        final result = reduce(
+          modelWithDevice,
+          const PlayerMoved(GridPosition(5, 5)),
+        );
 
         expect(result.playerPosition, originalPos);
       });
@@ -78,7 +81,10 @@ void main() {
 
     group('PlacementModeChanged', () {
       test('changes placement mode', () {
-        final result = reduce(model, const PlacementModeChanged(PlacementMode.placing));
+        final result = reduce(
+          model,
+          const PlacementModeChanged(PlacementMode.placing),
+        );
         expect(result.placementMode, PlacementMode.placing);
       });
 
@@ -95,7 +101,10 @@ void main() {
           placementMode: PlacementMode.placing,
         );
 
-        final result = reduce(withTemplate, const PlacementModeChanged(PlacementMode.none));
+        final result = reduce(
+          withTemplate,
+          const PlacementModeChanged(PlacementMode.none),
+        );
 
         expect(result.placementMode, PlacementMode.none);
         expect(result.selectedTemplate, isNull);
@@ -114,7 +123,10 @@ void main() {
           placementMode: PlacementMode.placing,
         );
 
-        final result = reduce(withService, const PlacementModeChanged(PlacementMode.none));
+        final result = reduce(
+          withService,
+          const PlacementModeChanged(PlacementMode.none),
+        );
 
         expect(result.selectedCloudService, isNull);
       });
@@ -131,7 +143,10 @@ void main() {
         final result = reduce(modelWithCredits, event);
 
         expect(result.currentRoom.devices.length, 1);
-        expect(result.currentRoom.devices.first.position, const GridPosition(5, 5));
+        expect(
+          result.currentRoom.devices.first.position,
+          const GridPosition(5, 5),
+        );
         expect(result.credits, lessThan(1000)); // Cost deducted
         expect(result.placementMode, PlacementMode.none);
       });
@@ -179,7 +194,10 @@ void main() {
         final result = reduce(afterPlace, DeviceRemoved(deviceId));
 
         expect(result.currentRoom.devices.length, 0);
-        expect(result.credits, greaterThan(creditsAfterPlace)); // Partial refund
+        expect(
+          result.credits,
+          greaterThan(creditsAfterPlace),
+        ); // Partial refund
       });
     });
 
@@ -232,7 +250,10 @@ void main() {
         // Enter the room
         final result = reduce(
           modelWithRoom,
-          RoomEntered(roomId: newRoomId, spawnPosition: const GridPosition(2, 5)),
+          RoomEntered(
+            roomId: newRoomId,
+            spawnPosition: const GridPosition(2, 5),
+          ),
         );
 
         expect(result.currentRoomId, newRoomId);
@@ -297,7 +318,9 @@ void main() {
           doorPosition: 5,
         );
         final modelWithRoom = reduce(model, addEvent);
-        final newRoomId = modelWithRoom.rooms.firstWhere((r) => r.name == 'AWS').id;
+        final newRoomId = modelWithRoom.rooms
+            .firstWhere((r) => r.name == 'AWS')
+            .id;
 
         // Remove the room
         final result = reduce(modelWithRoom, RoomRemoved(newRoomId));
@@ -341,8 +364,14 @@ void main() {
         final result = reduce(model, event);
 
         expect(result.currentRoom.cloudServices.length, 1);
-        expect(result.currentRoom.cloudServices.first.position, const GridPosition(5, 5));
-        expect(result.currentRoom.cloudServices.first.provider, CloudProvider.aws);
+        expect(
+          result.currentRoom.cloudServices.first.position,
+          const GridPosition(5, 5),
+        );
+        expect(
+          result.currentRoom.cloudServices.first.provider,
+          CloudProvider.aws,
+        );
         expect(result.placementMode, PlacementMode.none);
       });
 

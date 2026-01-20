@@ -56,11 +56,15 @@ NameValidationResult validateCharacterName(String name) {
   }
 
   if (trimmed.length < CharacterNameConstants.minLength) {
-    return const NameValidationResult.invalid('Name must be at least 2 characters');
+    return const NameValidationResult.invalid(
+      'Name must be at least 2 characters',
+    );
   }
 
   if (trimmed.length > CharacterNameConstants.maxLength) {
-    return const NameValidationResult.invalid('Name cannot exceed 16 characters');
+    return const NameValidationResult.invalid(
+      'Name cannot exceed 16 characters',
+    );
   }
 
   final lowerName = trimmed.toLowerCase();
@@ -71,7 +75,9 @@ NameValidationResult validateCharacterName(String name) {
 
   for (final word in CharacterNameConstants.blockedWords) {
     if (lowerName.contains(word)) {
-      return const NameValidationResult.invalid('Name contains inappropriate content');
+      return const NameValidationResult.invalid(
+        'Name contains inappropriate content',
+      );
     }
   }
 

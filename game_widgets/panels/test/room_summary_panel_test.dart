@@ -80,9 +80,7 @@ void main() {
     testWidgets('displays room name', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: serverRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: serverRoom)),
         ),
       );
 
@@ -92,9 +90,7 @@ void main() {
     testWidgets('displays room type', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: serverRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: serverRoom)),
         ),
       );
 
@@ -104,9 +100,7 @@ void main() {
     testWidgets('displays room size', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: serverRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: serverRoom)),
         ),
       );
 
@@ -116,9 +110,7 @@ void main() {
     testWidgets('displays region code when present', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: awsRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: awsRoom)),
         ),
       );
 
@@ -128,9 +120,7 @@ void main() {
     testWidgets('shows empty state for room without objects', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: serverRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: serverRoom)),
         ),
       );
 
@@ -140,9 +130,7 @@ void main() {
     testWidgets('displays total object count', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: roomWithDevices),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: roomWithDevices)),
         ),
       );
 
@@ -153,22 +141,19 @@ void main() {
     testWidgets('displays device section when devices present', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: roomWithDevices),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: roomWithDevices)),
         ),
       );
 
       expect(find.text('Devices'), findsOneWidget);
     });
 
-    testWidgets('displays cloud services section when services present',
-        (tester) async {
+    testWidgets('displays cloud services section when services present', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: roomWithCloudServices),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: roomWithCloudServices)),
         ),
       );
 
@@ -223,13 +208,12 @@ void main() {
       expect(toggleCalled, isTrue);
     });
 
-    testWidgets('does not show expand button without onToggleExpand callback',
-        (tester) async {
+    testWidgets('does not show expand button without onToggleExpand callback', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: roomWithDevices),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: roomWithDevices)),
         ),
       );
 
@@ -239,9 +223,7 @@ void main() {
     testWidgets('displays correct icon for server room', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: serverRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: serverRoom)),
         ),
       );
 
@@ -251,9 +233,7 @@ void main() {
     testWidgets('displays correct icon for AWS room', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: awsRoom),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: awsRoom)),
         ),
       );
 
@@ -274,9 +254,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: RoomSummaryPanel(room: roomWithDoors),
-          ),
+          home: Scaffold(body: RoomSummaryPanel(room: roomWithDoors)),
         ),
       );
 
@@ -301,8 +279,9 @@ void main() {
         expect(find.text('Router'), findsOneWidget);
       });
 
-      testWidgets('shows cloud service provider breakdown when expanded',
-          (tester) async {
+      testWidgets('shows cloud service provider breakdown when expanded', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
@@ -319,8 +298,9 @@ void main() {
         expect(find.text('AWS'), findsAtLeastNWidgets(1));
       });
 
-      testWidgets('shows category breakdown under provider when expanded',
-          (tester) async {
+      testWidgets('shows category breakdown under provider when expanded', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(

@@ -122,10 +122,7 @@ void main() {
 
     group('copyWith', () {
       test('creates modified copy', () {
-        final modified = device.copyWith(
-          name: 'New Name',
-          isRunning: false,
-        );
+        final modified = device.copyWith(name: 'New Name', isRunning: false);
 
         expect(modified.name, 'New Name');
         expect(modified.isRunning, isFalse);
@@ -363,9 +360,18 @@ void main() {
   group('defaultDeviceTemplates', () {
     test('contains expected templates', () {
       expect(defaultDeviceTemplates, isNotEmpty);
-      expect(defaultDeviceTemplates.any((t) => t.type == DeviceType.server), isTrue);
-      expect(defaultDeviceTemplates.any((t) => t.type == DeviceType.router), isTrue);
-      expect(defaultDeviceTemplates.any((t) => t.type == DeviceType.nas), isTrue);
+      expect(
+        defaultDeviceTemplates.any((t) => t.type == DeviceType.server),
+        isTrue,
+      );
+      expect(
+        defaultDeviceTemplates.any((t) => t.type == DeviceType.router),
+        isTrue,
+      );
+      expect(
+        defaultDeviceTemplates.any((t) => t.type == DeviceType.nas),
+        isTrue,
+      );
     });
 
     test('all templates have required fields', () {

@@ -7,10 +7,7 @@ import 'package:app_lib_core/app_lib_core.dart';
 class InteractionHint extends StatelessWidget {
   final InteractionType interactionType;
 
-  const InteractionHint({
-    super.key,
-    required this.interactionType,
-  });
+  const InteractionHint({super.key, required this.interactionType});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +41,10 @@ class InteractionHint extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.cyan.shade800,
                     borderRadius: BorderRadius.circular(4),
@@ -61,10 +61,7 @@ class InteractionHint extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             ),

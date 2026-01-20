@@ -22,14 +22,14 @@ class DeviceTemplate extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'type': type.name,
-        'cost': cost,
-        'width': width,
-        'height': height,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'type': type.name,
+    'cost': cost,
+    'width': width,
+    'height': height,
+  };
 
   factory DeviceTemplate.fromJson(Map<String, dynamic> json) {
     return DeviceTemplate(

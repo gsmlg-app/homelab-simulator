@@ -13,48 +13,62 @@ GameModel reduce(GameModel model, DomainEvent event) {
     PlayerMoved(:final newPosition) => _handlePlayerMoved(model, newPosition),
     ShopToggled(:final isOpen) => model.copyWith(shopOpen: isOpen),
     TemplateSelected(:final template) => model.copyWith(
-        selectedTemplate: template,
-        placementMode: PlacementMode.placing,
-      ),
+      selectedTemplate: template,
+      placementMode: PlacementMode.placing,
+    ),
     PlacementModeChanged(:final mode) => model.copyWith(
-        placementMode: mode,
-        clearSelectedTemplate: mode == PlacementMode.none,
-        clearSelectedCloudService: mode == PlacementMode.none,
-      ),
-    DevicePlaced(:final templateId, :final position) =>
-      _handleDevicePlaced(model, templateId, position),
+      placementMode: mode,
+      clearSelectedTemplate: mode == PlacementMode.none,
+      clearSelectedCloudService: mode == PlacementMode.none,
+    ),
+    DevicePlaced(:final templateId, :final position) => _handleDevicePlaced(
+      model,
+      templateId,
+      position,
+    ),
     DeviceRemoved(:final deviceId) => _handleDeviceRemoved(model, deviceId),
-    CreditsChanged(:final amount) =>
-      model.copyWith(credits: model.credits + amount),
+    CreditsChanged(:final amount) => model.copyWith(
+      credits: model.credits + amount,
+    ),
     GameModeChanged(:final mode) => model.copyWith(gameMode: mode),
     GameLoaded() => model,
-    RoomEntered(:final roomId, :final spawnPosition) =>
-      model.enterRoom(roomId, spawnPosition),
+    RoomEntered(:final roomId, :final spawnPosition) => model.enterRoom(
+      roomId,
+      spawnPosition,
+    ),
     RoomAdded(
       :final name,
       :final type,
       :final regionCode,
       :final doorSide,
-      :final doorPosition
+      :final doorPosition,
     ) =>
       _handleRoomAdded(model, name, type, regionCode, doorSide, doorPosition),
     RoomRemoved(:final roomId) => model.removeRoom(roomId),
     CloudServiceSelected(:final template) => model.copyWith(
-        selectedCloudService: template,
-        placementMode: PlacementMode.placing,
-        clearSelectedTemplate: true,
-      ),
+      selectedCloudService: template,
+      placementMode: PlacementMode.placing,
+      clearSelectedTemplate: true,
+    ),
     CloudServicePlaced(
       :final provider,
       :final category,
       :final serviceType,
       :final name,
-      :final position
+      :final position,
     ) =>
       _handleCloudServicePlaced(
-          model, provider, category, serviceType, name, position),
-    CloudServiceRemoved(:final serviceId) =>
-      _handleCloudServiceRemoved(model, serviceId),
+        model,
+        provider,
+        category,
+        serviceType,
+        name,
+        position,
+      ),
+    CloudServiceRemoved(:final serviceId) => _handleCloudServiceRemoved(
+      model,
+      serviceId,
+    ),
   };
 }
 
@@ -98,11 +112,13 @@ GameModel _handleDevicePlaced(
 
   final updatedRoom = model.currentRoom.addDevice(device);
 
-  return model.copyWith(
-    credits: model.credits - template.cost,
-    placementMode: PlacementMode.none,
-    clearSelectedTemplate: true,
-  ).updateRoom(updatedRoom);
+  return model
+      .copyWith(
+        credits: model.credits - template.cost,
+        placementMode: PlacementMode.none,
+        clearSelectedTemplate: true,
+      )
+      .updateRoom(updatedRoom);
 }
 
 GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
@@ -118,9 +134,9 @@ GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
 
   final updatedRoom = model.currentRoom.removeDevice(deviceId);
 
-  return model.copyWith(
-    credits: model.credits + (template.cost ~/ 2),
-  ).updateRoom(updatedRoom);
+  return model
+      .copyWith(credits: model.credits + (template.cost ~/ 2))
+      .updateRoom(updatedRoom);
 }
 
 GameModel _handleRoomAdded(
@@ -189,7 +205,9 @@ GameModel _handleCloudServicePlaced(
   );
 
   final updatedRoom = model.currentRoom.addCloudService(service);
-  return model.updateRoom(updatedRoom).copyWith(
+  return model
+      .updateRoom(updatedRoom)
+      .copyWith(
         placementMode: PlacementMode.none,
         clearSelectedTemplate: true,
         clearSelectedCloudService: true,

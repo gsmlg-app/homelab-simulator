@@ -14,19 +14,15 @@ class PlacementGhostComponent extends PositionComponent
   bool _isValid = true;
   GridPosition? _currentPosition;
 
-  PlacementGhostComponent({
-    this.tileSize = GameConstants.tileSize,
-  }) : super(size: Vector2.all(tileSize));
+  PlacementGhostComponent({this.tileSize = GameConstants.tileSize})
+    : super(size: Vector2.all(tileSize));
 
   /// Set the device template to preview
   void setTemplate(DeviceTemplate? template) {
     _template = template;
     _cloudService = null;
     if (template != null) {
-      size = Vector2(
-        template.width * tileSize,
-        template.height * tileSize,
-      );
+      size = Vector2(template.width * tileSize, template.height * tileSize);
     }
   }
 
@@ -35,10 +31,7 @@ class PlacementGhostComponent extends PositionComponent
     _cloudService = template;
     _template = null;
     if (template != null) {
-      size = Vector2(
-        template.width * tileSize,
-        template.height * tileSize,
-      );
+      size = Vector2(template.width * tileSize, template.height * tileSize);
     }
   }
 
@@ -67,22 +60,18 @@ class PlacementGhostComponent extends PositionComponent
 
     if (hoveredCell != null && hoveredCell != _currentPosition) {
       _currentPosition = hoveredCell;
-      position = Vector2(
-        hoveredCell.x * tileSize,
-        hoveredCell.y * tileSize,
-      );
+      position = Vector2(hoveredCell.x * tileSize, hoveredCell.y * tileSize);
     }
   }
 
   @override
   void render(Canvas canvas) {
-    if ((_template == null && _cloudService == null) || _currentPosition == null) {
+    if ((_template == null && _cloudService == null) ||
+        _currentPosition == null) {
       return;
     }
 
-    final color = _isValid
-        ? const Color(0x6600FF88)
-        : const Color(0x66FF4444);
+    final color = _isValid ? const Color(0x6600FF88) : const Color(0x66FF4444);
 
     final paint = Paint()
       ..color = color
@@ -97,9 +86,7 @@ class PlacementGhostComponent extends PositionComponent
     );
 
     final borderPaint = Paint()
-      ..color = _isValid
-          ? const Color(0xFF00FF88)
-          : const Color(0xFFFF4444)
+      ..color = _isValid ? const Color(0xFF00FF88) : const Color(0xFFFF4444)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 

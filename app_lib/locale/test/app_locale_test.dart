@@ -52,8 +52,9 @@ void main() {
       expect(l10n.cancel, 'Cancel');
     });
 
-    testWidgets('l10n extension provides access to localizations',
-        (WidgetTester tester) async {
+    testWidgets('l10n extension provides access to localizations', (
+      WidgetTester tester,
+    ) async {
       late BuildContext capturedContext;
 
       await tester.pumpWidget(
@@ -115,8 +116,9 @@ void main() {
       expect(l10n.systemTheme, 'System');
     });
 
-    testWidgets('controller settings strings are available',
-        (WidgetTester tester) async {
+    testWidgets('controller settings strings are available', (
+      WidgetTester tester,
+    ) async {
       late BuildContext capturedContext;
 
       await tester.pumpWidget(

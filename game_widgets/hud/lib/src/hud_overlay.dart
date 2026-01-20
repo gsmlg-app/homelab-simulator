@@ -11,10 +11,7 @@ import 'interaction_hint.dart';
 class HudOverlay extends StatefulWidget {
   final InteractionType currentInteraction;
 
-  const HudOverlay({
-    super.key,
-    this.currentInteraction = InteractionType.none,
-  });
+  const HudOverlay({super.key, this.currentInteraction = InteractionType.none});
 
   @override
   State<HudOverlay> createState() => _HudOverlayState();
@@ -28,9 +25,7 @@ class _HudOverlayState extends State<HudOverlay> {
     return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
         if (state is! GameReady) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Stack(
@@ -129,18 +124,12 @@ class _HudOverlayState extends State<HudOverlay> {
           const SizedBox(width: 8),
           Text(
             'Placing: $templateName',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
           const SizedBox(width: 16),
           const Text(
             'Click to place • ESC to cancel',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: 12),
           ),
         ],
       ),

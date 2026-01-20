@@ -35,10 +35,7 @@ void main() {
         interceptor.logRequest(
           method: 'POST',
           url: 'https://api.example.com/users',
-          body: {
-            'name': 'Test User',
-            'email': 'test@example.com',
-          },
+          body: {'name': 'Test User', 'email': 'test@example.com'},
         );
       });
 
@@ -257,25 +254,15 @@ void main() {
 
     group('logAuth', () {
       test('logs successful login', () {
-        interceptor.logAuth(
-          action: 'login',
-          success: true,
-        );
+        interceptor.logAuth(action: 'login', success: true);
       });
 
       test('logs successful login with userId', () {
-        interceptor.logAuth(
-          action: 'login',
-          success: true,
-          userId: 'user123',
-        );
+        interceptor.logAuth(action: 'login', success: true, userId: 'user123');
       });
 
       test('logs failed login', () {
-        interceptor.logAuth(
-          action: 'login',
-          success: false,
-        );
+        interceptor.logAuth(action: 'login', success: false);
       });
 
       test('logs failed login with error', () {
@@ -287,18 +274,11 @@ void main() {
       });
 
       test('logs logout', () {
-        interceptor.logAuth(
-          action: 'logout',
-          success: true,
-          userId: 'user123',
-        );
+        interceptor.logAuth(action: 'logout', success: true, userId: 'user123');
       });
 
       test('logs token refresh', () {
-        interceptor.logAuth(
-          action: 'token_refresh',
-          success: true,
-        );
+        interceptor.logAuth(action: 'token_refresh', success: true);
       });
     });
 

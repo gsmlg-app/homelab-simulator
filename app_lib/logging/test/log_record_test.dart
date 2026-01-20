@@ -50,8 +50,14 @@ void main() {
       );
       final after = DateTime.now();
 
-      expect(record.time.isAfter(before) || record.time.isAtSameMomentAs(before), isTrue);
-      expect(record.time.isBefore(after) || record.time.isAtSameMomentAs(after), isTrue);
+      expect(
+        record.time.isAfter(before) || record.time.isAtSameMomentAs(before),
+        isTrue,
+      );
+      expect(
+        record.time.isBefore(after) || record.time.isAtSameMomentAs(after),
+        isTrue,
+      );
     });
 
     group('copyWith', () {

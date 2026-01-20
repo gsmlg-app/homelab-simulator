@@ -15,12 +15,12 @@ class TerminalComponent extends PositionComponent
     this.gridPosition = GameConstants.terminalPosition,
     this.tileSize = GameConstants.tileSize,
   }) : super(
-          position: Vector2(
-            gridPosition.x * tileSize,
-            gridPosition.y * tileSize,
-          ),
-          size: Vector2.all(tileSize),
-        );
+         position: Vector2(
+           gridPosition.x * tileSize,
+           gridPosition.y * tileSize,
+         ),
+         size: Vector2.all(tileSize),
+       );
 
   @override
   void render(Canvas canvas) {
@@ -45,10 +45,7 @@ class TerminalComponent extends PositionComponent
       ..color = screenColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawRect(
-      Rect.fromLTWH(6, 6, size.x - 12, size.y - 16),
-      screenPaint,
-    );
+    canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 16), screenPaint);
 
     // Highlight border when interactable
     if (_isHighlighted) {

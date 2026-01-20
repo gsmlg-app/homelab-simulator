@@ -293,7 +293,9 @@ void main() {
 
   group('CloudServiceCatalog', () {
     test('getServicesForProvider returns AWS services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.aws);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.aws,
+      );
 
       expect(services, isNotEmpty);
       expect(services.every((s) => s.provider == CloudProvider.aws), isTrue);
@@ -303,7 +305,9 @@ void main() {
     });
 
     test('getServicesForProvider returns GCP services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.gcp);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.gcp,
+      );
 
       expect(services, isNotEmpty);
       expect(services.every((s) => s.provider == CloudProvider.gcp), isTrue);
@@ -312,7 +316,9 @@ void main() {
     });
 
     test('getServicesForProvider returns Azure services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.azure);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.azure,
+      );
 
       expect(services, isNotEmpty);
       expect(services.every((s) => s.provider == CloudProvider.azure), isTrue);
@@ -321,16 +327,23 @@ void main() {
     });
 
     test('getServicesForProvider returns Cloudflare services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.cloudflare);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.cloudflare,
+      );
 
       expect(services, isNotEmpty);
-      expect(services.every((s) => s.provider == CloudProvider.cloudflare), isTrue);
+      expect(
+        services.every((s) => s.provider == CloudProvider.cloudflare),
+        isTrue,
+      );
       expect(services.any((s) => s.serviceType == 'Workers'), isTrue);
       expect(services.any((s) => s.serviceType == 'R2'), isTrue);
     });
 
     test('getServicesForProvider returns Vultr services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.vultr);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.vultr,
+      );
 
       expect(services, isNotEmpty);
       expect(services.every((s) => s.provider == CloudProvider.vultr), isTrue);
@@ -338,15 +351,22 @@ void main() {
     });
 
     test('getServicesForProvider returns DigitalOcean services', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.digitalOcean);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.digitalOcean,
+      );
 
       expect(services, isNotEmpty);
-      expect(services.every((s) => s.provider == CloudProvider.digitalOcean), isTrue);
+      expect(
+        services.every((s) => s.provider == CloudProvider.digitalOcean),
+        isTrue,
+      );
       expect(services.any((s) => s.serviceType == 'Droplet'), isTrue);
     });
 
     test('getServicesForProvider returns empty for none', () {
-      final services = CloudServiceCatalog.getServicesForProvider(CloudProvider.none);
+      final services = CloudServiceCatalog.getServicesForProvider(
+        CloudProvider.none,
+      );
 
       expect(services, isEmpty);
     });
@@ -358,9 +378,15 @@ void main() {
       expect(services.any((s) => s.provider == CloudProvider.aws), isTrue);
       expect(services.any((s) => s.provider == CloudProvider.gcp), isTrue);
       expect(services.any((s) => s.provider == CloudProvider.azure), isTrue);
-      expect(services.any((s) => s.provider == CloudProvider.cloudflare), isTrue);
+      expect(
+        services.any((s) => s.provider == CloudProvider.cloudflare),
+        isTrue,
+      );
       expect(services.any((s) => s.provider == CloudProvider.vultr), isTrue);
-      expect(services.any((s) => s.provider == CloudProvider.digitalOcean), isTrue);
+      expect(
+        services.any((s) => s.provider == CloudProvider.digitalOcean),
+        isTrue,
+      );
     });
 
     test('all templates have required fields', () {
@@ -375,7 +401,9 @@ void main() {
     });
 
     test('all service categories are covered', () {
-      final allCategories = CloudServiceCatalog.allServices.map((s) => s.category).toSet();
+      final allCategories = CloudServiceCatalog.allServices
+          .map((s) => s.category)
+          .toSet();
 
       expect(allCategories, contains(ServiceCategory.compute));
       expect(allCategories, contains(ServiceCategory.storage));

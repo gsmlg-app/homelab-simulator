@@ -19,9 +19,7 @@ class DoorComponent extends PositionComponent
     this.roomWidth = GameConstants.roomWidth,
     this.roomHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
-  }) : super(
-          size: Vector2.all(tileSize),
-        );
+  }) : super(size: Vector2.all(tileSize));
 
   GridPosition get gridPosition => door.getPosition(roomWidth, roomHeight);
 
@@ -55,10 +53,7 @@ class DoorComponent extends PositionComponent
       ..color = doorColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawRect(
-      Rect.fromLTWH(6, 6, size.x - 12, size.y - 12),
-      doorPaint,
-    );
+    canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 12), doorPaint);
 
     // Door handle
     final handlePaint = Paint()
@@ -66,11 +61,7 @@ class DoorComponent extends PositionComponent
       ..style = PaintingStyle.fill;
 
     final handleX = door.wallSide == WallSide.left ? size.x - 12 : 8.0;
-    canvas.drawCircle(
-      Offset(handleX, size.y / 2),
-      3,
-      handlePaint,
-    );
+    canvas.drawCircle(Offset(handleX, size.y / 2), 3, handlePaint);
 
     // Arrow indicator showing direction
     _drawArrow(canvas);

@@ -30,10 +30,7 @@ class HomelabGame extends FlameGame
   final List<DoorComponent> _doorComponents = [];
   String? _currentRoomId;
 
-  HomelabGame({
-    required this.gameBloc,
-    required this.worldBloc,
-  });
+  HomelabGame({required this.gameBloc, required this.worldBloc});
 
   @override
   Future<void> onLoad() async {
@@ -41,9 +38,7 @@ class HomelabGame extends FlameGame
     await add(
       FlameBlocProvider<WorldBloc, WorldState>.value(
         value: worldBloc,
-        children: [
-          _buildWorld(),
-        ],
+        children: [_buildWorld()],
       ),
     );
 
@@ -130,9 +125,7 @@ class HomelabGame extends FlameGame
     return Component(
       children: [
         _room = RoomComponent(),
-        _player = PlayerComponent(
-          initialPosition: _getInitialPlayerPosition(),
-        ),
+        _player = PlayerComponent(initialPosition: _getInitialPlayerPosition()),
       ],
     );
   }
@@ -189,10 +182,12 @@ class HomelabGame extends FlameGame
   void _showPlacementGhost(DeviceTemplate template) {
     if (_placementGhost == null) {
       _placementGhost = PlacementGhostComponent();
-      add(FlameBlocProvider<WorldBloc, WorldState>.value(
-        value: worldBloc,
-        children: [_placementGhost!],
-      ));
+      add(
+        FlameBlocProvider<WorldBloc, WorldState>.value(
+          value: worldBloc,
+          children: [_placementGhost!],
+        ),
+      );
     }
     _placementGhost!.setTemplate(template);
   }
@@ -200,10 +195,12 @@ class HomelabGame extends FlameGame
   void _showCloudServicePlacementGhost(CloudServiceTemplate template) {
     if (_placementGhost == null) {
       _placementGhost = PlacementGhostComponent();
-      add(FlameBlocProvider<WorldBloc, WorldState>.value(
-        value: worldBloc,
-        children: [_placementGhost!],
-      ));
+      add(
+        FlameBlocProvider<WorldBloc, WorldState>.value(
+          value: worldBloc,
+          children: [_placementGhost!],
+        ),
+      );
     }
     _placementGhost!.setCloudService(template);
   }
@@ -230,10 +227,12 @@ class HomelabGame extends FlameGame
       if (!existingIds.contains(device.id)) {
         final comp = DeviceComponent(device: device);
         _deviceComponents.add(comp);
-        add(FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [comp],
-        ));
+        add(
+          FlameBlocProvider<WorldBloc, WorldState>.value(
+            value: worldBloc,
+            children: [comp],
+          ),
+        );
       }
     }
   }
@@ -250,15 +249,19 @@ class HomelabGame extends FlameGame
     });
 
     // Add components for new services
-    final existingIds = _cloudServiceComponents.map((c) => c.service.id).toSet();
+    final existingIds = _cloudServiceComponents
+        .map((c) => c.service.id)
+        .toSet();
     for (final service in services) {
       if (!existingIds.contains(service.id)) {
         final comp = CloudServiceComponent(service: service);
         _cloudServiceComponents.add(comp);
-        add(FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [comp],
-        ));
+        add(
+          FlameBlocProvider<WorldBloc, WorldState>.value(
+            value: worldBloc,
+            children: [comp],
+          ),
+        );
       }
     }
   }
@@ -274,10 +277,12 @@ class HomelabGame extends FlameGame
     for (final door in doors) {
       final comp = DoorComponent(door: door);
       _doorComponents.add(comp);
-      add(FlameBlocProvider<WorldBloc, WorldState>.value(
-        value: worldBloc,
-        children: [comp],
-      ));
+      add(
+        FlameBlocProvider<WorldBloc, WorldState>.value(
+          value: worldBloc,
+          children: [comp],
+        ),
+      );
     }
   }
 
@@ -308,10 +313,9 @@ class HomelabGame extends FlameGame
     // Calculate spawn position in target room
     final spawnPos = door.getSpawnPosition(targetRoom.width, targetRoom.height);
 
-    gameBloc.add(GameEnterRoom(
-      roomId: door.targetRoomId,
-      spawnPosition: spawnPos,
-    ));
+    gameBloc.add(
+      GameEnterRoom(roomId: door.targetRoomId, spawnPosition: spawnPos),
+    );
   }
 
   @override
@@ -351,7 +355,9 @@ class HomelabGame extends FlameGame
     // Check if tapping terminal
     if (gridPos == model.currentRoom.terminalPosition &&
         _player.gridPosition.isAdjacentTo(gridPos)) {
-      worldBloc.add(const InteractionRequested('terminal', InteractionType.terminal));
+      worldBloc.add(
+        const InteractionRequested('terminal', InteractionType.terminal),
+      );
       gameBloc.add(const GameToggleShop(isOpen: true));
       return;
     }
@@ -463,7 +469,11 @@ class HomelabGame extends FlameGame
             height = state.model.selectedCloudService!.height;
           }
 
-          final valid = state.model.currentRoom.canPlaceDevice(pos, width, height);
+          final valid = state.model.currentRoom.canPlaceDevice(
+            pos,
+            width,
+            height,
+          );
           _placementGhost!.setValid(valid);
           _room.setPlacementValid(valid);
         }

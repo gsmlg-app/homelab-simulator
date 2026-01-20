@@ -11,8 +11,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final GameStorage _storage;
 
   GameBloc({GameStorage? storage})
-      : _storage = storage ?? GameStorage(),
-        super(const GameLoading()) {
+    : _storage = storage ?? GameStorage(),
+      super(const GameLoading()) {
     on<GameInitialize>(_onInitialize);
     on<GameMovePlayer>(_onMovePlayer);
     on<GameMovePlayerTo>(_onMovePlayerTo);
@@ -95,7 +95,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final model = currentModel;
     if (model == null) return;
 
-    final newModel = reduce(model, const PlacementModeChanged(PlacementMode.none));
+    final newModel = reduce(
+      model,
+      const PlacementModeChanged(PlacementMode.none),
+    );
     emit(GameReady(newModel));
   }
 
@@ -171,10 +174,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     await _storage.save(newModel);
   }
 
-  Future<void> _onAddRoom(
-    GameAddRoom event,
-    Emitter<GameState> emit,
-  ) async {
+  Future<void> _onAddRoom(GameAddRoom event, Emitter<GameState> emit) async {
     final model = currentModel;
     if (model == null) return;
 

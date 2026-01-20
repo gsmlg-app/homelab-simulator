@@ -31,7 +31,10 @@ void main() {
       });
 
       test('serverRoom factory creates correct type', () {
-        final serverRoom = RoomModel.serverRoom(id: 'sr-1', name: 'My Server Room');
+        final serverRoom = RoomModel.serverRoom(
+          id: 'sr-1',
+          name: 'My Server Room',
+        );
 
         expect(serverRoom.id, 'sr-1');
         expect(serverRoom.name, 'My Server Room');
@@ -97,10 +100,7 @@ void main() {
       });
 
       test('fromJson handles missing optional fields with defaults', () {
-        final json = {
-          'id': 'room-2',
-          'name': 'Minimal Room',
-        };
+        final json = {'id': 'room-2', 'name': 'Minimal Room'};
 
         final restored = RoomModel.fromJson(json);
 
@@ -159,10 +159,7 @@ void main() {
 
     group('copyWith', () {
       test('creates modified copy', () {
-        final modified = room.copyWith(
-          name: 'New Name',
-          type: RoomType.aws,
-        );
+        final modified = room.copyWith(name: 'New Name', type: RoomType.aws);
 
         expect(modified.name, 'New Name');
         expect(modified.type, RoomType.aws);
@@ -220,30 +217,54 @@ void main() {
         expect(roomWithDevice.isCellOccupied(const GridPosition(6, 5)), isTrue);
         expect(roomWithDevice.isCellOccupied(const GridPosition(5, 6)), isTrue);
         expect(roomWithDevice.isCellOccupied(const GridPosition(6, 6)), isTrue);
-        expect(roomWithDevice.isCellOccupied(const GridPosition(4, 5)), isFalse);
-        expect(roomWithDevice.isCellOccupied(const GridPosition(7, 5)), isFalse);
+        expect(
+          roomWithDevice.isCellOccupied(const GridPosition(4, 5)),
+          isFalse,
+        );
+        expect(
+          roomWithDevice.isCellOccupied(const GridPosition(7, 5)),
+          isFalse,
+        );
       });
 
       test('isCellOccupied returns true for service cells', () {
         final roomWithService = room.addCloudService(service);
 
-        expect(roomWithService.isCellOccupied(const GridPosition(10, 10)), isTrue);
-        expect(roomWithService.isCellOccupied(const GridPosition(10, 11)), isFalse);
+        expect(
+          roomWithService.isCellOccupied(const GridPosition(10, 10)),
+          isTrue,
+        );
+        expect(
+          roomWithService.isCellOccupied(const GridPosition(10, 11)),
+          isFalse,
+        );
       });
 
       test('getDeviceAt returns correct device', () {
         final roomWithDevice = room.addDevice(device);
 
-        expect(roomWithDevice.getDeviceAt(const GridPosition(5, 5))?.id, 'dev-1');
-        expect(roomWithDevice.getDeviceAt(const GridPosition(6, 6))?.id, 'dev-1');
+        expect(
+          roomWithDevice.getDeviceAt(const GridPosition(5, 5))?.id,
+          'dev-1',
+        );
+        expect(
+          roomWithDevice.getDeviceAt(const GridPosition(6, 6))?.id,
+          'dev-1',
+        );
         expect(roomWithDevice.getDeviceAt(const GridPosition(4, 4)), isNull);
       });
 
       test('getCloudServiceAt returns correct service', () {
         final roomWithService = room.addCloudService(service);
 
-        expect(roomWithService.getCloudServiceAt(const GridPosition(10, 10))?.id, 'svc-1');
-        expect(roomWithService.getCloudServiceAt(const GridPosition(11, 11)), isNull);
+        expect(
+          roomWithService.getCloudServiceAt(const GridPosition(10, 10))?.id,
+          'svc-1',
+        );
+        expect(
+          roomWithService.getCloudServiceAt(const GridPosition(11, 11)),
+          isNull,
+        );
       });
     });
 
@@ -389,7 +410,9 @@ void main() {
           position: GridPosition(12, 10),
         );
 
-        final roomWithServices = room.addCloudService(service1).addCloudService(service2);
+        final roomWithServices = room
+            .addCloudService(service1)
+            .addCloudService(service2);
         expect(roomWithServices.cloudServices.length, 2);
 
         final roomAfterRemove = roomWithServices.removeCloudService('svc-1');
@@ -422,9 +445,18 @@ void main() {
         );
         final roomWithDevice = room.addDevice(device);
 
-        expect(roomWithDevice.canPlaceDevice(const GridPosition(5, 5), 1, 1), isFalse);
-        expect(roomWithDevice.canPlaceDevice(const GridPosition(4, 4), 2, 2), isFalse);
-        expect(roomWithDevice.canPlaceDevice(const GridPosition(8, 8), 1, 1), isTrue);
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(5, 5), 1, 1),
+          isFalse,
+        );
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(4, 4), 2, 2),
+          isFalse,
+        );
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(8, 8), 1, 1),
+          isTrue,
+        );
       });
 
       test('returns false for terminal position', () {
@@ -442,7 +474,10 @@ void main() {
         final roomWithDoor = room.addDoor(door);
 
         // Right wall at position 5 in 20-width room = GridPosition(19, 5)
-        expect(roomWithDoor.canPlaceDevice(const GridPosition(18, 5), 2, 1), isFalse);
+        expect(
+          roomWithDoor.canPlaceDevice(const GridPosition(18, 5), 2, 1),
+          isFalse,
+        );
       });
     });
 

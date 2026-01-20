@@ -16,15 +16,12 @@ class DeviceComponent extends PositionComponent
     required this.device,
     this.tileSize = GameConstants.tileSize,
   }) : super(
-          position: Vector2(
-            device.position.x * tileSize,
-            device.position.y * tileSize,
-          ),
-          size: Vector2(
-            device.width * tileSize,
-            device.height * tileSize,
-          ),
-        );
+         position: Vector2(
+           device.position.x * tileSize,
+           device.position.y * tileSize,
+         ),
+         size: Vector2(device.width * tileSize, device.height * tileSize),
+       );
 
   Color get _deviceColor {
     return switch (device.type) {
@@ -67,11 +64,7 @@ class DeviceComponent extends PositionComponent
           : const Color(0xFF666666)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      Offset(size.x - 10, 10),
-      3,
-      detailPaint,
-    );
+    canvas.drawCircle(Offset(size.x - 10, 10), 3, detailPaint);
 
     // Selection highlight
     if (_isSelected) {

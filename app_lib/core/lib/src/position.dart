@@ -7,9 +7,7 @@ class GridPosition extends Equatable {
 
   const GridPosition(this.x, this.y);
 
-  const GridPosition.zero()
-      : x = 0,
-        y = 0;
+  const GridPosition.zero() : x = 0, y = 0;
 
   GridPosition copyWith({int? x, int? y}) {
     return GridPosition(x ?? this.x, y ?? this.y);

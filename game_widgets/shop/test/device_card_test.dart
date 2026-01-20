@@ -168,10 +168,9 @@ void main() {
       );
 
       final priceContainer = tester.widget<Container>(
-        find.ancestor(
-          of: find.text('\$500'),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .ancestor(of: find.text('\$500'), matching: find.byType(Container))
+            .first,
       );
 
       final decoration = priceContainer.decoration as BoxDecoration;
@@ -192,10 +191,9 @@ void main() {
       );
 
       final priceContainer = tester.widget<Container>(
-        find.ancestor(
-          of: find.text('\$500'),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .ancestor(of: find.text('\$500'), matching: find.byType(Container))
+            .first,
       );
 
       final decoration = priceContainer.decoration as BoxDecoration;

@@ -11,9 +11,8 @@ class HoverCellComponent extends PositionComponent
   GridPosition? _currentHover;
   bool _isValidPlacement = true;
 
-  HoverCellComponent({
-    this.tileSize = GameConstants.tileSize,
-  }) : super(size: Vector2.all(tileSize));
+  HoverCellComponent({this.tileSize = GameConstants.tileSize})
+    : super(size: Vector2.all(tileSize));
 
   void setValidPlacement(bool valid) {
     _isValidPlacement = valid;
@@ -31,10 +30,7 @@ class HoverCellComponent extends PositionComponent
       ..color = color
       ..style = PaintingStyle.fill;
 
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.x, size.y),
-      paint,
-    );
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
 
     final borderPaint = Paint()
       ..color = _isValidPlacement
@@ -43,10 +39,7 @@ class HoverCellComponent extends PositionComponent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    canvas.drawRect(
-      Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
-      borderPaint,
-    );
+    canvas.drawRect(Rect.fromLTWH(1, 1, size.x - 2, size.y - 2), borderPaint);
   }
 
   @override
@@ -58,10 +51,7 @@ class HoverCellComponent extends PositionComponent
     if (newHover != _currentHover) {
       _currentHover = newHover;
       if (newHover != null) {
-        position = Vector2(
-          newHover.x * tileSize,
-          newHover.y * tileSize,
-        );
+        position = Vector2(newHover.x * tileSize, newHover.y * tileSize);
       }
     }
   }

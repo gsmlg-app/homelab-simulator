@@ -133,8 +133,10 @@ class _ShopModalState extends State<ShopModal>
           Row(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.green.shade800,
                   borderRadius: BorderRadius.circular(4),
@@ -153,9 +155,9 @@ class _ShopModalState extends State<ShopModal>
               IconButton(
                 icon: const Icon(Icons.close, color: Colors.white),
                 onPressed: () {
-                  context
-                      .read<GameBloc>()
-                      .add(const GameToggleShop(isOpen: false));
+                  context.read<GameBloc>().add(
+                    const GameToggleShop(isOpen: false),
+                  );
                 },
               ),
             ],
@@ -296,8 +298,7 @@ class _ShopModalState extends State<ShopModal>
     );
   }
 
-  Widget _buildRoomCard(
-      BuildContext context, RoomModel room, GameModel model) {
+  Widget _buildRoomCard(BuildContext context, RoomModel room, GameModel model) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Container(
@@ -389,7 +390,10 @@ class _ShopModalState extends State<ShopModal>
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: Colors.grey.shade900,
-        title: const Text('Delete Room?', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Delete Room?',
+          style: TextStyle(color: Colors.white),
+        ),
         content: Text(
           'Are you sure you want to delete "${room.name}"? This will also remove all child rooms and their contents.',
           style: const TextStyle(color: Colors.white70),

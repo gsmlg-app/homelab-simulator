@@ -82,7 +82,11 @@ class RoomModel extends Equatable {
   }
 
   /// Check if a position is valid for placing a device
-  bool canPlaceDevice(GridPosition position, int deviceWidth, int deviceHeight) {
+  bool canPlaceDevice(
+    GridPosition position,
+    int deviceWidth,
+    int deviceHeight,
+  ) {
     for (var dx = 0; dx < deviceWidth; dx++) {
       for (var dy = 0; dy < deviceHeight; dy++) {
         final cell = GridPosition(position.x + dx, position.y + dy);
@@ -118,9 +122,7 @@ class RoomModel extends Equatable {
 
   /// Remove a device from the room
   RoomModel removeDevice(String deviceId) {
-    return copyWith(
-      devices: devices.where((d) => d.id != deviceId).toList(),
-    );
+    return copyWith(devices: devices.where((d) => d.id != deviceId).toList());
   }
 
   /// Add a cloud service to the room
@@ -142,9 +144,7 @@ class RoomModel extends Equatable {
 
   /// Remove a door from the room
   RoomModel removeDoor(String doorId) {
-    return copyWith(
-      doors: doors.where((d) => d.id != doorId).toList(),
-    );
+    return copyWith(doors: doors.where((d) => d.id != doorId).toList());
   }
 
   /// Get count of objects by category
@@ -170,18 +170,18 @@ class RoomModel extends Equatable {
   int get totalObjectCount => devices.length + cloudServices.length;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'type': type.name,
-        'parentId': parentId,
-        'width': width,
-        'height': height,
-        'terminalPosition': terminalPosition.toJson(),
-        'devices': devices.map((d) => d.toJson()).toList(),
-        'doors': doors.map((d) => d.toJson()).toList(),
-        'cloudServices': cloudServices.map((s) => s.toJson()).toList(),
-        'regionCode': regionCode,
-      };
+    'id': id,
+    'name': name,
+    'type': type.name,
+    'parentId': parentId,
+    'width': width,
+    'height': height,
+    'terminalPosition': terminalPosition.toJson(),
+    'devices': devices.map((d) => d.toJson()).toList(),
+    'doors': doors.map((d) => d.toJson()).toList(),
+    'cloudServices': cloudServices.map((s) => s.toJson()).toList(),
+    'regionCode': regionCode,
+  };
 
   factory RoomModel.fromJson(Map<String, dynamic> json) {
     return RoomModel(
@@ -194,18 +194,25 @@ class RoomModel extends Equatable {
       width: json['width'] as int? ?? GameConstants.roomWidth,
       height: json['height'] as int? ?? GameConstants.roomHeight,
       terminalPosition: json['terminalPosition'] != null
-          ? GridPosition.fromJson(json['terminalPosition'] as Map<String, dynamic>)
+          ? GridPosition.fromJson(
+              json['terminalPosition'] as Map<String, dynamic>,
+            )
           : GameConstants.terminalPosition,
-      devices: (json['devices'] as List<dynamic>?)
+      devices:
+          (json['devices'] as List<dynamic>?)
               ?.map((d) => DeviceModel.fromJson(d as Map<String, dynamic>))
               .toList() ??
           [],
-      doors: (json['doors'] as List<dynamic>?)
+      doors:
+          (json['doors'] as List<dynamic>?)
               ?.map((d) => DoorModel.fromJson(d as Map<String, dynamic>))
               .toList() ??
           [],
-      cloudServices: (json['cloudServices'] as List<dynamic>?)
-              ?.map((s) => CloudServiceModel.fromJson(s as Map<String, dynamic>))
+      cloudServices:
+          (json['cloudServices'] as List<dynamic>?)
+              ?.map(
+                (s) => CloudServiceModel.fromJson(s as Map<String, dynamic>),
+              )
               .toList() ??
           [],
       regionCode: json['regionCode'] as String?,
@@ -213,12 +220,11 @@ class RoomModel extends Equatable {
   }
 
   /// Create a default server room
-  factory RoomModel.serverRoom({required String id, String name = 'Server Room'}) {
-    return RoomModel(
-      id: id,
-      name: name,
-      type: RoomType.serverRoom,
-    );
+  factory RoomModel.serverRoom({
+    required String id,
+    String name = 'Server Room',
+  }) {
+    return RoomModel(id: id, name: name, type: RoomType.serverRoom);
   }
 
   /// Create a provider room (AWS, GCP, etc.)
@@ -228,12 +234,7 @@ class RoomModel extends Equatable {
     required String name,
     String? parentId,
   }) {
-    return RoomModel(
-      id: id,
-      name: name,
-      type: type,
-      parentId: parentId,
-    );
+    return RoomModel(id: id, name: name, type: type, parentId: parentId);
   }
 
   /// Create a region room (us-east-1, europe-west1, etc.)
@@ -255,16 +256,16 @@ class RoomModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        type,
-        parentId,
-        width,
-        height,
-        terminalPosition,
-        devices,
-        doors,
-        cloudServices,
-        regionCode,
-      ];
+    id,
+    name,
+    type,
+    parentId,
+    width,
+    height,
+    terminalPosition,
+    devices,
+    doors,
+    cloudServices,
+    regionCode,
+  ];
 }

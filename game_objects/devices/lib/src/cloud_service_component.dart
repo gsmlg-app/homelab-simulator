@@ -16,15 +16,12 @@ class CloudServiceComponent extends PositionComponent
     required this.service,
     this.tileSize = GameConstants.tileSize,
   }) : super(
-          position: Vector2(
-            service.position.x * tileSize,
-            service.position.y * tileSize,
-          ),
-          size: Vector2(
-            service.width * tileSize,
-            service.height * tileSize,
-          ),
-        );
+         position: Vector2(
+           service.position.x * tileSize,
+           service.position.y * tileSize,
+         ),
+         size: Vector2(service.width * tileSize, service.height * tileSize),
+       );
 
   Color get _providerColor {
     return switch (service.provider) {
@@ -90,11 +87,7 @@ class CloudServiceComponent extends PositionComponent
       ..color = _providerColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      Offset(size.x - 12, 12),
-      5,
-      providerPaint,
-    );
+    canvas.drawCircle(Offset(size.x - 12, 12), 5, providerPaint);
 
     // Cloud icon representation (simplified)
     _drawCloudIcon(canvas);
@@ -140,18 +133,25 @@ class CloudServiceComponent extends PositionComponent
     final scale = size.x / 40; // Scale icon based on tile size
 
     // Draw a simple cloud shape
-    canvas.drawCircle(Offset(centerX - 5 * scale, centerY), 6 * scale, iconPaint);
-    canvas.drawCircle(Offset(centerX + 5 * scale, centerY), 6 * scale, iconPaint);
-    canvas.drawCircle(Offset(centerX, centerY - 3 * scale), 5 * scale, iconPaint);
+    canvas.drawCircle(
+      Offset(centerX - 5 * scale, centerY),
+      6 * scale,
+      iconPaint,
+    );
+    canvas.drawCircle(
+      Offset(centerX + 5 * scale, centerY),
+      6 * scale,
+      iconPaint,
+    );
+    canvas.drawCircle(
+      Offset(centerX, centerY - 3 * scale),
+      5 * scale,
+      iconPaint,
+    );
 
     // Draw bottom rectangle to complete cloud
     canvas.drawRect(
-      Rect.fromLTWH(
-        centerX - 10 * scale,
-        centerY,
-        20 * scale,
-        5 * scale,
-      ),
+      Rect.fromLTWH(centerX - 10 * scale, centerY, 20 * scale, 5 * scale),
       iconPaint,
     );
   }

@@ -65,15 +65,15 @@ class DeviceModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'templateId': templateId,
-        'name': name,
-        'type': type.name,
-        'position': position.toJson(),
-        'width': width,
-        'height': height,
-        'isRunning': isRunning,
-      };
+    'id': id,
+    'templateId': templateId,
+    'name': name,
+    'type': type.name,
+    'position': position.toJson(),
+    'width': width,
+    'height': height,
+    'isRunning': isRunning,
+  };
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) {
     return DeviceModel(
@@ -89,6 +89,14 @@ class DeviceModel extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, templateId, name, type, position, width, height, isRunning];
+  List<Object?> get props => [
+    id,
+    templateId,
+    name,
+    type,
+    position,
+    width,
+    height,
+    isRunning,
+  ];
 }

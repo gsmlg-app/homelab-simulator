@@ -82,9 +82,7 @@ class _GameScreenState extends State<GameScreen> {
               return Stack(
                 children: [
                   // Flame game
-                  Positioned.fill(
-                    child: GameWidget(game: _game),
-                  ),
+                  Positioned.fill(child: GameWidget(game: _game)),
 
                   // HUD overlay
                   Positioned.fill(
@@ -97,9 +95,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
 
                   // Shop modal
-                  const Positioned.fill(
-                    child: ShopModal(),
-                  ),
+                  const Positioned.fill(child: ShopModal()),
                 ],
               );
             },

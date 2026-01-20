@@ -30,13 +30,13 @@ class GamepadHandler extends Component {
   final GamepadButtonCallback? onButtonReleased;
 
   StreamSubscription<GamepadEvent>? _subscription;
-  
+
   // Deadzone for analog sticks
   static const double _deadzone = 0.3;
-  
+
   // Track current direction to avoid repeated events
   Direction _currentDirection = Direction.none;
-  
+
   // Debounce for D-pad
   double _dpadCooldown = 0;
   static const double _dpadCooldownTime = 0.15;

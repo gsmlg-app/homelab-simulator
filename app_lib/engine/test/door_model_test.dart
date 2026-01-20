@@ -54,10 +54,30 @@ void main() {
 
       test('round-trip serialization preserves all fields', () {
         const doors = [
-          DoorModel(id: 'd1', targetRoomId: 'r1', wallSide: WallSide.top, wallPosition: 10),
-          DoorModel(id: 'd2', targetRoomId: 'r2', wallSide: WallSide.bottom, wallPosition: 8),
-          DoorModel(id: 'd3', targetRoomId: 'r3', wallSide: WallSide.left, wallPosition: 3),
-          DoorModel(id: 'd4', targetRoomId: 'r4', wallSide: WallSide.right, wallPosition: 6),
+          DoorModel(
+            id: 'd1',
+            targetRoomId: 'r1',
+            wallSide: WallSide.top,
+            wallPosition: 10,
+          ),
+          DoorModel(
+            id: 'd2',
+            targetRoomId: 'r2',
+            wallSide: WallSide.bottom,
+            wallPosition: 8,
+          ),
+          DoorModel(
+            id: 'd3',
+            targetRoomId: 'r3',
+            wallSide: WallSide.left,
+            wallPosition: 3,
+          ),
+          DoorModel(
+            id: 'd4',
+            targetRoomId: 'r4',
+            wallSide: WallSide.right,
+            wallPosition: 6,
+          ),
         ];
 
         for (final original in doors) {
@@ -69,10 +89,7 @@ void main() {
 
     group('copyWith', () {
       test('creates modified copy', () {
-        final modified = door.copyWith(
-          targetRoomId: 'room-3',
-          wallPosition: 8,
-        );
+        final modified = door.copyWith(targetRoomId: 'room-3', wallPosition: 8);
 
         expect(modified.targetRoomId, 'room-3');
         expect(modified.wallPosition, 8);

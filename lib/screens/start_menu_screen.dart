@@ -57,11 +57,15 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
       _navigateDown();
     }
     // Confirm (A button)
-    else if (lowerKey == 'a' || lowerKey == 'button south' || lowerKey == 'cross') {
+    else if (lowerKey == 'a' ||
+        lowerKey == 'button south' ||
+        lowerKey == 'cross') {
       _confirmSelection();
     }
     // Delete (X button)
-    else if (lowerKey == 'x' || lowerKey == 'button west' || lowerKey == 'square') {
+    else if (lowerKey == 'x' ||
+        lowerKey == 'button west' ||
+        lowerKey == 'square') {
       _deleteSelected();
     }
   }
@@ -116,19 +120,15 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     // Update last played time
     final updated = character.copyWith(lastPlayedAt: DateTime.now());
     _storage.save(updated);
-    
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const GameScreen(),
-      ),
-    );
+
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
   }
 
   Future<void> _createNewCharacter() async {
     final result = await Navigator.of(context).push<CharacterModel>(
-      MaterialPageRoute(
-        builder: (_) => const CharacterCreationScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const CharacterCreationScreen()),
     );
 
     if (result == null || !mounted) return;
@@ -137,11 +137,9 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const GameScreen(),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
   }
 
   Future<void> _deleteCharacter(CharacterModel character) async {
@@ -207,10 +205,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF0D0D1A),
-                Color(0xFF1A1A2E),
-              ],
+              colors: [Color(0xFF0D0D1A), Color(0xFF1A1A2E)],
             ),
           ),
           child: SafeArea(
@@ -256,10 +251,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                       icon: const Icon(Icons.add),
                       label: const Text(
                         'CREATE NEW CHARACTER',
-                        style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 2,
-                        ),
+                        style: TextStyle(fontSize: 16, letterSpacing: 2),
                       ),
                       style: FilledButton.styleFrom(
                         backgroundColor: _selectedIndex == -1
@@ -487,7 +479,10 @@ class _CharacterCard extends StatelessWidget {
 
               // Level badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.green.shade800,
                   borderRadius: BorderRadius.circular(16),

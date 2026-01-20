@@ -27,7 +27,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.none),
+              child: const InteractionHint(
+                interactionType: InteractionType.none,
+              ),
             ),
           ),
         ),
@@ -45,7 +47,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.terminal),
+              child: const InteractionHint(
+                interactionType: InteractionType.terminal,
+              ),
             ),
           ),
         ),
@@ -63,7 +67,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.door),
+              child: const InteractionHint(
+                interactionType: InteractionType.door,
+              ),
             ),
           ),
         ),
@@ -81,7 +87,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.device),
+              child: const InteractionHint(
+                interactionType: InteractionType.device,
+              ),
             ),
           ),
         ),
@@ -99,7 +107,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.terminal),
+              child: const InteractionHint(
+                interactionType: InteractionType.terminal,
+              ),
             ),
           ),
         ),
@@ -117,7 +127,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.terminal),
+              child: const InteractionHint(
+                interactionType: InteractionType.terminal,
+              ),
             ),
           ),
         ),
@@ -134,7 +146,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.terminal),
+              child: const InteractionHint(
+                interactionType: InteractionType.terminal,
+              ),
             ),
           ),
         ),
@@ -152,7 +166,9 @@ void main() {
           home: Scaffold(
             body: BlocProvider<GameBloc>.value(
               value: mockGameBloc,
-              child: const InteractionHint(interactionType: InteractionType.terminal),
+              child: const InteractionHint(
+                interactionType: InteractionType.terminal,
+              ),
             ),
           ),
         ),

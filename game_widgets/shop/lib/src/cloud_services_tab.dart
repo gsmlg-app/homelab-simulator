@@ -35,9 +35,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             _buildCategoryFilter(),
             const Divider(height: 1),
             // Services list
-            Expanded(
-              child: _buildServicesList(provider),
-            ),
+            Expanded(child: _buildServicesList(provider)),
           ],
         );
       },
@@ -100,7 +98,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             backgroundColor: Colors.grey.shade800,
           ),
           const SizedBox(width: 8),
-          ...CloudProvider.values.where((p) => p != CloudProvider.none).map(
+          ...CloudProvider.values
+              .where((p) => p != CloudProvider.none)
+              .map(
                 (provider) => Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
@@ -193,7 +193,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
 
     // Filter by category
     if (_selectedCategory != null) {
-      services = services.where((s) => s.category == _selectedCategory).toList();
+      services = services
+          .where((s) => s.category == _selectedCategory)
+          .toList();
     }
 
     if (services.isEmpty) {
@@ -276,10 +278,7 @@ class _ServiceCard extends StatelessWidget {
   final CloudServiceTemplate template;
   final VoidCallback onTap;
 
-  const _ServiceCard({
-    required this.template,
-    required this.onTap,
-  });
+  const _ServiceCard({required this.template, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -299,7 +298,9 @@ class _ServiceCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: _getProviderColor(template.provider).withValues(alpha: 0.2),
+                color: _getProviderColor(
+                  template.provider,
+                ).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -323,10 +324,7 @@ class _ServiceCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     template.description,
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -345,10 +343,7 @@ class _ServiceCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.add_circle_outline,
-              color: Colors.cyan.shade400,
-            ),
+            Icon(Icons.add_circle_outline, color: Colors.cyan.shade400),
           ],
         ),
       ),
@@ -400,24 +395,24 @@ class _ServiceCard extends StatelessWidget {
 
 extension on CloudProvider {
   String get displayName => switch (this) {
-        CloudProvider.aws => 'AWS',
-        CloudProvider.gcp => 'GCP',
-        CloudProvider.cloudflare => 'Cloudflare',
-        CloudProvider.vultr => 'Vultr',
-        CloudProvider.azure => 'Azure',
-        CloudProvider.digitalOcean => 'DigitalOcean',
-        CloudProvider.none => 'None',
-      };
+    CloudProvider.aws => 'AWS',
+    CloudProvider.gcp => 'GCP',
+    CloudProvider.cloudflare => 'Cloudflare',
+    CloudProvider.vultr => 'Vultr',
+    CloudProvider.azure => 'Azure',
+    CloudProvider.digitalOcean => 'DigitalOcean',
+    CloudProvider.none => 'None',
+  };
 }
 
 extension on ServiceCategory {
   String get displayName => switch (this) {
-        ServiceCategory.compute => 'Compute',
-        ServiceCategory.storage => 'Storage',
-        ServiceCategory.database => 'Database',
-        ServiceCategory.networking => 'Network',
-        ServiceCategory.serverless => 'Serverless',
-        ServiceCategory.container => 'Container',
-        ServiceCategory.other => 'Other',
-      };
+    ServiceCategory.compute => 'Compute',
+    ServiceCategory.storage => 'Storage',
+    ServiceCategory.database => 'Database',
+    ServiceCategory.networking => 'Network',
+    ServiceCategory.serverless => 'Serverless',
+    ServiceCategory.container => 'Container',
+    ServiceCategory.other => 'Other',
+  };
 }

@@ -111,11 +111,13 @@ void main() {
         );
 
         final roomWithObjects = serverRoom.addDoor(door).addDevice(device);
-        final fullGame = game.updateRoom(roomWithObjects).copyWith(
-          credits: 500,
-          playerPosition: const GridPosition(3, 4),
-          gameMode: GameMode.live,
-        );
+        final fullGame = game
+            .updateRoom(roomWithObjects)
+            .copyWith(
+              credits: 500,
+              playerPosition: const GridPosition(3, 4),
+              gameMode: GameMode.live,
+            );
 
         final restored = GameModel.fromJson(fullGame.toJson());
 
@@ -129,10 +131,7 @@ void main() {
 
     group('copyWith', () {
       test('creates modified copy', () {
-        final modified = game.copyWith(
-          credits: 500,
-          shopOpen: true,
-        );
+        final modified = game.copyWith(credits: 500, shopOpen: true);
 
         expect(modified.credits, 500);
         expect(modified.shopOpen, isTrue);
@@ -208,7 +207,10 @@ void main() {
         final modifiedRoom = serverRoom.copyWith(name: 'Updated Server Room');
         final updated = game.updateRoom(modifiedRoom);
 
-        expect(updated.getRoomById('server-room-1')?.name, 'Updated Server Room');
+        expect(
+          updated.getRoomById('server-room-1')?.name,
+          'Updated Server Room',
+        );
         expect(updated.rooms.length, 2);
       });
 
