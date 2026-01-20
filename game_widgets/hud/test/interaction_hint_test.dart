@@ -127,7 +127,7 @@ void main() {
     });
 
     testWidgets('shows nothing when state is not GameReady', (tester) async {
-      when(() => mockGameBloc.state).thenReturn(GameLoading());
+      when(() => mockGameBloc.state).thenReturn(const GameLoading());
 
       await tester.pumpWidget(
         MaterialApp(

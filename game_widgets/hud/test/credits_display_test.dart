@@ -36,7 +36,7 @@ void main() {
     });
 
     testWidgets('displays zero credits when not ready', (tester) async {
-      when(() => mockGameBloc.state).thenReturn(GameLoading());
+      when(() => mockGameBloc.state).thenReturn(const GameLoading());
 
       await tester.pumpWidget(
         MaterialApp(
@@ -53,7 +53,7 @@ void main() {
     });
 
     testWidgets('displays money icon', (tester) async {
-      when(() => mockGameBloc.state).thenReturn(GameLoading());
+      when(() => mockGameBloc.state).thenReturn(const GameLoading());
 
       await tester.pumpWidget(
         MaterialApp(
