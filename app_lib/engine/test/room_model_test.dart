@@ -479,6 +479,114 @@ void main() {
           isFalse,
         );
       });
+
+      test(
+        'returns true for exact boundary placement (device fits exactly)',
+        () {
+          // Room is 20x12, so max valid position for 1x1 is (19, 11)
+          expect(room.canPlaceDevice(const GridPosition(19, 11), 1, 1), isTrue);
+          // Max valid position for 2x2 is (18, 10)
+          expect(room.canPlaceDevice(const GridPosition(18, 10), 2, 2), isTrue);
+        },
+      );
+
+      test('returns false when device extends one cell beyond boundary', () {
+        // Device at (19, 11) with width 2 extends to x=20 (out of bounds)
+        expect(room.canPlaceDevice(const GridPosition(19, 11), 2, 1), isFalse);
+        // Device at (18, 11) with height 2 extends to y=12 (out of bounds)
+        expect(room.canPlaceDevice(const GridPosition(18, 11), 1, 2), isFalse);
+      });
+
+      test('returns false for position at origin (0, 0) when valid', () {
+        // Origin should be valid unless something is there
+        expect(room.canPlaceDevice(const GridPosition(0, 0), 1, 1), isTrue);
+      });
+
+      test('returns false for cloud service occupation', () {
+        const service = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(10, 10),
+        );
+        final roomWithService = room.addCloudService(service);
+
+        expect(
+          roomWithService.canPlaceDevice(const GridPosition(10, 10), 1, 1),
+          isFalse,
+        );
+        // Adjacent should be fine
+        expect(
+          roomWithService.canPlaceDevice(const GridPosition(11, 10), 1, 1),
+          isTrue,
+        );
+      });
+
+      test('returns false for large device overlapping multiple obstacles', () {
+        const device = DeviceModel(
+          id: 'dev-1',
+          templateId: 'server-template',
+          name: 'Server',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const service = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(8, 5),
+        );
+        final roomWithBoth = room.addDevice(device).addCloudService(service);
+
+        // 4x1 device from (4, 5) to (7, 5) would hit the device at (5,5)
+        expect(
+          roomWithBoth.canPlaceDevice(const GridPosition(4, 5), 4, 1),
+          isFalse,
+        );
+        // 5x1 device from (4, 5) to (8, 5) would hit both
+        expect(
+          roomWithBoth.canPlaceDevice(const GridPosition(4, 5), 5, 1),
+          isFalse,
+        );
+      });
+
+      test('returns true for placement adjacent to obstacles', () {
+        const device = DeviceModel(
+          id: 'dev-1',
+          templateId: 'server-template',
+          name: 'Server',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+          width: 2,
+          height: 2,
+        );
+        final roomWithDevice = room.addDevice(device);
+
+        // Just below the device (y=7)
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(5, 7), 2, 2),
+          isTrue,
+        );
+        // Just to the right of the device (x=7)
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(7, 5), 2, 2),
+          isTrue,
+        );
+        // Just above the device (y=3)
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(5, 3), 2, 2),
+          isTrue,
+        );
+        // Just to the left of the device (x=3)
+        expect(
+          roomWithDevice.canPlaceDevice(const GridPosition(3, 5), 2, 2),
+          isTrue,
+        );
+      });
     });
 
     group('object counts', () {

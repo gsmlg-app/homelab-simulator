@@ -260,6 +260,112 @@ void main() {
 
         expect(afterRemove.currentRoomId, 'server-room-1');
       });
+
+      test('removeRoom handles deep nesting (3+ levels)', () {
+        // Create 4-level hierarchy: server -> aws -> region -> vpc
+        const regionRoom = RoomModel(
+          id: 'aws-region-1',
+          name: 'us-east-1',
+          type: RoomType.aws,
+          parentId: 'aws-room-1',
+        );
+        const vpcRoom = RoomModel(
+          id: 'vpc-1',
+          name: 'VPC 1',
+          type: RoomType.aws,
+          parentId: 'aws-region-1',
+        );
+
+        final deepGame = game.addRoom(regionRoom).addRoom(vpcRoom);
+        expect(deepGame.rooms.length, 4);
+
+        // Remove AWS room should cascade to region and VPC
+        final afterRemove = deepGame.removeRoom('aws-room-1');
+        expect(afterRemove.rooms.length, 1);
+        expect(afterRemove.getRoomById('aws-room-1'), isNull);
+        expect(afterRemove.getRoomById('aws-region-1'), isNull);
+        expect(afterRemove.getRoomById('vpc-1'), isNull);
+        expect(afterRemove.getRoomById('server-room-1'), isNotNull);
+      });
+
+      test('removeRoom does nothing for nonexistent room', () {
+        final afterRemove = game.removeRoom('nonexistent-room');
+        expect(afterRemove.rooms.length, game.rooms.length);
+        expect(afterRemove.currentRoomId, game.currentRoomId);
+      });
+
+      test('removeRoom handles removing middle of chain', () {
+        // server -> aws -> region: remove aws, region should also go
+        const regionRoom = RoomModel(
+          id: 'aws-region-1',
+          name: 'us-east-1',
+          type: RoomType.aws,
+          parentId: 'aws-room-1',
+        );
+        final gameWithRegion = game.addRoom(regionRoom);
+
+        final afterRemove = gameWithRegion.removeRoom('aws-room-1');
+        expect(afterRemove.rooms.length, 1);
+        expect(afterRemove.getRoomById('aws-region-1'), isNull);
+      });
+
+      test('removeRoom handles multiple sibling children', () {
+        // server -> [aws, gcp, azure]
+        const gcpRoom = RoomModel(
+          id: 'gcp-room-1',
+          name: 'GCP',
+          type: RoomType.gcp,
+          parentId: 'server-room-1',
+        );
+        const azureRoom = RoomModel(
+          id: 'azure-room-1',
+          name: 'Azure',
+          type: RoomType.azure,
+          parentId: 'server-room-1',
+        );
+
+        final gameWithSiblings = game.addRoom(gcpRoom).addRoom(azureRoom);
+        expect(gameWithSiblings.rooms.length, 4);
+
+        // Remove only aws, siblings should stay
+        final afterRemove = gameWithSiblings.removeRoom('aws-room-1');
+        expect(afterRemove.rooms.length, 3);
+        expect(afterRemove.getRoomById('aws-room-1'), isNull);
+        expect(afterRemove.getRoomById('gcp-room-1'), isNotNull);
+        expect(afterRemove.getRoomById('azure-room-1'), isNotNull);
+      });
+
+      test('removeRoom removes multiple doors pointing to removed rooms', () {
+        // Server room has doors to both AWS and GCP, remove both
+        const gcpRoom = RoomModel(
+          id: 'gcp-room-1',
+          name: 'GCP',
+          type: RoomType.gcp,
+          parentId: 'server-room-1',
+        );
+        const awsDoor = DoorModel(
+          id: 'door-aws',
+          targetRoomId: 'aws-room-1',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        const gcpDoor = DoorModel(
+          id: 'door-gcp',
+          targetRoomId: 'gcp-room-1',
+          wallSide: WallSide.top,
+          wallPosition: 3,
+        );
+
+        final serverWithDoors = serverRoom.addDoor(awsDoor).addDoor(gcpDoor);
+        var gameWithDoors = game.updateRoom(serverWithDoors).addRoom(gcpRoom);
+
+        expect(gameWithDoors.currentRoom.doors.length, 2);
+
+        // Remove AWS
+        gameWithDoors = gameWithDoors.removeRoom('aws-room-1');
+        expect(gameWithDoors.currentRoom.doors.length, 1);
+        expect(gameWithDoors.currentRoom.doors.first.id, 'door-gcp');
+      });
     });
 
     group('navigation', () {
