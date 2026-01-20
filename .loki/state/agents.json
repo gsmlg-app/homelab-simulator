@@ -4,11 +4,11 @@
     "tool_id": "orchestrator-main",
     "agent_type": "orchestrator",
     "model": "sonnet",
-    "current_task": "Bash: git add -A && git commit -m \"perf: cache arrow Path in DoorC",
+    "current_task": "Using TodoWrite...",
     "status": "active",
     "spawned_at": "2026-01-20T20:56:38.958091Z",
     "tasks_completed": [],
-    "tool_count": 218
+    "tool_count": 234
   },
   {
     "agent_id": "agent-toolu_01",
@@ -31,5 +31,16 @@
     "spawned_at": "2026-01-20T21:03:38.749968Z",
     "tasks_completed": [],
     "completed_at": "2026-01-20T21:11:08.149175Z"
+  },
+  {
+    "agent_id": "agent-toolu_01",
+    "tool_id": "toolu_014j8nnbiGVdKrh425EFr89X",
+    "agent_type": "general-purpose",
+    "model": "sonnet",
+    "current_task": "Run full test suite",
+    "status": "completed",
+    "spawned_at": "2026-01-20T21:25:16.044144Z",
+    "tasks_completed": [],
+    "completed_at": "2026-01-20T21:27:41.126475Z"
   }
 ]

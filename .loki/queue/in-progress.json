@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "Find more performance improvements"
+      "action": "Look for code quality improvements"
     }
   }
 ]

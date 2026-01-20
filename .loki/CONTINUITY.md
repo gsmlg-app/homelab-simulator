@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 39
-- **Last Commit:** ee2d067
+- **Iteration:** 40
+- **Last Commit:** e64720b
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -92,7 +92,7 @@ Two main feature sets from PRD.md:
 - **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
   - HomelabGame: 17 tests (NEW)
-- **Total:** 1197 unit tests
+- **Total:** 1198 unit tests
 
 ## Completed Work
 
@@ -182,6 +182,7 @@ Two main feature sets from PRD.md:
 - ✅ DeviceComponent: Cached selection and running light paints
 - ✅ CloudServiceComponent: Cached selection and icon paints
 - ✅ PlacementGhostComponent: Cached valid/invalid fill and border paints
+- ✅ DoorComponent: Cached arrow Path in onLoad (eliminates per-frame Path allocation)
 - ✅ Updated .gitignore to exclude all package build folders
 
 ## Next Tasks
@@ -231,6 +232,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- e64720b: perf: cache arrow Path in DoorComponent onLoad
 - ee2d067: perf: cache Paint objects in device components
 - efdb6fd: chore: remove build directories from git tracking
 - d381b79: perf: cache Paint objects in DoorComponent and HoverCellComponent
