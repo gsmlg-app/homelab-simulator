@@ -13,3 +13,7 @@ dependencies:
   equatable: ^2.0.7
   app_lib_core:
     path: ../../app_lib/core
+
+dev_dependencies:
+  test: ^1.25.0
+  bloc_test: ^10.0.0
