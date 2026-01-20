@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:game_asset_characters/game_asset_characters.dart';
 
 /// Character model representing a player's saved character
 class CharacterModel extends Equatable {
@@ -24,9 +25,8 @@ class CharacterModel extends Equatable {
   });
 
   /// Get the sprite asset path for this character's gender
-  String get spritePath => gender == Gender.male
-      ? 'packages/game_asset_sprites/assets/boy.png'
-      : 'packages/game_asset_sprites/assets/girl.png';
+  String get spritePath =>
+      gender == Gender.male ? GameCharacters.MainMale.path : GameCharacters.MainFemale.path;
 
   CharacterModel copyWith({
     String? id,

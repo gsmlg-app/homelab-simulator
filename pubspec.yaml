@@ -26,7 +26,7 @@ workspace:
   - game_objects/character
   - game_objects/devices
   - game_audio/sfx
-  - game_asset/sprites
+  - game_asset/characters
   - third_party/placeholder
 
 dependencies:
@@ -73,8 +73,8 @@ dependencies:
     path: game_widgets/shop
   game_widgets_panels:
     path: game_widgets/panels
-  game_asset_sprites:
-    path: game_asset/sprites
+  game_asset_characters:
+    path: game_asset/characters
 
 dev_dependencies:
   flutter_test:

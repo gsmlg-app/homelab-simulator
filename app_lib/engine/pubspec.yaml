@@ -12,3 +12,5 @@ dependencies:
   equatable: ^2.0.7
   app_lib_core:
     path: ../core
+  game_asset_characters:
+    path: ../../game_asset/characters
