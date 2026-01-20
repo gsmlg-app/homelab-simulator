@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "PRD M5: Polish, QA, and tests"
+      "action": "Game World M1: Update persistence for world data"
     }
   }
 ]

@@ -21,6 +21,7 @@ class InteractionHint extends StatelessWidget {
     final message = switch (interactionType) {
       InteractionType.terminal => 'Press E to open shop',
       InteractionType.device => 'Press E to interact',
+      InteractionType.door => 'Press E to enter',
       InteractionType.none => '',
     };
 

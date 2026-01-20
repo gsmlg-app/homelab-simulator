@@ -79,5 +79,40 @@ enum OutfitVariant {
 enum InteractionType {
   terminal,
   device,
+  door,
   none,
+}
+
+/// Room type presets
+enum RoomType {
+  serverRoom,
+  aws,
+  gcp,
+  cloudflare,
+  vultr,
+  azure,
+  digitalOcean,
+  custom,
+}
+
+/// Cloud provider types
+enum CloudProvider {
+  none,
+  aws,
+  gcp,
+  cloudflare,
+  vultr,
+  azure,
+  digitalOcean,
+}
+
+/// Cloud service categories
+enum ServiceCategory {
+  compute,
+  storage,
+  database,
+  networking,
+  container,
+  serverless,
+  other,
 }

@@ -5,51 +5,64 @@ Homelab Simulator - Flutter/Flame game with Melos monorepo architecture and BLoC
 
 ## Current PRD Focus
 Two main feature sets from PRD.md:
-1. **Character Creation Enhancements** - Multi-step creation flow, appearance customization, validation
-2. **Game World & Rooms** - 2D room navigation, door transitions, room/object persistence
+1. **Character Creation Enhancements** - ✅ COMPLETED
+2. **Game World & Rooms** - IN PROGRESS
 
 ## Current State
 - **Phase:** IMPLEMENTATION
 - **Last Updated:** 2026-01-20
-- **Iteration:** 1
+- **Iteration:** 4
+- **Last Commit:** df60ed7
 
 ## Completed Work
-- Initial codebase exploration completed
-- CharacterModel exists with basic fields (id, name, gender, createdAt, lastPlayedAt, totalPlayTime, level, credits)
-- StartMenuScreen has basic character creation dialog with gender selection
-- GameCharacters registry defines MainMale and MainFemale sprite sheets
-- CharacterStorage persists to SharedPreferences
-- GameBloc/WorldBloc architecture in place
-- GameModel/RoomModel/DeviceModel for game state
+
+### Character Creation PRD (100% Complete)
+- ✅ M1: Updated CharacterModel with appearance fields (skinTone, hairStyle, hairColor, outfitVariant)
+- ✅ M2: Multi-step character creation screen (Name → Appearance → Summary)
+- ✅ M3: Edit flow from character list with Edit button
+- ✅ M4: Name validation (2-16 chars, blocked words) + randomize feature
+- ✅ M5: Unit tests for CharacterModel and name validation
+
+### Files Modified/Created
+- `app_lib/core/lib/src/enums.dart` - Added SkinTone, HairStyle, HairColor, OutfitVariant enums
+- `app_lib/core/lib/src/character_name.dart` - Name validation and generator
+- `app_lib/engine/lib/src/models/character_model.dart` - New appearance fields
+- `lib/screens/character_creation_screen.dart` - New multi-step creation UI
+- `lib/screens/start_menu_screen.dart` - Edit button, cleaned up old dialog
+- `app_lib/core/test/character_name_test.dart` - Validation tests
+- `app_lib/engine/test/character_model_test.dart` - Model serialization tests
 
 ## In Progress
-- PRD Milestone 1: Updating CharacterModel with new appearance fields (skin tone, hair style/color, outfit variant)
+- Game World M1: Data model + persistence for rooms/objects
 
 ## Next Tasks
-1. Update CharacterModel with new appearance fields
-2. Create AppearanceConfig enum/model for available options
-3. Update game_asset/characters with appearance variant definitions
-4. Build multi-step character creation UI
-5. Add name validation (2-16 chars, trim whitespace, block empty/profane)
-6. Implement randomize feature
-7. Add edit character flow
+1. Review existing RoomModel, update for PRD requirements (doors, child rooms)
+2. Create WorldModel for room tree structure
+3. Add DoorModel for room transitions
+4. Add CloudServiceModel for provider objects (AWS, GCP, etc.)
+5. Update persistence layer for world/room data
+6. Build room view UI
 
 ## Architecture Decisions
 - CharacterModel uses copyWith pattern for immutability
 - Sprites defined in game_asset_characters package
 - Storage uses SharedPreferences (not Drift DB yet)
 - BLoC pattern: GameBloc for app state, WorldBloc for Flame component state
+- Character creation as full-screen route (not dialog) for better UX
 
 ## Mistakes & Learnings
-(None yet - first iteration)
+1. **Use flutter_test for packages with Flame dependencies** - Pure `test` package doesn't work with Flame due to dart:ui dependencies
 
 ## File References
 - CharacterModel: `app_lib/engine/lib/src/models/character_model.dart`
+- CharacterCreationScreen: `lib/screens/character_creation_screen.dart`
 - StartMenuScreen: `lib/screens/start_menu_screen.dart`
 - GameCharacters: `game_asset/characters/lib/src/game_characters.dart`
 - CharacterStorage: `app_lib/database/lib/src/character_storage.dart`
-- Core Enums (Gender): `app_lib/core/lib/src/enums.dart`
+- Core Enums: `app_lib/core/lib/src/enums.dart`
+- Name Validation: `app_lib/core/lib/src/character_name.dart`
 
-## Git Checkpoint
-- Starting branch: main
-- Starting commit: (to be captured on first change)
+## Git Checkpoints
+- df60ed7: test: add unit tests for character name validation and model
+- 83af0c6: feat: add multi-step character creation screen with edit flow
+- 3ac6509: feat: add character appearance fields and name validation
