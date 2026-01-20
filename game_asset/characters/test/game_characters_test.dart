@@ -68,48 +68,48 @@ void main() {
   });
 
   group('GameCharacters', () {
-    test('MainMale has correct path', () {
+    test('mainMale has correct path', () {
       expect(
-        GameCharacters.MainMale.path,
+        GameCharacters.mainMale.path,
         'packages/game_asset_characters/assets/boy.png',
       );
     });
 
-    test('MainMale has correct frame size', () {
-      expect(GameCharacters.MainMale.frameWidth, 192);
-      expect(GameCharacters.MainMale.frameHeight, 256);
+    test('mainMale has correct frame size', () {
+      expect(GameCharacters.mainMale.frameWidth, 192);
+      expect(GameCharacters.mainMale.frameHeight, 256);
     });
 
-    test('MainMale has correct grid layout', () {
-      expect(GameCharacters.MainMale.columns, 8);
-      expect(GameCharacters.MainMale.rows, 4);
+    test('mainMale has correct grid layout', () {
+      expect(GameCharacters.mainMale.columns, 8);
+      expect(GameCharacters.mainMale.rows, 4);
     });
 
-    test('MainMale has correct animation rows', () {
-      expect(GameCharacters.MainMale.idleRow, 0);
-      expect(GameCharacters.MainMale.walkRows, [1, 2, 3]);
+    test('mainMale has correct animation rows', () {
+      expect(GameCharacters.mainMale.idleRow, 0);
+      expect(GameCharacters.mainMale.walkRows, [1, 2, 3]);
     });
 
-    test('MainFemale has correct path', () {
+    test('mainFemale has correct path', () {
       expect(
-        GameCharacters.MainFemale.path,
+        GameCharacters.mainFemale.path,
         'packages/game_asset_characters/assets/girl.png',
       );
     });
 
-    test('MainFemale has correct frame size', () {
-      expect(GameCharacters.MainFemale.frameWidth, 192);
-      expect(GameCharacters.MainFemale.frameHeight, 256);
+    test('mainFemale has correct frame size', () {
+      expect(GameCharacters.mainFemale.frameWidth, 192);
+      expect(GameCharacters.mainFemale.frameHeight, 256);
     });
 
-    test('MainFemale has correct grid layout', () {
-      expect(GameCharacters.MainFemale.columns, 8);
-      expect(GameCharacters.MainFemale.rows, 4);
+    test('mainFemale has correct grid layout', () {
+      expect(GameCharacters.mainFemale.columns, 8);
+      expect(GameCharacters.mainFemale.rows, 4);
     });
 
-    test('MainFemale has correct animation rows', () {
-      expect(GameCharacters.MainFemale.idleRow, 0);
-      expect(GameCharacters.MainFemale.walkRows, [1, 2, 3]);
+    test('mainFemale has correct animation rows', () {
+      expect(GameCharacters.mainFemale.idleRow, 0);
+      expect(GameCharacters.mainFemale.walkRows, [1, 2, 3]);
     });
   });
 

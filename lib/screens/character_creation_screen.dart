@@ -442,8 +442,8 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildPreviewPanel() {
     final spriteSheet = _gender == Gender.male
-        ? GameCharacters.MainMale
-        : GameCharacters.MainFemale;
+        ? GameCharacters.mainMale
+        : GameCharacters.mainFemale;
 
     return Container(
       color: const Color(0xFF151528),
@@ -671,8 +671,8 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildSummaryStep() {
     final spriteSheet = _gender == Gender.male
-        ? GameCharacters.MainMale
-        : GameCharacters.MainFemale;
+        ? GameCharacters.mainMale
+        : GameCharacters.mainFemale;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),

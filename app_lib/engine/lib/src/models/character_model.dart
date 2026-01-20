@@ -34,7 +34,7 @@ class CharacterModel extends Equatable {
 
   /// Get the sprite asset path for this character's gender
   String get spritePath =>
-      gender == Gender.male ? GameCharacters.MainMale.path : GameCharacters.MainFemale.path;
+      gender == Gender.male ? GameCharacters.mainMale.path : GameCharacters.mainFemale.path;
 
   CharacterModel copyWith({
     String? id,
