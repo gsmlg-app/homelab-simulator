@@ -7,6 +7,10 @@ class CharacterModel extends Equatable {
   final String id;
   final String name;
   final Gender gender;
+  final SkinTone skinTone;
+  final HairStyle hairStyle;
+  final HairColor hairColor;
+  final OutfitVariant outfitVariant;
   final DateTime createdAt;
   final DateTime lastPlayedAt;
   final int totalPlayTime; // in seconds
@@ -17,6 +21,10 @@ class CharacterModel extends Equatable {
     required this.id,
     required this.name,
     required this.gender,
+    this.skinTone = SkinTone.medium,
+    this.hairStyle = HairStyle.short,
+    this.hairColor = HairColor.brown,
+    this.outfitVariant = OutfitVariant.casual,
     required this.createdAt,
     required this.lastPlayedAt,
     this.totalPlayTime = 0,
@@ -32,6 +40,10 @@ class CharacterModel extends Equatable {
     String? id,
     String? name,
     Gender? gender,
+    SkinTone? skinTone,
+    HairStyle? hairStyle,
+    HairColor? hairColor,
+    OutfitVariant? outfitVariant,
     DateTime? createdAt,
     DateTime? lastPlayedAt,
     int? totalPlayTime,
@@ -42,6 +54,10 @@ class CharacterModel extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       gender: gender ?? this.gender,
+      skinTone: skinTone ?? this.skinTone,
+      hairStyle: hairStyle ?? this.hairStyle,
+      hairColor: hairColor ?? this.hairColor,
+      outfitVariant: outfitVariant ?? this.outfitVariant,
       createdAt: createdAt ?? this.createdAt,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
       totalPlayTime: totalPlayTime ?? this.totalPlayTime,
@@ -54,6 +70,10 @@ class CharacterModel extends Equatable {
         'id': id,
         'name': name,
         'gender': gender.name,
+        'skinTone': skinTone.name,
+        'hairStyle': hairStyle.name,
+        'hairColor': hairColor.name,
+        'outfitVariant': outfitVariant.name,
         'createdAt': createdAt.toIso8601String(),
         'lastPlayedAt': lastPlayedAt.toIso8601String(),
         'totalPlayTime': totalPlayTime,
@@ -68,6 +88,18 @@ class CharacterModel extends Equatable {
       gender: json['gender'] != null
           ? Gender.values.byName(json['gender'] as String)
           : Gender.male,
+      skinTone: json['skinTone'] != null
+          ? SkinTone.values.byName(json['skinTone'] as String)
+          : SkinTone.medium,
+      hairStyle: json['hairStyle'] != null
+          ? HairStyle.values.byName(json['hairStyle'] as String)
+          : HairStyle.short,
+      hairColor: json['hairColor'] != null
+          ? HairColor.values.byName(json['hairColor'] as String)
+          : HairColor.brown,
+      outfitVariant: json['outfitVariant'] != null
+          ? OutfitVariant.values.byName(json['outfitVariant'] as String)
+          : OutfitVariant.casual,
       createdAt: DateTime.parse(json['createdAt'] as String),
       lastPlayedAt: DateTime.parse(json['lastPlayedAt'] as String),
       totalPlayTime: json['totalPlayTime'] as int? ?? 0,
@@ -76,17 +108,41 @@ class CharacterModel extends Equatable {
     );
   }
 
-  factory CharacterModel.create({required String name, required Gender gender}) {
+  factory CharacterModel.create({
+    required String name,
+    required Gender gender,
+    SkinTone skinTone = SkinTone.medium,
+    HairStyle hairStyle = HairStyle.short,
+    HairColor hairColor = HairColor.brown,
+    OutfitVariant outfitVariant = OutfitVariant.casual,
+  }) {
     final now = DateTime.now();
     return CharacterModel(
       id: generateCharacterId(),
       name: name,
       gender: gender,
+      skinTone: skinTone,
+      hairStyle: hairStyle,
+      hairColor: hairColor,
+      outfitVariant: outfitVariant,
       createdAt: now,
       lastPlayedAt: now,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, gender, createdAt, lastPlayedAt, totalPlayTime, level, credits];
+  List<Object?> get props => [
+        id,
+        name,
+        gender,
+        skinTone,
+        hairStyle,
+        hairColor,
+        outfitVariant,
+        createdAt,
+        lastPlayedAt,
+        totalPlayTime,
+        level,
+        credits,
+      ];
 }

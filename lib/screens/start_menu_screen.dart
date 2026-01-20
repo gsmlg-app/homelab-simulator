@@ -478,8 +478,8 @@ class _GenderOption extends StatelessWidget {
                 heightFactor: 1 / spriteSheet.rows,
                 child: Image.asset(
                   spriteSheet.path,
-                  width: 80 * spriteSheet.columns,
-                  height: 60 * spriteSheet.rows,
+                  width: 80.0 * spriteSheet.columns,
+                  height: 60.0 * spriteSheet.rows,
                   fit: BoxFit.contain,
                 ),
               ),

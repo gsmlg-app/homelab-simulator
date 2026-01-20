@@ -35,7 +35,7 @@ extension CharacterSpriteSheetFlame on CharacterSpriteSheet {
 
     return SpriteAnimation.fromFrameData(
       image,
-      SpriteAnimationData.variable(frames),
+      SpriteAnimationData(frames),
     );
   }
 

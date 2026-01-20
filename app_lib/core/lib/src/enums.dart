@@ -37,6 +37,44 @@ enum Gender {
   female,
 }
 
+/// Character skin tone options
+enum SkinTone {
+  light,
+  medium,
+  tan,
+  dark,
+}
+
+/// Hair style options
+enum HairStyle {
+  short,
+  medium,
+  long,
+  buzz,
+  ponytail,
+  spiky,
+}
+
+/// Hair color options
+enum HairColor {
+  black,
+  brown,
+  blonde,
+  red,
+  gray,
+  blue,
+  green,
+  purple,
+}
+
+/// Outfit variant options
+enum OutfitVariant {
+  casual,
+  formal,
+  tech,
+  sporty,
+}
+
 /// Interaction type
 enum InteractionType {
   terminal,
