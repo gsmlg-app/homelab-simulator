@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "Find more performance optimizations in game_objects"
+      "action": "Update CONTINUITY.md"
     }
   }
 ]

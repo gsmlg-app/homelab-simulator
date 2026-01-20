@@ -12,6 +12,18 @@ class DeviceComponent extends PositionComponent
   final double tileSize;
   bool _isSelected = false;
 
+  // Cached paint objects for performance
+  static final _selectPaint = Paint()
+    ..color = const Color(0xFFFFFF00)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+  static final _runningLightPaint = Paint()
+    ..color = const Color(0xFF00FF00)
+    ..style = PaintingStyle.fill;
+  static final _offLightPaint = Paint()
+    ..color = const Color(0xFF666666)
+    ..style = PaintingStyle.fill;
+
   DeviceComponent({
     required this.device,
     this.tileSize = GameConstants.tileSize,
@@ -58,27 +70,17 @@ class DeviceComponent extends PositionComponent
     );
 
     // Device lights/details
-    final detailPaint = Paint()
-      ..color = device.isRunning
-          ? const Color(0xFF00FF00)
-          : const Color(0xFF666666)
-      ..style = PaintingStyle.fill;
-
+    final detailPaint = device.isRunning ? _runningLightPaint : _offLightPaint;
     canvas.drawCircle(Offset(size.x - 10, 10), 3, detailPaint);
 
     // Selection highlight
     if (_isSelected) {
-      final selectPaint = Paint()
-        ..color = const Color(0xFFFFFF00)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
           const Radius.circular(4),
         ),
-        selectPaint,
+        _selectPaint,
       );
     }
 

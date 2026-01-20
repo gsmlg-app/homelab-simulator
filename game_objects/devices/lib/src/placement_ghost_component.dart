@@ -14,6 +14,22 @@ class PlacementGhostComponent extends PositionComponent
   bool _isValid = true;
   GridPosition? _currentPosition;
 
+  // Cached paint objects for performance
+  static final _validFillPaint = Paint()
+    ..color = const Color(0x6600FF88)
+    ..style = PaintingStyle.fill;
+  static final _invalidFillPaint = Paint()
+    ..color = const Color(0x66FF4444)
+    ..style = PaintingStyle.fill;
+  static final _validBorderPaint = Paint()
+    ..color = const Color(0xFF00FF88)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+  static final _invalidBorderPaint = Paint()
+    ..color = const Color(0xFFFF4444)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+
   PlacementGhostComponent({this.tileSize = GameConstants.tileSize})
     : super(size: Vector2.all(tileSize));
 
@@ -71,25 +87,16 @@ class PlacementGhostComponent extends PositionComponent
       return;
     }
 
-    final color = _isValid ? const Color(0x6600FF88) : const Color(0x66FF4444);
-
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
+    final fillPaint = _isValid ? _validFillPaint : _invalidFillPaint;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
         const Radius.circular(4),
       ),
-      paint,
+      fillPaint,
     );
 
-    final borderPaint = Paint()
-      ..color = _isValid ? const Color(0xFF00FF88) : const Color(0xFFFF4444)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
+    final borderPaint = _isValid ? _validBorderPaint : _invalidBorderPaint;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),

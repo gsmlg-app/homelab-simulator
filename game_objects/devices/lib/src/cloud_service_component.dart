@@ -12,6 +12,15 @@ class CloudServiceComponent extends PositionComponent
   final double tileSize;
   bool _isSelected = false;
 
+  // Cached paint objects for performance
+  static final _selectPaint = Paint()
+    ..color = const Color(0xFFFFFF00)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+  static final _iconPaint = Paint()
+    ..color = const Color(0xFFFFFFFF)
+    ..style = PaintingStyle.fill;
+
   CloudServiceComponent({
     required this.service,
     this.tileSize = GameConstants.tileSize,
@@ -94,17 +103,12 @@ class CloudServiceComponent extends PositionComponent
 
     // Selection highlight
     if (_isSelected) {
-      final selectPaint = Paint()
-        ..color = const Color(0xFFFFFF00)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
           const Radius.circular(6),
         ),
-        selectPaint,
+        _selectPaint,
       );
     }
 
@@ -124,10 +128,6 @@ class CloudServiceComponent extends PositionComponent
   }
 
   void _drawCloudIcon(Canvas canvas) {
-    final iconPaint = Paint()
-      ..color = const Color(0xFFFFFFFF)
-      ..style = PaintingStyle.fill;
-
     final centerX = size.x / 2;
     final centerY = size.y / 2;
     final scale = size.x / 40; // Scale icon based on tile size
@@ -136,23 +136,23 @@ class CloudServiceComponent extends PositionComponent
     canvas.drawCircle(
       Offset(centerX - 5 * scale, centerY),
       6 * scale,
-      iconPaint,
+      _iconPaint,
     );
     canvas.drawCircle(
       Offset(centerX + 5 * scale, centerY),
       6 * scale,
-      iconPaint,
+      _iconPaint,
     );
     canvas.drawCircle(
       Offset(centerX, centerY - 3 * scale),
       5 * scale,
-      iconPaint,
+      _iconPaint,
     );
 
     // Draw bottom rectangle to complete cloud
     canvas.drawRect(
       Rect.fromLTWH(centerX - 10 * scale, centerY, 20 * scale, 5 * scale),
-      iconPaint,
+      _iconPaint,
     );
   }
 }
