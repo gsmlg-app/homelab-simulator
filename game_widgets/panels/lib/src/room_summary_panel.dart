@@ -188,11 +188,7 @@ class RoomSummaryPanel extends StatelessWidget {
         spacing: 4,
         runSpacing: 4,
         children: counts.entries.map((e) {
-          return _buildCountChip(
-            e.key.icon,
-            e.value,
-            Colors.blue.shade700,
-          );
+          return _buildCountChip(e.key.icon, e.value, Colors.blue.shade700);
         }).toList(),
       );
     } else {
@@ -204,11 +200,7 @@ class RoomSummaryPanel extends StatelessWidget {
         spacing: 4,
         runSpacing: 4,
         children: counts.entries.map((e) {
-          return _buildCountChip(
-            e.key.icon,
-            e.value,
-            e.key.color,
-          );
+          return _buildCountChip(e.key.icon, e.value, e.key.color);
         }).toList(),
       );
     }
@@ -251,11 +243,7 @@ class RoomSummaryPanel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(
             children: [
-              Icon(
-                e.key.icon,
-                size: 14,
-                color: Colors.blue.shade400,
-              ),
+              Icon(e.key.icon, size: 14, color: Colors.blue.shade400),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -353,5 +341,4 @@ class RoomSummaryPanel extends StatelessWidget {
       }).toList(),
     );
   }
-
 }
