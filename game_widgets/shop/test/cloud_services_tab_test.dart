@@ -113,7 +113,7 @@ void main() {
       expect(find.text('Compute'), findsWidgets);
       expect(find.text('Storage'), findsWidgets);
       expect(find.text('Database'), findsWidgets);
-      expect(find.text('Network'), findsWidgets);
+      expect(find.text('Networking'), findsWidgets);
     });
 
     testWidgets('shows no services message when filter yields empty', (

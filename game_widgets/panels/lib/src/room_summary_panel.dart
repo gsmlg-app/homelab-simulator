@@ -205,9 +205,9 @@ class RoomSummaryPanel extends StatelessWidget {
         runSpacing: 4,
         children: counts.entries.map((e) {
           return _buildCountChip(
-            _getProviderIcon(e.key),
+            e.key.icon,
             e.value,
-            _getProviderColor(e.key),
+            e.key.color,
           );
         }).toList(),
       );
@@ -299,15 +299,15 @@ class RoomSummaryPanel extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    _getProviderIcon(providerEntry.key),
+                    providerEntry.key.icon,
                     size: 12,
-                    color: _getProviderColor(providerEntry.key),
+                    color: providerEntry.key.color,
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    _getProviderName(providerEntry.key),
+                    providerEntry.key.displayName,
                     style: TextStyle(
-                      color: _getProviderColor(providerEntry.key),
+                      color: providerEntry.key.color,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -322,14 +322,14 @@ class RoomSummaryPanel extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(
-                      _getCategoryIcon(catEntry.key),
+                      catEntry.key.icon,
                       size: 12,
                       color: Colors.grey.shade400,
                     ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        _getCategoryName(catEntry.key),
+                        catEntry.key.displayName,
                         style: TextStyle(
                           color: Colors.grey.shade400,
                           fontSize: 10,
@@ -354,63 +354,4 @@ class RoomSummaryPanel extends StatelessWidget {
     );
   }
 
-  IconData _getProviderIcon(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => Icons.cloud,
-      CloudProvider.gcp => Icons.cloud_circle,
-      CloudProvider.cloudflare => Icons.security,
-      CloudProvider.vultr => Icons.dns,
-      CloudProvider.azure => Icons.cloud_queue,
-      CloudProvider.digitalOcean => Icons.water_drop,
-      CloudProvider.none => Icons.cloud_off,
-    };
-  }
-
-  Color _getProviderColor(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => const Color(0xFFFF9900),
-      CloudProvider.gcp => const Color(0xFF4285F4),
-      CloudProvider.cloudflare => const Color(0xFFF38020),
-      CloudProvider.vultr => const Color(0xFF007BFC),
-      CloudProvider.azure => const Color(0xFF0078D4),
-      CloudProvider.digitalOcean => const Color(0xFF0080FF),
-      CloudProvider.none => Colors.grey,
-    };
-  }
-
-  String _getProviderName(CloudProvider provider) {
-    return switch (provider) {
-      CloudProvider.aws => 'AWS',
-      CloudProvider.gcp => 'GCP',
-      CloudProvider.cloudflare => 'Cloudflare',
-      CloudProvider.vultr => 'Vultr',
-      CloudProvider.azure => 'Azure',
-      CloudProvider.digitalOcean => 'DigitalOcean',
-      CloudProvider.none => 'None',
-    };
-  }
-
-  IconData _getCategoryIcon(ServiceCategory category) {
-    return switch (category) {
-      ServiceCategory.compute => Icons.computer,
-      ServiceCategory.storage => Icons.storage,
-      ServiceCategory.database => Icons.table_chart,
-      ServiceCategory.networking => Icons.hub,
-      ServiceCategory.serverless => Icons.flash_on,
-      ServiceCategory.container => Icons.view_in_ar,
-      ServiceCategory.other => Icons.more_horiz,
-    };
-  }
-
-  String _getCategoryName(ServiceCategory category) {
-    return switch (category) {
-      ServiceCategory.compute => 'Compute',
-      ServiceCategory.storage => 'Storage',
-      ServiceCategory.database => 'Database',
-      ServiceCategory.networking => 'Networking',
-      ServiceCategory.serverless => 'Serverless',
-      ServiceCategory.container => 'Container',
-      ServiceCategory.other => 'Other',
-    };
-  }
 }

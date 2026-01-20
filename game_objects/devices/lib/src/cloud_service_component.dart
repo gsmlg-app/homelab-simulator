@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
 /// Renders a placed cloud service in the game world
@@ -38,29 +39,8 @@ class CloudServiceComponent extends PositionComponent
          size: Vector2(service.width * tileSize, service.height * tileSize),
        );
 
-  Color get _providerColor {
-    return switch (service.provider) {
-      CloudProvider.aws => const Color(0xFFFF9900),
-      CloudProvider.gcp => const Color(0xFF4285F4),
-      CloudProvider.cloudflare => const Color(0xFFF38020),
-      CloudProvider.vultr => const Color(0xFF007BFC),
-      CloudProvider.azure => const Color(0xFF0078D4),
-      CloudProvider.digitalOcean => const Color(0xFF0080FF),
-      CloudProvider.none => const Color(0xFF9B59B6),
-    };
-  }
-
-  Color get _categoryColor {
-    return switch (service.category) {
-      ServiceCategory.compute => const Color(0xFF3498DB),
-      ServiceCategory.storage => const Color(0xFF27AE60),
-      ServiceCategory.database => const Color(0xFFF39C12),
-      ServiceCategory.networking => const Color(0xFF9B59B6),
-      ServiceCategory.serverless => const Color(0xFFE74C3C),
-      ServiceCategory.container => const Color(0xFF1ABC9C),
-      ServiceCategory.other => const Color(0xFF607D8B),
-    };
-  }
+  Color get _providerColor => service.provider.color;
+  Color get _categoryColor => service.category.color;
 
   @override
   Future<void> onLoad() async {

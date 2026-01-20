@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Tab content for browsing and selecting cloud services
 class CloudServicesTab extends StatefulWidget {
@@ -306,66 +307,3 @@ class _ServiceCard extends StatelessWidget {
   }
 }
 
-extension on CloudProvider {
-  String get displayName => switch (this) {
-    CloudProvider.aws => 'AWS',
-    CloudProvider.gcp => 'GCP',
-    CloudProvider.cloudflare => 'Cloudflare',
-    CloudProvider.vultr => 'Vultr',
-    CloudProvider.azure => 'Azure',
-    CloudProvider.digitalOcean => 'DigitalOcean',
-    CloudProvider.none => 'None',
-  };
-
-  IconData get icon => switch (this) {
-    CloudProvider.aws => Icons.cloud,
-    CloudProvider.gcp => Icons.cloud_circle,
-    CloudProvider.cloudflare => Icons.security,
-    CloudProvider.vultr => Icons.dns,
-    CloudProvider.azure => Icons.cloud_queue,
-    CloudProvider.digitalOcean => Icons.water_drop,
-    CloudProvider.none => Icons.settings,
-  };
-
-  Color get color => switch (this) {
-    CloudProvider.aws => const Color(0xFFFF9900),
-    CloudProvider.gcp => const Color(0xFF4285F4),
-    CloudProvider.cloudflare => const Color(0xFFF38020),
-    CloudProvider.vultr => const Color(0xFF007BFC),
-    CloudProvider.azure => const Color(0xFF0078D4),
-    CloudProvider.digitalOcean => const Color(0xFF0080FF),
-    CloudProvider.none => Colors.purple,
-  };
-}
-
-extension on ServiceCategory {
-  String get displayName => switch (this) {
-    ServiceCategory.compute => 'Compute',
-    ServiceCategory.storage => 'Storage',
-    ServiceCategory.database => 'Database',
-    ServiceCategory.networking => 'Network',
-    ServiceCategory.serverless => 'Serverless',
-    ServiceCategory.container => 'Container',
-    ServiceCategory.other => 'Other',
-  };
-
-  IconData get icon => switch (this) {
-    ServiceCategory.compute => Icons.computer,
-    ServiceCategory.storage => Icons.storage,
-    ServiceCategory.database => Icons.table_chart,
-    ServiceCategory.networking => Icons.hub,
-    ServiceCategory.serverless => Icons.flash_on,
-    ServiceCategory.container => Icons.view_in_ar,
-    ServiceCategory.other => Icons.more_horiz,
-  };
-
-  Color get color => switch (this) {
-    ServiceCategory.compute => Colors.blue,
-    ServiceCategory.storage => Colors.green,
-    ServiceCategory.database => Colors.orange,
-    ServiceCategory.networking => Colors.purple,
-    ServiceCategory.serverless => Colors.yellow.shade700,
-    ServiceCategory.container => Colors.teal,
-    ServiceCategory.other => Colors.grey,
-  };
-}
