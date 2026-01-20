@@ -16,18 +16,13 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late final HomelabGame _game;
-
-  @override
-  void initState() {
-    super.initState();
-    // Defer game creation to didChangeDependencies
-  }
+  HomelabGame? _game;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _game = HomelabGame(
+    // Only create game once; late initialization after context is available
+    _game ??= HomelabGame(
       gameBloc: context.read<GameBloc>(),
       worldBloc: context.read<WorldBloc>(),
     );
@@ -82,7 +77,7 @@ class _GameScreenState extends State<GameScreen> {
               return Stack(
                 children: [
                   // Flame game
-                  Positioned.fill(child: GameWidget(game: _game)),
+                  Positioned.fill(child: GameWidget(game: _game!)),
 
                   // HUD overlay
                   Positioned.fill(
