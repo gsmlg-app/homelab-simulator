@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 44
-- **Last Commit:** ad6e4eb
+- **Iteration:** 45
+- **Last Commit:** 3d5e605
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -92,10 +92,12 @@ Two main feature sets from PRD.md:
 - **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
   - HomelabGame: 17 tests (NEW)
-- **app_widget/common:** 47 tests passing
+- **app_widget/common:** 91 tests passing
   - RoomTypeUI: 25 tests
-  - DeviceTypeUI: 22 tests (NEW)
-- **Total:** 1245 unit tests
+  - DeviceTypeUI: 22 tests
+  - CloudProviderUI: 22 tests (NEW)
+  - ServiceCategoryUI: 22 tests (NEW)
+- **Total:** 1289 unit tests
 
 ## Completed Work
 
@@ -193,6 +195,10 @@ Two main feature sets from PRD.md:
 - ✅ Removed duplicate _getRoomTypeIcon/_getRoomTypeColor from ShopModal and RoomSummaryPanel
 - ✅ Extracted DeviceTypeUI extension to app_widget_common (icon, color, displayName)
 - ✅ Removed duplicate _getDeviceIcon/_getDeviceTypeName from DeviceCard, DeviceInfoPanel, RoomSummaryPanel
+- ✅ Extracted CloudProviderUI extension to app_widget_common (icon, color, displayName)
+- ✅ Removed duplicate _providerColor from CloudServiceComponent, _getProvider* from RoomSummaryPanel
+- ✅ Extracted ServiceCategoryUI extension to app_widget_common (icon, color, displayName)
+- ✅ Removed duplicate _categoryColor from CloudServiceComponent, _getCategory* from RoomSummaryPanel
 
 ## Next Tasks
 1. Look for more performance optimizations
@@ -241,6 +247,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 3d5e605: refactor: extract CloudProvider and ServiceCategory UI utilities to shared extensions
 - ad6e4eb: refactor: extract DeviceType UI utilities to shared extension
 - 025b189: refactor: extract RoomType UI utilities to shared extension
 - ee7b07d: perf: cache instance-level Paint objects in device components
