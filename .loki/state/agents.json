@@ -4,11 +4,11 @@
     "tool_id": "orchestrator-main",
     "agent_type": "orchestrator",
     "model": "sonnet",
-    "current_task": "Bash: git add -A && git commit -m \"style: apply dart format to hov",
+    "current_task": "Bash: Stage all changes and check status",
     "status": "active",
     "spawned_at": "2026-01-20T20:56:38.958091Z",
     "tasks_completed": [],
-    "tool_count": 255
+    "tool_count": 345
   },
   {
     "agent_id": "agent-toolu_01",

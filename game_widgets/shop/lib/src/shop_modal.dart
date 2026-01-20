@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
-import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 import 'device_card.dart';
 import 'add_room_modal.dart';
@@ -254,8 +254,8 @@ class _ShopModalState extends State<ShopModal>
               Row(
                 children: [
                   Icon(
-                    _getRoomTypeIcon(model.currentRoom.type),
-                    color: _getRoomTypeColor(model.currentRoom.type),
+                    model.currentRoom.type.icon,
+                    color: model.currentRoom.type.color,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -310,11 +310,7 @@ class _ShopModalState extends State<ShopModal>
         ),
         child: Row(
           children: [
-            Icon(
-              _getRoomTypeIcon(room.type),
-              color: _getRoomTypeColor(room.type),
-              size: 24,
-            ),
+            Icon(room.type.icon, color: room.type.color, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -417,31 +413,5 @@ class _ShopModalState extends State<ShopModal>
         ],
       ),
     );
-  }
-
-  IconData _getRoomTypeIcon(RoomType type) {
-    return switch (type) {
-      RoomType.serverRoom => Icons.dns,
-      RoomType.aws => Icons.cloud,
-      RoomType.gcp => Icons.cloud_circle,
-      RoomType.cloudflare => Icons.security,
-      RoomType.vultr => Icons.dns,
-      RoomType.azure => Icons.cloud_queue,
-      RoomType.digitalOcean => Icons.water_drop,
-      RoomType.custom => Icons.room,
-    };
-  }
-
-  Color _getRoomTypeColor(RoomType type) {
-    return switch (type) {
-      RoomType.serverRoom => Colors.grey,
-      RoomType.aws => const Color(0xFFFF9900),
-      RoomType.gcp => const Color(0xFF4285F4),
-      RoomType.cloudflare => const Color(0xFFF38020),
-      RoomType.vultr => const Color(0xFF007BFC),
-      RoomType.azure => const Color(0xFF0078D4),
-      RoomType.digitalOcean => const Color(0xFF0080FF),
-      RoomType.custom => Colors.purple,
-    };
   }
 }

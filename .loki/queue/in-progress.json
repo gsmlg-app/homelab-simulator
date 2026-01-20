@@ -1,9 +1,9 @@
 [
   {
-    "id": "todo-1",
+    "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "Look for more improvements - code quality, documentation, or features"
+      "action": "Add tests for RoomTypeUI extension"
     }
   }
 ]

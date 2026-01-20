@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 import 'info_panel.dart';
 
@@ -21,14 +22,10 @@ class RoomSummaryPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return InfoPanel(
       title: room.name,
-      icon: _getRoomIcon(room.type),
+      icon: room.type.icon,
       children: [
         // Room type and size
-        _buildInfoRow(
-          'Type',
-          _getRoomTypeName(room.type),
-          _getRoomTypeColor(room.type),
-        ),
+        _buildInfoRow('Type', room.type.displayName, room.type.color),
         _buildInfoRow(
           'Size',
           '${room.width} × ${room.height}',
@@ -355,45 +352,6 @@ class RoomSummaryPanel extends StatelessWidget {
         );
       }).toList(),
     );
-  }
-
-  IconData _getRoomIcon(RoomType type) {
-    return switch (type) {
-      RoomType.serverRoom => Icons.dns,
-      RoomType.aws => Icons.cloud,
-      RoomType.gcp => Icons.cloud_circle,
-      RoomType.cloudflare => Icons.security,
-      RoomType.vultr => Icons.dns,
-      RoomType.azure => Icons.cloud_queue,
-      RoomType.digitalOcean => Icons.water_drop,
-      RoomType.custom => Icons.folder_special,
-    };
-  }
-
-  String _getRoomTypeName(RoomType type) {
-    return switch (type) {
-      RoomType.serverRoom => 'Server Room',
-      RoomType.aws => 'AWS',
-      RoomType.gcp => 'GCP',
-      RoomType.cloudflare => 'Cloudflare',
-      RoomType.vultr => 'Vultr',
-      RoomType.azure => 'Azure',
-      RoomType.digitalOcean => 'DigitalOcean',
-      RoomType.custom => 'Custom',
-    };
-  }
-
-  Color _getRoomTypeColor(RoomType type) {
-    return switch (type) {
-      RoomType.serverRoom => Colors.cyan.shade400,
-      RoomType.aws => const Color(0xFFFF9900),
-      RoomType.gcp => const Color(0xFF4285F4),
-      RoomType.cloudflare => const Color(0xFFF38020),
-      RoomType.vultr => const Color(0xFF007BFC),
-      RoomType.azure => const Color(0xFF0078D4),
-      RoomType.digitalOcean => const Color(0xFF0080FF),
-      RoomType.custom => Colors.purple.shade400,
-    };
   }
 
   IconData _getDeviceIcon(DeviceType type) {
