@@ -15,6 +15,9 @@ class RoomComponent extends PositionComponent
   final int gridHeight;
   final double tileSize;
 
+  // Cached background paint for performance
+  static final _bgPaint = Paint()..color = const Color(0xFF1A1A2E);
+
   late final GridComponent _grid;
   late final TerminalComponent _terminal;
   late final HoverCellComponent _hoverCell;
@@ -30,12 +33,7 @@ class RoomComponent extends PositionComponent
     await super.onLoad();
 
     // Background
-    add(
-      RectangleComponent(
-        size: size,
-        paint: Paint()..color = const Color(0xFF1A1A2E),
-      ),
-    );
+    add(RectangleComponent(size: size, paint: _bgPaint));
 
     // Grid
     _grid = GridComponent(

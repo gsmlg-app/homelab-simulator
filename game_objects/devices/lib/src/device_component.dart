@@ -24,6 +24,10 @@ class DeviceComponent extends PositionComponent
     ..color = const Color(0xFF666666)
     ..style = PaintingStyle.fill;
 
+  // Instance-level cached paints (depend on device type)
+  late final Paint _bodyPaint;
+  late final Paint _borderPaint;
+
   DeviceComponent({
     required this.device,
     this.tileSize = GameConstants.tileSize,
@@ -48,6 +52,19 @@ class DeviceComponent extends PositionComponent
   }
 
   @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // Initialize cached paints (depend on device type)
+    _bodyPaint = Paint()
+      ..color = _deviceColor
+      ..style = PaintingStyle.fill;
+    _borderPaint = Paint()
+      ..color = _deviceColor.withValues(alpha: 0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
     final worldState = bloc.state;
@@ -57,16 +74,12 @@ class DeviceComponent extends PositionComponent
   @override
   void render(Canvas canvas) {
     // Device body
-    final bodyPaint = Paint()
-      ..color = _deviceColor
-      ..style = PaintingStyle.fill;
-
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
         const Radius.circular(4),
       ),
-      bodyPaint,
+      _bodyPaint,
     );
 
     // Device lights/details
@@ -85,17 +98,12 @@ class DeviceComponent extends PositionComponent
     }
 
     // Border
-    final borderPaint = Paint()
-      ..color = _deviceColor.withValues(alpha: 0.5)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
         const Radius.circular(4),
       ),
-      borderPaint,
+      _borderPaint,
     );
   }
 }
