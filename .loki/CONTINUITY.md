@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 38
-- **Last Commit:** 75a2bf0
+- **Iteration:** 39
+- **Last Commit:** ee2d067
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -171,11 +171,22 @@ Two main feature sets from PRD.md:
 - `game_bloc/world/test/world_event_test.dart` - 33 tests (NEW)
 
 ## In Progress
-- All core features complete, continuing improvements
+- Performance optimizations for render() methods (Paint object caching)
+
+## Recent Performance Optimizations
+- ✅ PlayerComponent: Cached body and outline paints
+- ✅ GridComponent: Cached grid paint
+- ✅ TerminalComponent: Cached base, screen, and highlight paints
+- ✅ DoorComponent: Cached frame, door, handle, highlight, and arrow paints
+- ✅ HoverCellComponent: Cached valid/invalid fill and border paints
+- ✅ DeviceComponent: Cached selection and running light paints
+- ✅ CloudServiceComponent: Cached selection and icon paints
+- ✅ PlacementGhostComponent: Cached valid/invalid fill and border paints
+- ✅ Updated .gitignore to exclude all package build folders
 
 ## Next Tasks
-1. Consider additional test coverage for edge cases
-2. Look for performance optimizations
+1. Look for more performance optimizations
+2. Consider additional test coverage for edge cases
 3. Consider additional features: VFX/feedback, audio, more asset coverage
 4. Review and update documentation
 
@@ -220,6 +231,9 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- ee2d067: perf: cache Paint objects in device components
+- efdb6fd: chore: remove build directories from git tracking
+- d381b79: perf: cache Paint objects in DoorComponent and HoverCellComponent
 - 75a2bf0: perf: cache Paint objects in GridComponent and TerminalComponent
 - 8249d4b: perf: cache Paint objects in PlayerComponent render
 - bda8140: test: add unit tests for HomelabGame class (17 tests)
