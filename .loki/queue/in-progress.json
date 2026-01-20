@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "PRD M1: Update CharacterModel with new appearance fields"
+      "action": "PRD M5: Polish, QA, and tests"
     }
   }
 ]

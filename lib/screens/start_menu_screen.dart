@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
-import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_database/app_database.dart';
-import 'package:game_asset_characters/game_asset_characters.dart';
 
 import 'game_screen.dart';
+import 'character_creation_screen.dart';
 
 /// Start menu screen with character selection and creation
 class StartMenuScreen extends StatefulWidget {
@@ -126,103 +125,21 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   Future<void> _createNewCharacter() async {
-    final result = await _showCreateCharacterDialog();
-    if (result == null) return;
-
-    final character = CharacterModel.create(
-      name: result.name,
-      gender: result.gender,
+    final result = await Navigator.of(context).push<CharacterModel>(
+      MaterialPageRoute(
+        builder: (_) => const CharacterCreationScreen(),
+      ),
     );
-    await _storage.save(character);
+
+    if (result == null || !mounted) return;
+
+    await _storage.save(result);
 
     if (!mounted) return;
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => const GameScreen(),
-      ),
-    );
-  }
-
-  Future<_CharacterCreationResult?> _showCreateCharacterDialog() async {
-    final controller = TextEditingController();
-    Gender selectedGender = Gender.male;
-
-    return showDialog<_CharacterCreationResult>(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          backgroundColor: const Color(0xFF1A1A2E),
-          title: const Text(
-            'Create New Character',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Gender selection
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _GenderOption(
-                    gender: Gender.male,
-                    isSelected: selectedGender == Gender.male,
-                    onTap: () => setDialogState(() => selectedGender = Gender.male),
-                  ),
-                  const SizedBox(width: 24),
-                  _GenderOption(
-                    gender: Gender.female,
-                    isSelected: selectedGender == Gender.female,
-                    onTap: () => setDialogState(() => selectedGender = Gender.female),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              // Name input
-              TextField(
-                controller: controller,
-                autofocus: true,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter character name',
-                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.cyan.shade400),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.cyan.shade300, width: 2),
-                  ),
-                ),
-                onSubmitted: (value) {
-                  if (value.isNotEmpty) {
-                    Navigator.of(context).pop(
-                      _CharacterCreationResult(name: value, gender: selectedGender),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  Navigator.of(context).pop(
-                    _CharacterCreationResult(
-                      name: controller.text,
-                      gender: selectedGender,
-                    ),
-                  );
-                }
-              },
-              child: const Text('Create'),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -258,6 +175,19 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
       await _storage.delete(character.id);
       _loadCharacters();
     }
+  }
+
+  Future<void> _editCharacter(CharacterModel character) async {
+    final result = await Navigator.of(context).push<CharacterModel>(
+      MaterialPageRoute(
+        builder: (_) => CharacterCreationScreen(existingCharacter: character),
+      ),
+    );
+
+    if (result == null || !mounted) return;
+
+    await _storage.save(result);
+    _loadCharacters();
   }
 
   @override
@@ -422,80 +352,10 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
           character: character,
           isSelected: _selectedIndex == index,
           onTap: () => _selectCharacter(character),
+          onEdit: () => _editCharacter(character),
           onDelete: () => _deleteCharacter(character),
         );
       },
-    );
-  }
-}
-
-/// Result from character creation dialog
-class _CharacterCreationResult {
-  final String name;
-  final Gender gender;
-
-  _CharacterCreationResult({required this.name, required this.gender});
-}
-
-/// Gender selection option widget
-class _GenderOption extends StatelessWidget {
-  final Gender gender;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _GenderOption({
-    required this.gender,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spriteSheet =
-        gender == Gender.male ? GameCharacters.MainMale : GameCharacters.MainFemale;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 100,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.cyan.shade800 : const Color(0xFF252540),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.cyan.shade400 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Sprite preview (first frame)
-            ClipRect(
-              child: Align(
-                alignment: Alignment.topLeft,
-                widthFactor: 1 / spriteSheet.columns,
-                heightFactor: 1 / spriteSheet.rows,
-                child: Image.asset(
-                  spriteSheet.path,
-                  width: 80.0 * spriteSheet.columns,
-                  height: 60.0 * spriteSheet.rows,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              gender == Gender.male ? 'Male' : 'Female',
-              style: TextStyle(
-                fontSize: 12,
-                color: isSelected ? Colors.white : Colors.white70,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -504,12 +364,14 @@ class _CharacterCard extends StatelessWidget {
   final CharacterModel character;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   const _CharacterCard({
     required this.character,
     required this.isSelected,
     required this.onTap,
+    required this.onEdit,
     required this.onDelete,
   });
 
@@ -640,6 +502,16 @@ class _CharacterCard extends StatelessWidget {
                 ),
               ),
 
+              // Edit button
+              IconButton(
+                onPressed: onEdit,
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: Colors.cyan.withValues(alpha: 0.7),
+                ),
+                tooltip: 'Edit character',
+              ),
+
               // Delete button
               IconButton(
                 onPressed: onDelete,
@@ -647,6 +519,7 @@ class _CharacterCard extends StatelessWidget {
                   Icons.delete_outline,
                   color: Colors.red.withValues(alpha: 0.7),
                 ),
+                tooltip: 'Delete character',
               ),
             ],
           ),
