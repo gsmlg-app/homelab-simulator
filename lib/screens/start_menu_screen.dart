@@ -5,6 +5,7 @@ import 'package:gamepads/gamepads.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_database/app_database.dart';
+import 'package:game_asset_characters/game_asset_characters.dart';
 
 import 'game_screen.dart';
 
@@ -450,9 +451,8 @@ class _GenderOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spritePath = gender == Gender.male
-        ? 'packages/game_asset_sprites/assets/boy.png'
-        : 'packages/game_asset_sprites/assets/girl.png';
+    final spriteSheet =
+        gender == Gender.male ? GameCharacters.MainMale : GameCharacters.MainFemale;
 
     return GestureDetector(
       onTap: onTap,
@@ -474,12 +474,12 @@ class _GenderOption extends StatelessWidget {
             ClipRect(
               child: Align(
                 alignment: Alignment.topLeft,
-                widthFactor: 1 / 8, // 8 columns in sprite sheet
-                heightFactor: 1 / 3, // 3 rows in sprite sheet
+                widthFactor: 1 / spriteSheet.columns,
+                heightFactor: 1 / spriteSheet.rows,
                 child: Image.asset(
-                  spritePath,
-                  width: 80 * 8,
-                  height: 60 * 3,
+                  spriteSheet.path,
+                  width: 80 * spriteSheet.columns,
+                  height: 60 * spriteSheet.rows,
                   fit: BoxFit.contain,
                 ),
               ),

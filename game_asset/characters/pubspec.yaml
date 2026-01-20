@@ -1,0 +1,18 @@
+name: game_asset_characters
+description: Character sprite assets for the game
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.29.0
+
+flutter:
+  assets:
+    - assets/
