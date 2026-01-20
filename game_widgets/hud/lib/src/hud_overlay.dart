@@ -2,18 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 import 'credits_display.dart';
 import 'interaction_hint.dart';
 
 /// Main HUD overlay for the game
-class HudOverlay extends StatelessWidget {
+class HudOverlay extends StatefulWidget {
   final InteractionType currentInteraction;
 
   const HudOverlay({
     super.key,
     this.currentInteraction = InteractionType.none,
   });
+
+  @override
+  State<HudOverlay> createState() => _HudOverlayState();
+}
+
+class _HudOverlayState extends State<HudOverlay> {
+  bool _summaryExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,22 @@ class HudOverlay extends StatelessWidget {
               ),
             ),
 
+            // Room summary panel - top right
+            Positioned(
+              top: 56,
+              right: 16,
+              child: SizedBox(
+                width: 200,
+                child: RoomSummaryPanel(
+                  room: state.model.currentRoom,
+                  expanded: _summaryExpanded,
+                  onToggleExpand: () {
+                    setState(() => _summaryExpanded = !_summaryExpanded);
+                  },
+                ),
+              ),
+            ),
+
             // Bottom center - interaction hint
             Positioned(
               bottom: 100,
@@ -48,7 +72,7 @@ class HudOverlay extends StatelessWidget {
               right: 0,
               child: Center(
                 child: InteractionHint(
-                  interactionType: currentInteraction,
+                  interactionType: widget.currentInteraction,
                 ),
               ),
             ),

@@ -16,3 +16,5 @@ dependencies:
     path: ../../app_bloc/game
   app_lib_core:
     path: ../../app_lib/core
+  game_widgets_panels:
+    path: ../panels
