@@ -212,7 +212,7 @@ void main() {
       // Longest name 'Phoenix' (7) + '99' (2) = 9 chars (< 16)
       const longestName = 'Phoenix';
       const maxNumber = 99;
-      final worstCase = '$longestName$maxNumber';
+      const worstCase = '$longestName$maxNumber';
       expect(worstCase.length, lessThanOrEqualTo(16));
     });
   });
