@@ -230,10 +230,6 @@ void main() {
             .id;
 
         // Enter the room
-        const enterEvent = RoomEntered(
-          roomId: 'placeholder',
-          spawnPosition: GridPosition(2, 5),
-        );
         final result = reduce(
           modelWithRoom,
           RoomEntered(roomId: newRoomId, spawnPosition: const GridPosition(2, 5)),
