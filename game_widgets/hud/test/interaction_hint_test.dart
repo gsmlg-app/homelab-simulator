@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
 
 class MockGameBloc extends MockBloc<GameEvent, GameState> implements GameBloc {}
@@ -182,8 +183,8 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.color, Colors.black87);
-      expect(decoration.border?.top.color, Colors.cyan.shade700);
+      expect(decoration.color, AppColors.panelBackground);
+      expect(decoration.border?.top.color, AppColors.cyan700);
     });
 
     testWidgets('shows nothing when GameError state', (tester) async {
@@ -224,9 +225,9 @@ void main() {
 
       final eText = tester.widget<Text>(find.text('E'));
       final style = eText.style!;
-      expect(style.color, Colors.white);
+      expect(style.color, AppColors.textPrimary);
       expect(style.fontWeight, FontWeight.bold);
-      expect(style.fontFamily, 'monospace');
+      expect(style.fontFamily, AppTextStyles.monospaceFontFamily);
     });
 
     testWidgets('message text has correct styling', (tester) async {
@@ -248,8 +249,8 @@ void main() {
 
       final messageText = tester.widget<Text>(find.text('Press E to interact'));
       final style = messageText.style!;
-      expect(style.color, Colors.white);
-      expect(style.fontSize, 14);
+      expect(style.color, AppColors.textPrimary);
+      expect(style.fontSize, AppSpacing.fontSizeDefault);
     });
 
     testWidgets('container has border radius', (tester) async {
@@ -308,7 +309,7 @@ void main() {
       // Second container is the E key background
       final eKeyContainer = innerContainers.elementAt(1);
       final decoration = eKeyContainer.decoration as BoxDecoration;
-      expect(decoration.color, Colors.cyan.shade800);
+      expect(decoration.color, AppColors.cyan800);
       expect(decoration.borderRadius, AppSpacing.borderRadiusSmall);
     });
 
