@@ -1,23 +1,17 @@
 import 'dart:convert';
 import 'package:logging/logging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
+import 'shared_preferences_mixin.dart';
+
 /// Storage service for game state persistence
-class GameStorage {
+class GameStorage with SharedPreferencesMixin {
   static const String _storageKey = 'homelab_game_state';
   static final _log = Logger('GameStorage');
 
-  SharedPreferences? _prefs;
-
-  Future<SharedPreferences> get _preferences async {
-    _prefs ??= await SharedPreferences.getInstance();
-    return _prefs!;
-  }
-
   /// Save game state to persistent storage
   Future<void> save(GameModel model) async {
-    final prefs = await _preferences;
+    final prefs = await preferences;
     final json = jsonEncode(model.toJson());
     await prefs.setString(_storageKey, json);
     _log.fine('Game state saved');
@@ -25,7 +19,7 @@ class GameStorage {
 
   /// Load game state from persistent storage
   Future<GameModel?> load() async {
-    final prefs = await _preferences;
+    final prefs = await preferences;
     final json = prefs.getString(_storageKey);
     if (json == null) {
       _log.fine('No saved game state found');
@@ -44,7 +38,7 @@ class GameStorage {
 
   /// Clear saved game state
   Future<void> clear() async {
-    final prefs = await _preferences;
+    final prefs = await preferences;
     await prefs.remove(_storageKey);
     _log.fine('Game state cleared');
   }

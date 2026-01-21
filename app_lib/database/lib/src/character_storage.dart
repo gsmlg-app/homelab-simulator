@@ -1,23 +1,17 @@
 import 'dart:convert';
 import 'package:logging/logging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
+import 'shared_preferences_mixin.dart';
+
 /// Storage service for character persistence
-class CharacterStorage {
+class CharacterStorage with SharedPreferencesMixin {
   static const String _storageKey = 'homelab_characters';
   static final _log = Logger('CharacterStorage');
 
-  SharedPreferences? _prefs;
-
-  Future<SharedPreferences> get _preferences async {
-    _prefs ??= await SharedPreferences.getInstance();
-    return _prefs!;
-  }
-
   /// Get all saved characters
   Future<List<CharacterModel>> loadAll() async {
-    final prefs = await _preferences;
+    final prefs = await preferences;
     final json = prefs.getString(_storageKey);
     if (json == null) {
       _log.fine('No saved characters found');
@@ -76,7 +70,7 @@ class CharacterStorage {
   }
 
   Future<void> _saveAll(List<CharacterModel> characters) async {
-    final prefs = await _preferences;
+    final prefs = await preferences;
     final json = jsonEncode(characters.map((c) => c.toJson()).toList());
     await prefs.setString(_storageKey, json);
   }
