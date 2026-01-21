@@ -157,7 +157,7 @@ class _ShopModalState extends State<ShopModal>
               ),
               const SizedBox(width: 8),
               IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const Icon(Icons.close, color: AppColors.textPrimary),
                 onPressed: () {
                   context.read<GameBloc>().add(
                     const GameToggleShop(isOpen: false),
@@ -399,7 +399,7 @@ class _ShopModalState extends State<ShopModal>
         backgroundColor: AppColors.grey900,
         title: const Text(
           'Delete Room?',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.textPrimary),
         ),
         content: Text(
           'Are you sure you want to delete "${room.name}"? This will also remove all child rooms and their contents.',
