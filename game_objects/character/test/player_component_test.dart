@@ -164,5 +164,98 @@ void main() {
         expect(player64.size, Vector2.all(64.0));
       });
     });
+
+    group('edge cases', () {
+      test('handles high position values', () {
+        const farPos = GridPosition(100, 100);
+        final player = PlayerComponent(
+          initialPosition: farPos,
+          tileSize: 32.0,
+        );
+
+        expect(player.position, Vector2(3200.0, 3200.0));
+        expect(player.gridPosition, farPos);
+      });
+
+      test('handles zero move speed', () {
+        final player = PlayerComponent(moveSpeed: 0);
+
+        expect(player.moveSpeed, 0);
+      });
+
+      test('handles very large tile size', () {
+        final player = PlayerComponent(tileSize: 256.0);
+
+        expect(player.tileSize, 256.0);
+        expect(player.size, Vector2.all(256.0));
+      });
+
+      test('handles very small tile size', () {
+        final player = PlayerComponent(tileSize: 8.0);
+
+        expect(player.tileSize, 8.0);
+        expect(player.size, Vector2.all(8.0));
+      });
+
+      test('position at high grid coordinates', () {
+        const gridPos = GridPosition(999, 999);
+        final player = PlayerComponent(
+          initialPosition: gridPos,
+          tileSize: 32.0,
+        );
+
+        expect(player.position.x, 999 * 32.0);
+        expect(player.position.y, 999 * 32.0);
+      });
+    });
+
+    group('component properties', () {
+      test('default anchor is top left', () {
+        final player = PlayerComponent();
+
+        expect(player.anchor, Anchor.topLeft);
+      });
+
+      test('can have priority set', () {
+        final player = PlayerComponent();
+        player.priority = 10;
+
+        expect(player.priority, 10);
+      });
+
+      test('can have anchor changed', () {
+        final player = PlayerComponent();
+        player.anchor = Anchor.center;
+
+        expect(player.anchor, Anchor.center);
+      });
+    });
+
+    group('position manipulation', () {
+      test('position can be modified', () {
+        final player = PlayerComponent();
+        player.position = Vector2(500, 600);
+
+        expect(player.position, Vector2(500, 600));
+      });
+
+      test('size can be modified', () {
+        final player = PlayerComponent();
+        player.size = Vector2(100, 100);
+
+        expect(player.size, Vector2(100, 100));
+      });
+
+      test('initial position uses grid coordinates', () {
+        const gridPos = GridPosition(10, 20);
+        final player = PlayerComponent(
+          initialPosition: gridPos,
+          tileSize: 16.0,
+        );
+
+        expect(player.position.x, 160.0); // 10 * 16
+        expect(player.position.y, 320.0); // 20 * 16
+      });
+    });
   });
 }

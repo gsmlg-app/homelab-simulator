@@ -244,6 +244,155 @@ void main() {
 
         expect(ghost.position, Vector2(100, 200));
       });
+
+      test('can have priority set', () {
+        final ghost = PlacementGhostComponent();
+        ghost.priority = 10;
+
+        expect(ghost.priority, 10);
+      });
+
+      test('can have anchor set', () {
+        final ghost = PlacementGhostComponent();
+        ghost.anchor = Anchor.center;
+
+        expect(ghost.anchor, Anchor.center);
+      });
+    });
+
+    group('edge cases', () {
+      test('handles large device template', () {
+        final ghost = PlacementGhostComponent(tileSize: 32.0);
+        const template = DeviceTemplate(
+          id: 'large-device',
+          name: 'Large Device',
+          description: 'A large device',
+          type: DeviceType.server,
+          cost: 1000,
+          width: 10,
+          height: 5,
+        );
+
+        ghost.setTemplate(template);
+
+        expect(ghost.size, Vector2(320.0, 160.0));
+      });
+
+      test('handles cloud service with all providers', () {
+        final ghost = PlacementGhostComponent();
+
+        for (final provider in CloudProvider.values) {
+          final template = CloudServiceTemplate(
+            provider: provider,
+            category: ServiceCategory.compute,
+            serviceType: 'Test',
+            name: 'Test Service',
+            description: 'Test',
+          );
+          ghost.setCloudService(template);
+          expect(ghost.isPlacingCloudService, true);
+        }
+      });
+
+      test('handles cloud service with all categories', () {
+        final ghost = PlacementGhostComponent();
+
+        for (final category in ServiceCategory.values) {
+          final template = CloudServiceTemplate(
+            provider: CloudProvider.aws,
+            category: category,
+            serviceType: 'Test',
+            name: 'Test Service',
+            description: 'Test',
+          );
+          ghost.setCloudService(template);
+          expect(ghost.isPlacingCloudService, true);
+        }
+      });
+
+      test('handles device template with all device types', () {
+        final ghost = PlacementGhostComponent();
+
+        for (final type in DeviceType.values) {
+          final template = DeviceTemplate(
+            id: 'test-$type',
+            name: 'Test Device',
+            description: 'Test',
+            type: type,
+            cost: 100,
+          );
+          ghost.setTemplate(template);
+          expect(ghost.isPlacingDevice, true);
+        }
+      });
+
+      test('default anchor is top left', () {
+        final ghost = PlacementGhostComponent();
+
+        expect(ghost.anchor, Anchor.topLeft);
+      });
+
+      test('size resets when clearing templates in sequence', () {
+        final ghost = PlacementGhostComponent(tileSize: 32.0);
+
+        // Set device template
+        const deviceTemplate = DeviceTemplate(
+          id: 'server-1',
+          name: 'Server',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+          width: 3,
+          height: 2,
+        );
+        ghost.setTemplate(deviceTemplate);
+        expect(ghost.size, Vector2(96.0, 64.0));
+
+        // Clear device, set cloud service
+        const cloudTemplate = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'Test',
+          width: 2,
+          height: 2,
+        );
+        ghost.setCloudService(cloudTemplate);
+        expect(ghost.size, Vector2(64.0, 64.0));
+        expect(ghost.isPlacingDevice, false);
+        expect(ghost.isPlacingCloudService, true);
+      });
+
+      test('handles very small tile size', () {
+        final ghost = PlacementGhostComponent(tileSize: 8.0);
+
+        expect(ghost.tileSize, 8.0);
+        expect(ghost.size, Vector2.all(8.0));
+      });
+
+      test('handles very large tile size', () {
+        final ghost = PlacementGhostComponent(tileSize: 256.0);
+
+        expect(ghost.tileSize, 256.0);
+        expect(ghost.size, Vector2.all(256.0));
+      });
+    });
+
+    group('position manipulation', () {
+      test('position can be modified', () {
+        final ghost = PlacementGhostComponent();
+        ghost.position = Vector2(500, 600);
+
+        expect(ghost.position, Vector2(500, 600));
+      });
+
+      test('size can be modified', () {
+        final ghost = PlacementGhostComponent();
+        ghost.size = Vector2(100, 100);
+
+        expect(ghost.size, Vector2(100, 100));
+      });
     });
   });
 }

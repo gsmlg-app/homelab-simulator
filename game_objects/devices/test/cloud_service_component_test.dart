@@ -204,6 +204,167 @@ void main() {
 
         expect(component, isA<PositionComponent>());
       });
+
+      test('can have priority set', () {
+        final component = CloudServiceComponent(service: awsService);
+        component.priority = 10;
+
+        expect(component.priority, 10);
+      });
+
+      test('can have anchor set', () {
+        final component = CloudServiceComponent(service: awsService);
+        component.anchor = Anchor.center;
+
+        expect(component.anchor, Anchor.center);
+      });
+    });
+
+    group('edge cases', () {
+      test('handles service at high position', () {
+        const farService = CloudServiceModel(
+          id: 'far-service',
+          name: 'Far Service',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(100, 100),
+        );
+        final component = CloudServiceComponent(
+          service: farService,
+          tileSize: 32.0,
+        );
+
+        expect(component.position, Vector2(3200.0, 3200.0));
+      });
+
+      test('handles large service dimensions', () {
+        const largeService = CloudServiceModel(
+          id: 'large-service',
+          name: 'Large Service',
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.storage,
+          serviceType: 'Storage',
+          position: GridPosition(0, 0),
+          width: 5,
+          height: 3,
+        );
+        final component = CloudServiceComponent(
+          service: largeService,
+          tileSize: 32.0,
+        );
+
+        expect(component.size, Vector2(160.0, 96.0));
+      });
+
+      test('handles Azure provider', () {
+        const azureService = CloudServiceModel(
+          id: 'azure-1',
+          name: 'Azure Blob',
+          provider: CloudProvider.azure,
+          category: ServiceCategory.storage,
+          serviceType: 'Blob',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: azureService);
+
+        expect(component.service.provider, CloudProvider.azure);
+      });
+
+      test('handles DigitalOcean provider', () {
+        const doService = CloudServiceModel(
+          id: 'do-1',
+          name: 'DO Droplet',
+          provider: CloudProvider.digitalOcean,
+          category: ServiceCategory.compute,
+          serviceType: 'Droplet',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: doService);
+
+        expect(component.service.provider, CloudProvider.digitalOcean);
+      });
+
+      test('handles Vultr provider', () {
+        const vultrService = CloudServiceModel(
+          id: 'vultr-1',
+          name: 'Vultr Instance',
+          provider: CloudProvider.vultr,
+          category: ServiceCategory.compute,
+          serviceType: 'Instance',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: vultrService);
+
+        expect(component.service.provider, CloudProvider.vultr);
+      });
+
+      test('handles database category', () {
+        const dbService = CloudServiceModel(
+          id: 'db-1',
+          name: 'RDS Database',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.database,
+          serviceType: 'RDS',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: dbService);
+
+        expect(component.service.category, ServiceCategory.database);
+      });
+
+      test('handles networking category', () {
+        const netService = CloudServiceModel(
+          id: 'net-1',
+          name: 'VPC',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.networking,
+          serviceType: 'VPC',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: netService);
+
+        expect(component.service.category, ServiceCategory.networking);
+      });
+
+      test('handles container category', () {
+        const containerService = CloudServiceModel(
+          id: 'container-1',
+          name: 'EKS Cluster',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.container,
+          serviceType: 'EKS',
+          position: GridPosition(0, 0),
+        );
+        final component = CloudServiceComponent(service: containerService);
+
+        expect(component.service.category, ServiceCategory.container);
+      });
+
+      test('default anchor is top left', () {
+        final component = CloudServiceComponent(service: awsService);
+
+        expect(component.anchor, Anchor.topLeft);
+      });
+    });
+
+    group('position manipulation', () {
+      test('initial position uses service grid position', () {
+        final component = CloudServiceComponent(
+          service: awsService,
+          tileSize: 32.0,
+        );
+
+        expect(component.position.x, 160.0); // 5 * 32
+        expect(component.position.y, 96.0); // 3 * 32
+      });
+
+      test('position can be modified', () {
+        final component = CloudServiceComponent(service: awsService);
+        component.position = Vector2(500, 600);
+
+        expect(component.position, Vector2(500, 600));
+      });
     });
   });
 }
