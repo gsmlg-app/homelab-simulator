@@ -89,8 +89,8 @@ class _ShopModalState extends State<ShopModal>
         boxShadow: [
           BoxShadow(
             color: AppColors.cyan900.withValues(alpha: 0.5),
-            blurRadius: 20,
-            spreadRadius: 5,
+            blurRadius: AppSpacing.modalShadowBlurRadius,
+            spreadRadius: AppSpacing.modalShadowSpreadRadius,
           ),
         ],
       ),

@@ -132,6 +132,14 @@ void main() {
         expect(AppSpacing.shopModalWidth, 500.0);
       });
 
+      test('modalShadowBlurRadius is 20.0', () {
+        expect(AppSpacing.modalShadowBlurRadius, 20.0);
+      });
+
+      test('modalShadowSpreadRadius is 5.0', () {
+        expect(AppSpacing.modalShadowSpreadRadius, 5.0);
+      });
+
       test('buttonHeightLarge is 56.0', () {
         expect(AppSpacing.buttonHeightLarge, 56.0);
       });

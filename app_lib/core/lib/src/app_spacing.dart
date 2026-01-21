@@ -125,6 +125,12 @@ abstract final class AppSpacing {
   /// Shop modal max height ratio (0.8 of screen height)
   static const double shopModalMaxHeightRatio = 0.8;
 
+  /// Modal shadow blur radius (20px)
+  static const double modalShadowBlurRadius = 20.0;
+
+  /// Modal shadow spread radius (5px)
+  static const double modalShadowSpreadRadius = 5.0;
+
   /// Large button/list item height (56px)
   static const double buttonHeightLarge = 56.0;
 

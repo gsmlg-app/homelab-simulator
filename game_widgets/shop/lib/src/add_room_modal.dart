@@ -159,7 +159,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-      width: 500,
+      width: AppSpacing.shopModalWidth,
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
@@ -173,8 +173,8 @@ class _AddRoomModalState extends State<AddRoomModal> {
         boxShadow: [
           BoxShadow(
             color: AppColors.modalAccentDark.withValues(alpha: 0.5),
-            blurRadius: 20,
-            spreadRadius: 5,
+            blurRadius: AppSpacing.modalShadowBlurRadius,
+            spreadRadius: AppSpacing.modalShadowSpreadRadius,
           ),
         ],
       ),
