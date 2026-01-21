@@ -210,6 +210,53 @@ class GameConstants {
 
   /// Player movement threshold for position snap (pixels).
   static const double playerMovementThreshold = 1.0;
+
+  // Cloud service component drawing constants
+
+  /// Cloud service background padding from edge (pixels).
+  static const double cloudServiceBgPadding = 4.0;
+
+  /// Cloud service body padding from edge (pixels).
+  static const double cloudServiceBodyPadding = 8.0;
+
+  /// Cloud service selection highlight padding from edge (pixels).
+  static const double cloudServiceSelectionPadding = 2.0;
+
+  /// Cloud service background corner radius (pixels).
+  static const double cloudServiceBgRadius = 6.0;
+
+  /// Cloud service body corner radius (pixels).
+  static const double cloudServiceBodyRadius = 4.0;
+
+  /// Cloud service provider dot X offset from right edge (pixels).
+  static const double cloudServiceProviderDotXOffset = 12.0;
+
+  /// Cloud service provider dot Y offset from top edge (pixels).
+  static const double cloudServiceProviderDotYOffset = 12.0;
+
+  /// Cloud service provider dot radius (pixels).
+  static const double cloudServiceProviderDotRadius = 5.0;
+
+  /// Cloud service icon scale divisor (size.x / this value).
+  static const double cloudServiceIconScaleDivisor = 40.0;
+
+  /// Cloud icon circle horizontal offset multiplier.
+  static const double cloudIconHorizontalOffset = 5.0;
+
+  /// Cloud icon main circle radius multiplier.
+  static const double cloudIconMainRadius = 6.0;
+
+  /// Cloud icon top circle Y offset multiplier.
+  static const double cloudIconTopYOffset = 3.0;
+
+  /// Cloud icon top circle radius multiplier.
+  static const double cloudIconTopRadius = 5.0;
+
+  /// Cloud icon rectangle half-width multiplier.
+  static const double cloudIconRectHalfWidth = 10.0;
+
+  /// Cloud icon rectangle height multiplier.
+  static const double cloudIconRectHeight = 5.0;
 }
 
 /// Convert grid position to pixel position

@@ -237,6 +237,69 @@ void main() {
       });
     });
 
+    // Cloud service component drawing constants
+    group('cloud service component drawing constants', () {
+      test('cloudServiceBgPadding is 4.0', () {
+        expect(GameConstants.cloudServiceBgPadding, 4.0);
+      });
+
+      test('cloudServiceBodyPadding is 8.0', () {
+        expect(GameConstants.cloudServiceBodyPadding, 8.0);
+      });
+
+      test('cloudServiceSelectionPadding is 2.0', () {
+        expect(GameConstants.cloudServiceSelectionPadding, 2.0);
+      });
+
+      test('cloudServiceBgRadius is 6.0', () {
+        expect(GameConstants.cloudServiceBgRadius, 6.0);
+      });
+
+      test('cloudServiceBodyRadius is 4.0', () {
+        expect(GameConstants.cloudServiceBodyRadius, 4.0);
+      });
+
+      test('cloudServiceProviderDotXOffset is 12.0', () {
+        expect(GameConstants.cloudServiceProviderDotXOffset, 12.0);
+      });
+
+      test('cloudServiceProviderDotYOffset is 12.0', () {
+        expect(GameConstants.cloudServiceProviderDotYOffset, 12.0);
+      });
+
+      test('cloudServiceProviderDotRadius is 5.0', () {
+        expect(GameConstants.cloudServiceProviderDotRadius, 5.0);
+      });
+
+      test('cloudServiceIconScaleDivisor is 40.0', () {
+        expect(GameConstants.cloudServiceIconScaleDivisor, 40.0);
+      });
+
+      test('cloudIconHorizontalOffset is 5.0', () {
+        expect(GameConstants.cloudIconHorizontalOffset, 5.0);
+      });
+
+      test('cloudIconMainRadius is 6.0', () {
+        expect(GameConstants.cloudIconMainRadius, 6.0);
+      });
+
+      test('cloudIconTopYOffset is 3.0', () {
+        expect(GameConstants.cloudIconTopYOffset, 3.0);
+      });
+
+      test('cloudIconTopRadius is 5.0', () {
+        expect(GameConstants.cloudIconTopRadius, 5.0);
+      });
+
+      test('cloudIconRectHalfWidth is 10.0', () {
+        expect(GameConstants.cloudIconRectHalfWidth, 10.0);
+      });
+
+      test('cloudIconRectHeight is 5.0', () {
+        expect(GameConstants.cloudIconRectHeight, 5.0);
+      });
+    });
+
     // Gamepad key constants
     group('gamepad key constants', () {
       test('dpadUpKeys contains expected keys', () {
