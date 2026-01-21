@@ -90,8 +90,8 @@ class RoomModel extends Equatable {
     int deviceWidth,
     int deviceHeight,
   ) {
-    for (var dx = 0; dx < deviceWidth; dx++) {
-      for (var dy = 0; dy < deviceHeight; dy++) {
+    for (int dx = 0; dx < deviceWidth; dx++) {
+      for (int dy = 0; dy < deviceHeight; dy++) {
         final cell = GridPosition(position.x + dx, position.y + dy);
         if (!isWithinBounds(cell)) return false;
         if (isCellOccupied(cell)) return false;

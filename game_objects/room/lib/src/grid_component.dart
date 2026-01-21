@@ -36,14 +36,14 @@ class GridComponent extends PositionComponent {
     final pixelWidth = gridWidth * tileSize;
 
     // Add vertical lines
-    for (var x = 0; x <= gridWidth; x++) {
+    for (int x = 0; x <= gridWidth; x++) {
       final xPos = x * tileSize;
       path.moveTo(xPos, 0);
       path.lineTo(xPos, pixelHeight);
     }
 
     // Add horizontal lines
-    for (var y = 0; y <= gridHeight; y++) {
+    for (int y = 0; y <= gridHeight; y++) {
       final yPos = y * tileSize;
       path.moveTo(0, yPos);
       path.lineTo(pixelWidth, yPos);
