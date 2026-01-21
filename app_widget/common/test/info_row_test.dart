@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_widget_common/app_widget_common.dart';
 
 void main() {
@@ -9,7 +10,7 @@ void main() {
       String value = 'Value',
       Color valueColor = Colors.white,
       Color? labelColor,
-      double fontSize = 12,
+      double fontSize = AppSpacing.fontSizeSmall,
       double verticalPadding = 4,
       bool boldValue = true,
     }) {
@@ -89,10 +90,10 @@ void main() {
       });
 
       testWidgets('uses fontSize parameter', (tester) async {
-        await tester.pumpWidget(buildSubject(fontSize: 14));
+        await tester.pumpWidget(buildSubject(fontSize: AppSpacing.fontSizeDefault));
 
         final labelText = tester.widget<Text>(find.text('Label'));
-        expect(labelText.style?.fontSize, 14);
+        expect(labelText.style?.fontSize, AppSpacing.fontSizeDefault);
       });
     });
 
@@ -127,10 +128,10 @@ void main() {
       });
 
       testWidgets('uses fontSize parameter', (tester) async {
-        await tester.pumpWidget(buildSubject(fontSize: 16));
+        await tester.pumpWidget(buildSubject(fontSize: AppSpacing.fontSizeMedium));
 
         final valueText = tester.widget<Text>(find.text('Value'));
-        expect(valueText.style?.fontSize, 16);
+        expect(valueText.style?.fontSize, AppSpacing.fontSizeMedium);
       });
     });
 
@@ -148,7 +149,7 @@ void main() {
         expect(valueText.style?.color, Colors.white);
       });
 
-      testWidgets('default fontSize is 12', (tester) async {
+      testWidgets('default fontSize is fontSizeSmall', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
@@ -159,8 +160,8 @@ void main() {
 
         final labelText = tester.widget<Text>(find.text('L'));
         final valueText = tester.widget<Text>(find.text('V'));
-        expect(labelText.style?.fontSize, 12);
-        expect(valueText.style?.fontSize, 12);
+        expect(labelText.style?.fontSize, AppSpacing.fontSizeSmall);
+        expect(valueText.style?.fontSize, AppSpacing.fontSizeSmall);
       });
 
       testWidgets('default verticalPadding is 4', (tester) async {
