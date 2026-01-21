@@ -19,13 +19,16 @@ class ShopModal extends StatefulWidget {
 
 class _ShopModalState extends State<ShopModal>
     with SingleTickerProviderStateMixin {
+  /// Number of tabs in the shop modal (Devices, Cloud Services, Rooms)
+  static const int _tabCount = 3;
+
   late TabController _tabController;
   bool _showAddRoomModal = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _tabCount, vsync: this);
   }
 
   @override
