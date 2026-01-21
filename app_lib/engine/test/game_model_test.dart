@@ -463,6 +463,63 @@ void main() {
 
         expect(game1, isNot(game2));
       });
+
+      test('equal games have same hashCode', () {
+        const game1 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+        const game2 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+
+        expect(game1.hashCode, game2.hashCode);
+      });
+
+      test('games can be used in Set collections', () {
+        const game1 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+        const game2 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+        const game3 = GameModel(
+          currentRoomId: 'room-2',
+          rooms: [RoomModel(id: 'room-2', name: 'Room 2')],
+          credits: 500,
+        );
+
+        final gameSet = {game1, game2, game3};
+        expect(gameSet.length, 2);
+        expect(gameSet.contains(game1), isTrue);
+        expect(gameSet.contains(game3), isTrue);
+      });
+
+      test('games can be used as Map keys', () {
+        const game1 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+        const game2 = GameModel(
+          currentRoomId: 'room-1',
+          rooms: [RoomModel(id: 'room-1', name: 'Room 1')],
+          credits: 100,
+        );
+
+        final gameMap = <GameModel, String>{game1: 'first'};
+        gameMap[game2] = 'second';
+
+        expect(gameMap.length, 1);
+        expect(gameMap[game1], 'second');
+      });
     });
 
     group('toString', () {

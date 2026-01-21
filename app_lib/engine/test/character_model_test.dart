@@ -192,26 +192,95 @@ void main() {
       expect(female.spritePath, contains('girl'));
     });
 
-    test('equality works correctly', () {
-      final same = CharacterModel(
-        id: 'test-id',
-        name: 'TestPlayer',
-        gender: Gender.female,
-        skinTone: SkinTone.tan,
-        hairStyle: HairStyle.long,
-        hairColor: HairColor.red,
-        outfitVariant: OutfitVariant.tech,
-        createdAt: testTime,
-        lastPlayedAt: testTime,
-        totalPlayTime: 3600,
-        level: 5,
-        credits: 500,
-      );
+    group('equality', () {
+      test('equal characters are equal', () {
+        final same = CharacterModel(
+          id: 'test-id',
+          name: 'TestPlayer',
+          gender: Gender.female,
+          skinTone: SkinTone.tan,
+          hairStyle: HairStyle.long,
+          hairColor: HairColor.red,
+          outfitVariant: OutfitVariant.tech,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          totalPlayTime: 3600,
+          level: 5,
+          credits: 500,
+        );
 
-      final different = character.copyWith(name: 'Different');
+        expect(character, same);
+      });
 
-      expect(character, same);
-      expect(character, isNot(different));
+      test('different characters are not equal', () {
+        final different = character.copyWith(name: 'Different');
+        expect(character, isNot(different));
+      });
+
+      test('equal characters have same hashCode', () {
+        final same = CharacterModel(
+          id: 'test-id',
+          name: 'TestPlayer',
+          gender: Gender.female,
+          skinTone: SkinTone.tan,
+          hairStyle: HairStyle.long,
+          hairColor: HairColor.red,
+          outfitVariant: OutfitVariant.tech,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          totalPlayTime: 3600,
+          level: 5,
+          credits: 500,
+        );
+
+        expect(character.hashCode, same.hashCode);
+      });
+
+      test('characters can be used in Set collections', () {
+        final same = CharacterModel(
+          id: 'test-id',
+          name: 'TestPlayer',
+          gender: Gender.female,
+          skinTone: SkinTone.tan,
+          hairStyle: HairStyle.long,
+          hairColor: HairColor.red,
+          outfitVariant: OutfitVariant.tech,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          totalPlayTime: 3600,
+          level: 5,
+          credits: 500,
+        );
+        final different = character.copyWith(id: 'other-id');
+
+        final characterSet = {character, same, different};
+        expect(characterSet.length, 2);
+        expect(characterSet.contains(character), isTrue);
+        expect(characterSet.contains(different), isTrue);
+      });
+
+      test('characters can be used as Map keys', () {
+        final same = CharacterModel(
+          id: 'test-id',
+          name: 'TestPlayer',
+          gender: Gender.female,
+          skinTone: SkinTone.tan,
+          hairStyle: HairStyle.long,
+          hairColor: HairColor.red,
+          outfitVariant: OutfitVariant.tech,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          totalPlayTime: 3600,
+          level: 5,
+          credits: 500,
+        );
+
+        final characterMap = <CharacterModel, String>{character: 'first'};
+        characterMap[same] = 'second';
+
+        expect(characterMap.length, 1);
+        expect(characterMap[character], 'second');
+      });
     });
   });
 }

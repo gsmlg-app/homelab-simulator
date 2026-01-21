@@ -380,6 +380,84 @@ void main() {
 
         expect(service1, isNot(service2));
       });
+
+      test('equal services have same hashCode', () {
+        const service1 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+        const service2 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+
+        expect(service1.hashCode, service2.hashCode);
+      });
+
+      test('services can be used in Set collections', () {
+        const service1 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+        const service2 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+        const service3 = CloudServiceModel(
+          id: 'svc-3',
+          name: 'S3',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.storage,
+          serviceType: 'S3',
+          position: GridPosition(10, 10),
+        );
+
+        final serviceSet = {service1, service2, service3};
+        expect(serviceSet.length, 2);
+        expect(serviceSet.contains(service1), isTrue);
+        expect(serviceSet.contains(service3), isTrue);
+      });
+
+      test('services can be used as Map keys', () {
+        const service1 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+        const service2 = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(5, 5),
+        );
+
+        final serviceMap = <CloudServiceModel, String>{service1: 'first'};
+        serviceMap[service2] = 'second';
+
+        expect(serviceMap.length, 1);
+        expect(serviceMap[service1], 'second');
+      });
     });
 
     group('toString', () {

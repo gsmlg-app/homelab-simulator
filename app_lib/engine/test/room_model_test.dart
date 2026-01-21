@@ -784,6 +784,63 @@ void main() {
 
         expect(room1, isNot(room2));
       });
+
+      test('equal rooms have same hashCode', () {
+        const room1 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+        const room2 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+
+        expect(room1.hashCode, room2.hashCode);
+      });
+
+      test('rooms can be used in Set collections', () {
+        const room1 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+        const room2 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+        const room3 = RoomModel(
+          id: 'room-3',
+          name: 'Other Room',
+          type: RoomType.aws,
+        );
+
+        final roomSet = {room1, room2, room3};
+        expect(roomSet.length, 2);
+        expect(roomSet.contains(room1), isTrue);
+        expect(roomSet.contains(room3), isTrue);
+      });
+
+      test('rooms can be used as Map keys', () {
+        const room1 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+        const room2 = RoomModel(
+          id: 'room-1',
+          name: 'Test Room',
+          type: RoomType.serverRoom,
+        );
+
+        final roomMap = <RoomModel, String>{room1: 'first'};
+        roomMap[room2] = 'second';
+
+        expect(roomMap.length, 1);
+        expect(roomMap[room1], 'second');
+      });
     });
 
     group('toString', () {

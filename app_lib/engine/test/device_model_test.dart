@@ -421,6 +421,77 @@ void main() {
 
         expect(device1, isNot(device2));
       });
+
+      test('equal devices have same hashCode', () {
+        const device1 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const device2 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+
+        expect(device1.hashCode, device2.hashCode);
+      });
+
+      test('devices can be used in Set collections', () {
+        const device1 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const device2 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const device3 = DeviceModel(
+          id: 'dev-3',
+          templateId: 'tmpl',
+          name: 'Other Device',
+          type: DeviceType.nas,
+          position: GridPosition(10, 10),
+        );
+
+        final deviceSet = {device1, device2, device3};
+        expect(deviceSet.length, 2);
+        expect(deviceSet.contains(device1), isTrue);
+        expect(deviceSet.contains(device3), isTrue);
+      });
+
+      test('devices can be used as Map keys', () {
+        const device1 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const device2 = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+
+        final deviceMap = <DeviceModel, String>{device1: 'first'};
+        deviceMap[device2] = 'second';
+
+        expect(deviceMap.length, 1);
+        expect(deviceMap[device1], 'second');
+      });
     });
 
     group('toString', () {
@@ -538,6 +609,75 @@ void main() {
         );
 
         expect(template1, template2);
+      });
+
+      test('equal templates have same hashCode', () {
+        const template1 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const template2 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+
+        expect(template1.hashCode, template2.hashCode);
+      });
+
+      test('templates can be used in Set collections', () {
+        const template1 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const template2 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const template3 = DeviceTemplate(
+          id: 'tmpl-3',
+          name: 'Router',
+          description: 'Other',
+          type: DeviceType.router,
+          cost: 50,
+        );
+
+        final templateSet = {template1, template2, template3};
+        expect(templateSet.length, 2);
+      });
+
+      test('templates can be used as Map keys', () {
+        const template1 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const template2 = DeviceTemplate(
+          id: 'tmpl-1',
+          name: 'Server',
+          description: 'Desc',
+          type: DeviceType.server,
+          cost: 100,
+        );
+
+        final templateMap = <DeviceTemplate, String>{template1: 'first'};
+        templateMap[template2] = 'second';
+
+        expect(templateMap.length, 1);
+        expect(templateMap[template1], 'second');
       });
     });
 
