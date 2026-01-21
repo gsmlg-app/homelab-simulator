@@ -108,6 +108,18 @@ class _AddRoomModalState extends State<AddRoomModal> {
     return _selectedProvider!.name;
   }
 
+  /// Whether the current door is on a horizontal wall (top or bottom).
+  bool get _isHorizontalWall =>
+      _doorSide == WallSide.top || _doorSide == WallSide.bottom;
+
+  /// Maximum valid door position for the current wall side.
+  int get _maxDoorPosition => _isHorizontalWall
+      ? GameConstants.roomWidth - 2
+      : GameConstants.roomHeight - 2;
+
+  /// Get the accent color for the current provider selection.
+  Color get _accentColor => _selectedProvider?.color ?? AppColors.roomCustom;
+
   bool get _canCreate {
     if (_selectedProvider == null) return false;
     if (_selectedProvider!.regions.isNotEmpty && _selectedRegion == null) {
@@ -344,15 +356,11 @@ class _AddRoomModalState extends State<AddRoomModal> {
       onSelected: (selected) {
         setState(() => _selectedRegion = selected ? region : null);
       },
-      selectedColor: _selectedProvider?.color.withValues(alpha: 0.3),
-      checkmarkColor: _selectedProvider?.color,
+      selectedColor: _accentColor.withValues(alpha: 0.3),
+      checkmarkColor: _accentColor,
       labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.white70),
       backgroundColor: Colors.black26,
-      side: BorderSide(
-        color: isSelected
-            ? _selectedProvider?.color ?? Colors.purple
-            : Colors.grey.shade700,
-      ),
+      side: BorderSide(color: isSelected ? _accentColor : Colors.grey.shade700),
     );
   }
 
@@ -370,7 +378,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
             children: [
               Icon(
                 _selectedProvider?.icon ?? Icons.room,
-                color: _selectedProvider?.color ?? Colors.purple,
+                color: _accentColor,
                 size: 24,
               ),
               const SizedBox(width: 12),
@@ -418,23 +426,16 @@ class _AddRoomModalState extends State<AddRoomModal> {
               child: Slider(
                 value: _doorPosition.toDouble(),
                 min: 1,
-                max: (_doorSide == WallSide.top || _doorSide == WallSide.bottom)
-                    ? (GameConstants.roomWidth - 2).toDouble()
-                    : (GameConstants.roomHeight - 2).toDouble(),
-                divisions:
-                    (_doorSide == WallSide.top || _doorSide == WallSide.bottom)
-                    ? GameConstants.roomWidth - 3
-                    : GameConstants.roomHeight - 3,
+                max: _maxDoorPosition.toDouble(),
+                divisions: _maxDoorPosition - 1,
                 onChanged: (value) {
                   setState(() => _doorPosition = value.round());
                 },
-                activeColor: _selectedProvider?.color ?? Colors.purple,
+                activeColor: _accentColor,
               ),
             ),
             Text(
-              (_doorSide == WallSide.top || _doorSide == WallSide.bottom)
-                  ? '${GameConstants.roomWidth - 2}'
-                  : '${GameConstants.roomHeight - 2}',
+              '$_maxDoorPosition',
               style: const TextStyle(color: Colors.white70),
             ),
           ],
@@ -442,10 +443,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         Center(
           child: Text(
             'Position: $_doorPosition',
-            style: TextStyle(
-              color: _selectedProvider?.color ?? Colors.purple,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: _accentColor, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 20),
@@ -480,15 +478,11 @@ class _AddRoomModalState extends State<AddRoomModal> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? (_selectedProvider?.color ?? Colors.purple).withValues(
-                  alpha: 0.3,
-                )
+              ? _accentColor.withValues(alpha: 0.3)
               : Colors.black26,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected
-                ? _selectedProvider?.color ?? Colors.purple
-                : Colors.grey.shade700,
+            color: isSelected ? _accentColor : Colors.grey.shade700,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -553,7 +547,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 width: cellSize,
                 height: cellSize,
                 decoration: BoxDecoration(
-                  color: _selectedProvider?.color ?? Colors.purple,
+                  color: _accentColor,
                   border: Border.all(color: Colors.white, width: 2),
                 ),
                 child: const Center(
@@ -611,7 +605,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 ? (_canCreate ? () => setState(() => _currentStep++) : null)
                 : (_canCreate ? _createRoom : null),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _selectedProvider?.color ?? Colors.purple,
+              backgroundColor: _accentColor,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
