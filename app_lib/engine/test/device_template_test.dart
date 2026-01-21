@@ -1,4 +1,4 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
@@ -275,10 +275,15 @@ void main() {
           height: 3,
         );
 
-        expect(
-          template.props,
-          ['test', 'Test', 'Test', DeviceType.server, 100, 2, 3],
-        );
+        expect(template.props, [
+          'test',
+          'Test',
+          'Test',
+          DeviceType.server,
+          100,
+          2,
+          3,
+        ]);
       });
     });
   });
@@ -319,26 +324,26 @@ void main() {
     });
 
     test('contains server template', () {
-      final servers =
-          defaultDeviceTemplates.where((t) => t.type == DeviceType.server);
+      final servers = defaultDeviceTemplates.where(
+        (t) => t.type == DeviceType.server,
+      );
       expect(servers, isNotEmpty);
     });
 
     test('contains router template', () {
-      final routers =
-          defaultDeviceTemplates.where((t) => t.type == DeviceType.router);
+      final routers = defaultDeviceTemplates.where(
+        (t) => t.type == DeviceType.router,
+      );
       expect(routers, isNotEmpty);
     });
 
     test('contains nas template', () {
-      final nas =
-          defaultDeviceTemplates.where((t) => t.type == DeviceType.nas);
+      final nas = defaultDeviceTemplates.where((t) => t.type == DeviceType.nas);
       expect(nas, isNotEmpty);
     });
 
     test('contains iot template', () {
-      final iot =
-          defaultDeviceTemplates.where((t) => t.type == DeviceType.iot);
+      final iot = defaultDeviceTemplates.where((t) => t.type == DeviceType.iot);
       expect(iot, isNotEmpty);
     });
   });

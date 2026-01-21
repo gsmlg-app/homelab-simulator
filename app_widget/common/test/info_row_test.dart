@@ -44,8 +44,9 @@ void main() {
     });
 
     group('layout', () {
-      testWidgets('uses Row with MainAxisAlignment.spaceBetween',
-          (tester) async {
+      testWidgets('uses Row with MainAxisAlignment.spaceBetween', (
+        tester,
+      ) async {
         await tester.pumpWidget(buildSubject());
 
         final row = tester.widget<Row>(find.byType(Row));
@@ -116,8 +117,9 @@ void main() {
         expect(valueText.style?.fontWeight, FontWeight.bold);
       });
 
-      testWidgets('value is normal weight when boldValue is false',
-          (tester) async {
+      testWidgets('value is normal weight when boldValue is false', (
+        tester,
+      ) async {
         await tester.pumpWidget(buildSubject(boldValue: false));
 
         final valueText = tester.widget<Text>(find.text('Value'));
@@ -136,7 +138,9 @@ void main() {
       testWidgets('default valueColor is white', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(body: InfoRow(label: 'L', value: 'V')),
+            home: Scaffold(
+              body: InfoRow(label: 'L', value: 'V'),
+            ),
           ),
         );
 
@@ -147,7 +151,9 @@ void main() {
       testWidgets('default fontSize is 12', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(body: InfoRow(label: 'L', value: 'V')),
+            home: Scaffold(
+              body: InfoRow(label: 'L', value: 'V'),
+            ),
           ),
         );
 
@@ -160,7 +166,9 @@ void main() {
       testWidgets('default verticalPadding is 4', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(body: InfoRow(label: 'L', value: 'V')),
+            home: Scaffold(
+              body: InfoRow(label: 'L', value: 'V'),
+            ),
           ),
         );
 
@@ -171,7 +179,9 @@ void main() {
       testWidgets('default boldValue is true', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(body: InfoRow(label: 'L', value: 'V')),
+            home: Scaffold(
+              body: InfoRow(label: 'L', value: 'V'),
+            ),
           ),
         );
 
