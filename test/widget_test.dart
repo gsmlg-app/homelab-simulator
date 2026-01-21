@@ -68,7 +68,7 @@ void main() {
     testWidgets('App has cyan primary color', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(materialApp.theme?.colorScheme.primary, Colors.cyan.shade400);
+      expect(materialApp.theme?.colorScheme.primary, AppColors.cyan400);
     });
 
     testWidgets('App key is set correctly', (WidgetTester tester) async {
@@ -80,7 +80,7 @@ void main() {
     testWidgets('App has green secondary color', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(materialApp.theme?.colorScheme.secondary, Colors.green.shade400);
+      expect(materialApp.theme?.colorScheme.secondary, AppColors.green400);
     });
 
     testWidgets('App has dark color scheme', (WidgetTester tester) async {
