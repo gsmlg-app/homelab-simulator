@@ -17,6 +17,13 @@ class StartMenuScreen extends StatefulWidget {
   State<StartMenuScreen> createState() => _StartMenuScreenState();
 }
 
+// Private constants for StartMenuScreen layout
+const double _titleTopPadding = 60.0;
+const double _titleFontSize = 48.0;
+const double _createButtonHeight = 56.0;
+const double _emptyStateIconSize = 64.0;
+const double _avatarSize = 56.0;
+
 class _StartMenuScreenState extends State<StartMenuScreen> {
   final CharacterStorage _storage = CharacterStorage();
   List<CharacterModel> _characters = [];
@@ -223,27 +230,27 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
           child: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: _titleTopPadding),
                 // Title
                 const Text(
                   'HOMELAB',
                   style: TextStyle(
-                    fontSize: 48,
+                    fontSize: _titleFontSize,
                     fontWeight: FontWeight.bold,
                     color: AppColors.cyan400,
-                    letterSpacing: 8,
+                    letterSpacing: AppSpacing.s,
                   ),
                 ),
                 const Text(
                   'SIMULATOR',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: AppSpacing.fontSizeHeading,
                     fontWeight: FontWeight.w300,
                     color: AppColors.cyan200,
-                    letterSpacing: 12,
+                    letterSpacing: AppSpacing.ms,
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: _titleTopPadding),
 
                 // Character list or loading
                 Expanded(
@@ -254,16 +261,19 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
                 // Create new character button
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: AppSpacing.paddingL,
                   child: SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: _createButtonHeight,
                     child: FilledButton.icon(
                       onPressed: _createNewCharacter,
                       icon: const Icon(Icons.add),
                       label: const Text(
                         'CREATE NEW CHARACTER',
-                        style: TextStyle(fontSize: 16, letterSpacing: 2),
+                        style: TextStyle(
+                          fontSize: AppSpacing.fontSizeMedium,
+                          letterSpacing: 2,
+                        ),
                       ),
                       style: FilledButton.styleFrom(
                         backgroundColor: _selectedIndex == -1
@@ -272,7 +282,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                         side: _selectedIndex == -1
                             ? const BorderSide(
                                 color: AppColors.textPrimary,
-                                width: 2,
+                                width: AppSpacing.borderWidth,
                               )
                             : null,
                       ),
@@ -282,10 +292,13 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
                 // Gamepad hint
                 const Padding(
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.only(bottom: AppSpacing.m),
                   child: Text(
                     '🎮 D-Pad: Navigate • A: Select • X: Delete',
-                    style: TextStyle(fontSize: 12, color: AppColors.textHint),
+                    style: TextStyle(
+                      fontSize: AppSpacing.fontSizeSmall,
+                      color: AppColors.textHint,
+                    ),
                   ),
                 ),
               ],
@@ -321,16 +334,26 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.person_add, size: 64, color: AppColors.borderLight),
-            SizedBox(height: 16),
+            Icon(
+              Icons.person_add,
+              size: _emptyStateIconSize,
+              color: AppColors.borderLight,
+            ),
+            SizedBox(height: AppSpacing.m),
             Text(
               'No saved characters',
-              style: TextStyle(fontSize: 18, color: AppColors.textTertiary),
+              style: TextStyle(
+                fontSize: AppSpacing.fontSizeLarge,
+                color: AppColors.textTertiary,
+              ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppSpacing.s),
             Text(
               'Create a new character to start playing',
-              style: TextStyle(fontSize: 14, color: AppColors.borderLight),
+              style: TextStyle(
+                fontSize: AppSpacing.fontSizeDefault,
+                color: AppColors.borderLight,
+              ),
             ),
           ],
         ),
@@ -338,7 +361,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
       itemCount: _characters.length,
       itemBuilder: (context, index) {
         final character = _characters[index];
@@ -388,33 +411,36 @@ class _CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AppSpacing.ms),
       color: isSelected
           ? AppColors.selectionBackground
           : AppColors.componentBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
         side: isSelected
-            ? const BorderSide(color: AppColors.textPrimary, width: 2)
+            ? const BorderSide(
+                color: AppColors.textPrimary,
+                width: AppSpacing.borderWidth,
+              )
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: AppSpacing.paddingM,
           child: Row(
             children: [
               // Character sprite avatar
               Container(
-                width: 56,
-                height: 56,
+                width: _avatarSize,
+                height: _avatarSize,
                 decoration: BoxDecoration(
                   color: AppColors.cyan900,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
                   child: ClipRect(
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -422,15 +448,15 @@ class _CharacterCard extends StatelessWidget {
                       heightFactor: 1 / 3,
                       child: Image.asset(
                         character.spritePath,
-                        width: 56 * 8,
-                        height: 56 * 3,
+                        width: _avatarSize * 8,
+                        height: _avatarSize * 3,
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.m),
 
               // Info
               Expanded(
@@ -440,38 +466,38 @@ class _CharacterCard extends StatelessWidget {
                     Text(
                       character.name,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppSpacing.fontSizeLarge,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Row(
                       children: [
                         const Icon(
                           Icons.access_time,
-                          size: 14,
+                          size: AppSpacing.fontSizeDefault,
                           color: AppColors.textTertiary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           _formatPlayTime(character.totalPlayTime),
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppSpacing.fontSizeSmall,
                             color: AppColors.textTertiary,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSpacing.m),
                         const Icon(
                           Icons.calendar_today,
-                          size: 14,
+                          size: AppSpacing.fontSizeDefault,
                           color: AppColors.textTertiary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           _formatDate(character.lastPlayedAt),
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppSpacing.fontSizeSmall,
                             color: AppColors.textTertiary,
                           ),
                         ),
@@ -483,18 +509,15 @@ class _CharacterCard extends StatelessWidget {
 
               // Level badge
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
+                padding: AppSpacing.paddingChip,
                 decoration: BoxDecoration(
                   color: AppColors.green800,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
                 ),
                 child: Text(
                   'Lv.${character.level}',
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: AppSpacing.fontSizeSmall,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
                   ),
