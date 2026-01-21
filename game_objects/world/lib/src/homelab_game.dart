@@ -199,30 +199,31 @@ class HomelabGame extends FlameGame
     _updateDoorInteraction(model);
   }
 
+  /// Adds a component wrapped with the WorldBloc provider.
+  void _addWithWorldBloc(Component component) {
+    add(
+      FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [component],
+      ),
+    );
+  }
+
   void _showPlacementGhost(DeviceTemplate template) {
-    if (_placementGhost == null) {
-      _placementGhost = PlacementGhostComponent();
-      add(
-        FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [_placementGhost!],
-        ),
-      );
-    }
+    _ensurePlacementGhost();
     _placementGhost!.setTemplate(template);
   }
 
   void _showCloudServicePlacementGhost(CloudServiceTemplate template) {
+    _ensurePlacementGhost();
+    _placementGhost!.setCloudService(template);
+  }
+
+  void _ensurePlacementGhost() {
     if (_placementGhost == null) {
       _placementGhost = PlacementGhostComponent();
-      add(
-        FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [_placementGhost!],
-        ),
-      );
+      _addWithWorldBloc(_placementGhost!);
     }
-    _placementGhost!.setCloudService(template);
   }
 
   void _hidePlacementGhost() {
@@ -231,78 +232,68 @@ class HomelabGame extends FlameGame
   }
 
   void _syncDevices(List<DeviceModel> devices) {
-    // Remove components for deleted devices
-    final deviceIds = devices.map((d) => d.id).toSet();
-    _deviceComponents.removeWhere((comp) {
-      if (!deviceIds.contains(comp.device.id)) {
-        comp.removeFromParent();
-        return true;
-      }
-      return false;
-    });
-
-    // Add components for new devices
-    final existingIds = _deviceComponents.map((c) => c.device.id).toSet();
-    for (final device in devices) {
-      if (!existingIds.contains(device.id)) {
-        final comp = DeviceComponent(device: device);
-        _deviceComponents.add(comp);
-        add(
-          FlameBlocProvider<WorldBloc, WorldState>.value(
-            value: worldBloc,
-            children: [comp],
-          ),
-        );
-      }
-    }
+    _syncComponents<DeviceModel, DeviceComponent>(
+      models: devices,
+      components: _deviceComponents,
+      getModelId: (d) => d.id,
+      getComponentId: (c) => c.device.id,
+      createComponent: (d) => DeviceComponent(device: d),
+    );
   }
 
   void _syncCloudServices(List<CloudServiceModel> services) {
-    // Remove components for deleted services
-    final serviceIds = services.map((s) => s.id).toSet();
-    _cloudServiceComponents.removeWhere((comp) {
-      if (!serviceIds.contains(comp.service.id)) {
-        comp.removeFromParent();
-        return true;
-      }
-      return false;
-    });
-
-    // Add components for new services
-    final existingIds = _cloudServiceComponents
-        .map((c) => c.service.id)
-        .toSet();
-    for (final service in services) {
-      if (!existingIds.contains(service.id)) {
-        final comp = CloudServiceComponent(service: service);
-        _cloudServiceComponents.add(comp);
-        add(
-          FlameBlocProvider<WorldBloc, WorldState>.value(
-            value: worldBloc,
-            children: [comp],
-          ),
-        );
-      }
-    }
+    _syncComponents<CloudServiceModel, CloudServiceComponent>(
+      models: services,
+      components: _cloudServiceComponents,
+      getModelId: (s) => s.id,
+      getComponentId: (c) => c.service.id,
+      createComponent: (s) => CloudServiceComponent(service: s),
+    );
   }
 
   void _syncDoors(List<DoorModel> doors) {
-    // Remove all existing door components
+    // Doors use full replacement instead of incremental sync
     for (final comp in _doorComponents) {
       comp.removeFromParent();
     }
     _doorComponents.clear();
 
-    // Add new door components
     for (final door in doors) {
       final comp = DoorComponent(door: door);
       _doorComponents.add(comp);
-      add(
-        FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [comp],
-        ),
-      );
+      _addWithWorldBloc(comp);
+    }
+  }
+
+  /// Generic sync helper for component lists.
+  ///
+  /// Removes components whose models no longer exist and adds components
+  /// for new models, minimizing unnecessary recreations.
+  void _syncComponents<M, C extends Component>({
+    required List<M> models,
+    required List<C> components,
+    required String Function(M) getModelId,
+    required String Function(C) getComponentId,
+    required C Function(M) createComponent,
+  }) {
+    // Remove components for deleted models
+    final modelIds = models.map(getModelId).toSet();
+    components.removeWhere((comp) {
+      if (!modelIds.contains(getComponentId(comp))) {
+        comp.removeFromParent();
+        return true;
+      }
+      return false;
+    });
+
+    // Add components for new models
+    final existingIds = components.map(getComponentId).toSet();
+    for (final model in models) {
+      if (!existingIds.contains(getModelId(model))) {
+        final comp = createComponent(model);
+        components.add(comp);
+        _addWithWorldBloc(comp);
+      }
     }
   }
 
