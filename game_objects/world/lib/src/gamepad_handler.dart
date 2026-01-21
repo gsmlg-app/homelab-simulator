@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:gamepads/gamepads.dart';
+import 'package:logging/logging.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+
+final _log = Logger('GamepadHandler');
 
 /// Callback for gamepad direction input
 typedef GamepadDirectionCallback = void Function(Direction direction);
@@ -46,7 +49,12 @@ class GamepadHandler extends Component {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _subscription = Gamepads.events.listen(_handleGamepadEvent);
+    _subscription = Gamepads.events.listen(
+      _handleGamepadEvent,
+      onError: (Object error, StackTrace stackTrace) {
+        _log.severe('Error in gamepad event stream', error, stackTrace);
+      },
+    );
   }
 
   @override
