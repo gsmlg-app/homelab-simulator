@@ -182,6 +182,9 @@ abstract final class AppColors {
   /// Office room color (teal)
   static const Color roomOffice = Color(0xFF1ABC9C);
 
+  /// Custom/generic room color (gray)
+  static const Color roomCustom = Color(0xFF888888);
+
   // ============ CHARACTER HAIR COLORS ============
 
   /// Black hair
