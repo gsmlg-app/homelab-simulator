@@ -168,6 +168,124 @@ void main() {
 
         expect(component, isA<PositionComponent>());
       });
+
+      test('can have priority set', () {
+        final component = DeviceComponent(device: serverDevice);
+        component.priority = 10;
+
+        expect(component.priority, 10);
+      });
+
+      test('can have anchor set', () {
+        final component = DeviceComponent(device: serverDevice);
+        component.anchor = Anchor.center;
+
+        expect(component.anchor, Anchor.center);
+      });
+    });
+
+    group('edge cases', () {
+      test('handles device at high position', () {
+        const farDevice = DeviceModel(
+          id: 'far-device',
+          templateId: 'server-1',
+          name: 'Far Device',
+          type: DeviceType.server,
+          position: GridPosition(100, 100),
+        );
+        final component = DeviceComponent(device: farDevice, tileSize: 32.0);
+
+        expect(component.position, Vector2(3200.0, 3200.0));
+      });
+
+      test('handles large device dimensions', () {
+        const largeDevice = DeviceModel(
+          id: 'large-device',
+          templateId: 'server-1',
+          name: 'Large Device',
+          type: DeviceType.server,
+          position: GridPosition(0, 0),
+          width: 5,
+          height: 3,
+        );
+        final component = DeviceComponent(device: largeDevice, tileSize: 32.0);
+
+        expect(component.size, Vector2(160.0, 96.0));
+      });
+
+      test('handles phone device type', () {
+        const phoneDevice = DeviceModel(
+          id: 'phone-1',
+          templateId: 'phone-t',
+          name: 'Phone',
+          type: DeviceType.phone,
+          position: GridPosition(0, 0),
+        );
+        final component = DeviceComponent(device: phoneDevice);
+
+        expect(component.device.type, DeviceType.phone);
+      });
+
+      test('handles switch device type', () {
+        const switchDevice = DeviceModel(
+          id: 'switch-1',
+          templateId: 'switch-t',
+          name: 'Switch',
+          type: DeviceType.switch_,
+          position: GridPosition(0, 0),
+        );
+        final component = DeviceComponent(device: switchDevice);
+
+        expect(component.device.type, DeviceType.switch_);
+      });
+
+      test('handles NAS device type', () {
+        const nasDevice = DeviceModel(
+          id: 'nas-1',
+          templateId: 'nas-t',
+          name: 'NAS',
+          type: DeviceType.nas,
+          position: GridPosition(0, 0),
+        );
+        final component = DeviceComponent(device: nasDevice);
+
+        expect(component.device.type, DeviceType.nas);
+      });
+
+      test('handles IoT device type', () {
+        const iotDevice = DeviceModel(
+          id: 'iot-1',
+          templateId: 'iot-t',
+          name: 'IoT',
+          type: DeviceType.iot,
+          position: GridPosition(0, 0),
+        );
+        final component = DeviceComponent(device: iotDevice);
+
+        expect(component.device.type, DeviceType.iot);
+      });
+
+      test('default anchor is top left', () {
+        final component = DeviceComponent(device: serverDevice);
+
+        expect(component.anchor, Anchor.topLeft);
+      });
+    });
+
+    group('position manipulation', () {
+      test('initial position uses device grid position', () {
+        final component = DeviceComponent(device: serverDevice, tileSize: 32.0);
+
+        expect(component.position.x, 160.0); // 5 * 32
+        expect(component.position.y, 96.0); // 3 * 32
+      });
+
+      test('position can be modified', () {
+        final component = DeviceComponent(device: serverDevice);
+        component.position = Vector2(500, 600);
+
+        expect(component.position, Vector2(500, 600));
+      });
     });
   });
 }
