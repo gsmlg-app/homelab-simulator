@@ -122,11 +122,15 @@ GameModel _handleDevicePlaced(
 }
 
 GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
-  final device = model.currentRoom.devices.firstWhere(
+  // Find device - return unchanged if not found
+  final deviceIndex = model.currentRoom.devices.indexWhere(
     (d) => d.id == deviceId,
-    orElse: () => throw StateError('Device not found'),
   );
+  if (deviceIndex == -1) {
+    return model; // Device not found, no-op
+  }
 
+  final device = model.currentRoom.devices[deviceIndex];
   final template = defaultDeviceTemplates.firstWhere(
     (t) => t.id == device.templateId,
     orElse: () => defaultDeviceTemplates.first,

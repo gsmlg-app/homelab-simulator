@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show KeyEventResult;
+import 'package:logging/logging.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
@@ -17,6 +20,8 @@ import 'gamepad_handler.dart';
 /// Main Flame game for Homelab Simulator
 class HomelabGame extends FlameGame
     with HasKeyboardHandlerComponents, TapCallbacks, MouseMovementDetector {
+  static final _log = Logger('HomelabGame');
+
   final GameBloc gameBloc;
   final WorldBloc worldBloc;
 
@@ -29,6 +34,9 @@ class HomelabGame extends FlameGame
   final List<CloudServiceComponent> _cloudServiceComponents = [];
   final List<DoorComponent> _doorComponents = [];
   String? _currentRoomId;
+
+  /// Subscription to game state changes
+  StreamSubscription<GameState>? _gameStateSubscription;
 
   HomelabGame({required this.gameBloc, required this.worldBloc});
 
@@ -49,8 +57,20 @@ class HomelabGame extends FlameGame
     );
     await add(_gamepadHandler);
 
-    // Listen to game state changes
-    gameBloc.stream.listen(_onGameStateChanged);
+    // Listen to game state changes with proper error handling
+    _gameStateSubscription = gameBloc.stream.listen(
+      _onGameStateChanged,
+      onError: (Object error, StackTrace stackTrace) {
+        _log.severe('Error in game state stream', error, stackTrace);
+      },
+    );
+  }
+
+  @override
+  void onRemove() {
+    _gameStateSubscription?.cancel();
+    _gameStateSubscription = null;
+    super.onRemove();
   }
 
   void _onGamepadDirection(Direction direction) {

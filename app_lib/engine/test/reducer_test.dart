@@ -274,11 +274,9 @@ void main() {
         expect(result.credits, creditsAfterPlace + 250);
       });
 
-      test('throws StateError when removing nonexistent device', () {
-        expect(
-          () => reduce(model, const DeviceRemoved('nonexistent-device')),
-          throwsStateError,
-        );
+      test('returns unchanged model when removing nonexistent device', () {
+        final result = reduce(model, const DeviceRemoved('nonexistent-device'));
+        expect(result, model);
       });
     });
 
