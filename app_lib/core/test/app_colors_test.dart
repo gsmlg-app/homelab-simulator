@@ -310,17 +310,35 @@ void main() {
     group('Accent Colors', () {
       test('all cyan shades are defined', () {
         expect(AppColors.cyan400, isA<Color>());
+        expect(AppColors.cyan700, isA<Color>());
         expect(AppColors.cyan800, isA<Color>());
+        expect(AppColors.cyan900, isA<Color>());
       });
 
       test('cyan400 is correct shade', () {
         expect(AppColors.cyan400.toARGB32(), 0xFF26C6DA);
       });
 
-      test('cyan800 is darker than cyan400', () {
+      test('cyan700 is correct shade', () {
+        expect(AppColors.cyan700.toARGB32(), 0xFF0097A7);
+      });
+
+      test('cyan900 is correct shade', () {
+        expect(AppColors.cyan900.toARGB32(), 0xFF006064);
+      });
+
+      test('cyan shades get progressively darker', () {
+        expect(
+          AppColors.cyan400.computeLuminance(),
+          greaterThan(AppColors.cyan700.computeLuminance()),
+        );
+        expect(
+          AppColors.cyan700.computeLuminance(),
+          greaterThan(AppColors.cyan800.computeLuminance()),
+        );
         expect(
           AppColors.cyan800.computeLuminance(),
-          lessThan(AppColors.cyan400.computeLuminance()),
+          greaterThan(AppColors.cyan900.computeLuminance()),
         );
       });
 

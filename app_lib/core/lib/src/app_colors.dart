@@ -261,8 +261,14 @@ abstract final class AppColors {
   /// Cyan 400 - Accent color for highlights
   static const Color cyan400 = Color(0xFF26C6DA);
 
+  /// Cyan 700 - Medium cyan for borders
+  static const Color cyan700 = Color(0xFF0097A7);
+
   /// Cyan 800 - Dark cyan for badges/chips
   static const Color cyan800 = Color(0xFF00838F);
+
+  /// Cyan 900 - Very dark cyan for backgrounds
+  static const Color cyan900 = Color(0xFF006064);
 
   /// Blue 400 - Light blue for icons
   static const Color blue400 = Color(0xFF42A5F5);

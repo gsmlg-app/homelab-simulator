@@ -35,7 +35,7 @@ class InteractionHint extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.black87,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.cyan.shade700, width: 2),
+              border: Border.all(color: AppColors.cyan700, width: 2),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -46,7 +46,7 @@ class InteractionHint extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.cyan.shade800,
+                    color: AppColors.cyan800,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(

@@ -91,9 +91,7 @@ class _HudOverlayState extends State<HudOverlay> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: mode == GameMode.sim
-            ? Colors.blue.shade800
-            : Colors.orange.shade800,
+        color: mode == GameMode.sim ? AppColors.blue800 : AppColors.orange800,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
