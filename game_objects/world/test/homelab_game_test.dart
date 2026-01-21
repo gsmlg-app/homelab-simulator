@@ -335,4 +335,425 @@ void main() {
       expect(game.worldBloc.state.availableInteraction, InteractionType.door);
     });
   });
+
+  group('DeviceModel helpers', () {
+    test('DeviceModel can be created with valid data', () {
+      const device = DeviceModel(
+        id: 'device-1',
+        templateId: 'template-1',
+        name: 'Test Device',
+        type: DeviceType.server,
+        position: GridPosition(5, 5),
+      );
+
+      expect(device.id, 'device-1');
+      expect(device.name, 'Test Device');
+      expect(device.position, const GridPosition(5, 5));
+    });
+
+    test('DeviceModel supports different device types', () {
+      for (final type in DeviceType.values) {
+        final device = DeviceModel(
+          id: 'device-${type.name}',
+          templateId: 'template-1',
+          name: 'Device ${type.name}',
+          type: type,
+          position: const GridPosition(0, 0),
+        );
+
+        expect(device.type, type);
+      }
+    });
+  });
+
+  group('CloudServiceModel helpers', () {
+    test('CloudServiceModel can be created with valid data', () {
+      const service = CloudServiceModel(
+        id: 'service-1',
+        serviceType: 'EC2',
+        name: 'Test Service',
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        position: GridPosition(3, 3),
+      );
+
+      expect(service.id, 'service-1');
+      expect(service.name, 'Test Service');
+      expect(service.position, const GridPosition(3, 3));
+    });
+
+    test('CloudServiceModel supports different providers', () {
+      for (final provider in CloudProvider.values) {
+        final service = CloudServiceModel(
+          id: 'service-${provider.name}',
+          serviceType: 'EC2',
+          name: 'Service ${provider.name}',
+          provider: provider,
+          category: ServiceCategory.compute,
+          position: const GridPosition(0, 0),
+        );
+
+        expect(service.provider, provider);
+      }
+    });
+  });
+
+  group('DoorModel helpers', () {
+    test('DoorModel can be created with valid data', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.top,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+
+      expect(door.id, 'door-1');
+      expect(door.wallSide, WallSide.top);
+      expect(door.targetRoomId, 'room-2');
+    });
+
+    test('DoorModel supports all wall positions', () {
+      for (final wall in WallSide.values) {
+        final door = DoorModel(
+          id: 'door-${wall.name}',
+          wallSide: wall,
+          wallPosition: 5,
+          targetRoomId: 'room-2',
+        );
+
+        expect(door.wallSide, wall);
+      }
+    });
+
+    test('DoorModel getPosition calculates correctly for top wall', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.top,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+
+      final pos = door.getPosition(20, 15);
+      expect(pos.y, 0);
+      expect(pos.x, 5);
+    });
+
+    test('DoorModel getPosition calculates correctly for bottom wall', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.bottom,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+
+      final pos = door.getPosition(20, 15);
+      expect(pos.y, 14); // height - 1
+      expect(pos.x, 5);
+    });
+
+    test('DoorModel getPosition calculates correctly for right wall', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.right,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+
+      final pos = door.getPosition(20, 15);
+      expect(pos.x, 19); // width - 1
+      expect(pos.y, 5);
+    });
+
+    test('DoorModel getPosition calculates correctly for left wall', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.left,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+
+      final pos = door.getPosition(20, 15);
+      expect(pos.x, 0);
+      expect(pos.y, 5);
+    });
+  });
+
+  group('RoomModel helpers', () {
+    test('RoomModel canPlaceDevice returns true for empty cell', () {
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Test Room',
+        type: RoomType.serverRoom,
+        width: 20,
+        height: 15,
+      );
+
+      expect(room.canPlaceDevice(const GridPosition(5, 5), 1, 1), isTrue);
+    });
+
+    test('RoomModel canPlaceDevice returns false for occupied cell', () {
+      const device = DeviceModel(
+        id: 'device-1',
+        templateId: 'template-1',
+        name: 'Blocker',
+        type: DeviceType.server,
+        position: GridPosition(5, 5),
+      );
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Test Room',
+        type: RoomType.serverRoom,
+        width: 20,
+        height: 15,
+        devices: [device],
+      );
+
+      expect(room.canPlaceDevice(const GridPosition(5, 5), 1, 1), isFalse);
+    });
+
+    test('RoomModel canPlaceDevice returns false for out of bounds', () {
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Test Room',
+        type: RoomType.serverRoom,
+        width: 20,
+        height: 15,
+      );
+
+      expect(room.canPlaceDevice(const GridPosition(19, 14), 2, 2), isFalse);
+    });
+  });
+
+  group('DeviceTemplate helpers', () {
+    test('DeviceTemplate can be created', () {
+      const template = DeviceTemplate(
+        id: 'template-1',
+        name: 'Test Server',
+        description: 'A test server for unit tests',
+        type: DeviceType.server,
+        cost: 100,
+        width: 2,
+        height: 1,
+      );
+
+      expect(template.id, 'template-1');
+      expect(template.cost, 100);
+      expect(template.width, 2);
+      expect(template.description, 'A test server for unit tests');
+    });
+  });
+
+  group('CloudServiceTemplate helpers', () {
+    test('CloudServiceTemplate can be created', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        serviceType: 'EC2',
+        name: 'Test Service',
+        description: 'A test cloud service for unit tests',
+      );
+
+      expect(template.serviceType, 'EC2');
+      expect(template.provider, CloudProvider.aws);
+      expect(template.description, 'A test cloud service for unit tests');
+    });
+  });
+
+  group('HomelabGame model synchronization patterns', () {
+    late MockGameBloc gameBloc;
+    late MockWorldBloc worldBloc;
+
+    setUp(() {
+      gameBloc = MockGameBloc();
+      worldBloc = MockWorldBloc();
+      when(() => gameBloc.stream).thenAnswer((_) => const Stream.empty());
+      when(() => worldBloc.state).thenReturn(const WorldState());
+      when(() => worldBloc.stream).thenAnswer((_) => const Stream.empty());
+    });
+
+    test('game handles room with devices', () {
+      const device = DeviceModel(
+        id: 'device-1',
+        templateId: 'template-1',
+        name: 'Server',
+        type: DeviceType.server,
+        position: GridPosition(5, 5),
+      );
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Server Room',
+        type: RoomType.serverRoom,
+        devices: [device],
+      );
+      const model = GameModel(rooms: [room], currentRoomId: 'room-1');
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.currentRoom.devices.length, 1);
+      expect(state.model.currentRoom.devices.first.id, 'device-1');
+    });
+
+    test('game handles room with cloud services', () {
+      const service = CloudServiceModel(
+        id: 'service-1',
+        serviceType: 'EC2',
+        name: 'EC2',
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        position: GridPosition(3, 3),
+      );
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'AWS Room',
+        type: RoomType.aws,
+        cloudServices: [service],
+      );
+      const model = GameModel(rooms: [room], currentRoomId: 'room-1');
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.currentRoom.cloudServices.length, 1);
+      expect(state.model.currentRoom.cloudServices.first.id, 'service-1');
+    });
+
+    test('game handles room with doors', () {
+      const door = DoorModel(
+        id: 'door-1',
+        wallSide: WallSide.top,
+        wallPosition: 5,
+        targetRoomId: 'room-2',
+      );
+      const room1 = RoomModel(
+        id: 'room-1',
+        name: 'Room 1',
+        type: RoomType.serverRoom,
+        doors: [door],
+      );
+      const room2 = RoomModel(
+        id: 'room-2',
+        name: 'Room 2',
+        type: RoomType.aws,
+      );
+      const model = GameModel(
+        rooms: [room1, room2],
+        currentRoomId: 'room-1',
+      );
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.currentRoom.doors.length, 1);
+      expect(state.model.currentRoom.doors.first.targetRoomId, 'room-2');
+    });
+
+    test('game handles empty room', () {
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Empty Room',
+        type: RoomType.serverRoom,
+      );
+      const model = GameModel(rooms: [room], currentRoomId: 'room-1');
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.currentRoom.devices, isEmpty);
+      expect(state.model.currentRoom.cloudServices, isEmpty);
+      expect(state.model.currentRoom.doors, isEmpty);
+    });
+  });
+
+  group('HomelabGame placement mode patterns', () {
+    late MockGameBloc gameBloc;
+    late MockWorldBloc worldBloc;
+
+    setUp(() {
+      gameBloc = MockGameBloc();
+      worldBloc = MockWorldBloc();
+      when(() => gameBloc.stream).thenAnswer((_) => const Stream.empty());
+      when(() => worldBloc.state).thenReturn(const WorldState());
+      when(() => worldBloc.stream).thenAnswer((_) => const Stream.empty());
+    });
+
+    test('game handles placement mode with device template', () {
+      const template = DeviceTemplate(
+        id: 'template-1',
+        name: 'Server',
+        description: 'A test server',
+        type: DeviceType.server,
+        cost: 100,
+      );
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Room',
+        type: RoomType.serverRoom,
+      );
+      const model = GameModel(
+        rooms: [room],
+        currentRoomId: 'room-1',
+        placementMode: PlacementMode.placing,
+        selectedTemplate: template,
+      );
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.placementMode, PlacementMode.placing);
+      expect(state.model.selectedTemplate, isNotNull);
+      expect(state.model.selectedTemplate!.id, 'template-1');
+    });
+
+    test('game handles placement mode with cloud service template', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        serviceType: 'EC2',
+        name: 'EC2 Instance',
+        description: 'A test cloud service',
+      );
+      const room = RoomModel(id: 'room-1', name: 'Room', type: RoomType.aws);
+      const model = GameModel(
+        rooms: [room],
+        currentRoomId: 'room-1',
+        placementMode: PlacementMode.placing,
+        selectedCloudService: template,
+      );
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.placementMode, PlacementMode.placing);
+      expect(state.model.selectedCloudService, isNotNull);
+      expect(state.model.selectedCloudService!.serviceType, 'EC2');
+    });
+
+    test('game handles no placement mode', () {
+      const room = RoomModel(
+        id: 'room-1',
+        name: 'Room',
+        type: RoomType.serverRoom,
+      );
+      const model = GameModel(
+        rooms: [room],
+        currentRoomId: 'room-1',
+        placementMode: PlacementMode.none,
+      );
+      when(() => gameBloc.state).thenReturn(const GameReady(model));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.placementMode, PlacementMode.none);
+      expect(state.model.selectedTemplate, isNull);
+      expect(state.model.selectedCloudService, isNull);
+    });
+  });
 }
