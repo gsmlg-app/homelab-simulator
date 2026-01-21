@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_widget_common/app_widget_common.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'device_card.dart';
 import 'add_room_modal.dart';
@@ -219,16 +220,16 @@ class _ShopModalState extends State<ShopModal>
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.purple.shade900.withValues(alpha: 0.3),
+              color: AppColors.modalAccentDark.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.purple.shade700, width: 2),
+              border: Border.all(color: AppColors.modalAccentDark, width: 2),
             ),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add_circle, color: Colors.purple.shade400, size: 28),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.add_circle, color: AppColors.modalAccentLight, size: 28),
+                SizedBox(width: 12),
+                Text(
                   'Add New Room',
                   style: TextStyle(
                     color: Colors.white,
