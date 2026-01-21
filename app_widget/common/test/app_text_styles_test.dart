@@ -15,9 +15,9 @@ void main() {
       test('returns TextStyle with default cyan color', () {
         final style = AppTextStyles.panelTitle();
         expect(style.color, AppColors.cyan400);
-        expect(style.fontSize, 14);
+        expect(style.fontSize, AppSpacing.fontSizeDefault);
         expect(style.fontWeight, FontWeight.bold);
-        expect(style.letterSpacing, 1);
+        expect(style.letterSpacing, AppSpacing.letterSpacingWide);
       });
 
       test('returns TextStyle with custom color', () {
@@ -31,7 +31,7 @@ void main() {
       test('returns TextStyle with default grey color', () {
         final style = AppTextStyles.sectionHeader();
         expect(style.color, AppColors.grey400);
-        expect(style.fontSize, 11);
+        expect(style.fontSize, AppSpacing.fontSizePanel);
         expect(style.fontWeight, FontWeight.w500);
       });
 
@@ -46,9 +46,9 @@ void main() {
       test('returns TextStyle with default grey color', () {
         final style = AppTextStyles.smallLabel();
         expect(style.color, AppColors.grey500);
-        expect(style.fontSize, 10);
+        expect(style.fontSize, AppSpacing.fontSizeXs);
         expect(style.fontWeight, FontWeight.bold);
-        expect(style.letterSpacing, 1);
+        expect(style.letterSpacing, AppSpacing.letterSpacingWide);
       });
 
       test('returns TextStyle with custom color', () {
@@ -61,22 +61,22 @@ void main() {
     group('body text styles', () {
       test('bodyPrimary has correct style', () {
         expect(AppTextStyles.bodyPrimary.color, AppColors.textPrimary);
-        expect(AppTextStyles.bodyPrimary.fontSize, 14);
+        expect(AppTextStyles.bodyPrimary.fontSize, AppSpacing.fontSizeDefault);
       });
 
       test('bodySecondary has correct style', () {
         expect(AppTextStyles.bodySecondary.color, AppColors.textSecondary);
-        expect(AppTextStyles.bodySecondary.fontSize, 14);
+        expect(AppTextStyles.bodySecondary.fontSize, AppSpacing.fontSizeDefault);
       });
 
       test('bodySmall has correct style', () {
         expect(AppTextStyles.bodySmall.color, AppColors.textPrimary);
-        expect(AppTextStyles.bodySmall.fontSize, 12);
+        expect(AppTextStyles.bodySmall.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('bodySmallSecondary has correct style', () {
         expect(AppTextStyles.bodySmallSecondary.color, AppColors.textSecondary);
-        expect(AppTextStyles.bodySmallSecondary.fontSize, 12);
+        expect(AppTextStyles.bodySmallSecondary.fontSize, AppSpacing.fontSizeSmall);
       });
     });
 
@@ -84,14 +84,17 @@ void main() {
       test('returns TextStyle with default values', () {
         final style = AppTextStyles.infoLabel();
         expect(style.color, AppColors.grey500);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('returns TextStyle with custom color and fontSize', () {
         const customColor = Color(0xFFABCDEF);
-        final style = AppTextStyles.infoLabel(color: customColor, fontSize: 14);
+        final style = AppTextStyles.infoLabel(
+          color: customColor,
+          fontSize: AppSpacing.fontSizeDefault,
+        );
         expect(style.color, customColor);
-        expect(style.fontSize, 14);
+        expect(style.fontSize, AppSpacing.fontSizeDefault);
       });
     });
 
@@ -99,15 +102,18 @@ void main() {
       test('returns TextStyle with default values', () {
         final style = AppTextStyles.infoValue();
         expect(style.color, AppColors.textPrimary);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
         expect(style.fontWeight, FontWeight.w500);
       });
 
       test('returns TextStyle with custom color and fontSize', () {
         const customColor = Color(0xFF123456);
-        final style = AppTextStyles.infoValue(color: customColor, fontSize: 16);
+        final style = AppTextStyles.infoValue(
+          color: customColor,
+          fontSize: AppSpacing.fontSizeMedium,
+        );
         expect(style.color, customColor);
-        expect(style.fontSize, 16);
+        expect(style.fontSize, AppSpacing.fontSizeMedium);
       });
     });
 
@@ -115,28 +121,31 @@ void main() {
       test('returns TextStyle with default values', () {
         final style = AppTextStyles.countText();
         expect(style.color, AppColors.textPrimary);
-        expect(style.fontSize, 10);
+        expect(style.fontSize, AppSpacing.fontSizeXs);
         expect(style.fontWeight, FontWeight.bold);
       });
 
       test('returns TextStyle with custom color and fontSize', () {
         const customColor = Color(0xFF654321);
-        final style = AppTextStyles.countText(color: customColor, fontSize: 12);
+        final style = AppTextStyles.countText(
+          color: customColor,
+          fontSize: AppSpacing.fontSizeSmall,
+        );
         expect(style.color, customColor);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
       });
     });
 
     group('hint and placeholder text', () {
       test('hintText has correct style', () {
         expect(AppTextStyles.hintText.color, AppColors.textHint);
-        expect(AppTextStyles.hintText.fontSize, 14);
+        expect(AppTextStyles.hintText.fontSize, AppSpacing.fontSizeDefault);
       });
 
       test('emptyStateText returns correct default style', () {
         final style = AppTextStyles.emptyStateText();
         expect(style.color, AppColors.grey600);
-        expect(style.fontSize, 11);
+        expect(style.fontSize, AppSpacing.fontSizePanel);
         expect(style.fontStyle, FontStyle.italic);
       });
 
@@ -150,26 +159,26 @@ void main() {
     group('error and warning text', () {
       test('errorText has correct style', () {
         expect(AppTextStyles.errorText.color, AppColors.redAccent);
-        expect(AppTextStyles.errorText.fontSize, 12);
+        expect(AppTextStyles.errorText.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('warningText has correct style', () {
         expect(AppTextStyles.warningText.color, AppColors.amber600);
-        expect(AppTextStyles.warningText.fontSize, 12);
+        expect(AppTextStyles.warningText.fontSize, AppSpacing.fontSizeSmall);
       });
     });
 
     group('button and link text', () {
       test('buttonText has correct style', () {
         expect(AppTextStyles.buttonText.color, AppColors.textPrimary);
-        expect(AppTextStyles.buttonText.fontSize, 16);
+        expect(AppTextStyles.buttonText.fontSize, AppSpacing.fontSizeMedium);
         expect(AppTextStyles.buttonText.fontWeight, FontWeight.w500);
       });
 
       test('linkText returns correct default style', () {
         final style = AppTextStyles.linkText();
         expect(style.color, AppColors.grey500);
-        expect(style.fontSize, 10);
+        expect(style.fontSize, AppSpacing.fontSizeXs);
       });
 
       test('linkText returns style with custom color', () {
@@ -182,27 +191,27 @@ void main() {
     group('modal styles', () {
       test('modalTitle has correct style', () {
         expect(AppTextStyles.modalTitle.color, AppColors.textPrimary);
-        expect(AppTextStyles.modalTitle.fontSize, 18);
+        expect(AppTextStyles.modalTitle.fontSize, AppSpacing.fontSizeLarge);
         expect(AppTextStyles.modalTitle.fontWeight, FontWeight.bold);
       });
 
       test('modalSubtitle has correct style', () {
         expect(AppTextStyles.modalSubtitle.color, AppColors.textSecondary);
-        expect(AppTextStyles.modalSubtitle.fontSize, 14);
+        expect(AppTextStyles.modalSubtitle.fontSize, AppSpacing.fontSizeDefault);
       });
     });
 
     group('card styles', () {
       test('cardTitle has correct style', () {
         expect(AppTextStyles.cardTitle.color, AppColors.textPrimary);
-        expect(AppTextStyles.cardTitle.fontSize, 16);
-        expect(AppTextStyles.cardTitle.letterSpacing, 2);
+        expect(AppTextStyles.cardTitle.fontSize, AppSpacing.fontSizeMedium);
+        expect(AppTextStyles.cardTitle.letterSpacing, AppSpacing.letterSpacingExtraWide);
       });
 
       test('cardDetail returns correct default style', () {
         final style = AppTextStyles.cardDetail();
         expect(style.color, AppColors.textSecondary);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('cardDetail returns style with custom color', () {
@@ -215,24 +224,24 @@ void main() {
     group('input styles', () {
       test('inputText has correct style', () {
         expect(AppTextStyles.inputText.color, AppColors.textPrimary);
-        expect(AppTextStyles.inputText.fontSize, 18);
+        expect(AppTextStyles.inputText.fontSize, AppSpacing.fontSizeLarge);
       });
 
       test('inputLabel has correct style', () {
         expect(AppTextStyles.inputLabel.color, AppColors.textSecondary);
-        expect(AppTextStyles.inputLabel.fontSize, 14);
+        expect(AppTextStyles.inputLabel.fontSize, AppSpacing.fontSizeDefault);
       });
 
       test('inputCounter returns normal style when under limit', () {
         final style = AppTextStyles.inputCounter(count: 5, maxLength: 10);
         expect(style.color, AppColors.textTertiary);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('inputCounter returns warning style when over limit', () {
         final style = AppTextStyles.inputCounter(count: 15, maxLength: 10);
         expect(style.color, AppColors.redAccent);
-        expect(style.fontSize, 12);
+        expect(style.fontSize, AppSpacing.fontSizeSmall);
       });
 
       test('inputCounter returns normal style when at limit', () {
