@@ -98,8 +98,8 @@ void main() {
         expect(RoomType.azure.displayName, 'Azure');
       });
 
-      test('digitalOcean returns Digital Ocean', () {
-        expect(RoomType.digitalOcean.displayName, 'Digital Ocean');
+      test('digitalOcean returns DigitalOcean', () {
+        expect(RoomType.digitalOcean.displayName, 'DigitalOcean');
       });
 
       test('custom returns Custom', () {

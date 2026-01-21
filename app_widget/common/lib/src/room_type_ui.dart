@@ -40,7 +40,7 @@ extension RoomTypeUI on RoomType {
       RoomType.cloudflare => 'Cloudflare',
       RoomType.vultr => 'Vultr',
       RoomType.azure => 'Azure',
-      RoomType.digitalOcean => 'Digital Ocean',
+      RoomType.digitalOcean => 'DigitalOcean',
       RoomType.custom => 'Custom',
     };
   }
