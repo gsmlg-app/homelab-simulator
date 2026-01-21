@@ -430,6 +430,11 @@ void main() {
         expect(AppColors.amber400.toARGB32(), 0xFFFFCA28);
       });
 
+      test('amber600 is defined (warning text color)', () {
+        expect(AppColors.amber600, isA<Color>());
+        expect(AppColors.amber600.toARGB32(), 0xFFFFB300);
+      });
+
       test('amber700 is defined', () {
         expect(AppColors.amber700, isA<Color>());
         expect(AppColors.amber700.toARGB32(), 0xFFFFA000);
@@ -438,6 +443,10 @@ void main() {
       test('amber shades get progressively darker', () {
         expect(
           AppColors.amber400.computeLuminance(),
+          greaterThan(AppColors.amber600.computeLuminance()),
+        );
+        expect(
+          AppColors.amber600.computeLuminance(),
           greaterThan(AppColors.amber700.computeLuminance()),
         );
       });

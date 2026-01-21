@@ -15,7 +15,7 @@ abstract final class AppTextStyles {
 
   /// Panel title style (UPPERCASE labels, cyan accent)
   static TextStyle panelTitle({Color? color}) => TextStyle(
-    color: color ?? const Color(0xFF26C6DA), // cyan.shade400
+    color: color ?? AppColors.cyan400,
     fontSize: 14,
     fontWeight: FontWeight.bold,
     letterSpacing: AppSpacing.letterSpacingWide,
@@ -23,14 +23,14 @@ abstract final class AppTextStyles {
 
   /// Section header style (medium weight labels)
   static TextStyle sectionHeader({Color? color}) => TextStyle(
-    color: color ?? const Color(0xFFBDBDBD), // grey.shade400
+    color: color ?? AppColors.grey400,
     fontSize: AppSpacing.fontSizePanel,
     fontWeight: FontWeight.w500,
   );
 
   /// Small uppercase label style
   static TextStyle smallLabel({Color? color}) => TextStyle(
-    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    color: color ?? AppColors.grey500,
     fontSize: 10,
     fontWeight: FontWeight.bold,
     letterSpacing: AppSpacing.letterSpacingWide,
@@ -40,25 +40,25 @@ abstract final class AppTextStyles {
 
   /// Primary body text (white)
   static const TextStyle bodyPrimary = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 14,
   );
 
   /// Secondary body text (white70)
   static const TextStyle bodySecondary = TextStyle(
-    color: Color(0xB3FFFFFF), // white with 70% opacity
+    color: AppColors.textSecondary,
     fontSize: 14,
   );
 
   /// Small body text
   static const TextStyle bodySmall = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 12,
   );
 
   /// Small secondary body text
   static const TextStyle bodySmallSecondary = TextStyle(
-    color: Color(0xB3FFFFFF),
+    color: AppColors.textSecondary,
     fontSize: 12,
   );
 
@@ -66,13 +66,13 @@ abstract final class AppTextStyles {
 
   /// Info row label style
   static TextStyle infoLabel({Color? color, double fontSize = 12}) => TextStyle(
-    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    color: color ?? AppColors.grey500,
     fontSize: fontSize,
   );
 
   /// Info row value style
   static TextStyle infoValue({Color? color, double fontSize = 12}) => TextStyle(
-    color: color ?? const Color(0xFFFFFFFF),
+    color: color ?? AppColors.textPrimary,
     fontSize: fontSize,
     fontWeight: FontWeight.w500,
   );
@@ -81,7 +81,7 @@ abstract final class AppTextStyles {
 
   /// Count text style (bold, used in chips and badges)
   static TextStyle countText({Color? color, double fontSize = 10}) => TextStyle(
-    color: color ?? const Color(0xFFFFFFFF),
+    color: color ?? AppColors.textPrimary,
     fontSize: fontSize,
     fontWeight: FontWeight.bold,
   );
@@ -90,13 +90,13 @@ abstract final class AppTextStyles {
 
   /// Hint text style (semi-transparent white)
   static const TextStyle hintText = TextStyle(
-    color: Color(0x66FFFFFF), // white with 40% opacity
+    color: AppColors.textHint,
     fontSize: 14,
   );
 
   /// Empty state / placeholder text
   static TextStyle emptyStateText({Color? color}) => TextStyle(
-    color: color ?? const Color(0xFF757575), // grey.shade600
+    color: color ?? AppColors.grey600,
     fontSize: AppSpacing.fontSizePanel,
     fontStyle: FontStyle.italic,
   );
@@ -105,13 +105,13 @@ abstract final class AppTextStyles {
 
   /// Error text style (red)
   static const TextStyle errorText = TextStyle(
-    color: Color(0xFFFF5252), // redAccent
+    color: AppColors.redAccent,
     fontSize: 12,
   );
 
   /// Warning text style (amber)
   static const TextStyle warningText = TextStyle(
-    color: Color(0xFFFFB300), // amber.shade600
+    color: AppColors.amber600,
     fontSize: 12,
   );
 
@@ -119,14 +119,14 @@ abstract final class AppTextStyles {
 
   /// Button text style (white, 16px)
   static const TextStyle buttonText = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
 
   /// Small link text style
   static TextStyle linkText({Color? color}) => TextStyle(
-    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    color: color ?? AppColors.grey500,
     fontSize: 10,
   );
 
@@ -134,14 +134,14 @@ abstract final class AppTextStyles {
 
   /// Modal title style (white, 18px)
   static const TextStyle modalTitle = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
 
   /// Modal subtitle style (white70, 14px)
   static const TextStyle modalSubtitle = TextStyle(
-    color: Color(0xB3FFFFFF),
+    color: AppColors.textSecondary,
     fontSize: 14,
   );
 
@@ -149,20 +149,20 @@ abstract final class AppTextStyles {
 
   /// Character card title style (white with letter spacing)
   static const TextStyle cardTitle = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 16,
     letterSpacing: AppSpacing.letterSpacingExtraWide,
   );
 
   /// Character card detail text style
   static TextStyle cardDetail({Color? color}) =>
-      TextStyle(color: color ?? const Color(0xB3FFFFFF), fontSize: 12);
+      TextStyle(color: color ?? AppColors.textSecondary, fontSize: 12);
 
   // ============ INPUT FIELD STYLES ============
 
   /// Text input style (white, 18px)
   static const TextStyle inputText = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: AppColors.textPrimary,
     fontSize: 18,
   );
 
@@ -170,14 +170,14 @@ abstract final class AppTextStyles {
   static TextStyle inputCounter({int? count, int? maxLength}) {
     final isWarning = count != null && maxLength != null && count > maxLength;
     return TextStyle(
-      color: isWarning ? const Color(0xFFFF5252) : const Color(0x8AFFFFFF),
+      color: isWarning ? AppColors.redAccent : AppColors.textTertiary,
       fontSize: 12,
     );
   }
 
   /// Input label style (white70)
   static const TextStyle inputLabel = TextStyle(
-    color: Color(0xB3FFFFFF),
+    color: AppColors.textSecondary,
     fontSize: 14,
   );
 }

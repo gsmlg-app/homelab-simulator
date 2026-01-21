@@ -306,6 +306,9 @@ abstract final class AppColors {
   /// Amber 400 - Light amber for icons and highlights
   static const Color amber400 = Color(0xFFFFCA28);
 
+  /// Amber 600 - Medium amber for warnings
+  static const Color amber600 = Color(0xFFFFB300);
+
   /// Amber 700 - Dark amber for borders
   static const Color amber700 = Color(0xFFFFA000);
 
