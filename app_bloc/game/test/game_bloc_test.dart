@@ -120,7 +120,7 @@ void main() {
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(
           GameModel.initial().copyWith(
-            playerPosition: const GridPosition(10, 6),
+            playerPosition: GameConstants.playerStartPosition,
           ),
         ),
         act: (bloc) {
@@ -142,7 +142,7 @@ void main() {
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(
           GameModel.initial().copyWith(
-            playerPosition: const GridPosition(10, 6),
+            playerPosition: GameConstants.playerStartPosition,
           ),
         ),
         act: (bloc) => bloc.add(const GameMovePlayer(Direction.none)),
