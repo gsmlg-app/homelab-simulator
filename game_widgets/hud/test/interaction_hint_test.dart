@@ -378,7 +378,7 @@ void main() {
         find.byType(AnimatedOpacity),
       );
       expect(animatedOpacity.opacity, 1.0);
-      expect(animatedOpacity.duration, const Duration(milliseconds: 200));
+      expect(animatedOpacity.duration, AppSpacing.animationFast);
     });
 
     testWidgets('outer container has correct padding', (tester) async {
