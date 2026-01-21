@@ -16,6 +16,8 @@ dependencies:
     path: ../../app_lib/core
   app_lib_engine:
     path: ../../app_lib/engine
+  app_logging:
+    path: ../../app_lib/logging
   app_database:
     path: ../../app_lib/database
   flutter:

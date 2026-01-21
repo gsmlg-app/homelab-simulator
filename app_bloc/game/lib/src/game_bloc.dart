@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:app_database/app_database.dart';
 
 import 'game_event.dart';
@@ -9,9 +10,11 @@ import 'game_state.dart';
 /// Flutter/UI-level BLoC managing global game state
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameStorage _storage;
+  final AppLogger _logger;
 
-  GameBloc({GameStorage? storage})
+  GameBloc({GameStorage? storage, AppLogger? logger})
     : _storage = storage ?? GameStorage(),
+      _logger = logger ?? AppLogger(),
       super(const GameLoading()) {
     on<GameInitialize>(_onInitialize);
     on<GameMovePlayer>(_onMovePlayer);
@@ -34,6 +37,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   GameModel? get currentModel {
     final s = state;
     return s is GameReady ? s.model : null;
+  }
+
+  /// Safely saves the model to storage, logging any errors
+  Future<void> _saveModel(GameModel model) async {
+    try {
+      await _storage.save(model);
+    } catch (e, stackTrace) {
+      _logger.w('Failed to save game model', e, stackTrace);
+    }
   }
 
   Future<void> _onInitialize(
@@ -121,7 +133,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after placement
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   Future<void> _onRemoveDevice(
@@ -135,7 +147,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after removal
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   void _onChangeMode(GameChangeMode event, Emitter<GameState> emit) {
@@ -150,7 +162,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final model = currentModel;
     if (model == null) return;
 
-    await _storage.save(model);
+    await _saveModel(model);
   }
 
   Future<void> _onEnterRoom(
@@ -171,7 +183,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after room transition
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   Future<void> _onAddRoom(GameAddRoom event, Emitter<GameState> emit) async {
@@ -192,7 +204,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after adding room
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   Future<void> _onRemoveRoom(
@@ -207,7 +219,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after removing room
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   void _onSelectCloudService(
@@ -244,7 +256,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after placement
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   Future<void> _onRemoveCloudService(
@@ -258,6 +270,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after removal
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 }

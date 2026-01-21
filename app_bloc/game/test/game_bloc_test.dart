@@ -3,10 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:app_database/app_database.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 
 class MockGameStorage extends Mock implements GameStorage {}
+
+class MockAppLogger extends Mock implements AppLogger {}
 
 void main() {
   late MockGameStorage mockStorage;
@@ -660,6 +663,268 @@ void main() {
         ],
         verify: (_) {
           verify(() => mockStorage.save(any())).called(1);
+        },
+      );
+    });
+
+    group('storage error handling', () {
+      late MockAppLogger mockLogger;
+
+      setUp(() {
+        mockLogger = MockAppLogger();
+      });
+
+      blocTest<GameBloc, GameState>(
+        'GamePlaceDevice logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () => GameReady(
+          GameModel.initial().copyWith(
+            credits: 1000,
+            selectedTemplate: const DeviceTemplate(
+              id: 'server_basic',
+              name: 'Server',
+              description: 'A server',
+              type: DeviceType.server,
+              cost: 500,
+            ),
+            placementMode: PlacementMode.placing,
+          ),
+        ),
+        act: (bloc) => bloc.add(const GamePlaceDevice(GridPosition(5, 5))),
+        expect: () => [
+          isA<GameReady>().having(
+            (s) => s.model.currentRoom.devices.length,
+            'devices count',
+            1,
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameRemoveDevice logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () {
+          final model = GameModel.initial().copyWith(credits: 1000);
+          const device = DeviceModel(
+            id: 'dev-1',
+            templateId: 'server_basic',
+            name: 'Server',
+            type: DeviceType.server,
+            position: GridPosition(5, 5),
+          );
+          final roomWithDevice = model.currentRoom.addDevice(device);
+          return GameReady(model.updateRoom(roomWithDevice));
+        },
+        act: (bloc) => bloc.add(const GameRemoveDevice('dev-1')),
+        expect: () => [
+          isA<GameReady>().having(
+            (s) => s.model.currentRoom.devices.length,
+            'devices count',
+            0,
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameSave logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () => GameReady(GameModel.initial()),
+        act: (bloc) => bloc.add(const GameSave()),
+        expect: () => <GameState>[],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameEnterRoom logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () {
+          final model = GameModel.initial();
+          final newModel = reduce(
+            model,
+            const RoomAdded(
+              name: 'AWS',
+              type: RoomType.aws,
+              doorSide: WallSide.right,
+              doorPosition: 5,
+            ),
+          );
+          return GameReady(newModel);
+        },
+        act: (bloc) {
+          final model = (bloc.state as GameReady).model;
+          final newRoom = model.rooms.firstWhere((r) => r.name == 'AWS');
+          bloc.add(
+            GameEnterRoom(
+              roomId: newRoom.id,
+              spawnPosition: const GridPosition(1, 5),
+            ),
+          );
+        },
+        expect: () => [
+          isA<GameReady>().having((s) => s.model.currentRoom.name, 'name', 'AWS'),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameAddRoom logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () => GameReady(GameModel.initial()),
+        act: (bloc) => bloc.add(
+          const GameAddRoom(
+            name: 'AWS',
+            type: RoomType.aws,
+            doorSide: WallSide.right,
+            doorPosition: 5,
+          ),
+        ),
+        expect: () => [
+          isA<GameReady>().having((s) => s.model.rooms.length, 'rooms count', 2),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameRemoveRoom logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () {
+          final model = GameModel.initial();
+          final newModel = reduce(
+            model,
+            const RoomAdded(
+              name: 'AWS',
+              type: RoomType.aws,
+              doorSide: WallSide.right,
+              doorPosition: 5,
+            ),
+          );
+          return GameReady(newModel);
+        },
+        act: (bloc) {
+          final model = (bloc.state as GameReady).model;
+          final newRoom = model.rooms.firstWhere((r) => r.name == 'AWS');
+          bloc.add(GameRemoveRoom(newRoom.id));
+        },
+        expect: () => [
+          isA<GameReady>().having((s) => s.model.rooms.length, 'rooms count', 1),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GamePlaceCloudService logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () => GameReady(
+          GameModel.initial().copyWith(
+            selectedCloudService: const CloudServiceTemplate(
+              provider: CloudProvider.aws,
+              category: ServiceCategory.compute,
+              serviceType: 'EC2',
+              name: 'EC2',
+              description: 'Compute',
+            ),
+            placementMode: PlacementMode.placing,
+          ),
+        ),
+        act: (bloc) =>
+            bloc.add(const GamePlaceCloudService(GridPosition(5, 5))),
+        expect: () => [
+          isA<GameReady>().having(
+            (s) => s.model.currentRoom.cloudServices.length,
+            'cloudServices count',
+            1,
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
+        },
+      );
+
+      blocTest<GameBloc, GameState>(
+        'GameRemoveCloudService logs warning when storage fails',
+        setUp: () {
+          when(() => mockStorage.save(any()))
+              .thenThrow(Exception('Storage error'));
+          when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
+        },
+        build: () => GameBloc(storage: mockStorage, logger: mockLogger),
+        seed: () {
+          final model = GameModel.initial();
+          final newModel = reduce(
+            model,
+            const CloudServicePlaced(
+              provider: CloudProvider.aws,
+              category: ServiceCategory.compute,
+              serviceType: 'EC2',
+              name: 'My EC2',
+              position: GridPosition(5, 5),
+            ),
+          );
+          return GameReady(newModel);
+        },
+        act: (bloc) {
+          final model = (bloc.state as GameReady).model;
+          final serviceId = model.currentRoom.cloudServices.first.id;
+          bloc.add(GameRemoveCloudService(serviceId));
+        },
+        expect: () => [
+          isA<GameReady>().having(
+            (s) => s.model.currentRoom.cloudServices.length,
+            'cloudServices count',
+            0,
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockLogger.w(any(), any(), any())).called(1);
         },
       );
     });
