@@ -260,7 +260,10 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                             ? AppColors.cyan500
                             : AppColors.cyan700,
                         side: _selectedIndex == -1
-                            ? const BorderSide(color: AppColors.textPrimary, width: 2)
+                            ? const BorderSide(
+                                color: AppColors.textPrimary,
+                                width: 2,
+                              )
                             : null,
                       ),
                     ),
@@ -272,10 +275,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                   padding: EdgeInsets.only(bottom: 16),
                   child: Text(
                     '🎮 D-Pad: Navigate • A: Select • X: Delete',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textHint,
-                    ),
+                    style: TextStyle(fontSize: 12, color: AppColors.textHint),
                   ),
                 ),
               ],
@@ -311,26 +311,16 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.person_add,
-              size: 64,
-              color: AppColors.borderLight,
-            ),
+            Icon(Icons.person_add, size: 64, color: AppColors.borderLight),
             SizedBox(height: 16),
             Text(
               'No saved characters',
-              style: TextStyle(
-                fontSize: 18,
-                color: AppColors.textTertiary,
-              ),
+              style: TextStyle(fontSize: 18, color: AppColors.textTertiary),
             ),
             SizedBox(height: 8),
             Text(
               'Create a new character to start playing',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.borderLight,
-              ),
+              style: TextStyle(fontSize: 14, color: AppColors.borderLight),
             ),
           ],
         ),

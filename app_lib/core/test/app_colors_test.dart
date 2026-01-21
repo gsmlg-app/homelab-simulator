@@ -465,7 +465,10 @@ void main() {
 
       test('panelBackground is darker than overlayBackground', () {
         // Higher alpha means more opaque (darker)
-        expect(AppColors.panelBackground.a, greaterThan(AppColors.overlayBackground.a));
+        expect(
+          AppColors.panelBackground.a,
+          greaterThan(AppColors.overlayBackground.a),
+        );
       });
     });
 
@@ -492,7 +495,10 @@ void main() {
       });
 
       test('text opacities decrease in order', () {
-        expect(AppColors.textSecondary.a, greaterThan(AppColors.textTertiary.a));
+        expect(
+          AppColors.textSecondary.a,
+          greaterThan(AppColors.textTertiary.a),
+        );
         expect(AppColors.textTertiary.a, greaterThan(AppColors.textHint.a));
       });
     });

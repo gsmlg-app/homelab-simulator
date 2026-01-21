@@ -325,7 +325,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
                     Text(
                       preset.name,
                       style: TextStyle(
-                        color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+                        color: isSelected
+                            ? AppColors.textPrimary
+                            : AppColors.textSecondary,
                         fontSize: 16,
                         fontWeight: isSelected
                             ? FontWeight.bold
@@ -362,7 +364,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
       },
       selectedColor: _accentColor.withValues(alpha: 0.3),
       checkmarkColor: _accentColor,
-      labelStyle: TextStyle(color: isSelected ? AppColors.textPrimary : AppColors.textSecondary),
+      labelStyle: TextStyle(
+        color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+      ),
       backgroundColor: AppColors.overlayBackground,
       side: BorderSide(color: isSelected ? _accentColor : AppColors.grey700),
     );
@@ -494,14 +498,18 @@ class _AddRoomModalState extends State<AddRoomModal> {
           children: [
             Icon(
               icon,
-              color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+              color: isSelected
+                  ? AppColors.textPrimary
+                  : AppColors.textSecondary,
               size: 20,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+                color: isSelected
+                    ? AppColors.textPrimary
+                    : AppColors.textSecondary,
                 fontSize: 12,
               ),
             ),
@@ -600,7 +608,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
               onPressed: () => setState(() => _currentStep--),
               icon: const Icon(Icons.arrow_back),
               label: const Text('Back'),
-              style: TextButton.styleFrom(foregroundColor: AppColors.textSecondary),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.textSecondary,
+              ),
             )
           else
             const SizedBox.shrink(),

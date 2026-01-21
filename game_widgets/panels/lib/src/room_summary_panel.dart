@@ -142,7 +142,10 @@ class RoomSummaryPanel extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   expanded ? 'Show less' : 'Show details',
-                  style: const TextStyle(color: AppColors.grey500, fontSize: 10),
+                  style: const TextStyle(
+                    color: AppColors.grey500,
+                    fontSize: 10,
+                  ),
                 ),
               ],
             ),
@@ -236,7 +239,10 @@ class RoomSummaryPanel extends StatelessWidget {
               Expanded(
                 child: Text(
                   e.key.displayName,
-                  style: const TextStyle(color: AppColors.grey300, fontSize: 11),
+                  style: const TextStyle(
+                    color: AppColors.grey300,
+                    fontSize: 11,
+                  ),
                 ),
               ),
               Text(
@@ -299,11 +305,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 18, top: 1, bottom: 1),
                 child: Row(
                   children: [
-                    Icon(
-                      catEntry.key.icon,
-                      size: 12,
-                      color: AppColors.grey400,
-                    ),
+                    Icon(catEntry.key.icon, size: 12, color: AppColors.grey400),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(

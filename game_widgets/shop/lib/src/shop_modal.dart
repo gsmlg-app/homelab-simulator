@@ -333,13 +333,19 @@ class _ShopModalState extends State<ShopModal>
                   ),
                   Text(
                     '${room.totalObjectCount} objects',
-                    style: const TextStyle(color: AppColors.grey500, fontSize: 12),
+                    style: const TextStyle(
+                      color: AppColors.grey500,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.delete_outline, color: AppColors.redAccent),
+              icon: const Icon(
+                Icons.delete_outline,
+                color: AppColors.redAccent,
+              ),
               onPressed: () {
                 _showDeleteConfirmation(context, room);
               },
@@ -375,7 +381,10 @@ class _ShopModalState extends State<ShopModal>
               children: [
                 const Text(
                   'Parent Room',
-                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
                 ),
                 Text(
                   parentRoom.name,

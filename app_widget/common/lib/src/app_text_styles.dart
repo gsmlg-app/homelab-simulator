@@ -9,26 +9,26 @@ abstract final class AppTextStyles {
 
   /// Panel title style (UPPERCASE labels, cyan accent)
   static TextStyle panelTitle({Color? color}) => TextStyle(
-        color: color ?? const Color(0xFF26C6DA), // cyan.shade400
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-        letterSpacing: 1,
-      );
+    color: color ?? const Color(0xFF26C6DA), // cyan.shade400
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1,
+  );
 
   /// Section header style (medium weight labels)
   static TextStyle sectionHeader({Color? color}) => TextStyle(
-        color: color ?? const Color(0xFFBDBDBD), // grey.shade400
-        fontSize: 11,
-        fontWeight: FontWeight.w500,
-      );
+    color: color ?? const Color(0xFFBDBDBD), // grey.shade400
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+  );
 
   /// Small uppercase label style
   static TextStyle smallLabel({Color? color}) => TextStyle(
-        color: color ?? const Color(0xFF9E9E9E), // grey.shade500
-        fontSize: 10,
-        fontWeight: FontWeight.bold,
-        letterSpacing: 1,
-      );
+    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1,
+  );
 
   // ============ BODY TEXT ============
 
@@ -60,25 +60,25 @@ abstract final class AppTextStyles {
 
   /// Info row label style
   static TextStyle infoLabel({Color? color, double fontSize = 12}) => TextStyle(
-        color: color ?? const Color(0xFF9E9E9E), // grey.shade500
-        fontSize: fontSize,
-      );
+    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    fontSize: fontSize,
+  );
 
   /// Info row value style
   static TextStyle infoValue({Color? color, double fontSize = 12}) => TextStyle(
-        color: color ?? const Color(0xFFFFFFFF),
-        fontSize: fontSize,
-        fontWeight: FontWeight.w500,
-      );
+    color: color ?? const Color(0xFFFFFFFF),
+    fontSize: fontSize,
+    fontWeight: FontWeight.w500,
+  );
 
   // ============ COUNT / BADGE TEXT ============
 
   /// Count text style (bold, used in chips and badges)
   static TextStyle countText({Color? color, double fontSize = 10}) => TextStyle(
-        color: color ?? const Color(0xFFFFFFFF),
-        fontSize: fontSize,
-        fontWeight: FontWeight.bold,
-      );
+    color: color ?? const Color(0xFFFFFFFF),
+    fontSize: fontSize,
+    fontWeight: FontWeight.bold,
+  );
 
   // ============ HINT / PLACEHOLDER TEXT ============
 
@@ -90,10 +90,10 @@ abstract final class AppTextStyles {
 
   /// Empty state / placeholder text
   static TextStyle emptyStateText({Color? color}) => TextStyle(
-        color: color ?? const Color(0xFF757575), // grey.shade600
-        fontSize: 11,
-        fontStyle: FontStyle.italic,
-      );
+    color: color ?? const Color(0xFF757575), // grey.shade600
+    fontSize: 11,
+    fontStyle: FontStyle.italic,
+  );
 
   // ============ ERROR / WARNING TEXT ============
 
@@ -120,9 +120,9 @@ abstract final class AppTextStyles {
 
   /// Small link text style
   static TextStyle linkText({Color? color}) => TextStyle(
-        color: color ?? const Color(0xFF9E9E9E), // grey.shade500
-        fontSize: 10,
-      );
+    color: color ?? const Color(0xFF9E9E9E), // grey.shade500
+    fontSize: 10,
+  );
 
   // ============ MODAL / DIALOG STYLES ============
 
@@ -149,10 +149,8 @@ abstract final class AppTextStyles {
   );
 
   /// Character card detail text style
-  static TextStyle cardDetail({Color? color}) => TextStyle(
-        color: color ?? const Color(0xB3FFFFFF),
-        fontSize: 12,
-      );
+  static TextStyle cardDetail({Color? color}) =>
+      TextStyle(color: color ?? const Color(0xB3FFFFFF), fontSize: 12);
 
   // ============ INPUT FIELD STYLES ============
 

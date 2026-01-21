@@ -49,15 +49,17 @@ void main() {
     });
 
     group('secondaryColored', () {
-      test('returns ButtonStyle with custom color for foreground and border',
-          () {
-        const customColor = Color(0xFF0000FF);
-        final style = AppButtonStyles.secondaryColored(customColor);
-        final fgColor = style.foregroundColor?.resolve({});
-        final side = style.side?.resolve({});
-        expect(fgColor, customColor);
-        expect(side?.color, customColor);
-      });
+      test(
+        'returns ButtonStyle with custom color for foreground and border',
+        () {
+          const customColor = Color(0xFF0000FF);
+          final style = AppButtonStyles.secondaryColored(customColor);
+          final fgColor = style.foregroundColor?.resolve({});
+          final side = style.side?.resolve({});
+          expect(fgColor, customColor);
+          expect(side?.color, customColor);
+        },
+      );
     });
 
     group('danger', () {

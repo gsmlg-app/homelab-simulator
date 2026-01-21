@@ -88,7 +88,8 @@ class PlacementGhostComponent extends PositionComponent
     }
 
     // Breathing animation using centralized constants
-    final breathe = GameConstants.placementBreatheMinOpacity +
+    final breathe =
+        GameConstants.placementBreatheMinOpacity +
         GameConstants.placementBreatheAmplitude *
             math.sin(_breatheTime * GameConstants.placementBreatheFrequency);
     final baseColor = _isValid
@@ -109,7 +110,8 @@ class PlacementGhostComponent extends PositionComponent
         ? AppColors.validPlacementBorder
         : AppColors.invalidPlacementBorder;
     _borderPaint.color = borderColor.withValues(
-      alpha: GameConstants.placementBreatheBorderMinOpacity +
+      alpha:
+          GameConstants.placementBreatheBorderMinOpacity +
           GameConstants.placementBreatheBorderAmplitude *
               math.sin(_breatheTime * GameConstants.placementBreatheFrequency),
     );

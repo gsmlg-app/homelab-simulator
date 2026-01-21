@@ -61,7 +61,10 @@ class InteractionHint extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   message,
-                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),

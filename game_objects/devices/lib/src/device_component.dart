@@ -95,7 +95,12 @@ class DeviceComponent extends PositionComponent
     // Device body
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(padding, padding, size.x - padding * 2, size.y - padding * 2),
+        Rect.fromLTWH(
+          padding,
+          padding,
+          size.x - padding * 2,
+          size.y - padding * 2,
+        ),
         radius,
       ),
       _bodyPaint,
@@ -104,7 +109,8 @@ class DeviceComponent extends PositionComponent
     // Device lights/details with subtle flicker for running devices
     if (device.isRunning) {
       // Subtle flicker using centralized animation constants
-      final flicker = GameConstants.deviceFlickerMin +
+      final flicker =
+          GameConstants.deviceFlickerMin +
           GameConstants.deviceFlickerAmplitude *
               math.sin(
                 _flickerTime * GameConstants.deviceFlickerFrequency +
@@ -113,9 +119,17 @@ class DeviceComponent extends PositionComponent
       _flickerPaint.color = AppColors.runningIndicator.withValues(
         alpha: flicker,
       );
-      canvas.drawCircle(Offset(size.x - ledOffset, ledOffset), ledRadius, _flickerPaint);
+      canvas.drawCircle(
+        Offset(size.x - ledOffset, ledOffset),
+        ledRadius,
+        _flickerPaint,
+      );
     } else {
-      canvas.drawCircle(Offset(size.x - ledOffset, ledOffset), ledRadius, _offLightPaint);
+      canvas.drawCircle(
+        Offset(size.x - ledOffset, ledOffset),
+        ledRadius,
+        _offLightPaint,
+      );
     }
 
     // Selection highlight
@@ -132,7 +146,12 @@ class DeviceComponent extends PositionComponent
     // Border
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(padding, padding, size.x - padding * 2, size.y - padding * 2),
+        Rect.fromLTWH(
+          padding,
+          padding,
+          size.x - padding * 2,
+          size.y - padding * 2,
+        ),
         radius,
       ),
       _borderPaint,

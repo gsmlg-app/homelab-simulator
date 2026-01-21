@@ -677,8 +677,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GamePlaceDevice logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -711,8 +712,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameRemoveDevice logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -744,8 +746,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameSave logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -760,8 +763,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameEnterRoom logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -789,7 +793,11 @@ void main() {
           );
         },
         expect: () => [
-          isA<GameReady>().having((s) => s.model.currentRoom.name, 'name', 'AWS'),
+          isA<GameReady>().having(
+            (s) => s.model.currentRoom.name,
+            'name',
+            'AWS',
+          ),
         ],
         verify: (_) {
           verify(() => mockLogger.w(any(), any(), any())).called(1);
@@ -799,8 +807,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameAddRoom logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -814,7 +823,11 @@ void main() {
           ),
         ),
         expect: () => [
-          isA<GameReady>().having((s) => s.model.rooms.length, 'rooms count', 2),
+          isA<GameReady>().having(
+            (s) => s.model.rooms.length,
+            'rooms count',
+            2,
+          ),
         ],
         verify: (_) {
           verify(() => mockLogger.w(any(), any(), any())).called(1);
@@ -824,8 +837,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameRemoveRoom logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -848,7 +862,11 @@ void main() {
           bloc.add(GameRemoveRoom(newRoom.id));
         },
         expect: () => [
-          isA<GameReady>().having((s) => s.model.rooms.length, 'rooms count', 1),
+          isA<GameReady>().having(
+            (s) => s.model.rooms.length,
+            'rooms count',
+            1,
+          ),
         ],
         verify: (_) {
           verify(() => mockLogger.w(any(), any(), any())).called(1);
@@ -858,8 +876,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GamePlaceCloudService logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
@@ -892,8 +911,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'GameRemoveCloudService logs warning when storage fails',
         setUp: () {
-          when(() => mockStorage.save(any()))
-              .thenThrow(Exception('Storage error'));
+          when(
+            () => mockStorage.save(any()),
+          ).thenThrow(Exception('Storage error'));
           when(() => mockLogger.w(any(), any(), any())).thenReturn(null);
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),

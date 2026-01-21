@@ -94,7 +94,10 @@ class DeviceCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   template.description,
-                  style: const TextStyle(color: AppColors.grey400, fontSize: 12),
+                  style: const TextStyle(
+                    color: AppColors.grey400,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),

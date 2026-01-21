@@ -52,7 +52,9 @@ class AudioService {
       await FlameAudio.audioCache.loadAll([
         for (final sfx in SfxType.values) sfx.assetPath,
       ]);
-      _log.fine('Audio service initialized with ${SfxType.values.length} sounds');
+      _log.fine(
+        'Audio service initialized with ${SfxType.values.length} sounds',
+      );
     } catch (e, stackTrace) {
       _log.warning('Failed to preload audio assets: $e', e, stackTrace);
     }
@@ -70,7 +72,11 @@ class AudioService {
     try {
       await FlameAudio.play(sfx.assetPath, volume: _sfxVolume);
     } catch (e, stackTrace) {
-      _log.warning('Failed to play sound effect ${sfx.name}: $e', e, stackTrace);
+      _log.warning(
+        'Failed to play sound effect ${sfx.name}: $e',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -114,7 +120,11 @@ class AudioService {
     try {
       await FlameAudio.bgm.play(filename, volume: _musicVolume);
     } catch (e, stackTrace) {
-      _log.warning('Failed to play background music $filename: $e', e, stackTrace);
+      _log.warning(
+        'Failed to play background music $filename: $e',
+        e,
+        stackTrace,
+      );
     }
   }
 

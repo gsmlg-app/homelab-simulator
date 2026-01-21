@@ -90,8 +90,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             onSelected: (_) => setState(() => _selectedProvider = null),
             selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
-              color:
-                  _selectedProvider == null ? AppColors.textPrimary : AppColors.textSecondary,
+              color: _selectedProvider == null
+                  ? AppColors.textPrimary
+                  : AppColors.textSecondary,
             ),
             backgroundColor: AppColors.grey800,
           ),
@@ -140,8 +141,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             onSelected: (_) => setState(() => _selectedCategory = null),
             selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
-              color:
-                  _selectedCategory == null ? AppColors.textPrimary : AppColors.textSecondary,
+              color: _selectedCategory == null
+                  ? AppColors.textPrimary
+                  : AppColors.textSecondary,
             ),
             backgroundColor: AppColors.grey800,
           ),
@@ -264,7 +266,10 @@ class _ServiceCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     template.description,
-                    style: const TextStyle(color: AppColors.grey500, fontSize: 12),
+                    style: const TextStyle(
+                      color: AppColors.grey500,
+                      fontSize: 12,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(

@@ -242,11 +242,7 @@ void main() {
     group('cached path optimization', () {
       test('creates grid path during construction', () {
         // If path is not built, construction would fail or render would throw
-        final grid = GridComponent(
-          gridWidth: 5,
-          gridHeight: 5,
-          tileSize: 32.0,
-        );
+        final grid = GridComponent(gridWidth: 5, gridHeight: 5, tileSize: 32.0);
 
         // Verifies grid is created successfully with cached path
         expect(grid.gridWidth, 5);

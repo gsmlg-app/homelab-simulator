@@ -281,7 +281,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isActive ? AppColors.cyan500 : AppColors.componentBackground,
+              color: isActive
+                  ? AppColors.cyan500
+                  : AppColors.componentBackground,
               border: isCurrent
                   ? Border.all(color: AppColors.textPrimary, width: 2)
                   : null,
@@ -290,7 +292,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               child: Text(
                 '${step + 1}',
                 style: TextStyle(
-                  color: isActive ? AppColors.textPrimary : AppColors.textTertiary,
+                  color: isActive
+                      ? AppColors.textPrimary
+                      : AppColors.textTertiary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -348,10 +352,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           const SizedBox(height: 8),
           const Text(
             '2-16 characters',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.textHint,
-            ),
+            style: TextStyle(fontSize: 14, color: AppColors.textHint),
           ),
           const SizedBox(height: 32),
 
@@ -367,9 +368,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               hintStyle: const TextStyle(color: AppColors.textHint),
               errorText: _nameError,
               errorStyle: const TextStyle(color: AppColors.redAccent),
-              counterStyle: const TextStyle(
-                color: AppColors.textTertiary,
-              ),
+              counterStyle: const TextStyle(color: AppColors.textTertiary),
               filled: true,
               fillColor: AppColors.componentBackground,
               border: OutlineInputBorder(
@@ -378,11 +377,17 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.cyan500, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.cyan500,
+                  width: 2,
+                ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.redAccent, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.redAccent,
+                  width: 2,
+                ),
               ),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.shuffle, color: AppColors.cyan500),
@@ -491,17 +496,11 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           // Appearance summary
           Text(
             '${_skinTone.name.capitalize()} skin • ${_hairStyle.name.capitalize()} ${_hairColor.name} hair',
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textHint,
-            ),
+            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
           ),
           Text(
             '${_outfitVariant.name.capitalize()} outfit',
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textHint,
-            ),
+            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
           ),
         ],
       ),
@@ -633,7 +632,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                 backgroundColor: AppColors.componentBackground,
                 selectedColor: AppColors.cyan700,
                 labelStyle: TextStyle(
-                  color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+                  color: isSelected
+                      ? AppColors.textPrimary
+                      : AppColors.textSecondary,
                 ),
                 side: isSelected
                     ? const BorderSide(color: AppColors.cyan500, width: 2)
@@ -764,10 +765,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             widget.isEditing
                 ? 'Your changes will be saved.'
                 : 'Your character will start with ${GameConstants.startingCredits} credits.',
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.textHint,
-            ),
+            style: const TextStyle(fontSize: 14, color: AppColors.textHint),
           ),
         ],
       ),
@@ -783,10 +781,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             width: 100,
             child: Text(
               label,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textHint,
-              ),
+              style: const TextStyle(fontSize: 14, color: AppColors.textHint),
             ),
           ),
           Text(
@@ -803,9 +798,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
       padding: const EdgeInsets.all(24),
       decoration: const BoxDecoration(
         color: AppColors.containerBackground,
-        border: Border(
-          top: BorderSide(color: AppColors.borderSubtle),
-        ),
+        border: Border(top: BorderSide(color: AppColors.borderSubtle)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -833,10 +826,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             _currentStep == 2
                 ? '🎮 A: Create • B: Back'
                 : '🎮 A: Next • B: Back',
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textHint,
-            ),
+            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
           ),
 
           // Next/Create button
