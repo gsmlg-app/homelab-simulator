@@ -28,7 +28,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -44,7 +44,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -60,7 +60,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -76,7 +76,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -92,7 +92,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -108,7 +108,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: routerTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -125,7 +125,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () => tapped = true,
             ),
           ),
@@ -160,7 +160,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -223,7 +223,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -261,7 +261,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -278,7 +278,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -301,7 +301,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: switchTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -324,7 +324,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: nasTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -340,7 +340,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: routerTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -356,7 +356,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
@@ -372,7 +372,7 @@ void main() {
           home: Scaffold(
             body: DeviceCard(
               template: serverTemplate,
-              currentCredits: 1000,
+              currentCredits: GameConstants.startingCredits,
               onTap: () {},
             ),
           ),
