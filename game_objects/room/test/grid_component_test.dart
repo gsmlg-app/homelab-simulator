@@ -114,5 +114,125 @@ void main() {
         expect(grid.position, Vector2(100, 200));
       });
     });
+
+    group('edge cases', () {
+      test('handles minimum grid size of 1x1', () {
+        final grid = GridComponent(gridWidth: 1, gridHeight: 1, tileSize: 32.0);
+
+        expect(grid.size, Vector2(32.0, 32.0));
+        expect(grid.gridWidth, 1);
+        expect(grid.gridHeight, 1);
+      });
+
+      test('handles non-square grid', () {
+        final grid = GridComponent(
+          gridWidth: 20,
+          gridHeight: 5,
+          tileSize: 32.0,
+        );
+
+        expect(grid.size.x, 640.0);
+        expect(grid.size.y, 160.0);
+      });
+
+      test('handles tall grid', () {
+        final grid = GridComponent(
+          gridWidth: 5,
+          gridHeight: 20,
+          tileSize: 32.0,
+        );
+
+        expect(grid.size.x, 160.0);
+        expect(grid.size.y, 640.0);
+      });
+
+      test('handles very small tile size', () {
+        final grid = GridComponent(
+          gridWidth: 10,
+          gridHeight: 10,
+          tileSize: 1.0,
+        );
+
+        expect(grid.size, Vector2(10.0, 10.0));
+      });
+    });
+
+    group('grid color', () {
+      test('uses AppColors.gridOverlay as default', () {
+        final grid = GridComponent();
+
+        expect(grid.gridColor, AppColors.gridOverlay);
+      });
+
+      test('accepts fully opaque custom color', () {
+        const opaqueColor = Color(0xFFFF0000);
+        final grid = GridComponent(gridColor: opaqueColor);
+
+        expect(grid.gridColor, opaqueColor);
+      });
+
+      test('accepts transparent custom color', () {
+        const transparentColor = Color(0x00000000);
+        final grid = GridComponent(gridColor: transparentColor);
+
+        expect(grid.gridColor, transparentColor);
+      });
+
+      test('preserves color alpha channel', () {
+        const semiTransparent = Color(0x80FFFFFF);
+        final grid = GridComponent(gridColor: semiTransparent);
+
+        expect(
+          grid.gridColor.a,
+          closeTo(0.5, 0.01),
+          reason: 'Alpha should be approximately 0.5',
+        );
+      });
+    });
+
+    group('position manipulation', () {
+      test('initial position is zero', () {
+        final grid = GridComponent();
+
+        expect(grid.position, Vector2.zero());
+      });
+
+      test('can be positioned with offset', () {
+        final grid = GridComponent();
+        grid.position = Vector2(50, 75);
+
+        expect(grid.position.x, 50);
+        expect(grid.position.y, 75);
+      });
+
+      test('position does not affect size', () {
+        final grid = GridComponent(gridWidth: 10, gridHeight: 10, tileSize: 32.0);
+        grid.position = Vector2(1000, 1000);
+
+        expect(grid.size, Vector2(320.0, 320.0));
+      });
+    });
+
+    group('component properties', () {
+      test('can have priority set', () {
+        final grid = GridComponent();
+        grid.priority = 5;
+
+        expect(grid.priority, 5);
+      });
+
+      test('can have anchor set', () {
+        final grid = GridComponent();
+        grid.anchor = Anchor.center;
+
+        expect(grid.anchor, Anchor.center);
+      });
+
+      test('default anchor is top left', () {
+        final grid = GridComponent();
+
+        expect(grid.anchor, Anchor.topLeft);
+      });
+    });
   });
 }
