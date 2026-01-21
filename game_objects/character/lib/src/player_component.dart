@@ -19,12 +19,12 @@ class PlayerComponent extends PositionComponent
   static final _outlinePaint = Paint()
     ..color = AppColors.playerOutline
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+    ..strokeWidth = GameConstants.playerOutlineStrokeWidth;
 
   PlayerComponent({
     GridPosition initialPosition = GameConstants.playerStartPosition,
     this.tileSize = GameConstants.tileSize,
-    this.moveSpeed = 150,
+    this.moveSpeed = GameConstants.playerMoveSpeed,
   }) : _gridPosition = initialPosition,
        _targetPosition = Vector2(
          initialPosition.x * tileSize,
@@ -74,7 +74,7 @@ class PlayerComponent extends PositionComponent
 
     // Smooth movement towards target
     final diff = _targetPosition - position;
-    if (diff.length > 1) {
+    if (diff.length > GameConstants.playerMovementThreshold) {
       final movement = diff.normalized() * moveSpeed * dt;
       if (movement.length > diff.length) {
         position = _targetPosition.clone();
@@ -88,37 +88,44 @@ class PlayerComponent extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    // Draw as a simple character
+    // Draw as a simple character using centralized constants
     final centerX = size.x / 2;
     final centerY = size.y / 2;
 
+    const hyo = GameConstants.playerHeadYOffset;
+    const hr = GameConstants.playerHeadRadius;
+    const byo = GameConstants.playerBodyYOffset;
+    const bw = GameConstants.playerBodyWidth;
+    const bh = GameConstants.playerBodyHeight;
+    const br = GameConstants.playerBodyRadius;
+
     // Head
-    canvas.drawCircle(Offset(centerX, centerY - 4), 8, _bodyPaint);
+    canvas.drawCircle(Offset(centerX, centerY - hyo), hr, _bodyPaint);
 
     // Body
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromCenter(
-          center: Offset(centerX, centerY + 8),
-          width: 12,
-          height: 14,
+          center: Offset(centerX, centerY + byo),
+          width: bw,
+          height: bh,
         ),
-        const Radius.circular(3),
+        const Radius.circular(br),
       ),
       _bodyPaint,
     );
 
     // Outline
-    canvas.drawCircle(Offset(centerX, centerY - 4), 8, _outlinePaint);
+    canvas.drawCircle(Offset(centerX, centerY - hyo), hr, _outlinePaint);
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromCenter(
-          center: Offset(centerX, centerY + 8),
-          width: 12,
-          height: 14,
+          center: Offset(centerX, centerY + byo),
+          width: bw,
+          height: bh,
         ),
-        const Radius.circular(3),
+        const Radius.circular(br),
       ),
       _outlinePaint,
     );

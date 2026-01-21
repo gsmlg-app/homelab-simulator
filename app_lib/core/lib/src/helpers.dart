@@ -181,6 +181,35 @@ class GameConstants {
 
   /// Glow intensity oscillation center (0.5 for balanced sine wave).
   static const double glowIntensityCenter = 0.5;
+
+  // Player character drawing constants
+
+  /// Player head vertical offset from center (pixels).
+  static const double playerHeadYOffset = 4.0;
+
+  /// Player head radius (pixels).
+  static const double playerHeadRadius = 8.0;
+
+  /// Player body vertical offset from center (pixels).
+  static const double playerBodyYOffset = 8.0;
+
+  /// Player body width (pixels).
+  static const double playerBodyWidth = 12.0;
+
+  /// Player body height (pixels).
+  static const double playerBodyHeight = 14.0;
+
+  /// Player body corner radius (pixels).
+  static const double playerBodyRadius = 3.0;
+
+  /// Player outline stroke width (pixels).
+  static const double playerOutlineStrokeWidth = 2.0;
+
+  /// Player default move speed (pixels per second).
+  static const double playerMoveSpeed = 150.0;
+
+  /// Player movement threshold for position snap (pixels).
+  static const double playerMovementThreshold = 1.0;
 }
 
 /// Convert grid position to pixel position

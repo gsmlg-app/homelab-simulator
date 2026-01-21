@@ -198,6 +198,45 @@ void main() {
       });
     });
 
+    // Player character drawing constants
+    group('player character drawing constants', () {
+      test('playerHeadYOffset is 4.0', () {
+        expect(GameConstants.playerHeadYOffset, 4.0);
+      });
+
+      test('playerHeadRadius is 8.0', () {
+        expect(GameConstants.playerHeadRadius, 8.0);
+      });
+
+      test('playerBodyYOffset is 8.0', () {
+        expect(GameConstants.playerBodyYOffset, 8.0);
+      });
+
+      test('playerBodyWidth is 12.0', () {
+        expect(GameConstants.playerBodyWidth, 12.0);
+      });
+
+      test('playerBodyHeight is 14.0', () {
+        expect(GameConstants.playerBodyHeight, 14.0);
+      });
+
+      test('playerBodyRadius is 3.0', () {
+        expect(GameConstants.playerBodyRadius, 3.0);
+      });
+
+      test('playerOutlineStrokeWidth is 2.0', () {
+        expect(GameConstants.playerOutlineStrokeWidth, 2.0);
+      });
+
+      test('playerMoveSpeed is 150.0', () {
+        expect(GameConstants.playerMoveSpeed, 150.0);
+      });
+
+      test('playerMovementThreshold is 1.0', () {
+        expect(GameConstants.playerMovementThreshold, 1.0);
+      });
+    });
+
     // Gamepad key constants
     group('gamepad key constants', () {
       test('dpadUpKeys contains expected keys', () {
