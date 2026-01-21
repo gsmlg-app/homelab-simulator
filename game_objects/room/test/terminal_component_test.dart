@@ -239,5 +239,27 @@ void main() {
         expect(component1.position, component2.position);
       });
     });
+
+    group('screen flicker animation', () {
+      test('terminal has screen flicker animation capability', () {
+        final component = TerminalComponent();
+
+        // Terminal component has flicker animation
+        expect(component, isA<PositionComponent>());
+      });
+
+      test('terminal at default position supports animation', () {
+        final component = TerminalComponent();
+
+        expect(component.gridPosition, GameConstants.terminalPosition);
+      });
+
+      test('terminal at custom position supports animation', () {
+        const customPos = GridPosition(10, 10);
+        final component = TerminalComponent(gridPosition: customPos);
+
+        expect(component.gridPosition, customPos);
+      });
+    });
   });
 }

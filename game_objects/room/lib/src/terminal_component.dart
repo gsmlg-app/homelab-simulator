@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -11,20 +12,13 @@ class TerminalComponent extends PositionComponent
   final double tileSize;
   bool _isHighlighted = false;
 
+  // Animation state for screen flicker
+  double _flickerTime = 0;
+
   // Cached paint objects for performance
   static final _basePaint = Paint()
     ..color = AppColors.terminalBase
     ..style = PaintingStyle.fill;
-  static final _screenNormalPaint = Paint()
-    ..color = AppColors.terminalScreen
-    ..style = PaintingStyle.fill;
-  static final _screenHighlightPaint = Paint()
-    ..color = AppColors.terminalHighlight
-    ..style = PaintingStyle.fill;
-  static final _highlightBorderPaint = Paint()
-    ..color = AppColors.terminalHighlight
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
 
   TerminalComponent({
     this.gridPosition = GameConstants.terminalPosition,
@@ -48,20 +42,31 @@ class TerminalComponent extends PositionComponent
       _basePaint,
     );
 
-    // Screen
-    final screenPaint = _isHighlighted
-        ? _screenHighlightPaint
-        : _screenNormalPaint;
+    // Screen with subtle flicker effect
+    final flicker = 0.9 + 0.1 * math.sin(_flickerTime * 2.5);
+    final screenColor = _isHighlighted
+        ? AppColors.terminalHighlight
+        : AppColors.terminalScreen;
+    final screenPaint = Paint()
+      ..color = screenColor.withValues(alpha: flicker)
+      ..style = PaintingStyle.fill;
     canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 16), screenPaint);
 
-    // Highlight border when interactable
+    // Animated highlight border when interactable
     if (_isHighlighted) {
+      final glowIntensity = 0.5 + 0.5 * math.sin(_flickerTime * 4.0);
+      final highlightPaint = Paint()
+        ..color = AppColors.terminalHighlight.withValues(
+          alpha: 0.6 + 0.4 * glowIntensity,
+        )
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2 + 2 * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        _highlightBorderPaint,
+        highlightPaint,
       );
     }
   }
@@ -69,6 +74,9 @@ class TerminalComponent extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
+    // Update flicker animation
+    _flickerTime += dt;
+
     final worldState = bloc.state;
     final newHighlight =
         worldState.interactableEntityId == GameConstants.terminalEntityId;
