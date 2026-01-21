@@ -36,7 +36,7 @@ void main() {
 
     group('setTemplate', () {
       test('updates size based on template dimensions', () {
-        final ghost = PlacementGhostComponent(tileSize: 32.0);
+        final ghost = PlacementGhostComponent(tileSize: GameConstants.tileSize);
         const template = DeviceTemplate(
           id: 'server-1',
           name: 'Server',
@@ -96,7 +96,7 @@ void main() {
 
     group('setCloudService', () {
       test('updates size based on template dimensions', () {
-        final ghost = PlacementGhostComponent(tileSize: 32.0);
+        final ghost = PlacementGhostComponent(tileSize: GameConstants.tileSize);
         const template = CloudServiceTemplate(
           provider: CloudProvider.aws,
           category: ServiceCategory.compute,
@@ -262,7 +262,7 @@ void main() {
 
     group('edge cases', () {
       test('handles large device template', () {
-        final ghost = PlacementGhostComponent(tileSize: 32.0);
+        final ghost = PlacementGhostComponent(tileSize: GameConstants.tileSize);
         const template = DeviceTemplate(
           id: 'large-device',
           name: 'Large Device',
@@ -333,7 +333,7 @@ void main() {
       });
 
       test('size resets when clearing templates in sequence', () {
-        final ghost = PlacementGhostComponent(tileSize: 32.0);
+        final ghost = PlacementGhostComponent(tileSize: GameConstants.tileSize);
 
         // Set device template
         const deviceTemplate = DeviceTemplate(
