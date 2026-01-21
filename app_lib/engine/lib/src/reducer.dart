@@ -78,6 +78,13 @@ GameModel _handlePlayerMoved(GameModel model, GridPosition newPosition) {
   return model.copyWith(playerPosition: newPosition);
 }
 
+/// Places a device at the specified position if valid.
+///
+/// Validation order:
+/// 1. Position must be valid (not occupied, within bounds, not on terminal/door)
+/// 2. Player must have sufficient credits
+///
+/// Returns unchanged model if any validation fails.
 GameModel _handleDevicePlaced(
   GameModel model,
   String templateId,
@@ -88,6 +95,7 @@ GameModel _handleDevicePlaced(
     orElse: () => defaultDeviceTemplates.first,
   );
 
+  // Validate position first (check bounds, occupancy, terminal, doors)
   if (!model.currentRoom.canPlaceDevice(
     position,
     template.width,
@@ -96,6 +104,7 @@ GameModel _handleDevicePlaced(
     return model;
   }
 
+  // Then validate credits
   if (model.credits < template.cost) {
     return model;
   }
@@ -143,6 +152,15 @@ GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
       .updateRoom(updatedRoom);
 }
 
+/// Adds a new room connected to the current room via bidirectional doors.
+///
+/// Creates:
+/// 1. A new room with `parentId` set to current room
+/// 2. A door in the current room on `doorSide` pointing to the new room
+/// 3. A door in the new room on the opposite wall pointing back
+///
+/// For example, if `doorSide` is [WallSide.right], the current room gets
+/// a door on its right wall, and the new room gets a door on its left wall.
 GameModel _handleRoomAdded(
   GameModel model,
   String name,
@@ -151,12 +169,11 @@ GameModel _handleRoomAdded(
   WallSide doorSide,
   int doorPosition,
 ) {
-  // Generate IDs for new room and doors
   final newRoomId = generateRoomId();
   final doorInCurrentRoom = generateDoorId();
   final doorInNewRoom = generateDoorId();
 
-  // Create the new room with a door back to current room
+  // Create new room with return door on the opposite wall
   final newRoom = RoomModel(
     id: newRoomId,
     name: name,
@@ -173,7 +190,7 @@ GameModel _handleRoomAdded(
     ],
   );
 
-  // Add door to current room pointing to new room
+  // Add door in current room to the new room
   final updatedCurrentRoom = model.currentRoom.addDoor(
     DoorModel(
       id: doorInCurrentRoom,

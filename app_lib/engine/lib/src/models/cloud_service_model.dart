@@ -303,6 +303,9 @@ class CloudServiceCatalog {
     ),
   ];
 
+  /// Returns all available service templates for a specific cloud provider.
+  ///
+  /// Returns an empty list if the provider is [CloudProvider.none].
   static List<CloudServiceTemplate> getServicesForProvider(
     CloudProvider provider,
   ) {
