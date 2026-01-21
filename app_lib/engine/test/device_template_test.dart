@@ -285,6 +285,59 @@ void main() {
           3,
         ]);
       });
+
+      test('templates can be used in Set collections', () {
+        const t1 = DeviceTemplate(
+          id: 'test',
+          name: 'Test',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const t2 = DeviceTemplate(
+          id: 'test',
+          name: 'Test',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const t3 = DeviceTemplate(
+          id: 'other',
+          name: 'Other',
+          description: 'Other',
+          type: DeviceType.router,
+          cost: 200,
+        );
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final templateSet = {t1, t2, t3};
+        expect(templateSet.length, 2);
+        expect(templateSet.contains(t1), isTrue);
+        expect(templateSet.contains(t3), isTrue);
+      });
+
+      test('templates can be used as Map keys', () {
+        const t1 = DeviceTemplate(
+          id: 'test',
+          name: 'Test',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        const t2 = DeviceTemplate(
+          id: 'test',
+          name: 'Test',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+
+        final templateMap = <DeviceTemplate, String>{t1: 'first'};
+        templateMap[t2] = 'second';
+
+        expect(templateMap.length, 1);
+        expect(templateMap[t1], 'second');
+      });
     });
   });
 
