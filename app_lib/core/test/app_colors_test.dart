@@ -8,34 +8,34 @@ void main() {
     group('UI Backgrounds', () {
       test('darkBackground is defined', () {
         expect(AppColors.darkBackground, isA<Color>());
-        expect(AppColors.darkBackground.value, 0xFF0D0D1A);
+        expect(AppColors.darkBackground.toARGB32(), 0xFF0D0D1A);
       });
 
       test('secondaryBackground is defined', () {
         expect(AppColors.secondaryBackground, isA<Color>());
-        expect(AppColors.secondaryBackground.value, 0xFF1A1A2E);
+        expect(AppColors.secondaryBackground.toARGB32(), 0xFF1A1A2E);
       });
 
       test('componentBackground is defined', () {
         expect(AppColors.componentBackground, isA<Color>());
-        expect(AppColors.componentBackground.value, 0xFF252540);
+        expect(AppColors.componentBackground.toARGB32(), 0xFF252540);
       });
 
       test('containerBackground is defined', () {
         expect(AppColors.containerBackground, isA<Color>());
-        expect(AppColors.containerBackground.value, 0xFF151528);
+        expect(AppColors.containerBackground.toARGB32(), 0xFF151528);
       });
 
       test('selectionBackground is defined', () {
         expect(AppColors.selectionBackground, isA<Color>());
-        expect(AppColors.selectionBackground.value, 0xFF303060);
+        expect(AppColors.selectionBackground.toARGB32(), 0xFF303060);
       });
     });
 
     group('Game Component Colors', () {
       test('roomBackground is defined', () {
         expect(AppColors.roomBackground, isA<Color>());
-        expect(AppColors.roomBackground.value, 0xFF1A1A2E);
+        expect(AppColors.roomBackground.toARGB32(), 0xFF1A1A2E);
       });
 
       test('gridOverlay is semi-transparent', () {
@@ -69,17 +69,17 @@ void main() {
     group('Device Status', () {
       test('deviceSelection is yellow', () {
         expect(AppColors.deviceSelection, isA<Color>());
-        expect(AppColors.deviceSelection.value, 0xFFFFFF00);
+        expect(AppColors.deviceSelection.toARGB32(), 0xFFFFFF00);
       });
 
       test('runningIndicator is green', () {
         expect(AppColors.runningIndicator, isA<Color>());
-        expect(AppColors.runningIndicator.value, 0xFF00FF00);
+        expect(AppColors.runningIndicator.toARGB32(), 0xFF00FF00);
       });
 
       test('offIndicator is gray', () {
         expect(AppColors.offIndicator, isA<Color>());
-        expect(AppColors.offIndicator.value, 0xFF666666);
+        expect(AppColors.offIndicator.toARGB32(), 0xFF666666);
       });
     });
 
@@ -119,7 +119,7 @@ void main() {
     group('Player Colors', () {
       test('playerBody is teal', () {
         expect(AppColors.playerBody, isA<Color>());
-        expect(AppColors.playerBody.value, 0xFF4ECDC4);
+        expect(AppColors.playerBody.toARGB32(), 0xFF4ECDC4);
       });
 
       test('playerOutline is darker teal', () {
@@ -167,15 +167,15 @@ void main() {
       });
 
       test('AWS color is orange', () {
-        expect(AppColors.providerAws.value, 0xFFFF9900);
+        expect(AppColors.providerAws.toARGB32(), 0xFFFF9900);
       });
 
       test('GCP color is blue', () {
-        expect(AppColors.providerGcp.value, 0xFF4285F4);
+        expect(AppColors.providerGcp.toARGB32(), 0xFF4285F4);
       });
 
       test('Azure color is blue', () {
-        expect(AppColors.providerAzure.value, 0xFF0078D4);
+        expect(AppColors.providerAzure.toARGB32(), 0xFF0078D4);
       });
     });
 
@@ -233,7 +233,7 @@ void main() {
     group('Cloud Service Icon Color', () {
       test('cloudServiceIcon is white', () {
         expect(AppColors.cloudServiceIcon, isA<Color>());
-        expect(AppColors.cloudServiceIcon.value, 0xFFFFFFFF);
+        expect(AppColors.cloudServiceIcon.toARGB32(), 0xFFFFFFFF);
       });
     });
 

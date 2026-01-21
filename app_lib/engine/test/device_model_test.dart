@@ -512,6 +512,7 @@ void main() {
           position: GridPosition(10, 10),
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final deviceSet = {device1, device2, device3};
         expect(deviceSet.length, 2);
         expect(deviceSet.contains(device1), isTrue);
@@ -701,6 +702,7 @@ void main() {
           cost: 50,
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final templateSet = {template1, template2, template3};
         expect(templateSet.length, 2);
       });

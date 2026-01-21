@@ -891,6 +891,7 @@ void main() {
           type: RoomType.aws,
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final roomSet = {room1, room2, room3};
         expect(roomSet.length, 2);
         expect(roomSet.contains(room1), isTrue);

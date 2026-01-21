@@ -428,6 +428,7 @@ void main() {
           position: GridPosition(10, 10),
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final serviceSet = {service1, service2, service3};
         expect(serviceSet.length, 2);
         expect(serviceSet.contains(service1), isTrue);

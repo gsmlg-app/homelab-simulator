@@ -496,6 +496,7 @@ void main() {
           credits: 500,
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final gameSet = {game1, game2, game3};
         expect(gameSet.length, 2);
         expect(gameSet.contains(game1), isTrue);

@@ -338,6 +338,7 @@ void main() {
           wallPosition: 3,
         );
 
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final doorSet = {door1, door2, door3};
         expect(doorSet.length, 2); // door1 and door2 are equal, so deduplicated
         expect(doorSet.contains(door1), isTrue);
