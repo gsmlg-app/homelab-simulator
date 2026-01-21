@@ -758,6 +758,80 @@ void main() {
       });
     });
 
+    group('error handling', () {
+      test('removeDevice with non-existent id returns unchanged room', () {
+        const device = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        final roomWithDevice = room.addDevice(device);
+        final result = roomWithDevice.removeDevice('nonexistent-id');
+
+        expect(result.devices.length, 1);
+        expect(result.devices.first.id, 'dev-1');
+      });
+
+      test('removeDoor with non-existent id returns unchanged room', () {
+        const door = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        final roomWithDoor = room.addDoor(door);
+        final result = roomWithDoor.removeDoor('nonexistent-id');
+
+        expect(result.doors.length, 1);
+        expect(result.doors.first.id, 'door-1');
+      });
+
+      test('removeCloudService with non-existent id returns unchanged room', () {
+        const service = CloudServiceModel(
+          id: 'svc-1',
+          name: 'EC2',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(10, 10),
+        );
+        final roomWithService = room.addCloudService(service);
+        final result = roomWithService.removeCloudService('nonexistent-id');
+
+        expect(result.cloudServices.length, 1);
+        expect(result.cloudServices.first.id, 'svc-1');
+      });
+
+      test('removeDevice from empty room returns unchanged room', () {
+        final result = room.removeDevice('any-id');
+        expect(result.devices, isEmpty);
+        expect(result, room);
+      });
+
+      test('removeDoor from empty room returns unchanged room', () {
+        final result = room.removeDoor('any-id');
+        expect(result.doors, isEmpty);
+        expect(result, room);
+      });
+
+      test('removeCloudService from empty room returns unchanged room', () {
+        final result = room.removeCloudService('any-id');
+        expect(result.cloudServices, isEmpty);
+        expect(result, room);
+      });
+
+      test('getObjectCounts returns empty map for empty room', () {
+        final counts = room.getObjectCounts();
+        expect(counts, isEmpty);
+      });
+
+      test('totalObjectCount is 0 for empty room', () {
+        expect(room.totalObjectCount, 0);
+      });
+    });
+
     group('equality', () {
       test('equal rooms are equal', () {
         const room1 = RoomModel(

@@ -44,6 +44,54 @@ void main() {
         expect(simple.height, 1);
         expect(simple.isRunning, isFalse);
       });
+
+      test('creates device with zero dimensions', () {
+        const zeroDevice = DeviceModel(
+          id: 'dev-zero',
+          templateId: 'tmpl',
+          name: 'Zero Device',
+          type: DeviceType.iot,
+          position: GridPosition(5, 5),
+          width: 0,
+          height: 0,
+        );
+
+        expect(zeroDevice.width, 0);
+        expect(zeroDevice.height, 0);
+        expect(zeroDevice.occupiedCells, isEmpty);
+      });
+
+      test('creates device with negative coordinates', () {
+        const negDevice = DeviceModel(
+          id: 'dev-neg',
+          templateId: 'tmpl',
+          name: 'Negative Device',
+          type: DeviceType.server,
+          position: GridPosition(-5, -3),
+          width: 2,
+          height: 2,
+        );
+
+        expect(negDevice.position.x, -5);
+        expect(negDevice.position.y, -3);
+        expect(negDevice.occupiedCells.length, 4);
+        expect(negDevice.occupiesCell(const GridPosition(-5, -3)), isTrue);
+        expect(negDevice.occupiesCell(const GridPosition(-4, -2)), isTrue);
+      });
+
+      test('copyWith with no changes preserves all fields', () {
+        final copy = device.copyWith();
+
+        expect(copy, device);
+        expect(copy.id, device.id);
+        expect(copy.templateId, device.templateId);
+        expect(copy.name, device.name);
+        expect(copy.type, device.type);
+        expect(copy.position, device.position);
+        expect(copy.width, device.width);
+        expect(copy.height, device.height);
+        expect(copy.isRunning, device.isRunning);
+      });
     });
 
     group('serialization', () {
