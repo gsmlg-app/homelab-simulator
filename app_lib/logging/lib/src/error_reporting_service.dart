@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as logging;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,9 +121,34 @@ class ErrorReportingService {
       'context': context,
       'stack_trace': stackTrace?.toString() ?? StackTrace.current.toString(),
       'additional_data': additionalData ?? {},
-      'app_version': '1.0.0', // TODO: Get from package info
-      'platform': 'flutter', // TODO: Get actual platform
+      'app_version': appVersion,
+      'platform': platformName,
     };
+  }
+
+  /// App version - can be overridden via [setAppVersion] for testing or
+  /// after reading from package_info_plus.
+  static String appVersion = '1.0.0';
+
+  /// Sets the app version (typically called after reading package_info).
+  static void setAppVersion(String version) {
+    appVersion = version;
+  }
+
+  /// Platform name derived from runtime.
+  static String get platformName {
+    if (kIsWeb) return 'web';
+    try {
+      if (Platform.isAndroid) return 'android';
+      if (Platform.isIOS) return 'ios';
+      if (Platform.isMacOS) return 'macos';
+      if (Platform.isWindows) return 'windows';
+      if (Platform.isLinux) return 'linux';
+      if (Platform.isFuchsia) return 'fuchsia';
+    } catch (_) {
+      // Platform not available (e.g., in tests)
+    }
+    return 'unknown';
   }
 
   Future<void> _storeError(Map<String, dynamic> errorRecord) async {
@@ -142,38 +170,97 @@ class ErrorReportingService {
     }
   }
 
+  /// Backend error reporting handler. Set this to implement actual backend
+  /// integration (e.g., Sentry, Crashlytics, custom endpoint).
+  ///
+  /// Example:
+  /// ```dart
+  /// ErrorReportingService.backendHandler = (record) async {
+  ///   await http.post(Uri.parse('https://api.example.com/errors'),
+  ///     body: jsonEncode(record));
+  /// };
+  /// ```
+  static Future<void> Function(Map<String, dynamic> errorRecord)?
+  backendHandler;
+
   Future<void> _sendToBackend(Map<String, dynamic> errorRecord) async {
     try {
-      // TODO: Implement actual backend integration
       _systemLogger.info('Sending error to backend: ${errorRecord['message']}');
 
-      // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      // TODO: Replace with actual HTTP call
-      _systemLogger.info('Error sent to backend successfully');
+      if (backendHandler != null) {
+        await backendHandler!(errorRecord);
+        _systemLogger.info('Error sent to backend successfully');
+      } else {
+        _systemLogger.info(
+          'No backend handler configured, error logged locally only',
+        );
+      }
     } catch (e) {
       _systemLogger.warning('Failed to send error to backend: $e');
     }
   }
 
   String _encodeErrorRecord(Map<String, dynamic> record) {
-    return record.toString(); // Simple encoding for now
+    // Convert additional_data values to JSON-safe types
+    final safeRecord = Map<String, dynamic>.from(record);
+    if (safeRecord['additional_data'] is Map) {
+      safeRecord['additional_data'] = _sanitizeForJson(
+        safeRecord['additional_data'] as Map<String, dynamic>,
+      );
+    }
+    return jsonEncode(safeRecord);
   }
 
-  Map<String, dynamic>? _decodeErrorRecord(String json) {
+  Map<String, dynamic> _sanitizeForJson(Map<String, dynamic> data) {
+    return data.map((key, value) {
+      if (value == null || value is String || value is num || value is bool) {
+        return MapEntry(key, value);
+      } else if (value is Map) {
+        return MapEntry(
+          key,
+          _sanitizeForJson(Map<String, dynamic>.from(value)),
+        );
+      } else if (value is List) {
+        return MapEntry(key, value.map((e) => e?.toString()).toList());
+      } else {
+        return MapEntry(key, value.toString());
+      }
+    });
+  }
+
+  Map<String, dynamic>? _decodeErrorRecord(String jsonStr) {
     try {
-      // Simple decoding for now
-      return {'raw': json};
+      return jsonDecode(jsonStr) as Map<String, dynamic>;
     } catch (e) {
-      return null;
+      // Handle legacy format (pre-JSON records)
+      return {'raw': jsonStr, 'legacy': true};
     }
   }
 
+  /// Export handler for error logs. Set this to implement actual export
+  /// functionality (e.g., file sharing, email, clipboard).
+  ///
+  /// Example:
+  /// ```dart
+  /// ErrorReportingService.exportHandler = (errors) async {
+  ///   final file = File('errors.json');
+  ///   await file.writeAsString(jsonEncode(errors));
+  ///   await Share.shareFile(file.path);
+  /// };
+  /// ```
+  static Future<void> Function(List<Map<String, dynamic>> errors)?
+  exportHandler;
+
   Future<void> exportErrorLogs() async {
     final errors = await getRecentErrors();
-    _systemLogger.info('Error logs exported: ${errors.length} errors');
-    // TODO: Implement export functionality (file sharing, email, etc.)
+    _systemLogger.info('Exporting error logs: ${errors.length} errors');
+
+    if (exportHandler != null) {
+      await exportHandler!(errors);
+      _systemLogger.info('Error logs exported successfully');
+    } else {
+      _systemLogger.info('No export handler configured');
+    }
   }
 
   void setupGlobalErrorHandler() {

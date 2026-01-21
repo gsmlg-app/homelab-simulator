@@ -169,12 +169,18 @@ class ErrorScreen extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Implement actual error reporting
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Error report submitted')),
+            onPressed: () async {
+              final errorService = ErrorReportingService();
+              await errorService.reportFlutterError(
+                details: errorDetails,
+                context: 'User-submitted error report',
               );
+              if (context.mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Error report submitted')),
+                );
+              }
             },
             child: const Text('Send Report'),
           ),
