@@ -40,6 +40,9 @@ class DoorComponent extends PositionComponent
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
 
+  // Reusable paint for glow animation (color/strokeWidth updated per frame)
+  final Paint _glowPaint = Paint()..style = PaintingStyle.stroke;
+
   DoorComponent({
     required this.door,
     this.roomWidth = GameConstants.roomWidth,
@@ -109,18 +112,17 @@ class DoorComponent extends PositionComponent
     if (_isHighlighted) {
       // Pulsing glow: stroke width oscillates 2-4px
       final glowIntensity = 0.5 + 0.5 * math.sin(_glowTime * 4.0);
-      final glowPaint = Paint()
+      _glowPaint
         ..color = AppColors.doorHighlight.withValues(
           alpha: 0.6 + 0.4 * glowIntensity,
         )
-        ..style = PaintingStyle.stroke
         ..strokeWidth = 2 + 2 * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        glowPaint,
+        _glowPaint,
       );
     }
   }

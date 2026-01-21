@@ -18,6 +18,12 @@ class PlacementGhostComponent extends PositionComponent
   // Animation state for breathing effect
   double _breatheTime = 0;
 
+  // Reusable paints for animation (color updated per frame)
+  final Paint _fillPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _borderPaint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+
   PlacementGhostComponent({this.tileSize = GameConstants.tileSize})
     : super(size: Vector2.all(tileSize));
 
@@ -83,35 +89,30 @@ class PlacementGhostComponent extends PositionComponent
     final baseColor = _isValid
         ? AppColors.validPlacementFill
         : AppColors.invalidPlacementFill;
-    final fillPaint = Paint()
-      ..color = baseColor.withValues(alpha: breathe)
-      ..style = PaintingStyle.fill;
+    _fillPaint.color = baseColor.withValues(alpha: breathe);
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
         const Radius.circular(4),
       ),
-      fillPaint,
+      _fillPaint,
     );
 
     // Border with matching animation
     final borderColor = _isValid
         ? AppColors.validPlacementBorder
         : AppColors.invalidPlacementBorder;
-    final borderPaint = Paint()
-      ..color = borderColor.withValues(
-        alpha: 0.7 + 0.3 * math.sin(_breatheTime * 3.0),
-      )
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+    _borderPaint.color = borderColor.withValues(
+      alpha: 0.7 + 0.3 * math.sin(_breatheTime * 3.0),
+    );
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
         const Radius.circular(4),
       ),
-      borderPaint,
+      _borderPaint,
     );
   }
 }

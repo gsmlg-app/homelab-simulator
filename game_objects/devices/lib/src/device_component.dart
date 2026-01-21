@@ -29,6 +29,8 @@ class DeviceComponent extends PositionComponent
   // Instance-level cached paints (depend on device type)
   late final Paint _bodyPaint;
   late final Paint _borderPaint;
+  // Reusable paint for flicker animation (color updated per frame)
+  final Paint _flickerPaint = Paint()..style = PaintingStyle.fill;
 
   DeviceComponent({
     required this.device,
@@ -95,10 +97,10 @@ class DeviceComponent extends PositionComponent
       // Subtle flicker: base brightness 0.7-1.0 with sine wave
       final flicker =
           0.85 + 0.15 * math.sin(_flickerTime * 3.0 + _flickerPhase);
-      final flickerPaint = Paint()
-        ..color = AppColors.runningIndicator.withValues(alpha: flicker)
-        ..style = PaintingStyle.fill;
-      canvas.drawCircle(Offset(size.x - 10, 10), 3, flickerPaint);
+      _flickerPaint.color = AppColors.runningIndicator.withValues(
+        alpha: flicker,
+      );
+      canvas.drawCircle(Offset(size.x - 10, 10), 3, _flickerPaint);
     } else {
       canvas.drawCircle(Offset(size.x - 10, 10), 3, _offLightPaint);
     }

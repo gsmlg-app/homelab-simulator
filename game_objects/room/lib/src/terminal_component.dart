@@ -20,6 +20,10 @@ class TerminalComponent extends PositionComponent
     ..color = AppColors.terminalBase
     ..style = PaintingStyle.fill;
 
+  // Reusable paints for animation (color/strokeWidth updated per frame)
+  final Paint _screenPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _highlightPaint = Paint()..style = PaintingStyle.stroke;
+
   TerminalComponent({
     this.gridPosition = GameConstants.terminalPosition,
     this.tileSize = GameConstants.tileSize,
@@ -47,26 +51,26 @@ class TerminalComponent extends PositionComponent
     final screenColor = _isHighlighted
         ? AppColors.terminalHighlight
         : AppColors.terminalScreen;
-    final screenPaint = Paint()
-      ..color = screenColor.withValues(alpha: flicker)
-      ..style = PaintingStyle.fill;
-    canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 16), screenPaint);
+    _screenPaint.color = screenColor.withValues(alpha: flicker);
+    canvas.drawRect(
+      Rect.fromLTWH(6, 6, size.x - 12, size.y - 16),
+      _screenPaint,
+    );
 
     // Animated highlight border when interactable
     if (_isHighlighted) {
       final glowIntensity = 0.5 + 0.5 * math.sin(_flickerTime * 4.0);
-      final highlightPaint = Paint()
+      _highlightPaint
         ..color = AppColors.terminalHighlight.withValues(
           alpha: 0.6 + 0.4 * glowIntensity,
         )
-        ..style = PaintingStyle.stroke
         ..strokeWidth = 2 + 2 * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        highlightPaint,
+        _highlightPaint,
       );
     }
   }
