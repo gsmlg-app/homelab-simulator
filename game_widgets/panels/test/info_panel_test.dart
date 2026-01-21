@@ -67,7 +67,7 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.color, Colors.black87);
+      expect(decoration.color, AppColors.panelBackground);
       expect(decoration.borderRadius, AppSpacing.borderRadiusMedium);
     });
 
@@ -134,8 +134,8 @@ void main() {
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.home));
-      expect(icon.color, Colors.cyan.shade400);
-      expect(icon.size, 20);
+      expect(icon.color, AppColors.cyan400);
+      expect(icon.size, AppSpacing.iconSizeDefault);
     });
 
     testWidgets('title text has correct style', (tester) async {
@@ -149,10 +149,10 @@ void main() {
 
       final text = tester.widget<Text>(find.text('STYLED'));
       final style = text.style!;
-      expect(style.color, Colors.cyan.shade400);
-      expect(style.fontSize, 14);
+      expect(style.color, AppColors.cyan400);
+      expect(style.fontSize, AppSpacing.fontSizeDefault);
       expect(style.fontWeight, FontWeight.bold);
-      expect(style.letterSpacing, 1);
+      expect(style.letterSpacing, AppSpacing.letterSpacingWide);
     });
 
     testWidgets('container has border', (tester) async {
