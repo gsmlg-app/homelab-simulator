@@ -38,7 +38,7 @@ void main() {
       test('defaults grid color to semi-transparent white', () {
         final grid = GridComponent();
 
-        expect(grid.gridColor, const Color(0x33FFFFFF));
+        expect(grid.gridColor, AppColors.gridOverlay);
       });
     });
 

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelab_simulator/app.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
 void main() {
@@ -60,7 +61,7 @@ void main() {
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
       expect(
         materialApp.theme?.scaffoldBackgroundColor,
-        const Color(0xFF0D0D1A),
+        AppColors.darkBackground,
       );
     });
 
