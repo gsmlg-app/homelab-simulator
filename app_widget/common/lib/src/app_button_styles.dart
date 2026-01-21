@@ -12,7 +12,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get primary => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF00ACC1), // cyan.shade600
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -23,7 +23,7 @@ abstract final class AppButtonStyles {
       ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         foregroundColor: const Color(0xFFFFFFFF),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: AppSpacing.paddingButton,
         shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusMedium,
         ),
@@ -35,7 +35,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get secondary => OutlinedButton.styleFrom(
     foregroundColor: const Color(0xFF26C6DA), // cyan.shade400
     side: const BorderSide(color: Color(0xFF26C6DA)),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -45,7 +45,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle secondaryColored(Color color) => OutlinedButton.styleFrom(
     foregroundColor: color,
     side: BorderSide(color: color),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -57,7 +57,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get danger => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFFD32F2F), // red.shade700
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -67,7 +67,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get dangerOutlined => OutlinedButton.styleFrom(
     foregroundColor: const Color(0xFFD32F2F),
     side: const BorderSide(color: Color(0xFFD32F2F)),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -79,7 +79,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get modalPrimary => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF9C27B0), // purple
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -89,7 +89,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get modalSecondary => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF424242), // grey.shade800
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
@@ -100,7 +100,7 @@ abstract final class AppButtonStyles {
   /// Icon button style with circular shape
   static ButtonStyle get iconCircular => IconButton.styleFrom(
     shape: const CircleBorder(),
-    padding: const EdgeInsets.all(8),
+    padding: AppSpacing.paddingS,
   );
 
   /// Icon button style with rounded rectangle
@@ -108,7 +108,7 @@ abstract final class AppButtonStyles {
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
     ),
-    padding: const EdgeInsets.all(8),
+    padding: AppSpacing.paddingS,
   );
 
   // ============ SMALL / COMPACT BUTTONS ============
@@ -117,7 +117,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get small => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF00ACC1),
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    padding: AppSpacing.paddingChip,
     minimumSize: const Size(60, 32),
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,
@@ -129,7 +129,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get smallOutlined => OutlinedButton.styleFrom(
     foregroundColor: const Color(0xFF26C6DA),
     side: const BorderSide(color: Color(0xFF26C6DA)),
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    padding: AppSpacing.paddingChip,
     minimumSize: const Size(60, 32),
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,

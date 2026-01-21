@@ -236,19 +236,13 @@ void main() {
       test('primary has standard padding', () {
         final style = AppButtonStyles.primary;
         final padding = style.padding?.resolve({});
-        expect(
-          padding,
-          const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        );
+        expect(padding, AppSpacing.paddingButton);
       });
 
       test('small has smaller padding', () {
         final style = AppButtonStyles.small;
         final padding = style.padding?.resolve({});
-        expect(
-          padding,
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        );
+        expect(padding, AppSpacing.paddingChip);
       });
     });
   });
