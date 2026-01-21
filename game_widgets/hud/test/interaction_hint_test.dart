@@ -277,7 +277,7 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.borderRadius, BorderRadius.circular(8));
+      expect(decoration.borderRadius, AppSpacing.borderRadiusMedium);
     });
 
     testWidgets('E key container has cyan background', (tester) async {
@@ -309,7 +309,7 @@ void main() {
       final eKeyContainer = innerContainers.elementAt(1);
       final decoration = eKeyContainer.decoration as BoxDecoration;
       expect(decoration.color, Colors.cyan.shade800);
-      expect(decoration.borderRadius, BorderRadius.circular(4));
+      expect(decoration.borderRadius, AppSpacing.borderRadiusSmall);
     });
 
     testWidgets('row layout with E key and message', (tester) async {

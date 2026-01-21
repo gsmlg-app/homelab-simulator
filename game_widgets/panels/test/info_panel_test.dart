@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 void main() {
@@ -67,7 +68,7 @@ void main() {
 
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.color, Colors.black87);
-      expect(decoration.borderRadius, BorderRadius.circular(8));
+      expect(decoration.borderRadius, AppSpacing.borderRadiusMedium);
     });
 
     testWidgets('renders divider after header', (tester) async {

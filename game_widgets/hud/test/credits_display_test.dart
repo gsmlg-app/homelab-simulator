@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
 
@@ -231,7 +232,7 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.borderRadius, BorderRadius.circular(8));
+      expect(decoration.borderRadius, AppSpacing.borderRadiusMedium);
     });
 
     testWidgets('row layout with icon and text', (tester) async {
