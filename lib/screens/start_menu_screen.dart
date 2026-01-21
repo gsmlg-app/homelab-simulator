@@ -19,10 +19,6 @@ class StartMenuScreen extends StatefulWidget {
 
 // Private constants for StartMenuScreen layout
 const double _titleTopPadding = 60.0;
-const double _titleFontSize = 48.0;
-const double _createButtonHeight = 56.0;
-const double _emptyStateIconSize = 64.0;
-const double _avatarSize = 56.0;
 
 class _StartMenuScreenState extends State<StartMenuScreen> {
   final CharacterStorage _storage = CharacterStorage();
@@ -231,7 +227,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                 const Text(
                   'HOMELAB',
                   style: TextStyle(
-                    fontSize: _titleFontSize,
+                    fontSize: AppSpacing.fontSizeDisplay,
                     fontWeight: FontWeight.bold,
                     color: AppColors.cyan400,
                     letterSpacing: AppSpacing.s,
@@ -260,7 +256,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                   padding: AppSpacing.paddingL,
                   child: SizedBox(
                     width: double.infinity,
-                    height: _createButtonHeight,
+                    height: AppSpacing.buttonHeightLarge,
                     child: FilledButton.icon(
                       onPressed: _createNewCharacter,
                       icon: const Icon(Icons.add),
@@ -332,7 +328,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
           children: [
             Icon(
               Icons.person_add,
-              size: _emptyStateIconSize,
+              size: AppSpacing.iconSizeHero,
               color: AppColors.borderLight,
             ),
             SizedBox(height: AppSpacing.m),
@@ -429,8 +425,8 @@ class _CharacterCard extends StatelessWidget {
             children: [
               // Character sprite avatar
               Container(
-                width: _avatarSize,
-                height: _avatarSize,
+                width: AppSpacing.avatarSize,
+                height: AppSpacing.avatarSize,
                 decoration: BoxDecoration(
                   color: AppColors.cyan900,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
@@ -444,8 +440,8 @@ class _CharacterCard extends StatelessWidget {
                       heightFactor: 1 / 3,
                       child: Image.asset(
                         character.spritePath,
-                        width: _avatarSize * 8,
-                        height: _avatarSize * 3,
+                        width: AppSpacing.avatarSize * 8,
+                        height: AppSpacing.avatarSize * 3,
                         fit: BoxFit.contain,
                       ),
                     ),

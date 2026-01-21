@@ -131,6 +131,22 @@ void main() {
       test('shopModalWidth is 500.0', () {
         expect(AppSpacing.shopModalWidth, 500.0);
       });
+
+      test('buttonHeightLarge is 56.0', () {
+        expect(AppSpacing.buttonHeightLarge, 56.0);
+      });
+
+      test('avatarSize is 56.0', () {
+        expect(AppSpacing.avatarSize, 56.0);
+      });
+
+      test('buttonMinWidthSmall is 60.0', () {
+        expect(AppSpacing.buttonMinWidthSmall, 60.0);
+      });
+
+      test('buttonMinHeightSmall is 32.0', () {
+        expect(AppSpacing.buttonMinHeightSmall, 32.0);
+      });
     });
 
     group('icon sizes', () {
@@ -303,6 +319,10 @@ void main() {
 
       test('fontSizeTitle is 28.0', () {
         expect(AppSpacing.fontSizeTitle, 28.0);
+      });
+
+      test('fontSizeDisplay is 48.0', () {
+        expect(AppSpacing.fontSizeDisplay, 48.0);
       });
     });
 

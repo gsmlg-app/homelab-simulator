@@ -118,7 +118,10 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF00ACC1),
     foregroundColor: const Color(0xFFFFFFFF),
     padding: AppSpacing.paddingChip,
-    minimumSize: const Size(60, 32),
+    minimumSize: const Size(
+      AppSpacing.buttonMinWidthSmall,
+      AppSpacing.buttonMinHeightSmall,
+    ),
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,
     ),
@@ -130,7 +133,10 @@ abstract final class AppButtonStyles {
     foregroundColor: const Color(0xFF26C6DA),
     side: const BorderSide(color: Color(0xFF26C6DA)),
     padding: AppSpacing.paddingChip,
-    minimumSize: const Size(60, 32),
+    minimumSize: const Size(
+      AppSpacing.buttonMinWidthSmall,
+      AppSpacing.buttonMinHeightSmall,
+    ),
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,
     ),

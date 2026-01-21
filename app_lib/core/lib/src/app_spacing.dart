@@ -125,6 +125,18 @@ abstract final class AppSpacing {
   /// Shop modal max height ratio (0.8 of screen height)
   static const double shopModalMaxHeightRatio = 0.8;
 
+  /// Large button/list item height (56px)
+  static const double buttonHeightLarge = 56.0;
+
+  /// Avatar size (56px) - for character/user avatars
+  static const double avatarSize = 56.0;
+
+  /// Small button minimum size (60x32)
+  static const double buttonMinWidthSmall = 60.0;
+
+  /// Small button minimum height (32px)
+  static const double buttonMinHeightSmall = 32.0;
+
   // ============ ICON SIZES ============
 
   /// Extra small icon size (12px) - for compact badges/counts
@@ -239,6 +251,9 @@ abstract final class AppSpacing {
 
   /// Title font size (28px)
   static const double fontSizeTitle = 28.0;
+
+  /// Display font size (48px) - for hero titles and large headings
+  static const double fontSizeDisplay = 48.0;
 
   // ============ ANIMATION DURATIONS ============
 
