@@ -22,7 +22,7 @@ class ErrorReportingService {
   static const int _maxStoredErrors = 100;
 
   Future<void> reportError({
-    required dynamic error,
+    required Object error,
     StackTrace? stackTrace,
     String? context,
     LogLevel level = LogLevel.error,
@@ -107,7 +107,7 @@ class ErrorReportingService {
   }
 
   Map<String, dynamic> _createErrorRecord({
-    required dynamic error,
+    required Object error,
     StackTrace? stackTrace,
     String? context,
     required LogLevel level,

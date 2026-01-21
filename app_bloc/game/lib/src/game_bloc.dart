@@ -120,14 +120,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) async {
     final model = currentModel;
     if (model == null) return;
-    if (model.selectedTemplate == null) return;
+
+    final template = model.selectedTemplate;
+    if (template == null) return;
 
     final newModel = reduce(
       model,
-      DevicePlaced(
-        templateId: model.selectedTemplate!.id,
-        position: event.position,
-      ),
+      DevicePlaced(templateId: template.id, position: event.position),
     );
 
     emit(GameReady(newModel));
@@ -239,9 +238,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) async {
     final model = currentModel;
     if (model == null) return;
-    if (model.selectedCloudService == null) return;
 
-    final template = model.selectedCloudService!;
+    final template = model.selectedCloudService;
+    if (template == null) return;
+
     final newModel = reduce(
       model,
       CloudServicePlaced(
