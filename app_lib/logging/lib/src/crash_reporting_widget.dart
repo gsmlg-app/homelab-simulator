@@ -89,25 +89,25 @@ class ErrorScreen extends StatelessWidget {
       backgroundColor: Colors.red[50],
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: AppSpacing.paddingL,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.error_outline, size: AppSpacing.iconSizeHero, color: Colors.red[700]),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.l),
               Text(
                 'Oops! Something went wrong',
                 style: Theme.of(
                   context,
                 ).textTheme.headlineSmall?.copyWith(color: Colors.red[700]),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.m),
               Text(
                 'We\'re sorry, but an unexpected error occurred.',
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xl),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -119,7 +119,7 @@ class ErrorScreen extends StatelessWidget {
                         },
                     child: const Text('Retry'),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppSpacing.m),
                   OutlinedButton(
                     onPressed:
                         onReport ??
@@ -149,16 +149,16 @@ class ErrorScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Error details:'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.s),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: AppSpacing.paddingS,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: AppSpacing.borderRadiusSmall,
                 ),
                 child: Text(
                   errorDetails.exceptionAsString(),
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: AppSpacing.fontSizeSmall),
                 ),
               ),
             ],

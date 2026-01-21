@@ -56,7 +56,7 @@ class InfoRow extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.s),
           Flexible(
             child: Text(
               value,
