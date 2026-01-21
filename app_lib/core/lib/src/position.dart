@@ -91,8 +91,8 @@ mixin GridOccupancy {
   /// The cells are returned in row-major order, starting from [position].
   List<GridPosition> get occupiedCells {
     final cells = <GridPosition>[];
-    for (var dx = 0; dx < width; dx++) {
-      for (var dy = 0; dy < height; dy++) {
+    for (int dx = 0; dx < width; dx++) {
+      for (int dy = 0; dy < height; dy++) {
         cells.add(GridPosition(position.x + dx, position.y + dy));
       }
     }

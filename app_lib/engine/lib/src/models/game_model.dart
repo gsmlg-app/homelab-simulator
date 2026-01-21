@@ -29,12 +29,16 @@ class GameModel extends Equatable {
     this.shopOpen = false,
   });
 
-  /// Get the current room
+  /// Get the current room.
+  ///
+  /// Returns the room with the matching [currentRoomId], or falls back to
+  /// the first room in the list if not found. Throws [StateError] if there
+  /// are no rooms (this should never happen in normal usage).
   RoomModel get currentRoom {
-    return rooms.firstWhere(
-      (r) => r.id == currentRoomId,
-      orElse: () => rooms.first,
-    );
+    final room = getRoomById(currentRoomId);
+    if (room != null) return room;
+    if (rooms.isNotEmpty) return rooms.first;
+    throw StateError('GameModel has no rooms');
   }
 
   GameModel copyWith({
@@ -136,7 +140,7 @@ class GameModel extends Equatable {
   GameModel removeRoom(String roomId) {
     // Get all room IDs to remove (the room and all descendants)
     final idsToRemove = <String>{roomId};
-    var foundNew = true;
+    bool foundNew = true;
     while (foundNew) {
       foundNew = false;
       for (final room in rooms) {
@@ -162,7 +166,7 @@ class GameModel extends Equatable {
         .toList();
 
     // If current room was removed, switch to first available
-    var newCurrentRoomId = currentRoomId;
+    String newCurrentRoomId = currentRoomId;
     if (idsToRemove.contains(currentRoomId) && updatedRooms.isNotEmpty) {
       newCurrentRoomId = updatedRooms.first.id;
     }
