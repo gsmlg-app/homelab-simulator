@@ -281,7 +281,7 @@ void main() {
         build: () => GameBloc(storage: mockStorage),
         seed: () => GameReady(
           GameModel.initial().copyWith(
-            credits: 1000,
+            credits: GameConstants.startingCredits,
             selectedTemplate: template,
             placementMode: PlacementMode.placing,
           ),
@@ -322,7 +322,7 @@ void main() {
         },
         build: () => GameBloc(storage: mockStorage),
         seed: () {
-          final model = GameModel.initial().copyWith(credits: 1000);
+          final model = GameModel.initial().copyWith(credits: GameConstants.startingCredits);
           const device = DeviceModel(
             id: 'dev-1',
             templateId: 'server_basic',
@@ -685,7 +685,7 @@ void main() {
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
         seed: () => GameReady(
           GameModel.initial().copyWith(
-            credits: 1000,
+            credits: GameConstants.startingCredits,
             selectedTemplate: const DeviceTemplate(
               id: 'server_basic',
               name: 'Server',
@@ -719,7 +719,7 @@ void main() {
         },
         build: () => GameBloc(storage: mockStorage, logger: mockLogger),
         seed: () {
-          final model = GameModel.initial().copyWith(credits: 1000);
+          final model = GameModel.initial().copyWith(credits: GameConstants.startingCredits);
           const device = DeviceModel(
             id: 'dev-1',
             templateId: 'server_basic',
