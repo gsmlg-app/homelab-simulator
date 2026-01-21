@@ -74,7 +74,7 @@ void main() {
       });
 
       test('handles origin position', () {
-        final component = DeviceComponent(device: routerDevice, tileSize: 32.0);
+        final component = DeviceComponent(device: routerDevice, tileSize: GameConstants.tileSize);
 
         expect(component.position, Vector2(0, 0));
       });
@@ -91,7 +91,7 @@ void main() {
 
     group('size', () {
       test('calculates from device width and height', () {
-        final component = DeviceComponent(device: serverDevice, tileSize: 32.0);
+        final component = DeviceComponent(device: serverDevice, tileSize: GameConstants.tileSize);
 
         // Default device is 1x1
         expect(component.size, Vector2(32.0, 32.0));
@@ -100,7 +100,7 @@ void main() {
       test('respects device dimensions', () {
         final component = DeviceComponent(
           device: computerDevice,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         // 2x2 device
@@ -193,7 +193,7 @@ void main() {
           type: DeviceType.server,
           position: GridPosition(100, 100),
         );
-        final component = DeviceComponent(device: farDevice, tileSize: 32.0);
+        final component = DeviceComponent(device: farDevice, tileSize: GameConstants.tileSize);
 
         expect(component.position, Vector2(3200.0, 3200.0));
       });
@@ -208,7 +208,7 @@ void main() {
           width: 5,
           height: 3,
         );
-        final component = DeviceComponent(device: largeDevice, tileSize: 32.0);
+        final component = DeviceComponent(device: largeDevice, tileSize: GameConstants.tileSize);
 
         expect(component.size, Vector2(160.0, 96.0));
       });
@@ -274,7 +274,7 @@ void main() {
 
     group('position manipulation', () {
       test('initial position uses device grid position', () {
-        final component = DeviceComponent(device: serverDevice, tileSize: 32.0);
+        final component = DeviceComponent(device: serverDevice, tileSize: GameConstants.tileSize);
 
         expect(component.position.x, 160.0); // 5 * 32
         expect(component.position.y, 96.0); // 3 * 32
