@@ -117,6 +117,87 @@ void main() {
       });
     });
 
+    // Audio constants
+    group('audio constants', () {
+      test('audioSfxVolumeDefault is 1.0', () {
+        expect(GameConstants.audioSfxVolumeDefault, 1.0);
+      });
+
+      test('audioMusicVolumeDefault is 0.5', () {
+        expect(GameConstants.audioMusicVolumeDefault, 0.5);
+      });
+    });
+
+    // Component drawing constants
+    group('component drawing constants', () {
+      test('componentFramePadding is 2.0', () {
+        expect(GameConstants.componentFramePadding, 2.0);
+      });
+
+      test('componentInnerPadding is 6.0', () {
+        expect(GameConstants.componentInnerPadding, 6.0);
+      });
+
+      test('componentFrameWidth is 4.0', () {
+        expect(GameConstants.componentFrameWidth, 4.0);
+      });
+
+      test('componentCornerRadius is 4.0', () {
+        expect(GameConstants.componentCornerRadius, 4.0);
+      });
+
+      test('terminalScreenBottomOffset is 4.0', () {
+        expect(GameConstants.terminalScreenBottomOffset, 4.0);
+      });
+
+      test('doorHandleOffset is 8.0', () {
+        expect(GameConstants.doorHandleOffset, 8.0);
+      });
+
+      test('doorHandleRadius is 3.0', () {
+        expect(GameConstants.doorHandleRadius, 3.0);
+      });
+
+      test('arrowBaseOffset is 6.0', () {
+        expect(GameConstants.arrowBaseOffset, 6.0);
+      });
+
+      test('arrowTipOffset is 5.0', () {
+        expect(GameConstants.arrowTipOffset, 5.0);
+      });
+
+      test('arrowPerpOffset is 3.0', () {
+        expect(GameConstants.arrowPerpOffset, 3.0);
+      });
+    });
+
+    // Glow animation constants
+    group('glow animation constants', () {
+      test('glowStrokeBase is 2.0', () {
+        expect(GameConstants.glowStrokeBase, 2.0);
+      });
+
+      test('glowStrokeAmplitude is 2.0', () {
+        expect(GameConstants.glowStrokeAmplitude, 2.0);
+      });
+
+      test('glowOpacityBase is 0.6', () {
+        expect(GameConstants.glowOpacityBase, 0.6);
+      });
+
+      test('glowOpacityAmplitude is 0.4', () {
+        expect(GameConstants.glowOpacityAmplitude, 0.4);
+      });
+
+      test('highlightBorderInset is 1.0', () {
+        expect(GameConstants.highlightBorderInset, 1.0);
+      });
+
+      test('glowIntensityCenter is 0.5', () {
+        expect(GameConstants.glowIntensityCenter, 0.5);
+      });
+    });
+
     // Gamepad key constants
     group('gamepad key constants', () {
       test('dpadUpKeys contains expected keys', () {

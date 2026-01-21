@@ -121,6 +121,66 @@ class GameConstants {
 
   /// Device LED indicator offset from edge (pixels).
   static const double deviceLedOffset = 10.0;
+
+  // Audio constants
+
+  /// Default volume for sound effects (0.0 to 1.0).
+  static const double audioSfxVolumeDefault = 1.0;
+
+  /// Default volume for background music (0.0 to 1.0).
+  static const double audioMusicVolumeDefault = 0.5;
+
+  // Component drawing constants
+
+  /// Outer padding for terminal/door frame from component edge (pixels).
+  static const double componentFramePadding = 2.0;
+
+  /// Inner padding for terminal screen/door surface (pixels).
+  static const double componentInnerPadding = 6.0;
+
+  /// Width of terminal/door frame (componentInnerPadding - componentFramePadding) (pixels).
+  static const double componentFrameWidth = 4.0;
+
+  /// Corner radius for terminal/door components (pixels).
+  static const double componentCornerRadius = 4.0;
+
+  /// Additional height offset for terminal screen bottom edge (pixels).
+  static const double terminalScreenBottomOffset = 4.0;
+
+  /// Door handle offset from near edge (pixels).
+  static const double doorHandleOffset = 8.0;
+
+  /// Door handle radius (pixels).
+  static const double doorHandleRadius = 3.0;
+
+  /// Arrow indicator offset from center (pixels).
+  static const double arrowBaseOffset = 6.0;
+
+  /// Arrow indicator tip offset (pixels).
+  static const double arrowTipOffset = 5.0;
+
+  /// Arrow indicator perpendicular offset (pixels).
+  static const double arrowPerpOffset = 3.0;
+
+  // Glow animation constants
+
+  /// Base stroke width for glow effect (pixels).
+  static const double glowStrokeBase = 2.0;
+
+  /// Additional stroke width at max glow intensity (pixels).
+  static const double glowStrokeAmplitude = 2.0;
+
+  /// Base opacity for glow effect (0.0 to 1.0).
+  static const double glowOpacityBase = 0.6;
+
+  /// Additional opacity at max glow intensity (0.0 to 1.0).
+  static const double glowOpacityAmplitude = 0.4;
+
+  /// Highlight border inset from component edge (pixels).
+  static const double highlightBorderInset = 1.0;
+
+  /// Glow intensity oscillation center (0.5 for balanced sine wave).
+  static const double glowIntensityCenter = 0.5;
 }
 
 /// Convert grid position to pixel position

@@ -37,7 +37,7 @@ class DoorComponent extends PositionComponent
   static final _arrowPaint = Paint()
     ..color = AppColors.doorArrow
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2
+    ..strokeWidth = GameConstants.glowStrokeBase
     ..strokeCap = StrokeCap.round;
 
   // Reusable paint for glow animation (color/strokeWidth updated per frame)
@@ -65,63 +65,85 @@ class DoorComponent extends PositionComponent
     final centerY = size.y / 2;
     final path = Path();
 
+    // Use centralized arrow drawing constants
+    const bo = GameConstants.arrowBaseOffset;
+    const to = GameConstants.arrowTipOffset;
+    const po = GameConstants.arrowPerpOffset;
+
     switch (door.wallSide) {
       case WallSide.top:
-        path.moveTo(centerX - 6, centerY + 3);
-        path.lineTo(centerX, centerY - 5);
-        path.lineTo(centerX + 6, centerY + 3);
+        path.moveTo(centerX - bo, centerY + po);
+        path.lineTo(centerX, centerY - to);
+        path.lineTo(centerX + bo, centerY + po);
       case WallSide.bottom:
-        path.moveTo(centerX - 6, centerY - 3);
-        path.lineTo(centerX, centerY + 5);
-        path.lineTo(centerX + 6, centerY - 3);
+        path.moveTo(centerX - bo, centerY - po);
+        path.lineTo(centerX, centerY + to);
+        path.lineTo(centerX + bo, centerY - po);
       case WallSide.left:
-        path.moveTo(centerX + 3, centerY - 6);
-        path.lineTo(centerX - 5, centerY);
-        path.lineTo(centerX + 3, centerY + 6);
+        path.moveTo(centerX + po, centerY - bo);
+        path.lineTo(centerX - to, centerY);
+        path.lineTo(centerX + po, centerY + bo);
       case WallSide.right:
-        path.moveTo(centerX - 3, centerY - 6);
-        path.lineTo(centerX + 5, centerY);
-        path.lineTo(centerX - 3, centerY + 6);
+        path.moveTo(centerX - po, centerY - bo);
+        path.lineTo(centerX + to, centerY);
+        path.lineTo(centerX - po, centerY + bo);
     }
     return path;
   }
 
   @override
   void render(Canvas canvas) {
-    // Door frame
+    // Door frame - use centralized drawing constants
+    const fp = GameConstants.componentFramePadding;
+    const fw = GameConstants.componentFrameWidth;
+    const ip = GameConstants.componentInnerPadding;
+    const cr = GameConstants.componentCornerRadius;
+    const ho = GameConstants.doorHandleOffset;
+    const hr = GameConstants.doorHandleRadius;
+    const hi = GameConstants.highlightBorderInset;
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-        const Radius.circular(4),
+        Rect.fromLTWH(fp, fp, size.x - fw, size.y - fw),
+        const Radius.circular(cr),
       ),
       _framePaint,
     );
 
     // Door surface
     final doorPaint = _isHighlighted ? _doorHighlightPaint : _doorNormalPaint;
-    canvas.drawRect(Rect.fromLTWH(6, 6, size.x - 12, size.y - 12), doorPaint);
+    canvas.drawRect(
+      Rect.fromLTWH(ip, ip, size.x - ip * 2, size.y - ip * 2),
+      doorPaint,
+    );
 
     // Door handle
-    final handleX = door.wallSide == WallSide.left ? size.x - 12 : 8.0;
-    canvas.drawCircle(Offset(handleX, size.y / 2), 3, _handlePaint);
+    final handleX = door.wallSide == WallSide.left ? size.x - ip - fp : ho;
+    canvas.drawCircle(Offset(handleX, size.y / 2), hr, _handlePaint);
 
     // Arrow indicator showing direction
     _drawArrow(canvas);
 
     // Animated glow border when interactable
     if (_isHighlighted) {
-      // Pulsing glow: stroke width oscillates 2-4px using centralized constants
+      // Pulsing glow: stroke width oscillates using centralized constants
       final glowIntensity =
-          0.5 + 0.5 * math.sin(_glowTime * GameConstants.doorGlowFrequency);
+          GameConstants.glowIntensityCenter +
+          GameConstants.glowIntensityCenter *
+              math.sin(_glowTime * GameConstants.doorGlowFrequency);
       _glowPaint
         ..color = AppColors.doorHighlight.withValues(
-          alpha: 0.6 + 0.4 * glowIntensity,
+          alpha:
+              GameConstants.glowOpacityBase +
+              GameConstants.glowOpacityAmplitude * glowIntensity,
         )
-        ..strokeWidth = 2 + 2 * glowIntensity;
+        ..strokeWidth =
+            GameConstants.glowStrokeBase +
+            GameConstants.glowStrokeAmplitude * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
-          const Radius.circular(4),
+          Rect.fromLTWH(hi, hi, size.x - hi * 2, size.y - hi * 2),
+          const Radius.circular(cr),
         ),
         _glowPaint,
       );

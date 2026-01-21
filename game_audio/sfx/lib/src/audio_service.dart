@@ -1,5 +1,6 @@
-import 'package:logging/logging.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:logging/logging.dart';
 
 import 'sfx_type.dart';
 
@@ -20,9 +21,9 @@ class AudioService {
 
   bool _initialized = false;
   bool _sfxEnabled = true;
-  double _sfxVolume = 1.0;
+  double _sfxVolume = GameConstants.audioSfxVolumeDefault;
   bool _musicEnabled = true;
-  double _musicVolume = 0.5;
+  double _musicVolume = GameConstants.audioMusicVolumeDefault;
 
   /// Whether the audio service has been initialized.
   bool get isInitialized => _initialized;
