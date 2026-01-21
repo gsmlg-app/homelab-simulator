@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 import 'package:game_objects_world/game_objects_world.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
@@ -16,18 +17,13 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late final HomelabGame _game;
-
-  @override
-  void initState() {
-    super.initState();
-    // Defer game creation to didChangeDependencies
-  }
+  HomelabGame? _game;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _game = HomelabGame(
+    // Only create game once; late initialization after context is available
+    _game ??= HomelabGame(
       gameBloc: context.read<GameBloc>(),
       worldBloc: context.read<WorldBloc>(),
     );
@@ -44,10 +40,10 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppSpacing.m),
                   Text(
                     'Loading Homelab...',
-                    style: TextStyle(color: Colors.white70),
+                    style: TextStyle(color: AppColors.textSecondary),
                   ),
                 ],
               ),
@@ -59,13 +55,17 @@ class _GameScreenState extends State<GameScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error, color: Colors.red, size: 48),
-                  const SizedBox(height: 16),
+                  const Icon(
+                    Icons.error,
+                    color: AppColors.redAccent,
+                    size: AppSpacing.errorIconSize,
+                  ),
+                  const SizedBox(height: AppSpacing.m),
                   Text(
                     'Error: ${gameState.message}',
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(color: AppColors.redAccent),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.m),
                   ElevatedButton(
                     onPressed: () {
                       context.read<GameBloc>().add(const GameInitialize());
@@ -82,9 +82,7 @@ class _GameScreenState extends State<GameScreen> {
               return Stack(
                 children: [
                   // Flame game
-                  Positioned.fill(
-                    child: GameWidget(game: _game),
-                  ),
+                  Positioned.fill(child: GameWidget(game: _game!)),
 
                   // HUD overlay
                   Positioned.fill(
@@ -97,9 +95,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
 
                   // Shop modal
-                  const Positioned.fill(
-                    child: ShopModal(),
-                  ),
+                  const Positioned.fill(child: ShopModal()),
                 ],
               );
             },

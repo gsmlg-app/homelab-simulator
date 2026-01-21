@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 
 /// Generic info panel widget
@@ -16,11 +17,11 @@ class InfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black87,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade700),
+      padding: AppSpacing.paddingM,
+      decoration: const BoxDecoration(
+        color: AppColors.panelBackground,
+        borderRadius: AppSpacing.borderRadiusMedium,
+        border: Border.fromBorderSide(BorderSide(color: AppColors.grey700)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,20 +29,27 @@ class InfoPanel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.cyan.shade400, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                  color: Colors.cyan.shade400,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+              Icon(
+                icon,
+                color: AppColors.cyan400,
+                size: AppSpacing.iconSizeDefault,
+              ),
+              const SizedBox(width: AppSpacing.s),
+              Expanded(
+                child: Text(
+                  title.toUpperCase(),
+                  style: const TextStyle(
+                    color: AppColors.cyan400,
+                    fontSize: AppSpacing.fontSizeDefault,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: AppSpacing.letterSpacingWide,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          const Divider(color: Colors.grey),
+          const Divider(color: AppColors.divider),
           ...children,
         ],
       ),

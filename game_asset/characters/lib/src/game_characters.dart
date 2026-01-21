@@ -2,7 +2,7 @@
 class GameCharacters {
   GameCharacters._();
 
-  static const CharacterSpriteSheet MainMale = CharacterSpriteSheet(
+  static const CharacterSpriteSheet mainMale = CharacterSpriteSheet(
     path: 'packages/game_asset_characters/assets/boy.png',
     frameWidth: 192,
     frameHeight: 256,
@@ -12,7 +12,7 @@ class GameCharacters {
     walkRows: [1, 2, 3],
   );
 
-  static const CharacterSpriteSheet MainFemale = CharacterSpriteSheet(
+  static const CharacterSpriteSheet mainFemale = CharacterSpriteSheet(
     path: 'packages/game_asset_characters/assets/girl.png',
     frameWidth: 192,
     frameHeight: 256,

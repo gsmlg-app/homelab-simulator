@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Card displaying a device template in the shop
 class DeviceCard extends StatelessWidget {
@@ -15,61 +16,35 @@ class DeviceCard extends StatelessWidget {
     required this.onTap,
   });
 
-  Color get _deviceColor {
-    return switch (template.type) {
-      DeviceType.server => Colors.blue,
-      DeviceType.computer => Colors.purple,
-      DeviceType.phone => Colors.red,
-      DeviceType.router => Colors.orange,
-      DeviceType.switch_ => Colors.teal,
-      DeviceType.nas => Colors.blueGrey,
-      DeviceType.iot => Colors.green,
-    };
-  }
-
-  IconData get _deviceIcon {
-    return switch (template.type) {
-      DeviceType.server => Icons.dns,
-      DeviceType.computer => Icons.computer,
-      DeviceType.phone => Icons.phone_android,
-      DeviceType.router => Icons.router,
-      DeviceType.switch_ => Icons.hub,
-      DeviceType.nas => Icons.storage,
-      DeviceType.iot => Icons.sensors,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final canAfford = currentCredits >= template.cost;
+    final deviceColor = template.type.color;
+    final deviceIcon = template.type.icon;
 
     return Card(
-      color: Colors.grey.shade900,
+      color: AppColors.grey900,
       child: InkWell(
         onTap: canAfford ? onTap : null,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppSpacing.borderRadiusMedium,
         child: Opacity(
           opacity: canAfford ? 1.0 : 0.5,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: AppSpacing.paddingMs,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: AppSpacing.paddingS,
                       decoration: BoxDecoration(
-                        color: _deviceColor.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(8),
+                        color: deviceColor.withValues(alpha: 0.2),
+                        borderRadius: AppSpacing.borderRadiusMedium,
                       ),
-                      child: Icon(
-                        _deviceIcon,
-                        color: _deviceColor,
-                        size: 32,
-                      ),
+                      child: Icon(deviceIcon, color: deviceColor, size: AppSpacing.iconSizeXl),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.ms),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,18 +52,18 @@ class DeviceCard extends StatelessWidget {
                           Text(
                             template.name,
                             style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                              color: AppColors.textPrimary,
+                              fontSize: AppSpacing.fontSizeMedium,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             template.type.name.toUpperCase(),
                             style: TextStyle(
-                              color: _deviceColor,
-                              fontSize: 10,
+                              color: deviceColor,
+                              fontSize: AppSpacing.fontSizeXs,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
+                              letterSpacing: AppSpacing.letterSpacingWide,
                             ),
                           ),
                         ],
@@ -96,32 +71,32 @@ class DeviceCard extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
+                        horizontal: AppSpacing.ms,
+                        vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
                         color: canAfford
-                            ? Colors.green.shade800
-                            : Colors.red.shade800,
-                        borderRadius: BorderRadius.circular(4),
+                            ? AppColors.green800
+                            : AppColors.red800,
+                        borderRadius: AppSpacing.borderRadiusSmall,
                       ),
                       child: Text(
                         '\$${template.cost}',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'monospace',
+                          fontFamily: AppTextStyles.monospaceFontFamily,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.s),
                 Text(
                   template.description,
-                  style: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 12,
+                  style: const TextStyle(
+                    color: AppColors.grey400,
+                    fontSize: AppSpacing.fontSizeSmall,
                   ),
                 ),
               ],

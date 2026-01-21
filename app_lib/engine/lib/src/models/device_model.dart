@@ -2,13 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 
 /// A placed device in the game world
-class DeviceModel extends Equatable {
+class DeviceModel extends Equatable with GridOccupancy {
   final String id;
   final String templateId;
   final String name;
   final DeviceType type;
+  @override
   final GridPosition position;
+  @override
   final int width;
+  @override
   final int height;
   final bool isRunning;
 
@@ -45,42 +48,27 @@ class DeviceModel extends Equatable {
     );
   }
 
-  /// Get all grid cells occupied by this device
-  List<GridPosition> get occupiedCells {
-    final cells = <GridPosition>[];
-    for (var dx = 0; dx < width; dx++) {
-      for (var dy = 0; dy < height; dy++) {
-        cells.add(GridPosition(position.x + dx, position.y + dy));
-      }
-    }
-    return cells;
-  }
-
-  /// Check if device occupies a specific cell
-  bool occupiesCell(GridPosition cell) {
-    return cell.x >= position.x &&
-        cell.x < position.x + width &&
-        cell.y >= position.y &&
-        cell.y < position.y + height;
-  }
-
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'templateId': templateId,
-        'name': name,
-        'type': type.name,
-        'position': position.toJson(),
-        'width': width,
-        'height': height,
-        'isRunning': isRunning,
-      };
+    'id': id,
+    'templateId': templateId,
+    'name': name,
+    'type': type.name,
+    'position': position.toJson(),
+    'width': width,
+    'height': height,
+    'isRunning': isRunning,
+  };
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) {
     return DeviceModel(
       id: json['id'] as String,
       templateId: json['templateId'] as String,
       name: json['name'] as String,
-      type: DeviceType.values.byName(json['type'] as String),
+      type: parseEnum(
+        DeviceType.values,
+        json['type'] as String?,
+        DeviceType.server,
+      ),
       position: GridPosition.fromJson(json['position'] as Map<String, dynamic>),
       width: json['width'] as int? ?? 1,
       height: json['height'] as int? ?? 1,
@@ -89,6 +77,18 @@ class DeviceModel extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, templateId, name, type, position, width, height, isRunning];
+  List<Object?> get props => [
+    id,
+    templateId,
+    name,
+    type,
+    position,
+    width,
+    height,
+    isRunning,
+  ];
+
+  @override
+  String toString() =>
+      'DeviceModel(id: $id, name: $name, type: $type, position: $position)';
 }

@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -12,95 +13,147 @@ class DeviceComponent extends PositionComponent
   final double tileSize;
   bool _isSelected = false;
 
+  // Animation state for server light flicker
+  double _flickerTime = 0;
+  double _flickerPhase = 0; // Random phase offset for variety
+
+  // Cached paint objects for performance
+  static final _selectPaint = Paint()
+    ..color = AppColors.deviceSelection
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = GameConstants.glowStrokeBase;
+  static final _offLightPaint = Paint()
+    ..color = AppColors.offIndicator
+    ..style = PaintingStyle.fill;
+
+  // Instance-level cached paints (depend on device type)
+  late final Paint _bodyPaint;
+  late final Paint _borderPaint;
+  // Reusable paint for flicker animation (color updated per frame)
+  final Paint _flickerPaint = Paint()..style = PaintingStyle.fill;
+
   DeviceComponent({
     required this.device,
     this.tileSize = GameConstants.tileSize,
   }) : super(
-          position: Vector2(
-            device.position.x * tileSize,
-            device.position.y * tileSize,
-          ),
-          size: Vector2(
-            device.width * tileSize,
-            device.height * tileSize,
-          ),
-        );
+         position: Vector2(
+           device.position.x * tileSize,
+           device.position.y * tileSize,
+         ),
+         size: Vector2(device.width * tileSize, device.height * tileSize),
+       );
 
   Color get _deviceColor {
     return switch (device.type) {
-      DeviceType.server => const Color(0xFF3498DB),
-      DeviceType.computer => const Color(0xFF9B59B6),
-      DeviceType.phone => const Color(0xFFE74C3C),
-      DeviceType.router => const Color(0xFFF39C12),
-      DeviceType.switch_ => const Color(0xFF1ABC9C),
-      DeviceType.nas => const Color(0xFF34495E),
-      DeviceType.iot => const Color(0xFF27AE60),
+      DeviceType.server => AppColors.deviceServer,
+      DeviceType.computer => AppColors.deviceComputer,
+      DeviceType.phone => AppColors.devicePhone,
+      DeviceType.router => AppColors.deviceRouter,
+      DeviceType.switch_ => AppColors.deviceSwitch,
+      DeviceType.nas => AppColors.deviceNas,
+      DeviceType.iot => AppColors.deviceIot,
     };
   }
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // Initialize cached paints (depend on device type)
+    _bodyPaint = Paint()
+      ..color = _deviceColor
+      ..style = PaintingStyle.fill;
+    _borderPaint = Paint()
+      ..color = _deviceColor.withValues(alpha: 0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = GameConstants.glowStrokeBase;
+    // Random phase offset for subtle variety between devices
+    _flickerPhase = math.Random().nextDouble() * GameConstants.animationPeriod;
+  }
+
+  // Use centralized animation period constant
 
   @override
   void update(double dt) {
     super.update(dt);
     final worldState = bloc.state;
     _isSelected = worldState.selectedEntityId == device.id;
+    // Update flicker animation for running devices (bounded to prevent overflow)
+    if (device.isRunning) {
+      _flickerTime = (_flickerTime + dt) % GameConstants.animationPeriod;
+    }
   }
 
   @override
   void render(Canvas canvas) {
-    // Device body
-    final bodyPaint = Paint()
-      ..color = _deviceColor
-      ..style = PaintingStyle.fill;
+    const padding = GameConstants.deviceBodyPadding;
+    const radius = Radius.circular(GameConstants.deviceCornerRadius);
+    const inset = GameConstants.deviceSelectionInset;
+    const ledRadius = GameConstants.deviceLedRadius;
+    const ledOffset = GameConstants.deviceLedOffset;
 
+    // Device body
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
-        const Radius.circular(4),
+        Rect.fromLTWH(
+          padding,
+          padding,
+          size.x - padding * 2,
+          size.y - padding * 2,
+        ),
+        radius,
       ),
-      bodyPaint,
+      _bodyPaint,
     );
 
-    // Device lights/details
-    final detailPaint = Paint()
-      ..color = device.isRunning
-          ? const Color(0xFF00FF00)
-          : const Color(0xFF666666)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawCircle(
-      Offset(size.x - 10, 10),
-      3,
-      detailPaint,
-    );
+    // Device lights/details with subtle flicker for running devices
+    if (device.isRunning) {
+      // Subtle flicker using centralized animation constants
+      final flicker =
+          GameConstants.deviceFlickerMin +
+          GameConstants.deviceFlickerAmplitude *
+              math.sin(
+                _flickerTime * GameConstants.deviceFlickerFrequency +
+                    _flickerPhase,
+              );
+      _flickerPaint.color = AppColors.runningIndicator.withValues(
+        alpha: flicker,
+      );
+      canvas.drawCircle(
+        Offset(size.x - ledOffset, ledOffset),
+        ledRadius,
+        _flickerPaint,
+      );
+    } else {
+      canvas.drawCircle(
+        Offset(size.x - ledOffset, ledOffset),
+        ledRadius,
+        _offLightPaint,
+      );
+    }
 
     // Selection highlight
     if (_isSelected) {
-      final selectPaint = Paint()
-        ..color = const Color(0xFFFFFF00)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-          const Radius.circular(4),
+          Rect.fromLTWH(inset, inset, size.x - inset * 2, size.y - inset * 2),
+          radius,
         ),
-        selectPaint,
+        _selectPaint,
       );
     }
 
     // Border
-    final borderPaint = Paint()
-      ..color = _deviceColor.withValues(alpha: 0.5)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
-        const Radius.circular(4),
+        Rect.fromLTWH(
+          padding,
+          padding,
+          size.x - padding * 2,
+          size.y - padding * 2,
+        ),
+        radius,
       ),
-      borderPaint,
+      _borderPaint,
     );
   }
 }

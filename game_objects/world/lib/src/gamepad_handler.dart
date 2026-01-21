@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:gamepads/gamepads.dart';
+import 'package:logging/logging.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+
+final _log = Logger('GamepadHandler');
 
 /// Callback for gamepad direction input
 typedef GamepadDirectionCallback = void Function(Direction direction);
@@ -30,16 +33,12 @@ class GamepadHandler extends Component {
   final GamepadButtonCallback? onButtonReleased;
 
   StreamSubscription<GamepadEvent>? _subscription;
-  
-  // Deadzone for analog sticks
-  static const double _deadzone = 0.3;
-  
+
   // Track current direction to avoid repeated events
   Direction _currentDirection = Direction.none;
-  
+
   // Debounce for D-pad
   double _dpadCooldown = 0;
-  static const double _dpadCooldownTime = 0.15;
 
   GamepadHandler({
     this.onDirection,
@@ -50,7 +49,12 @@ class GamepadHandler extends Component {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _subscription = Gamepads.events.listen(_handleGamepadEvent);
+    _subscription = Gamepads.events.listen(
+      _handleGamepadEvent,
+      onError: (Object error, StackTrace stackTrace) {
+        _log.severe('Error in gamepad event stream', error, stackTrace);
+      },
+    );
   }
 
   @override
@@ -77,7 +81,7 @@ class GamepadHandler extends Component {
   }
 
   void _handleButtonEvent(GamepadEvent event) {
-    final pressed = event.value > 0.5;
+    final pressed = event.value > GameConstants.gamepadButtonPressThreshold;
     final button = _mapKeyToButton(event.key);
 
     // Handle D-pad as direction
@@ -85,7 +89,7 @@ class GamepadHandler extends Component {
     if (direction != null && direction != Direction.none) {
       if (pressed && _dpadCooldown <= 0) {
         onDirection?.call(direction);
-        _dpadCooldown = _dpadCooldownTime;
+        _dpadCooldown = GameConstants.gamepadDpadCooldownSeconds;
       }
       return;
     }
@@ -119,7 +123,8 @@ class GamepadHandler extends Component {
     // Calculate direction from stick position
     Direction newDirection = Direction.none;
 
-    if (_leftStickX.abs() > _deadzone || _leftStickY.abs() > _deadzone) {
+    if (_leftStickX.abs() > GameConstants.gamepadAnalogDeadzone ||
+        _leftStickY.abs() > GameConstants.gamepadAnalogDeadzone) {
       // Determine primary direction
       if (_leftStickX.abs() > _leftStickY.abs()) {
         newDirection = _leftStickX > 0 ? Direction.right : Direction.left;
@@ -137,28 +142,54 @@ class GamepadHandler extends Component {
   }
 
   GamepadButton? _mapKeyToButton(String key) {
-    return switch (key.toLowerCase()) {
-      'a' || 'button south' || 'cross' => GamepadButton.south,
-      'b' || 'button east' || 'circle' => GamepadButton.east,
-      'x' || 'button west' || 'square' => GamepadButton.west,
-      'y' || 'button north' || 'triangle' => GamepadButton.north,
-      'start' || 'options' || 'menu' => GamepadButton.start,
-      'select' || 'back' || 'share' => GamepadButton.select,
-      'left bumper' || 'lb' || 'l1' => GamepadButton.leftBumper,
-      'right bumper' || 'rb' || 'r1' => GamepadButton.rightBumper,
-      'left trigger' || 'lt' || 'l2' => GamepadButton.leftTrigger,
-      'right trigger' || 'rt' || 'r2' => GamepadButton.rightTrigger,
-      _ => null,
-    };
+    final lowerKey = key.toLowerCase();
+    if (GameConstants.buttonSouthKeys.contains(lowerKey)) {
+      return GamepadButton.south;
+    }
+    if (GameConstants.buttonEastKeys.contains(lowerKey)) {
+      return GamepadButton.east;
+    }
+    if (GameConstants.buttonWestKeys.contains(lowerKey)) {
+      return GamepadButton.west;
+    }
+    if (GameConstants.buttonNorthKeys.contains(lowerKey)) {
+      return GamepadButton.north;
+    }
+    if (GameConstants.buttonStartKeys.contains(lowerKey)) {
+      return GamepadButton.start;
+    }
+    if (GameConstants.buttonSelectKeys.contains(lowerKey)) {
+      return GamepadButton.select;
+    }
+    if (GameConstants.leftBumperKeys.contains(lowerKey)) {
+      return GamepadButton.leftBumper;
+    }
+    if (GameConstants.rightBumperKeys.contains(lowerKey)) {
+      return GamepadButton.rightBumper;
+    }
+    if (GameConstants.leftTriggerKeys.contains(lowerKey)) {
+      return GamepadButton.leftTrigger;
+    }
+    if (GameConstants.rightTriggerKeys.contains(lowerKey)) {
+      return GamepadButton.rightTrigger;
+    }
+    return null;
   }
 
   Direction? _mapKeyToDirection(String key) {
-    return switch (key.toLowerCase()) {
-      'dpad up' || 'up' => Direction.up,
-      'dpad down' || 'down' => Direction.down,
-      'dpad left' || 'left' => Direction.left,
-      'dpad right' || 'right' => Direction.right,
-      _ => null,
-    };
+    final lowerKey = key.toLowerCase();
+    if (GameConstants.dpadUpKeys.contains(lowerKey)) {
+      return Direction.up;
+    }
+    if (GameConstants.dpadDownKeys.contains(lowerKey)) {
+      return Direction.down;
+    }
+    if (GameConstants.dpadLeftKeys.contains(lowerKey)) {
+      return Direction.left;
+    }
+    if (GameConstants.dpadRightKeys.contains(lowerKey)) {
+      return Direction.right;
+    }
+    return null;
   }
 }

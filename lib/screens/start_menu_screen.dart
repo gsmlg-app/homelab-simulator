@@ -1,13 +1,13 @@
 import 'dart:async';
+import 'package:app_database/app_database.dart';
+import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
-import 'package:app_lib_core/app_lib_core.dart';
-import 'package:app_lib_engine/app_lib_engine.dart';
-import 'package:app_database/app_database.dart';
-import 'package:game_asset_characters/game_asset_characters.dart';
 
 import 'game_screen.dart';
+import 'character_creation_screen.dart';
 
 /// Start menu screen with character selection and creation
 class StartMenuScreen extends StatefulWidget {
@@ -16,6 +16,9 @@ class StartMenuScreen extends StatefulWidget {
   @override
   State<StartMenuScreen> createState() => _StartMenuScreenState();
 }
+
+// Private constants for StartMenuScreen layout
+const double _titleTopPadding = 60.0;
 
 class _StartMenuScreenState extends State<StartMenuScreen> {
   final CharacterStorage _storage = CharacterStorage();
@@ -42,8 +45,9 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   void _handleGamepadEvent(GamepadEvent event) {
-    // Only handle button presses (value > 0.5 means pressed)
-    if (event.type == KeyType.button && event.value > 0.5) {
+    // Only handle button presses
+    if (event.type == KeyType.button &&
+        event.value > GameConstants.gamepadButtonPressThreshold) {
       _handleGamepadKey(event.key);
     }
   }
@@ -52,17 +56,17 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     final lowerKey = key.toLowerCase();
 
     // Navigation
-    if (lowerKey == 'dpad up' || lowerKey == 'up') {
+    if (GameConstants.dpadUpKeys.contains(lowerKey)) {
       _navigateUp();
-    } else if (lowerKey == 'dpad down' || lowerKey == 'down') {
+    } else if (GameConstants.dpadDownKeys.contains(lowerKey)) {
       _navigateDown();
     }
     // Confirm (A button)
-    else if (lowerKey == 'a' || lowerKey == 'button south' || lowerKey == 'cross') {
+    else if (GameConstants.buttonSouthKeys.contains(lowerKey)) {
       _confirmSelection();
     }
     // Delete (X button)
-    else if (lowerKey == 'x' || lowerKey == 'button west' || lowerKey == 'square') {
+    else if (GameConstants.buttonWestKeys.contains(lowerKey)) {
       _deleteSelected();
     }
   }
@@ -106,139 +110,61 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   Future<void> _loadCharacters() async {
-    final characters = await _storage.loadAll();
-    setState(() {
-      _characters = characters;
-      _isLoading = false;
-    });
+    try {
+      final characters = await _storage.loadAll();
+      if (!mounted) return;
+      setState(() {
+        _characters = characters;
+        _isLoading = false;
+      });
+    } catch (_) {
+      // Storage errors are handled by CharacterStorage - just show empty list
+      if (!mounted) return;
+      setState(() {
+        _characters = [];
+        _isLoading = false;
+      });
+    }
   }
 
   void _selectCharacter(CharacterModel character) {
-    // Update last played time
+    // Update last played time (fire-and-forget, errors handled in save())
     final updated = character.copyWith(lastPlayedAt: DateTime.now());
-    _storage.save(updated);
-    
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const GameScreen(),
-      ),
-    );
+    unawaited(_storage.save(updated));
+
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
   }
 
   Future<void> _createNewCharacter() async {
-    final result = await _showCreateCharacterDialog();
-    if (result == null) return;
-
-    final character = CharacterModel.create(
-      name: result.name,
-      gender: result.gender,
+    final result = await Navigator.of(context).push<CharacterModel>(
+      MaterialPageRoute(builder: (_) => const CharacterCreationScreen()),
     );
-    await _storage.save(character);
+
+    if (result == null || !mounted) return;
+
+    await _storage.save(result);
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const GameScreen(),
-      ),
-    );
-  }
-
-  Future<_CharacterCreationResult?> _showCreateCharacterDialog() async {
-    final controller = TextEditingController();
-    Gender selectedGender = Gender.male;
-
-    return showDialog<_CharacterCreationResult>(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          backgroundColor: const Color(0xFF1A1A2E),
-          title: const Text(
-            'Create New Character',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Gender selection
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _GenderOption(
-                    gender: Gender.male,
-                    isSelected: selectedGender == Gender.male,
-                    onTap: () => setDialogState(() => selectedGender = Gender.male),
-                  ),
-                  const SizedBox(width: 24),
-                  _GenderOption(
-                    gender: Gender.female,
-                    isSelected: selectedGender == Gender.female,
-                    onTap: () => setDialogState(() => selectedGender = Gender.female),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              // Name input
-              TextField(
-                controller: controller,
-                autofocus: true,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter character name',
-                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.cyan.shade400),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.cyan.shade300, width: 2),
-                  ),
-                ),
-                onSubmitted: (value) {
-                  if (value.isNotEmpty) {
-                    Navigator.of(context).pop(
-                      _CharacterCreationResult(name: value, gender: selectedGender),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  Navigator.of(context).pop(
-                    _CharacterCreationResult(
-                      name: controller.text,
-                      gender: selectedGender,
-                    ),
-                  );
-                }
-              },
-              child: const Text('Create'),
-            ),
-          ],
-        ),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
   }
 
   Future<void> _deleteCharacter(CharacterModel character) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A2E),
+        backgroundColor: AppColors.secondaryBackground,
         title: const Text(
           'Delete Character',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.textPrimary),
         ),
         content: Text(
           'Are you sure you want to delete "${character.name}"?',
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -246,7 +172,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
             child: const Text('Cancel'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.red800),
             onPressed: () => Navigator.of(context).pop(true),
             child: const Text('Delete'),
           ),
@@ -256,8 +182,21 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
     if (confirm == true) {
       await _storage.delete(character.id);
-      _loadCharacters();
+      await _loadCharacters();
     }
+  }
+
+  Future<void> _editCharacter(CharacterModel character) async {
+    final result = await Navigator.of(context).push<CharacterModel>(
+      MaterialPageRoute(
+        builder: (_) => CharacterCreationScreen(existingCharacter: character),
+      ),
+    );
+
+    if (result == null || !mounted) return;
+
+    await _storage.save(result);
+    await _loadCharacters();
   }
 
   @override
@@ -277,36 +216,33 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF0D0D1A),
-                Color(0xFF1A1A2E),
-              ],
+              colors: [AppColors.darkBackground, AppColors.secondaryBackground],
             ),
           ),
           child: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: _titleTopPadding),
                 // Title
-                Text(
+                const Text(
                   'HOMELAB',
                   style: TextStyle(
-                    fontSize: 48,
+                    fontSize: AppSpacing.fontSizeDisplay,
                     fontWeight: FontWeight.bold,
-                    color: Colors.cyan.shade400,
-                    letterSpacing: 8,
+                    color: AppColors.cyan400,
+                    letterSpacing: AppSpacing.s,
                   ),
                 ),
-                Text(
+                const Text(
                   'SIMULATOR',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: AppSpacing.fontSizeHeading,
                     fontWeight: FontWeight.w300,
-                    color: Colors.cyan.shade200,
-                    letterSpacing: 12,
+                    color: AppColors.cyan200,
+                    letterSpacing: AppSpacing.ms,
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: _titleTopPadding),
 
                 // Character list or loading
                 Expanded(
@@ -317,26 +253,29 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
                 // Create new character button
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: AppSpacing.paddingL,
                   child: SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: AppSpacing.buttonHeightLarge,
                     child: FilledButton.icon(
                       onPressed: _createNewCharacter,
                       icon: const Icon(Icons.add),
                       label: const Text(
                         'CREATE NEW CHARACTER',
                         style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 2,
+                          fontSize: AppSpacing.fontSizeMedium,
+                          letterSpacing: AppSpacing.letterSpacingExtraWide,
                         ),
                       ),
                       style: FilledButton.styleFrom(
                         backgroundColor: _selectedIndex == -1
-                            ? Colors.cyan.shade500
-                            : Colors.cyan.shade700,
+                            ? AppColors.cyan500
+                            : AppColors.cyan700,
                         side: _selectedIndex == -1
-                            ? const BorderSide(color: Colors.white, width: 2)
+                            ? const BorderSide(
+                                color: AppColors.textPrimary,
+                                width: AppSpacing.borderWidth,
+                              )
                             : null,
                       ),
                     ),
@@ -344,13 +283,13 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                 ),
 
                 // Gamepad hint
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: AppSpacing.m),
                   child: Text(
                     '🎮 D-Pad: Navigate • A: Select • X: Delete',
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white.withValues(alpha: 0.4),
+                      fontSize: AppSpacing.fontSizeSmall,
+                      color: AppColors.textHint,
                     ),
                   ),
                 ),
@@ -383,29 +322,29 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
   Widget _buildContent() {
     if (_characters.isEmpty) {
-      return Center(
+      return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.person_add,
-              size: 64,
-              color: Colors.white.withValues(alpha: 0.3),
+              size: AppSpacing.iconSizeHero,
+              color: AppColors.borderLight,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppSpacing.m),
             Text(
               'No saved characters',
               style: TextStyle(
-                fontSize: 18,
-                color: Colors.white.withValues(alpha: 0.5),
+                fontSize: AppSpacing.fontSizeLarge,
+                color: AppColors.textTertiary,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppSpacing.s),
             Text(
               'Create a new character to start playing',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.3),
+                fontSize: AppSpacing.fontSizeDefault,
+                color: AppColors.borderLight,
               ),
             ),
           ],
@@ -414,7 +353,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
       itemCount: _characters.length,
       itemBuilder: (context, index) {
         final character = _characters[index];
@@ -422,80 +361,10 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
           character: character,
           isSelected: _selectedIndex == index,
           onTap: () => _selectCharacter(character),
+          onEdit: () => _editCharacter(character),
           onDelete: () => _deleteCharacter(character),
         );
       },
-    );
-  }
-}
-
-/// Result from character creation dialog
-class _CharacterCreationResult {
-  final String name;
-  final Gender gender;
-
-  _CharacterCreationResult({required this.name, required this.gender});
-}
-
-/// Gender selection option widget
-class _GenderOption extends StatelessWidget {
-  final Gender gender;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _GenderOption({
-    required this.gender,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spriteSheet =
-        gender == Gender.male ? GameCharacters.MainMale : GameCharacters.MainFemale;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 100,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.cyan.shade800 : const Color(0xFF252540),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.cyan.shade400 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Sprite preview (first frame)
-            ClipRect(
-              child: Align(
-                alignment: Alignment.topLeft,
-                widthFactor: 1 / spriteSheet.columns,
-                heightFactor: 1 / spriteSheet.rows,
-                child: Image.asset(
-                  spriteSheet.path,
-                  width: 80 * spriteSheet.columns,
-                  height: 60 * spriteSheet.rows,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              gender == Gender.male ? 'Male' : 'Female',
-              style: TextStyle(
-                fontSize: 12,
-                color: isSelected ? Colors.white : Colors.white70,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -504,12 +373,14 @@ class _CharacterCard extends StatelessWidget {
   final CharacterModel character;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   const _CharacterCard({
     required this.character,
     required this.isSelected,
     required this.onTap,
+    required this.onEdit,
     required this.onDelete,
   });
 
@@ -532,47 +403,52 @@ class _CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      color: isSelected ? const Color(0xFF303060) : const Color(0xFF252540),
+      margin: const EdgeInsets.only(bottom: AppSpacing.ms),
+      color: isSelected
+          ? AppColors.selectionBackground
+          : AppColors.componentBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppSpacing.borderRadiusLarge,
         side: isSelected
-            ? const BorderSide(color: Colors.white, width: 2)
+            ? const BorderSide(
+                color: AppColors.textPrimary,
+                width: AppSpacing.borderWidth,
+              )
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppSpacing.borderRadiusLarge,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: AppSpacing.paddingM,
           child: Row(
             children: [
               // Character sprite avatar
               Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: Colors.cyan.shade900,
-                  borderRadius: BorderRadius.circular(8),
+                width: AppSpacing.avatarSize,
+                height: AppSpacing.avatarSize,
+                decoration: const BoxDecoration(
+                  color: AppColors.cyan900,
+                  borderRadius: AppSpacing.borderRadiusMedium,
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: AppSpacing.borderRadiusMedium,
                   child: ClipRect(
                     child: Align(
                       alignment: Alignment.topLeft,
-                      widthFactor: 1 / 8,
-                      heightFactor: 1 / 3,
+                      widthFactor: 1 / character.spriteSheet.columns,
+                      heightFactor: 1 / character.spriteSheet.rows,
                       child: Image.asset(
                         character.spritePath,
-                        width: 56 * 8,
-                        height: 56 * 3,
+                        width: AppSpacing.avatarSize * character.spriteSheet.columns,
+                        height: AppSpacing.avatarSize * character.spriteSheet.rows,
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.m),
 
               // Info
               Expanded(
@@ -582,39 +458,39 @@ class _CharacterCard extends StatelessWidget {
                     Text(
                       character.name,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppSpacing.fontSizeLarge,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.access_time,
-                          size: 14,
-                          color: Colors.white.withValues(alpha: 0.5),
+                          size: AppSpacing.fontSizeDefault,
+                          color: AppColors.textTertiary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           _formatPlayTime(character.totalPlayTime),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.5),
+                          style: const TextStyle(
+                            fontSize: AppSpacing.fontSizeSmall,
+                            color: AppColors.textTertiary,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Icon(
+                        const SizedBox(width: AppSpacing.m),
+                        const Icon(
                           Icons.calendar_today,
-                          size: 14,
-                          color: Colors.white.withValues(alpha: 0.5),
+                          size: AppSpacing.fontSizeDefault,
+                          color: AppColors.textTertiary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           _formatDate(character.lastPlayedAt),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.5),
+                          style: const TextStyle(
+                            fontSize: AppSpacing.fontSizeSmall,
+                            color: AppColors.textTertiary,
                           ),
                         ),
                       ],
@@ -625,28 +501,39 @@ class _CharacterCard extends StatelessWidget {
 
               // Level badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade800,
-                  borderRadius: BorderRadius.circular(16),
+                padding: AppSpacing.paddingChip,
+                decoration: const BoxDecoration(
+                  color: AppColors.green800,
+                  borderRadius: AppSpacing.borderRadiusXl,
                 ),
                 child: Text(
                   'Lv.${character.level}',
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: AppSpacing.fontSizeSmall,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                   ),
                 ),
+              ),
+
+              // Edit button
+              IconButton(
+                onPressed: onEdit,
+                icon: const Icon(
+                  Icons.edit_outlined,
+                  color: AppColors.cyanMuted,
+                ),
+                tooltip: 'Edit character',
               ),
 
               // Delete button
               IconButton(
                 onPressed: onDelete,
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline,
-                  color: Colors.red.withValues(alpha: 0.7),
+                  color: AppColors.redMuted,
                 ),
+                tooltip: 'Delete character',
               ),
             ],
           ),

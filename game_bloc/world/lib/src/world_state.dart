@@ -46,10 +46,10 @@ class WorldState extends Equatable {
 
   @override
   List<Object?> get props => [
-        hoveredCell,
-        selectedEntityId,
-        interactableEntityId,
-        availableInteraction,
-        playerPosition,
-      ];
+    hoveredCell,
+    selectedEntityId,
+    interactableEntityId,
+    availableInteraction,
+    playerPosition,
+  ];
 }

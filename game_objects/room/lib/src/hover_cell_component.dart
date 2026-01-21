@@ -11,9 +11,26 @@ class HoverCellComponent extends PositionComponent
   GridPosition? _currentHover;
   bool _isValidPlacement = true;
 
-  HoverCellComponent({
-    this.tileSize = GameConstants.tileSize,
-  }) : super(size: Vector2.all(tileSize));
+  // Cached paint objects for performance
+  // Alpha 0x44 / 255 ≈ 0.27 (27% opacity)
+  static const double _hoverAlpha = 0x44 / 255;
+  static final _validFillPaint = Paint()
+    ..color = AppColors.validPlacementFill.withValues(alpha: _hoverAlpha)
+    ..style = PaintingStyle.fill;
+  static final _invalidFillPaint = Paint()
+    ..color = AppColors.invalidPlacementFill.withValues(alpha: _hoverAlpha)
+    ..style = PaintingStyle.fill;
+  static final _validBorderPaint = Paint()
+    ..color = AppColors.validPlacementBorder
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = GameConstants.glowStrokeBase;
+  static final _invalidBorderPaint = Paint()
+    ..color = AppColors.invalidPlacementBorder
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = GameConstants.glowStrokeBase;
+
+  HoverCellComponent({this.tileSize = GameConstants.tileSize})
+    : super(size: Vector2.all(tileSize));
 
   void setValidPlacement(bool valid) {
     _isValidPlacement = valid;
@@ -23,30 +40,14 @@ class HoverCellComponent extends PositionComponent
   void render(Canvas canvas) {
     if (_currentHover == null) return;
 
-    final color = _isValidPlacement
-        ? const Color(0x4400FF88)
-        : const Color(0x44FF4444);
+    final fillPaint = _isValidPlacement ? _validFillPaint : _invalidFillPaint;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), fillPaint);
 
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.x, size.y),
-      paint,
-    );
-
-    final borderPaint = Paint()
-      ..color = _isValidPlacement
-          ? const Color(0xFF00FF88)
-          : const Color(0xFFFF4444)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    canvas.drawRect(
-      Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
-      borderPaint,
-    );
+    final borderPaint = _isValidPlacement
+        ? _validBorderPaint
+        : _invalidBorderPaint;
+    const i = GameConstants.highlightBorderInset;
+    canvas.drawRect(Rect.fromLTWH(i, i, size.x - i * 2, size.y - i * 2), borderPaint);
   }
 
   @override
@@ -58,10 +59,7 @@ class HoverCellComponent extends PositionComponent
     if (newHover != _currentHover) {
       _currentHover = newHover;
       if (newHover != null) {
-        position = Vector2(
-          newHover.x * tileSize,
-          newHover.y * tileSize,
-        );
+        position = Vector2(newHover.x * tileSize, newHover.y * tileSize);
       }
     }
   }

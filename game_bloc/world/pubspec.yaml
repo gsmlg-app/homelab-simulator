@@ -11,5 +11,12 @@ resolution: workspace
 dependencies:
   bloc: ^9.0.0
   equatable: ^2.0.7
+  flutter:
+    sdk: flutter
   app_lib_core:
     path: ../../app_lib/core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0

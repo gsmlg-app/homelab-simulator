@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:app_database/app_database.dart';
 
 import 'game_event.dart';
@@ -9,10 +10,12 @@ import 'game_state.dart';
 /// Flutter/UI-level BLoC managing global game state
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameStorage _storage;
+  final AppLogger _logger;
 
-  GameBloc({GameStorage? storage})
-      : _storage = storage ?? GameStorage(),
-        super(const GameLoading()) {
+  GameBloc({GameStorage? storage, AppLogger? logger})
+    : _storage = storage ?? GameStorage(),
+      _logger = logger ?? AppLogger(),
+      super(const GameLoading()) {
     on<GameInitialize>(_onInitialize);
     on<GameMovePlayer>(_onMovePlayer);
     on<GameMovePlayerTo>(_onMovePlayerTo);
@@ -23,11 +26,26 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameRemoveDevice>(_onRemoveDevice);
     on<GameChangeMode>(_onChangeMode);
     on<GameSave>(_onSave);
+    on<GameEnterRoom>(_onEnterRoom);
+    on<GameAddRoom>(_onAddRoom);
+    on<GameRemoveRoom>(_onRemoveRoom);
+    on<GameSelectCloudService>(_onSelectCloudService);
+    on<GamePlaceCloudService>(_onPlaceCloudService);
+    on<GameRemoveCloudService>(_onRemoveCloudService);
   }
 
   GameModel? get currentModel {
     final s = state;
     return s is GameReady ? s.model : null;
+  }
+
+  /// Safely saves the model to storage, logging any errors
+  Future<void> _saveModel(GameModel model) async {
+    try {
+      await _storage.save(model);
+    } catch (e, stackTrace) {
+      _logger.w('Failed to save game model', e, stackTrace);
+    }
   }
 
   Future<void> _onInitialize(
@@ -89,7 +107,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final model = currentModel;
     if (model == null) return;
 
-    final newModel = reduce(model, const PlacementModeChanged(PlacementMode.none));
+    final newModel = reduce(
+      model,
+      const PlacementModeChanged(PlacementMode.none),
+    );
     emit(GameReady(newModel));
   }
 
@@ -99,20 +120,19 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) async {
     final model = currentModel;
     if (model == null) return;
-    if (model.selectedTemplate == null) return;
+
+    final template = model.selectedTemplate;
+    if (template == null) return;
 
     final newModel = reduce(
       model,
-      DevicePlaced(
-        templateId: model.selectedTemplate!.id,
-        position: event.position,
-      ),
+      DevicePlaced(templateId: template.id, position: event.position),
     );
 
     emit(GameReady(newModel));
 
     // Auto-save after placement
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   Future<void> _onRemoveDevice(
@@ -126,7 +146,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameReady(newModel));
 
     // Auto-save after removal
-    await _storage.save(newModel);
+    await _saveModel(newModel);
   }
 
   void _onChangeMode(GameChangeMode event, Emitter<GameState> emit) {
@@ -141,6 +161,115 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final model = currentModel;
     if (model == null) return;
 
-    await _storage.save(model);
+    await _saveModel(model);
+  }
+
+  Future<void> _onEnterRoom(
+    GameEnterRoom event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    // Verify the target room exists
+    if (model.getRoomById(event.roomId) == null) return;
+
+    final newModel = reduce(
+      model,
+      RoomEntered(roomId: event.roomId, spawnPosition: event.spawnPosition),
+    );
+
+    emit(GameReady(newModel));
+
+    // Auto-save after room transition
+    await _saveModel(newModel);
+  }
+
+  Future<void> _onAddRoom(GameAddRoom event, Emitter<GameState> emit) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(
+      model,
+      RoomAdded(
+        name: event.name,
+        type: event.type,
+        regionCode: event.regionCode,
+        doorSide: event.doorSide,
+        doorPosition: event.doorPosition,
+      ),
+    );
+
+    emit(GameReady(newModel));
+
+    // Auto-save after adding room
+    await _saveModel(newModel);
+  }
+
+  Future<void> _onRemoveRoom(
+    GameRemoveRoom event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, RoomRemoved(event.roomId));
+
+    emit(GameReady(newModel));
+
+    // Auto-save after removing room
+    await _saveModel(newModel);
+  }
+
+  void _onSelectCloudService(
+    GameSelectCloudService event,
+    Emitter<GameState> emit,
+  ) {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, CloudServiceSelected(event.template));
+    emit(GameReady(newModel.copyWith(shopOpen: false)));
+  }
+
+  Future<void> _onPlaceCloudService(
+    GamePlaceCloudService event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final template = model.selectedCloudService;
+    if (template == null) return;
+
+    final newModel = reduce(
+      model,
+      CloudServicePlaced(
+        provider: template.provider,
+        category: template.category,
+        serviceType: template.serviceType,
+        name: template.name,
+        position: event.position,
+      ),
+    );
+
+    emit(GameReady(newModel));
+
+    // Auto-save after placement
+    await _saveModel(newModel);
+  }
+
+  Future<void> _onRemoveCloudService(
+    GameRemoveCloudService event,
+    Emitter<GameState> emit,
+  ) async {
+    final model = currentModel;
+    if (model == null) return;
+
+    final newModel = reduce(model, CloudServiceRemoved(event.serviceId));
+    emit(GameReady(newModel));
+
+    // Auto-save after removal
+    await _saveModel(newModel);
   }
 }

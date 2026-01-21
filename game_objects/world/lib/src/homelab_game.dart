@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show KeyEventResult;
+import 'package:logging/logging.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
@@ -17,6 +20,8 @@ import 'gamepad_handler.dart';
 /// Main Flame game for Homelab Simulator
 class HomelabGame extends FlameGame
     with HasKeyboardHandlerComponents, TapCallbacks, MouseMovementDetector {
+  static final _log = Logger('HomelabGame');
+
   final GameBloc gameBloc;
   final WorldBloc worldBloc;
 
@@ -26,11 +31,14 @@ class HomelabGame extends FlameGame
   PlacementGhostComponent? _placementGhost;
 
   final List<DeviceComponent> _deviceComponents = [];
+  final List<CloudServiceComponent> _cloudServiceComponents = [];
+  final List<DoorComponent> _doorComponents = [];
+  String? _currentRoomId;
 
-  HomelabGame({
-    required this.gameBloc,
-    required this.worldBloc,
-  });
+  /// Subscription to game state changes
+  StreamSubscription<GameState>? _gameStateSubscription;
+
+  HomelabGame({required this.gameBloc, required this.worldBloc});
 
   @override
   Future<void> onLoad() async {
@@ -38,9 +46,7 @@ class HomelabGame extends FlameGame
     await add(
       FlameBlocProvider<WorldBloc, WorldState>.value(
         value: worldBloc,
-        children: [
-          _buildWorld(),
-        ],
+        children: [_buildWorld()],
       ),
     );
 
@@ -51,8 +57,20 @@ class HomelabGame extends FlameGame
     );
     await add(_gamepadHandler);
 
-    // Listen to game state changes
-    gameBloc.stream.listen(_onGameStateChanged);
+    // Listen to game state changes with proper error handling
+    _gameStateSubscription = gameBloc.stream.listen(
+      _onGameStateChanged,
+      onError: (Object error, StackTrace stackTrace) {
+        _log.severe('Error in game state stream', error, stackTrace);
+      },
+    );
+  }
+
+  @override
+  void onRemove() {
+    _gameStateSubscription?.cancel();
+    _gameStateSubscription = null;
+    super.onRemove();
   }
 
   void _onGamepadDirection(Direction direction) {
@@ -71,10 +89,27 @@ class HomelabGame extends FlameGame
     switch (button) {
       case GamepadButton.south: // A button - interact/confirm
         final worldState = worldBloc.state;
-        if (worldState.canInteract &&
-            worldState.availableInteraction == InteractionType.terminal) {
-          gameBloc.add(const GameToggleShop(isOpen: true));
-        } else if (state.model.placementMode == PlacementMode.placing &&
+        if (worldState.canInteract) {
+          switch (worldState.availableInteraction) {
+            case InteractionType.terminal:
+              gameBloc.add(const GameToggleShop(isOpen: true));
+              return;
+            case InteractionType.door:
+              final doorId = worldState.interactableEntityId;
+              if (doorId != null) {
+                final door = state.model.findDoorById(doorId);
+                if (door != null) {
+                  _enterDoor(door, state.model);
+                }
+              }
+              return;
+            case InteractionType.device:
+            case InteractionType.none:
+              break;
+          }
+        }
+        // Handle placement mode if no interaction available
+        if (state.model.placementMode == PlacementMode.placing &&
             state.model.selectedTemplate != null) {
           // Place device at player position (or could use cursor)
           final pos = _player.gridPosition;
@@ -109,9 +144,7 @@ class HomelabGame extends FlameGame
     return Component(
       children: [
         _room = RoomComponent(),
-        _player = PlayerComponent(
-          initialPosition: _getInitialPlayerPosition(),
-        ),
+        _player = PlayerComponent(initialPosition: _getInitialPlayerPosition()),
       ],
     );
   }
@@ -129,32 +162,67 @@ class HomelabGame extends FlameGame
 
     final model = state.model;
 
+    // Check if room changed
+    final roomChanged = _currentRoomId != model.currentRoomId;
+    if (roomChanged) {
+      _currentRoomId = model.currentRoomId;
+      // Full resync needed when room changes
+      _syncDoors(model.currentRoom.doors);
+      _syncDevices(model.currentRoom.devices);
+      _syncCloudServices(model.currentRoom.cloudServices);
+    }
+
     // Update player position if changed externally
     if (_player.gridPosition != model.playerPosition) {
       _player.moveTo(model.playerPosition);
     }
 
     // Handle placement mode
-    if (model.placementMode == PlacementMode.placing &&
-        model.selectedTemplate != null) {
-      _showPlacementGhost(model.selectedTemplate!);
+    if (model.placementMode == PlacementMode.placing) {
+      if (model.selectedTemplate != null) {
+        _showPlacementGhost(model.selectedTemplate!);
+      } else if (model.selectedCloudService != null) {
+        _showCloudServicePlacementGhost(model.selectedCloudService!);
+      }
     } else {
       _hidePlacementGhost();
     }
 
-    // Sync devices
-    _syncDevices(model.currentRoom.devices);
+    // Sync devices and cloud services (incremental if room didn't change)
+    if (!roomChanged) {
+      _syncDevices(model.currentRoom.devices);
+      _syncCloudServices(model.currentRoom.cloudServices);
+    }
+
+    // Update door interaction availability
+    _updateDoorInteraction(model);
+  }
+
+  /// Adds a component wrapped with the WorldBloc provider.
+  void _addWithWorldBloc(Component component) {
+    add(
+      FlameBlocProvider<WorldBloc, WorldState>.value(
+        value: worldBloc,
+        children: [component],
+      ),
+    );
   }
 
   void _showPlacementGhost(DeviceTemplate template) {
+    _ensurePlacementGhost();
+    _placementGhost!.setTemplate(template);
+  }
+
+  void _showCloudServicePlacementGhost(CloudServiceTemplate template) {
+    _ensurePlacementGhost();
+    _placementGhost!.setCloudService(template);
+  }
+
+  void _ensurePlacementGhost() {
     if (_placementGhost == null) {
       _placementGhost = PlacementGhostComponent();
-      add(FlameBlocProvider<WorldBloc, WorldState>.value(
-        value: worldBloc,
-        children: [_placementGhost!],
-      ));
+      _addWithWorldBloc(_placementGhost!);
     }
-    _placementGhost!.setTemplate(template);
   }
 
   void _hidePlacementGhost() {
@@ -163,28 +231,115 @@ class HomelabGame extends FlameGame
   }
 
   void _syncDevices(List<DeviceModel> devices) {
-    // Remove components for deleted devices
-    final deviceIds = devices.map((d) => d.id).toSet();
-    _deviceComponents.removeWhere((comp) {
-      if (!deviceIds.contains(comp.device.id)) {
+    _syncComponents<DeviceModel, DeviceComponent>(
+      models: devices,
+      components: _deviceComponents,
+      getModelId: (d) => d.id,
+      getComponentId: (c) => c.device.id,
+      createComponent: (d) => DeviceComponent(device: d),
+    );
+  }
+
+  void _syncCloudServices(List<CloudServiceModel> services) {
+    _syncComponents<CloudServiceModel, CloudServiceComponent>(
+      models: services,
+      components: _cloudServiceComponents,
+      getModelId: (s) => s.id,
+      getComponentId: (c) => c.service.id,
+      createComponent: (s) => CloudServiceComponent(service: s),
+    );
+  }
+
+  void _syncDoors(List<DoorModel> doors) {
+    // Doors use full replacement instead of incremental sync
+    for (final comp in _doorComponents) {
+      comp.removeFromParent();
+    }
+    _doorComponents.clear();
+
+    for (final door in doors) {
+      final comp = DoorComponent(door: door);
+      _doorComponents.add(comp);
+      _addWithWorldBloc(comp);
+    }
+  }
+
+  // Reusable Sets for sync operations to reduce GC pressure
+  final Set<String> _syncModelIds = {};
+  final Set<String> _syncExistingIds = {};
+
+  /// Generic sync helper for component lists.
+  ///
+  /// Removes components whose models no longer exist and adds components
+  /// for new models, minimizing unnecessary recreations.
+  void _syncComponents<M, C extends Component>({
+    required List<M> models,
+    required List<C> components,
+    required String Function(M) getModelId,
+    required String Function(C) getComponentId,
+    required C Function(M) createComponent,
+  }) {
+    // Build model IDs set (reuse to reduce allocations)
+    _syncModelIds.clear();
+    for (final model in models) {
+      _syncModelIds.add(getModelId(model));
+    }
+
+    // Remove components for deleted models
+    components.removeWhere((comp) {
+      if (!_syncModelIds.contains(getComponentId(comp))) {
         comp.removeFromParent();
         return true;
       }
       return false;
     });
 
-    // Add components for new devices
-    final existingIds = _deviceComponents.map((c) => c.device.id).toSet();
-    for (final device in devices) {
-      if (!existingIds.contains(device.id)) {
-        final comp = DeviceComponent(device: device);
-        _deviceComponents.add(comp);
-        add(FlameBlocProvider<WorldBloc, WorldState>.value(
-          value: worldBloc,
-          children: [comp],
-        ));
+    // Build existing IDs set (reuse to reduce allocations)
+    _syncExistingIds.clear();
+    for (final comp in components) {
+      _syncExistingIds.add(getComponentId(comp));
+    }
+
+    // Add components for new models
+    for (final model in models) {
+      if (!_syncExistingIds.contains(getModelId(model))) {
+        final comp = createComponent(model);
+        components.add(comp);
+        _addWithWorldBloc(comp);
       }
     }
+  }
+
+  void _updateDoorInteraction(GameModel model) {
+    final playerPos = model.playerPosition;
+    final room = model.currentRoom;
+
+    // Check if player is adjacent to any door
+    for (final door in room.doors) {
+      final doorPos = door.getPosition(room.width, room.height);
+      if (playerPos.isAdjacentTo(doorPos) || playerPos == doorPos) {
+        worldBloc.add(InteractionAvailable(door.id, InteractionType.door));
+        return;
+      }
+    }
+
+    // If player was interacting with a door but is no longer near it
+    final worldState = worldBloc.state;
+    if (worldState.availableInteraction == InteractionType.door) {
+      worldBloc.add(const InteractionUnavailable());
+    }
+  }
+
+  void _enterDoor(DoorModel door, GameModel model) {
+    final targetRoom = model.getRoomById(door.targetRoomId);
+    if (targetRoom == null) return;
+
+    // Calculate spawn position in target room
+    final spawnPos = door.getSpawnPosition(targetRoom.width, targetRoom.height);
+
+    gameBloc.add(
+      GameEnterRoom(roomId: door.targetRoomId, spawnPosition: spawnPos),
+    );
   }
 
   @override
@@ -198,23 +353,38 @@ class HomelabGame extends FlameGame
 
     if (!isWithinBounds(gridPos)) return;
 
-    // In placement mode, place device
-    if (model.placementMode == PlacementMode.placing &&
-        model.selectedTemplate != null) {
-      if (model.currentRoom.canPlaceDevice(
-        gridPos,
-        model.selectedTemplate!.width,
-        model.selectedTemplate!.height,
-      )) {
-        gameBloc.add(GamePlaceDevice(gridPos));
+    // In placement mode, place device or cloud service
+    if (model.placementMode == PlacementMode.placing) {
+      if (model.selectedTemplate != null) {
+        if (model.currentRoom.canPlaceDevice(
+          gridPos,
+          model.selectedTemplate!.width,
+          model.selectedTemplate!.height,
+        )) {
+          gameBloc.add(GamePlaceDevice(gridPos));
+        }
+        return;
+      } else if (model.selectedCloudService != null) {
+        if (model.currentRoom.canPlaceDevice(
+          gridPos,
+          model.selectedCloudService!.width,
+          model.selectedCloudService!.height,
+        )) {
+          gameBloc.add(GamePlaceCloudService(gridPos));
+        }
+        return;
       }
-      return;
     }
 
     // Check if tapping terminal
     if (gridPos == model.currentRoom.terminalPosition &&
         _player.gridPosition.isAdjacentTo(gridPos)) {
-      worldBloc.add(const InteractionRequested('terminal', InteractionType.terminal));
+      worldBloc.add(
+        const InteractionRequested(
+          GameConstants.terminalEntityId,
+          InteractionType.terminal,
+        ),
+      );
       gameBloc.add(const GameToggleShop(isOpen: true));
       return;
     }
@@ -273,10 +443,26 @@ class HomelabGame extends FlameGame
     // E to interact
     if (event.logicalKey == LogicalKeyboardKey.keyE) {
       final worldState = worldBloc.state;
-      if (worldState.canInteract &&
-          worldState.availableInteraction == InteractionType.terminal) {
-        gameBloc.add(const GameToggleShop(isOpen: true));
-        return KeyEventResult.handled;
+      if (worldState.canInteract) {
+        switch (worldState.availableInteraction) {
+          case InteractionType.terminal:
+            gameBloc.add(const GameToggleShop(isOpen: true));
+            return KeyEventResult.handled;
+          case InteractionType.door:
+            // Find the door by its ID and enter
+            final doorId = worldState.interactableEntityId;
+            if (doorId != null) {
+              final door = state.model.findDoorById(doorId);
+              if (door != null) {
+                _enterDoor(door, state.model);
+                return KeyEventResult.handled;
+              }
+            }
+            break;
+          case InteractionType.device:
+          case InteractionType.none:
+            break;
+        }
       }
     }
 
@@ -295,13 +481,24 @@ class HomelabGame extends FlameGame
     // Update placement ghost validity
     if (_placementGhost != null) {
       final state = gameBloc.state;
-      if (state is GameReady && state.model.selectedTemplate != null) {
+      if (state is GameReady) {
         final pos = _placementGhost!.currentPosition;
         if (pos != null) {
+          int width = 1;
+          int height = 1;
+
+          if (state.model.selectedTemplate != null) {
+            width = state.model.selectedTemplate!.width;
+            height = state.model.selectedTemplate!.height;
+          } else if (state.model.selectedCloudService != null) {
+            width = state.model.selectedCloudService!.width;
+            height = state.model.selectedCloudService!.height;
+          }
+
           final valid = state.model.currentRoom.canPlaceDevice(
             pos,
-            state.model.selectedTemplate!.width,
-            state.model.selectedTemplate!.height,
+            width,
+            height,
           );
           _placementGhost!.setValid(valid);
           _room.setPlacementValid(valid);

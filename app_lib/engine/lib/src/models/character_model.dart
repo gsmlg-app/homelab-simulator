@@ -7,6 +7,10 @@ class CharacterModel extends Equatable {
   final String id;
   final String name;
   final Gender gender;
+  final SkinTone skinTone;
+  final HairStyle hairStyle;
+  final HairColor hairColor;
+  final OutfitVariant outfitVariant;
   final DateTime createdAt;
   final DateTime lastPlayedAt;
   final int totalPlayTime; // in seconds
@@ -17,6 +21,10 @@ class CharacterModel extends Equatable {
     required this.id,
     required this.name,
     required this.gender,
+    this.skinTone = SkinTone.medium,
+    this.hairStyle = HairStyle.short,
+    this.hairColor = HairColor.brown,
+    this.outfitVariant = OutfitVariant.casual,
     required this.createdAt,
     required this.lastPlayedAt,
     this.totalPlayTime = 0,
@@ -24,14 +32,22 @@ class CharacterModel extends Equatable {
     this.credits = GameConstants.startingCredits,
   });
 
+  /// Get the sprite sheet for this character's gender
+  CharacterSpriteSheet get spriteSheet => gender == Gender.male
+      ? GameCharacters.mainMale
+      : GameCharacters.mainFemale;
+
   /// Get the sprite asset path for this character's gender
-  String get spritePath =>
-      gender == Gender.male ? GameCharacters.MainMale.path : GameCharacters.MainFemale.path;
+  String get spritePath => spriteSheet.path;
 
   CharacterModel copyWith({
     String? id,
     String? name,
     Gender? gender,
+    SkinTone? skinTone,
+    HairStyle? hairStyle,
+    HairColor? hairColor,
+    OutfitVariant? outfitVariant,
     DateTime? createdAt,
     DateTime? lastPlayedAt,
     int? totalPlayTime,
@@ -42,6 +58,10 @@ class CharacterModel extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       gender: gender ?? this.gender,
+      skinTone: skinTone ?? this.skinTone,
+      hairStyle: hairStyle ?? this.hairStyle,
+      hairColor: hairColor ?? this.hairColor,
+      outfitVariant: outfitVariant ?? this.outfitVariant,
       createdAt: createdAt ?? this.createdAt,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
       totalPlayTime: totalPlayTime ?? this.totalPlayTime,
@@ -51,42 +71,89 @@ class CharacterModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'gender': gender.name,
-        'createdAt': createdAt.toIso8601String(),
-        'lastPlayedAt': lastPlayedAt.toIso8601String(),
-        'totalPlayTime': totalPlayTime,
-        'level': level,
-        'credits': credits,
-      };
+    'id': id,
+    'name': name,
+    'gender': gender.name,
+    'skinTone': skinTone.name,
+    'hairStyle': hairStyle.name,
+    'hairColor': hairColor.name,
+    'outfitVariant': outfitVariant.name,
+    'createdAt': createdAt.toIso8601String(),
+    'lastPlayedAt': lastPlayedAt.toIso8601String(),
+    'totalPlayTime': totalPlayTime,
+    'level': level,
+    'credits': credits,
+  };
 
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
+    final now = DateTime.now();
     return CharacterModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      gender: json['gender'] != null
-          ? Gender.values.byName(json['gender'] as String)
-          : Gender.male,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      lastPlayedAt: DateTime.parse(json['lastPlayedAt'] as String),
+      gender: parseEnum(Gender.values, json['gender'] as String?, Gender.male),
+      skinTone: parseEnum(
+        SkinTone.values,
+        json['skinTone'] as String?,
+        SkinTone.medium,
+      ),
+      hairStyle: parseEnum(
+        HairStyle.values,
+        json['hairStyle'] as String?,
+        HairStyle.short,
+      ),
+      hairColor: parseEnum(
+        HairColor.values,
+        json['hairColor'] as String?,
+        HairColor.brown,
+      ),
+      outfitVariant: parseEnum(
+        OutfitVariant.values,
+        json['outfitVariant'] as String?,
+        OutfitVariant.casual,
+      ),
+      createdAt: parseDateTime(json['createdAt'] as String?, now),
+      lastPlayedAt: parseDateTime(json['lastPlayedAt'] as String?, now),
       totalPlayTime: json['totalPlayTime'] as int? ?? 0,
       level: json['level'] as int? ?? 1,
       credits: json['credits'] as int? ?? GameConstants.startingCredits,
     );
   }
 
-  factory CharacterModel.create({required String name, required Gender gender}) {
+  factory CharacterModel.create({
+    required String name,
+    required Gender gender,
+    SkinTone skinTone = SkinTone.medium,
+    HairStyle hairStyle = HairStyle.short,
+    HairColor hairColor = HairColor.brown,
+    OutfitVariant outfitVariant = OutfitVariant.casual,
+  }) {
     final now = DateTime.now();
     return CharacterModel(
       id: generateCharacterId(),
       name: name,
       gender: gender,
+      skinTone: skinTone,
+      hairStyle: hairStyle,
+      hairColor: hairColor,
+      outfitVariant: outfitVariant,
       createdAt: now,
       lastPlayedAt: now,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, gender, createdAt, lastPlayedAt, totalPlayTime, level, credits];
+  List<Object?> get props => [
+    id,
+    name,
+    gender,
+    skinTone,
+    hairStyle,
+    hairColor,
+    outfitVariant,
+    createdAt,
+    lastPlayedAt,
+    totalPlayTime,
+    level,
+    credits,
+  ];
 }

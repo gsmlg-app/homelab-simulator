@@ -18,3 +18,11 @@ dependencies:
     path: ../../app_lib/core
   app_lib_engine:
     path: ../../app_lib/engine
+  app_widget_common:
+    path: ../../app_widget/common
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4

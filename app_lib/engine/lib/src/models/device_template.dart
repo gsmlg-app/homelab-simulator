@@ -22,14 +22,14 @@ class DeviceTemplate extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'type': type.name,
-        'cost': cost,
-        'width': width,
-        'height': height,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'type': type.name,
+    'cost': cost,
+    'width': width,
+    'height': height,
+  };
 
   factory DeviceTemplate.fromJson(Map<String, dynamic> json) {
     return DeviceTemplate(
@@ -43,8 +43,32 @@ class DeviceTemplate extends Equatable {
     );
   }
 
+  DeviceTemplate copyWith({
+    String? id,
+    String? name,
+    String? description,
+    DeviceType? type,
+    int? cost,
+    int? width,
+    int? height,
+  }) {
+    return DeviceTemplate(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      cost: cost ?? this.cost,
+      width: width ?? this.width,
+      height: height ?? this.height,
+    );
+  }
+
   @override
   List<Object?> get props => [id, name, description, type, cost, width, height];
+
+  @override
+  String toString() =>
+      'DeviceTemplate(id: $id, name: $name, type: $type, cost: $cost)';
 }
 
 /// Default device templates available in the shop
@@ -99,3 +123,17 @@ const defaultDeviceTemplates = [
     cost: 50,
   ),
 ];
+
+/// Cached map of device templates by ID for O(1) lookup.
+///
+/// Lazily initialized from [defaultDeviceTemplates].
+final Map<String, DeviceTemplate> _deviceTemplateMap = {
+  for (final template in defaultDeviceTemplates) template.id: template,
+};
+
+/// Finds a device template by ID with O(1) lookup.
+///
+/// Returns null if the template is not found.
+DeviceTemplate? getDeviceTemplateById(String templateId) {
+  return _deviceTemplateMap[templateId];
+}

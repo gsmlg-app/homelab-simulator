@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Displays current credits
 class CreditsDisplay extends StatelessWidget {
@@ -13,28 +15,31 @@ class CreditsDisplay extends StatelessWidget {
         final credits = state is GameReady ? state.model.credits : 0;
 
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: AppSpacing.paddingHudPill,
           decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.green.shade700, width: 2),
+            color: AppColors.panelBackground,
+            borderRadius: AppSpacing.borderRadiusMedium,
+            border: Border.all(
+              color: AppColors.green700,
+              width: AppSpacing.borderWidth,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.monetization_on,
-                color: Colors.green.shade400,
-                size: 24,
+                color: AppColors.green400,
+                size: AppSpacing.iconSizeMedium,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.s),
               Text(
                 '\$$credits',
-                style: TextStyle(
-                  color: Colors.green.shade400,
-                  fontSize: 20,
+                style: const TextStyle(
+                  color: AppColors.green400,
+                  fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'monospace',
+                  fontFamily: AppTextStyles.monospaceFontFamily,
                 ),
               ),
             ],

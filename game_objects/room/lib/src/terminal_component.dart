@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -11,67 +12,97 @@ class TerminalComponent extends PositionComponent
   final double tileSize;
   bool _isHighlighted = false;
 
+  // Animation state for screen flicker
+  double _flickerTime = 0;
+
+  // Cached paint objects for performance
+  static final _basePaint = Paint()
+    ..color = AppColors.terminalBase
+    ..style = PaintingStyle.fill;
+
+  // Reusable paints for animation (color/strokeWidth updated per frame)
+  final Paint _screenPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _highlightPaint = Paint()..style = PaintingStyle.stroke;
+
   TerminalComponent({
     this.gridPosition = GameConstants.terminalPosition,
     this.tileSize = GameConstants.tileSize,
   }) : super(
-          position: Vector2(
-            gridPosition.x * tileSize,
-            gridPosition.y * tileSize,
-          ),
-          size: Vector2.all(tileSize),
-        );
+         position: Vector2(
+           gridPosition.x * tileSize,
+           gridPosition.y * tileSize,
+         ),
+         size: Vector2.all(tileSize),
+       );
 
   @override
   void render(Canvas canvas) {
-    // Terminal base
-    final basePaint = Paint()
-      ..color = const Color(0xFF2D2D2D)
-      ..style = PaintingStyle.fill;
+    // Terminal base - use centralized drawing constants
+    const fp = GameConstants.componentFramePadding;
+    const fw = GameConstants.componentFrameWidth;
+    const ip = GameConstants.componentInnerPadding;
+    const cr = GameConstants.componentCornerRadius;
+    const tbo = GameConstants.terminalScreenBottomOffset;
+    const hi = GameConstants.highlightBorderInset;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-        const Radius.circular(4),
+        Rect.fromLTWH(fp, fp, size.x - fw, size.y - fw),
+        const Radius.circular(cr),
       ),
-      basePaint,
+      _basePaint,
     );
 
-    // Screen
+    // Screen with subtle flicker effect using centralized animation constants
+    final flicker =
+        GameConstants.terminalFlickerMin +
+        GameConstants.terminalFlickerAmplitude *
+            math.sin(_flickerTime * GameConstants.terminalFlickerFrequency);
     final screenColor = _isHighlighted
-        ? const Color(0xFF00FF88)
-        : const Color(0xFF00AA55);
-    final screenPaint = Paint()
-      ..color = screenColor
-      ..style = PaintingStyle.fill;
-
+        ? AppColors.terminalHighlight
+        : AppColors.terminalScreen;
+    _screenPaint.color = screenColor.withValues(alpha: flicker);
     canvas.drawRect(
-      Rect.fromLTWH(6, 6, size.x - 12, size.y - 16),
-      screenPaint,
+      Rect.fromLTWH(ip, ip, size.x - ip * 2, size.y - ip * 2 - tbo),
+      _screenPaint,
     );
 
-    // Highlight border when interactable
+    // Animated highlight border when interactable
     if (_isHighlighted) {
-      final highlightPaint = Paint()
-        ..color = const Color(0xFF00FF88)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
+      final glowIntensity =
+          GameConstants.glowIntensityCenter +
+          GameConstants.glowIntensityCenter *
+              math.sin(_flickerTime * GameConstants.terminalFlickerFrequency);
+      _highlightPaint
+        ..color = AppColors.terminalHighlight.withValues(
+          alpha:
+              GameConstants.glowOpacityBase +
+              GameConstants.glowOpacityAmplitude * glowIntensity,
+        )
+        ..strokeWidth =
+            GameConstants.glowStrokeBase +
+            GameConstants.glowStrokeAmplitude * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
-          const Radius.circular(4),
+          Rect.fromLTWH(hi, hi, size.x - hi * 2, size.y - hi * 2),
+          const Radius.circular(cr),
         ),
-        highlightPaint,
+        _highlightPaint,
       );
     }
   }
 
+  // Use centralized animation period constant
+
   @override
   void update(double dt) {
     super.update(dt);
+    // Update flicker animation (bounded to prevent overflow)
+    _flickerTime = (_flickerTime + dt) % GameConstants.animationPeriod;
+
     final worldState = bloc.state;
-    final newHighlight = worldState.interactableEntityId == 'terminal';
+    final newHighlight =
+        worldState.interactableEntityId == GameConstants.terminalEntityId;
     if (newHighlight != _isHighlighted) {
       _isHighlighted = newHighlight;
     }

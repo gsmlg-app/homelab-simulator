@@ -2,36 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
+import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 import 'credits_display.dart';
 import 'interaction_hint.dart';
 
 /// Main HUD overlay for the game
-class HudOverlay extends StatelessWidget {
+class HudOverlay extends StatefulWidget {
   final InteractionType currentInteraction;
 
-  const HudOverlay({
-    super.key,
-    this.currentInteraction = InteractionType.none,
-  });
+  const HudOverlay({super.key, this.currentInteraction = InteractionType.none});
+
+  @override
+  State<HudOverlay> createState() => _HudOverlayState();
+}
+
+class _HudOverlayState extends State<HudOverlay> {
+  bool _summaryExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
         if (state is! GameReady) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Stack(
           children: [
             // Top bar
             Positioned(
-              top: 16,
-              left: 16,
-              right: 16,
+              top: AppSpacing.topBarOffset,
+              left: AppSpacing.topBarOffset,
+              right: AppSpacing.topBarOffset,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -41,14 +46,30 @@ class HudOverlay extends StatelessWidget {
               ),
             ),
 
+            // Room summary panel - top right
+            Positioned(
+              top: AppSpacing.roomSummaryOffset,
+              right: AppSpacing.topBarOffset,
+              child: SizedBox(
+                width: AppSpacing.roomSummaryWidth,
+                child: RoomSummaryPanel(
+                  room: state.model.currentRoom,
+                  expanded: _summaryExpanded,
+                  onToggleExpand: () {
+                    setState(() => _summaryExpanded = !_summaryExpanded);
+                  },
+                ),
+              ),
+            ),
+
             // Bottom center - interaction hint
             Positioned(
-              bottom: 100,
+              bottom: AppSpacing.bottomHintOffset,
               left: 0,
               right: 0,
               child: Center(
                 child: InteractionHint(
-                  interactionType: currentInteraction,
+                  interactionType: widget.currentInteraction,
                 ),
               ),
             ),
@@ -56,9 +77,9 @@ class HudOverlay extends StatelessWidget {
             // Placement mode indicator
             if (state.model.placementMode == PlacementMode.placing)
               Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: AppSpacing.topBarOffset,
+                left: AppSpacing.topBarOffset,
+                right: AppSpacing.topBarOffset,
                 child: _buildPlacementHint(state.model),
               ),
           ],
@@ -69,53 +90,54 @@ class HudOverlay extends StatelessWidget {
 
   Widget _buildModeIndicator(GameMode mode) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: AppSpacing.paddingChip,
       decoration: BoxDecoration(
-        color: mode == GameMode.sim
-            ? Colors.blue.shade800
-            : Colors.orange.shade800,
-        borderRadius: BorderRadius.circular(4),
+        color: mode == GameMode.sim ? AppColors.blue800 : AppColors.orange800,
+        borderRadius: AppSpacing.borderRadiusSmall,
       ),
       child: Text(
         mode == GameMode.sim ? 'SIM MODE' : 'LIVE MODE',
         style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12,
+          color: AppColors.textPrimary,
+          fontSize: AppSpacing.fontSizeSmall,
           fontWeight: FontWeight.bold,
-          fontFamily: 'monospace',
+          fontFamily: AppTextStyles.monospaceFontFamily,
         ),
       ),
     );
   }
 
-  Widget _buildPlacementHint(dynamic model) {
+  Widget _buildPlacementHint(GameModel model) {
     final templateName = model.selectedTemplate?.name ?? 'Device';
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: AppSpacing.paddingMs,
       decoration: BoxDecoration(
-        color: Colors.black87,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.amber.shade700, width: 2),
+        color: AppColors.panelBackground,
+        borderRadius: AppSpacing.borderRadiusMedium,
+        border: Border.all(
+          color: AppColors.amber700,
+          width: AppSpacing.borderWidth,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.place, color: Colors.amber.shade400),
-          const SizedBox(width: 8),
+          const Icon(Icons.place, color: AppColors.amber400),
+          const SizedBox(width: AppSpacing.s),
           Text(
             'Placing: $templateName',
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+              color: AppColors.textPrimary,
+              fontSize: AppSpacing.fontSizeDefault,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppSpacing.m),
           const Text(
             'Click to place • ESC to cancel',
             style: TextStyle(
-              color: Colors.white70,
-              fontSize: 12,
+              color: AppColors.textSecondary,
+              fontSize: AppSpacing.fontSizeSmall,
             ),
           ),
         ],

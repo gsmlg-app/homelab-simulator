@@ -33,10 +33,7 @@ extension CharacterSpriteSheetFlame on CharacterSpriteSheet {
         ),
     ];
 
-    return SpriteAnimation.fromFrameData(
-      image,
-      SpriteAnimationData.variable(frames),
-    );
+    return SpriteAnimation.fromFrameData(image, SpriteAnimationData(frames));
   }
 
   Map<CharacterDirection, SpriteAnimation> walkAnimations(

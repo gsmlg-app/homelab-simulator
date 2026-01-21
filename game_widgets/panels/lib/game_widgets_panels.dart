@@ -3,3 +3,4 @@ library;
 
 export 'src/info_panel.dart';
 export 'src/device_info_panel.dart';
+export 'src/room_summary_panel.dart';

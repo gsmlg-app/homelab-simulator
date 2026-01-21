@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 
 class ErrorDisplay {
@@ -92,7 +93,7 @@ class ErrorDisplay {
         title: Row(
           children: [
             Icon(Icons.error, color: theme.colorScheme.error),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.s),
             const Text('Critical Error'),
           ],
         ),
@@ -101,7 +102,7 @@ class ErrorDisplay {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(message),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.m),
             const Text(
               'The app needs to restart to recover.',
               style: TextStyle(fontWeight: FontWeight.bold),

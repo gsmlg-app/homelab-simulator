@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Shows interaction hints when near interactable objects
 class InteractionHint extends StatelessWidget {
   final InteractionType interactionType;
 
-  const InteractionHint({
-    super.key,
-    required this.interactionType,
-  });
+  const InteractionHint({super.key, required this.interactionType});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +19,7 @@ class InteractionHint extends StatelessWidget {
     final message = switch (interactionType) {
       InteractionType.terminal => 'Press E to open shop',
       InteractionType.device => 'Press E to interact',
+      InteractionType.door => 'Press E to enter',
       InteractionType.none => '',
     };
 
@@ -31,38 +30,44 @@ class InteractionHint extends StatelessWidget {
 
         return AnimatedOpacity(
           opacity: 1.0,
-          duration: const Duration(milliseconds: 200),
+          duration: AppSpacing.animationFast,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: AppSpacing.paddingHudPill,
             decoration: BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.cyan.shade700, width: 2),
+              color: AppColors.panelBackground,
+              borderRadius: AppSpacing.borderRadiusMedium,
+              border: Border.all(
+                color: AppColors.cyan700,
+                width: AppSpacing.borderWidth,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.cyan.shade800,
-                    borderRadius: BorderRadius.circular(4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.s,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: AppColors.cyan800,
+                    borderRadius: AppSpacing.borderRadiusSmall,
                   ),
                   child: const Text(
                     'E',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: AppTextStyles.monospaceFontFamily,
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.s),
                 Text(
                   message,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                    fontSize: AppSpacing.fontSizeDefault,
                   ),
                 ),
               ],
