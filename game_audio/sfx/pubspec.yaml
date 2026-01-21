@@ -10,3 +10,9 @@ resolution: workspace
 
 dependencies:
   flame: ^1.29.0
+  flame_audio: ^2.11.12
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
