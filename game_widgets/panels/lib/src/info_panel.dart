@@ -18,10 +18,10 @@ class InfoPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: AppSpacing.paddingM,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.panelBackground,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-        border: Border.all(color: AppColors.grey700),
+        borderRadius: AppSpacing.borderRadiusMedium,
+        border: Border.fromBorderSide(BorderSide(color: AppColors.grey700)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

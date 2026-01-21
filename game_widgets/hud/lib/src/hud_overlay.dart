@@ -93,7 +93,7 @@ class _HudOverlayState extends State<HudOverlay> {
       padding: AppSpacing.paddingChip,
       decoration: BoxDecoration(
         color: mode == GameMode.sim ? AppColors.blue800 : AppColors.orange800,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusSmall),
+        borderRadius: AppSpacing.borderRadiusSmall,
       ),
       child: Text(
         mode == GameMode.sim ? 'SIM MODE' : 'LIVE MODE',
@@ -114,7 +114,7 @@ class _HudOverlayState extends State<HudOverlay> {
       padding: AppSpacing.paddingMs,
       decoration: BoxDecoration(
         color: AppColors.panelBackground,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+        borderRadius: AppSpacing.borderRadiusMedium,
         border: Border.all(
           color: AppColors.amber700,
           width: AppSpacing.borderWidth,

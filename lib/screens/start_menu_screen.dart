@@ -408,7 +408,7 @@ class _CharacterCard extends StatelessWidget {
           ? AppColors.selectionBackground
           : AppColors.componentBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
+        borderRadius: AppSpacing.borderRadiusLarge,
         side: isSelected
             ? const BorderSide(
                 color: AppColors.textPrimary,
@@ -418,7 +418,7 @@ class _CharacterCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
+        borderRadius: AppSpacing.borderRadiusLarge,
         child: Padding(
           padding: AppSpacing.paddingM,
           child: Row(
@@ -427,12 +427,12 @@ class _CharacterCard extends StatelessWidget {
               Container(
                 width: AppSpacing.avatarSize,
                 height: AppSpacing.avatarSize,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.cyan900,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+                  borderRadius: AppSpacing.borderRadiusMedium,
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+                  borderRadius: AppSpacing.borderRadiusMedium,
                   child: ClipRect(
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -502,9 +502,9 @@ class _CharacterCard extends StatelessWidget {
               // Level badge
               Container(
                 padding: AppSpacing.paddingChip,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.green800,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+                  borderRadius: AppSpacing.borderRadiusXl,
                 ),
                 child: Text(
                   'Lv.${character.level}',

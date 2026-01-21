@@ -81,11 +81,11 @@ class _ShopModalState extends State<ShopModal>
       ),
       decoration: BoxDecoration(
         color: AppColors.grey900,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        border: Border.all(
+        borderRadius: AppSpacing.borderRadiusXl,
+        border: const Border.fromBorderSide(BorderSide(
           color: AppColors.cyan700,
           width: AppSpacing.borderWidth,
-        ),
+        )),
         boxShadow: [
           BoxShadow(
             color: AppColors.cyan900.withValues(alpha: 0.5),
@@ -149,9 +149,9 @@ class _ShopModalState extends State<ShopModal>
             children: [
               Container(
                 padding: AppSpacing.paddingChip,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.green800,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusSmall),
+                  borderRadius: AppSpacing.borderRadiusSmall,
                 ),
                 child: Text(
                   '\$$credits',
@@ -228,16 +228,16 @@ class _ShopModalState extends State<ShopModal>
         // Add Room button
         InkWell(
           onTap: () => setState(() => _showAddRoomModal = true),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+          borderRadius: AppSpacing.borderRadiusMedium,
           child: Container(
             padding: AppSpacing.paddingM,
             decoration: BoxDecoration(
               color: AppColors.modalAccentDark.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-              border: Border.all(
+              borderRadius: AppSpacing.borderRadiusMedium,
+              border: const Border.fromBorderSide(BorderSide(
                 color: AppColors.modalAccentDark,
                 width: AppSpacing.borderWidth,
-              ),
+              )),
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -264,9 +264,9 @@ class _ShopModalState extends State<ShopModal>
         // Current room info
         Container(
           padding: AppSpacing.paddingMs,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.overlayBackground,
-            borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+            borderRadius: AppSpacing.borderRadiusMedium,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,10 +326,10 @@ class _ShopModalState extends State<ShopModal>
       padding: const EdgeInsets.only(bottom: AppSpacing.s),
       child: Container(
         padding: AppSpacing.paddingMs,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.overlayBackground,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-          border: Border.all(color: AppColors.grey700),
+          borderRadius: AppSpacing.borderRadiusMedium,
+          border: Border.fromBorderSide(BorderSide(color: AppColors.grey700)),
         ),
         child: Row(
           children: [
@@ -387,8 +387,8 @@ class _ShopModalState extends State<ShopModal>
       padding: AppSpacing.paddingMs,
       decoration: BoxDecoration(
         color: AppColors.blue900.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-        border: Border.all(color: AppColors.blue700),
+        borderRadius: AppSpacing.borderRadiusMedium,
+        border: const Border.fromBorderSide(BorderSide(color: AppColors.blue700)),
       ),
       child: Row(
         children: [

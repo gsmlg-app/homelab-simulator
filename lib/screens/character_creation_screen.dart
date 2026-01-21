@@ -381,20 +381,20 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               counterStyle: const TextStyle(color: AppColors.textTertiary),
               filled: true,
               fillColor: AppColors.componentBackground,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
+              border: const OutlineInputBorder(
+                borderRadius: AppSpacing.borderRadiusLarge,
                 borderSide: BorderSide.none,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
-                borderSide: const BorderSide(
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: AppSpacing.borderRadiusLarge,
+                borderSide: BorderSide(
                   color: AppColors.cyan500,
                   width: AppSpacing.borderWidth,
                 ),
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
-                borderSide: const BorderSide(
+              errorBorder: const OutlineInputBorder(
+                borderRadius: AppSpacing.borderRadiusLarge,
+                borderSide: BorderSide(
                   color: AppColors.redAccent,
                   width: AppSpacing.borderWidth,
                 ),
@@ -470,13 +470,13 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           Container(
             width: AppSpacing.characterPreviewWidth,
             height: AppSpacing.characterPreviewHeight,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-              border: Border.all(color: AppColors.cyan700),
+              borderRadius: AppSpacing.borderRadiusXl,
+              border: Border.fromBorderSide(BorderSide(color: AppColors.cyan700)),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+              borderRadius: AppSpacing.borderRadiusXl,
               child: ClipRect(
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -707,10 +707,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           Container(
             width: double.infinity,
             padding: AppSpacing.paddingL,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-              border: Border.all(color: AppColors.cyan700),
+              borderRadius: AppSpacing.borderRadiusXl,
+              border: Border.fromBorderSide(BorderSide(color: AppColors.cyan700)),
             ),
             child: Row(
               children: [
@@ -718,12 +718,12 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                 Container(
                   width: AppSpacing.characterSummaryWidth,
                   height: AppSpacing.characterSummaryHeight,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.componentBackground,
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
+                    borderRadius: AppSpacing.borderRadiusLarge,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
+                    borderRadius: AppSpacing.borderRadiusLarge,
                     child: ClipRect(
                       child: Align(
                         alignment: Alignment.topLeft,
