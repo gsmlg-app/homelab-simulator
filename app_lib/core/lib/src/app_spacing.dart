@@ -190,6 +190,9 @@ abstract final class AppSpacing {
 
   // ============ FONT SIZES ============
 
+  /// Extra small font size (10px) - for captions and fine print
+  static const double fontSizeXs = 10.0;
+
   /// Small font size (12px)
   static const double fontSizeSmall = 12.0;
 

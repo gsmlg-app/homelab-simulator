@@ -29,14 +29,14 @@ class CreditsDisplay extends StatelessWidget {
               const Icon(
                 Icons.monetization_on,
                 color: AppColors.green400,
-                size: 24,
+                size: AppSpacing.iconSizeMedium,
               ),
               const SizedBox(width: AppSpacing.s),
               Text(
                 '\$$credits',
                 style: const TextStyle(
                   color: AppColors.green400,
-                  fontSize: 20,
+                  fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'monospace',
                 ),

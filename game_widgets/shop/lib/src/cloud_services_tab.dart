@@ -268,7 +268,7 @@ class _ServiceCard extends StatelessWidget {
                     template.description,
                     style: const TextStyle(
                       color: AppColors.grey500,
-                      fontSize: 12,
+                      fontSize: AppSpacing.fontSizeSmall,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
@@ -309,7 +309,7 @@ class _ServiceCard extends StatelessWidget {
         label,
         style: TextStyle(
           color: color,
-          fontSize: 10,
+          fontSize: AppSpacing.fontSizeXs,
           fontWeight: FontWeight.w500,
         ),
       ),

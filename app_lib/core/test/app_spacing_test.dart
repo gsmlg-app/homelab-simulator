@@ -239,6 +239,10 @@ void main() {
     });
 
     group('font sizes', () {
+      test('fontSizeXs is 10.0', () {
+        expect(AppSpacing.fontSizeXs, 10.0);
+      });
+
       test('fontSizeSmall is 12.0', () {
         expect(AppSpacing.fontSizeSmall, 12.0);
       });

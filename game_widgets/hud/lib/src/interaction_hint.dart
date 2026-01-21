@@ -66,7 +66,7 @@ class InteractionHint extends StatelessWidget {
                   message,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 14,
+                    fontSize: AppSpacing.fontSizeDefault,
                   ),
                 ),
               ],

@@ -122,7 +122,7 @@ abstract final class AppButtonStyles {
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,
     ),
-    textStyle: const TextStyle(fontSize: 12),
+    textStyle: const TextStyle(fontSize: AppSpacing.fontSizeSmall),
   );
 
   /// Small outlined button style
@@ -134,7 +134,7 @@ abstract final class AppButtonStyles {
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusSm,
     ),
-    textStyle: const TextStyle(fontSize: 12),
+    textStyle: const TextStyle(fontSize: AppSpacing.fontSizeSmall),
   );
 
   // ============ DISABLED STATE HELPERS ============

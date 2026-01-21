@@ -53,7 +53,7 @@ class DeviceCard extends StatelessWidget {
                             template.name,
                             style: const TextStyle(
                               color: AppColors.textPrimary,
-                              fontSize: 16,
+                              fontSize: AppSpacing.fontSizeMedium,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -61,7 +61,7 @@ class DeviceCard extends StatelessWidget {
                             template.type.name.toUpperCase(),
                             style: TextStyle(
                               color: deviceColor,
-                              fontSize: 10,
+                              fontSize: AppSpacing.fontSizeXs,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
                             ),
@@ -96,7 +96,7 @@ class DeviceCard extends StatelessWidget {
                   template.description,
                   style: const TextStyle(
                     color: AppColors.grey400,
-                    fontSize: 12,
+                    fontSize: AppSpacing.fontSizeSmall,
                   ),
                 ),
               ],

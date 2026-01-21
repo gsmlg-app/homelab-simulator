@@ -218,7 +218,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 _currentStep == 0 ? 'ADD ROOM' : 'DOOR PLACEMENT',
                 style: const TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 20,
+                  fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
                 ),
@@ -243,7 +243,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           'Select Provider',
           style: TextStyle(
             color: AppColors.textSecondary,
-            fontSize: 14,
+            fontSize: AppSpacing.fontSizeDefault,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -332,7 +332,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                         color: isSelected
                             ? AppColors.textPrimary
                             : AppColors.textSecondary,
-                        fontSize: 16,
+                        fontSize: AppSpacing.fontSizeMedium,
                         fontWeight: isSelected
                             ? FontWeight.bold
                             : FontWeight.normal,
@@ -343,7 +343,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                         '${preset.regions.length} regions available',
                         style: const TextStyle(
                           color: AppColors.grey500,
-                          fontSize: 12,
+                          fontSize: AppSpacing.fontSizeSmall,
                         ),
                       ),
                   ],
@@ -398,7 +398,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 _roomName,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 16,
+                  fontSize: AppSpacing.fontSizeMedium,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -410,7 +410,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           'Door Wall',
           style: TextStyle(
             color: AppColors.textSecondary,
-            fontSize: 14,
+            fontSize: AppSpacing.fontSizeDefault,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -426,7 +426,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           'Door Position',
           style: TextStyle(
             color: AppColors.textSecondary,
-            fontSize: 14,
+            fontSize: AppSpacing.fontSizeDefault,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -517,7 +517,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 color: isSelected
                     ? AppColors.textPrimary
                     : AppColors.textSecondary,
-                fontSize: 12,
+                fontSize: AppSpacing.fontSizeSmall,
               ),
             ),
           ],
