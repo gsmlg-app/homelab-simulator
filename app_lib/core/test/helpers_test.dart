@@ -30,6 +30,18 @@ void main() {
     test('terminalEntityId is terminal', () {
       expect(GameConstants.terminalEntityId, 'terminal');
     });
+
+    test('gamepadButtonPressThreshold is 0.5', () {
+      expect(GameConstants.gamepadButtonPressThreshold, 0.5);
+    });
+
+    test('gamepadAnalogDeadzone is 0.3', () {
+      expect(GameConstants.gamepadAnalogDeadzone, 0.3);
+    });
+
+    test('gamepadDpadCooldownSeconds is 0.15', () {
+      expect(GameConstants.gamepadDpadCooldownSeconds, 0.15);
+    });
   });
 
   group('gridToPixel', () {
