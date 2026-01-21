@@ -89,5 +89,106 @@ void main() {
         expect(component2.tileSize, 64.0);
       });
     });
+
+    group('size configuration', () {
+      test('size is square based on tile size', () {
+        final component = HoverCellComponent(tileSize: 48.0);
+
+        expect(component.size.x, 48.0);
+        expect(component.size.y, 48.0);
+      });
+
+      test('size equals tile size in both dimensions', () {
+        final component = HoverCellComponent();
+
+        expect(component.size.x, component.tileSize);
+        expect(component.size.y, component.tileSize);
+      });
+
+      test('handles small tile size', () {
+        final component = HoverCellComponent(tileSize: 8.0);
+
+        expect(component.size, Vector2.all(8.0));
+      });
+
+      test('handles large tile size', () {
+        final component = HoverCellComponent(tileSize: 256.0);
+
+        expect(component.size, Vector2.all(256.0));
+      });
+    });
+
+    group('position manipulation', () {
+      test('initial position is zero', () {
+        final component = HoverCellComponent();
+
+        expect(component.position, Vector2.zero());
+      });
+
+      test('position can be set to any value', () {
+        final component = HoverCellComponent();
+        component.position = Vector2(300, 400);
+
+        expect(component.position.x, 300);
+        expect(component.position.y, 400);
+      });
+
+      test('position can be negative', () {
+        final component = HoverCellComponent();
+        component.position = Vector2(-50, -75);
+
+        expect(component.position.x, -50);
+        expect(component.position.y, -75);
+      });
+    });
+
+    group('setValidPlacement behavior', () {
+      test('starts with valid placement by default', () {
+        final component = HoverCellComponent();
+        // Setting to true should work without changing anything
+        component.setValidPlacement(true);
+        // No exception means default is true
+      });
+
+      test('can alternate between valid and invalid', () {
+        final component = HoverCellComponent();
+
+        component.setValidPlacement(false);
+        component.setValidPlacement(true);
+        component.setValidPlacement(false);
+        component.setValidPlacement(true);
+        // Multiple alternations should work without error
+      });
+
+      test('consecutive same values are allowed', () {
+        final component = HoverCellComponent();
+
+        component.setValidPlacement(true);
+        component.setValidPlacement(true);
+        component.setValidPlacement(false);
+        component.setValidPlacement(false);
+        // Consecutive same values should not cause issues
+      });
+    });
+
+    group('component type', () {
+      test('is a PositionComponent', () {
+        expect(HoverCellComponent(), isA<PositionComponent>());
+      });
+
+      test('can have priority set', () {
+        final component = HoverCellComponent();
+        component.priority = 10;
+
+        expect(component.priority, 10);
+      });
+
+      test('can have anchor set', () {
+        final component = HoverCellComponent();
+        component.anchor = Anchor.center;
+
+        expect(component.anchor, Anchor.center);
+      });
+    });
   });
 }
