@@ -40,36 +40,36 @@ void main() {
     });
 
     group('color', () {
-      test('serverRoom returns grey', () {
-        expect(RoomType.serverRoom.color, Colors.grey);
+      test('serverRoom returns roomServer color', () {
+        expect(RoomType.serverRoom.color, AppColors.roomServer);
       });
 
-      test('aws returns orange', () {
-        expect(RoomType.aws.color, const Color(0xFFFF9900));
+      test('aws returns providerAws color', () {
+        expect(RoomType.aws.color, AppColors.providerAws);
       });
 
-      test('gcp returns blue', () {
-        expect(RoomType.gcp.color, const Color(0xFF4285F4));
+      test('gcp returns providerGcp color', () {
+        expect(RoomType.gcp.color, AppColors.providerGcp);
       });
 
-      test('cloudflare returns orange', () {
-        expect(RoomType.cloudflare.color, const Color(0xFFF38020));
+      test('cloudflare returns providerCloudflare color', () {
+        expect(RoomType.cloudflare.color, AppColors.providerCloudflare);
       });
 
-      test('vultr returns blue', () {
-        expect(RoomType.vultr.color, const Color(0xFF007BFC));
+      test('vultr returns providerVultr color', () {
+        expect(RoomType.vultr.color, AppColors.providerVultr);
       });
 
-      test('azure returns blue', () {
-        expect(RoomType.azure.color, const Color(0xFF0078D4));
+      test('azure returns providerAzure color', () {
+        expect(RoomType.azure.color, AppColors.providerAzure);
       });
 
-      test('digitalOcean returns blue', () {
-        expect(RoomType.digitalOcean.color, const Color(0xFF0080FF));
+      test('digitalOcean returns providerDigitalOcean color', () {
+        expect(RoomType.digitalOcean.color, AppColors.providerDigitalOcean);
       });
 
-      test('custom returns purple', () {
-        expect(RoomType.custom.color, Colors.purple);
+      test('custom returns roomCustom color', () {
+        expect(RoomType.custom.color, AppColors.roomCustom);
       });
     });
 

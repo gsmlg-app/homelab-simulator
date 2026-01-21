@@ -36,32 +36,35 @@ void main() {
     });
 
     group('color', () {
-      test('aws returns orange', () {
-        expect(CloudProvider.aws.color, const Color(0xFFFF9900));
+      test('aws returns providerAws color', () {
+        expect(CloudProvider.aws.color, AppColors.providerAws);
       });
 
-      test('gcp returns blue', () {
-        expect(CloudProvider.gcp.color, const Color(0xFF4285F4));
+      test('gcp returns providerGcp color', () {
+        expect(CloudProvider.gcp.color, AppColors.providerGcp);
       });
 
-      test('cloudflare returns orange', () {
-        expect(CloudProvider.cloudflare.color, const Color(0xFFF38020));
+      test('cloudflare returns providerCloudflare color', () {
+        expect(CloudProvider.cloudflare.color, AppColors.providerCloudflare);
       });
 
-      test('vultr returns blue', () {
-        expect(CloudProvider.vultr.color, const Color(0xFF007BFC));
+      test('vultr returns providerVultr color', () {
+        expect(CloudProvider.vultr.color, AppColors.providerVultr);
       });
 
-      test('azure returns blue', () {
-        expect(CloudProvider.azure.color, const Color(0xFF0078D4));
+      test('azure returns providerAzure color', () {
+        expect(CloudProvider.azure.color, AppColors.providerAzure);
       });
 
-      test('digitalOcean returns blue', () {
-        expect(CloudProvider.digitalOcean.color, const Color(0xFF0080FF));
+      test('digitalOcean returns providerDigitalOcean color', () {
+        expect(
+          CloudProvider.digitalOcean.color,
+          AppColors.providerDigitalOcean,
+        );
       });
 
-      test('none returns grey', () {
-        expect(CloudProvider.none.color, Colors.grey);
+      test('none returns providerNone color', () {
+        expect(CloudProvider.none.color, AppColors.providerNone);
       });
     });
 
