@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 46
-- **Last Commit:** b7ca8b9
+- **Iteration:** 47
+- **Last Commit:** ba3fc1f
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -98,7 +98,11 @@ Two main feature sets from PRD.md:
   - DeviceTypeUI: 22 tests
   - CloudProviderUI: 22 tests (NEW)
   - ServiceCategoryUI: 22 tests (NEW)
-- **Total:** 1315 unit tests
+- **test/screens:** 106 tests passing (NEW)
+  - StartMenuScreen: 38 tests (NEW)
+  - CharacterCreationScreen: 53 tests (NEW)
+  - GameScreen: 15 tests (NEW) (+2 skipped for layout bugs)
+- **Total:** 1421 unit tests
 
 ## Completed Work
 
@@ -248,6 +252,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- ba3fc1f: test: add widget tests for GameScreen (15 tests)
 - b7ca8b9: test: add unit tests for DeviceTemplate (26 tests)
 - 59f007d: style: apply dart format
 - 3d5e605: refactor: extract CloudProvider and ServiceCategory UI utilities to shared extensions
