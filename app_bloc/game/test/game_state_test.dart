@@ -150,5 +150,52 @@ void main() {
         expect(error, isA<GameState>());
       });
     });
+
+    group('edge cases', () {
+      test('GameLoading instances can be used in Set collections', () {
+        const state1 = GameLoading();
+        const state2 = GameLoading();
+        const error = GameError('error');
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final stateSet = <GameState>{state1, state2, error};
+        expect(stateSet.length, 2);
+        expect(stateSet.contains(state1), isTrue);
+        expect(stateSet.contains(error), isTrue);
+      });
+
+      test('GameReady instances can be used as Map keys', () {
+        final model = GameModel.initial();
+        final state1 = GameReady(model);
+        final state2 = GameReady(model);
+
+        final stateMap = <GameState, String>{state1: 'first'};
+        stateMap[state2] = 'second';
+
+        expect(stateMap.length, 1);
+        expect(stateMap[state1], 'second');
+      });
+
+      test('GameError instances can be used in Set collections', () {
+        const error1 = GameError('error');
+        const error2 = GameError('error');
+        const error3 = GameError('different');
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final errorSet = <GameState>{error1, error2, error3};
+        expect(errorSet.length, 2);
+        expect(errorSet.contains(error1), isTrue);
+        expect(errorSet.contains(error3), isTrue);
+      });
+
+      test('mixed GameState types can be used in Set', () {
+        const loading = GameLoading();
+        final ready = GameReady(GameModel.initial());
+        const error = GameError('error');
+
+        final stateSet = <GameState>{loading, ready, error};
+        expect(stateSet.length, 3);
+      });
+    });
   });
 }

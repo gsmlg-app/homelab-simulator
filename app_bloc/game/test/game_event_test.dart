@@ -418,5 +418,54 @@ void main() {
         expect(event1, isNot(equals(event2)));
       });
     });
+
+    group('edge cases', () {
+      test('singleton events can be used in Set collections', () {
+        const init1 = GameInitialize();
+        const init2 = GameInitialize();
+        const cancel = GameCancelPlacement();
+        const save = GameSave();
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final eventSet = <GameEvent>{init1, init2, cancel, save};
+        expect(eventSet.length, 3);
+        expect(eventSet.contains(init1), isTrue);
+        expect(eventSet.contains(cancel), isTrue);
+        expect(eventSet.contains(save), isTrue);
+      });
+
+      test('parameterized events can be used as Map keys', () {
+        const event1 = GameMovePlayer(Direction.up);
+        const event2 = GameMovePlayer(Direction.up);
+
+        final eventMap = <GameEvent, String>{event1: 'first'};
+        eventMap[event2] = 'second';
+
+        expect(eventMap.length, 1);
+        expect(eventMap[event1], 'second');
+      });
+
+      test('mixed event types can be used in Set', () {
+        const init = GameInitialize();
+        const move = GameMovePlayer(Direction.up);
+        const moveTo = GameMovePlayerTo(GridPosition(5, 5));
+        const toggle = GameToggleShop();
+        const cancel = GameCancelPlacement();
+        const save = GameSave();
+
+        final eventSet = <GameEvent>{init, move, moveTo, toggle, cancel, save};
+        expect(eventSet.length, 6);
+      });
+
+      test('events with same type but different values deduplicate correctly', () {
+        const move1 = GameMovePlayer(Direction.up);
+        const move2 = GameMovePlayer(Direction.up);
+        const move3 = GameMovePlayer(Direction.down);
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final moveSet = <GameEvent>{move1, move2, move3};
+        expect(moveSet.length, 2);
+      });
+    });
   });
 }
