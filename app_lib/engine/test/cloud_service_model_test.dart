@@ -152,6 +152,98 @@ void main() {
           expect(restored, original);
         }
       });
+
+      test('round-trip serialization preserves nested metadata', () {
+        const serviceWithNestedMetadata = CloudServiceModel(
+          id: 'svc-nested',
+          name: 'Nested Metadata Service',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(1, 1),
+          metadata: {
+            'config': {
+              'enabled': true,
+              'timeout': 5000,
+            },
+            'tags': ['production', 'critical'],
+          },
+        );
+
+        final json = serviceWithNestedMetadata.toJson();
+        final restored = CloudServiceModel.fromJson(json);
+
+        expect(restored.metadata['config'], {'enabled': true, 'timeout': 5000});
+        expect(restored.metadata['tags'], ['production', 'critical']);
+        expect(restored, serviceWithNestedMetadata);
+      });
+
+      test('round-trip serialization preserves empty metadata', () {
+        const serviceWithEmptyMetadata = CloudServiceModel(
+          id: 'svc-empty-meta',
+          name: 'Empty Metadata Service',
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.storage,
+          serviceType: 'CloudStorage',
+          position: GridPosition(2, 2),
+          metadata: {},
+        );
+
+        final restored = CloudServiceModel.fromJson(
+          serviceWithEmptyMetadata.toJson(),
+        );
+
+        expect(restored.metadata, isEmpty);
+        expect(restored, serviceWithEmptyMetadata);
+      });
+
+      test('round-trip serialization preserves unicode in metadata', () {
+        const serviceWithUnicode = CloudServiceModel(
+          id: 'svc-unicode',
+          name: 'Unicode Service',
+          provider: CloudProvider.azure,
+          category: ServiceCategory.database,
+          serviceType: 'CosmosDB',
+          position: GridPosition(3, 3),
+          metadata: {
+            'label': '日本語テスト',
+            'emoji': '🚀✨',
+            'special': 'Ñoño & <script>',
+          },
+        );
+
+        final restored = CloudServiceModel.fromJson(serviceWithUnicode.toJson());
+
+        expect(restored.metadata['label'], '日本語テスト');
+        expect(restored.metadata['emoji'], '🚀✨');
+        expect(restored.metadata['special'], 'Ñoño & <script>');
+        expect(restored, serviceWithUnicode);
+      });
+
+      test('round-trip serialization preserves numeric metadata values', () {
+        const serviceWithNumbers = CloudServiceModel(
+          id: 'svc-numbers',
+          name: 'Numeric Service',
+          provider: CloudProvider.vultr,
+          category: ServiceCategory.compute,
+          serviceType: 'VPS',
+          position: GridPosition(4, 4),
+          metadata: {
+            'cpu': 4,
+            'memory': 8192,
+            'price': 19.99,
+            'ratio': 0.5,
+          },
+        );
+
+        final restored = CloudServiceModel.fromJson(serviceWithNumbers.toJson());
+
+        expect(restored.metadata['cpu'], 4);
+        expect(restored.metadata['memory'], 8192);
+        expect(restored.metadata['price'], 19.99);
+        expect(restored.metadata['ratio'], 0.5);
+        expect(restored, serviceWithNumbers);
+      });
     });
 
     group('copyWith', () {

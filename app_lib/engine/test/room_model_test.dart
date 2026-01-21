@@ -155,6 +155,88 @@ void main() {
         expect(restored.cloudServices.first.id, 'service-1');
         expect(restored.regionCode, 'us-west-2');
       });
+
+      test('round-trip serialization preserves origin terminal position', () {
+        final roomWithOriginTerminal = room.copyWith(
+          terminalPosition: const GridPosition(0, 0),
+        );
+
+        final restored = RoomModel.fromJson(roomWithOriginTerminal.toJson());
+
+        expect(restored.terminalPosition, const GridPosition(0, 0));
+      });
+
+      test('round-trip serialization preserves boundary terminal positions', () {
+        final positions = [
+          const GridPosition(0, 0),
+          const GridPosition(19, 0),
+          const GridPosition(0, 11),
+          const GridPosition(19, 11),
+        ];
+
+        for (final pos in positions) {
+          final roomWithTerminal = room.copyWith(terminalPosition: pos);
+          final restored = RoomModel.fromJson(roomWithTerminal.toJson());
+
+          expect(restored.terminalPosition, pos);
+        }
+      });
+
+      test('round-trip serialization preserves devices at boundary positions', () {
+        const deviceAtOrigin = DeviceModel(
+          id: 'dev-origin',
+          templateId: 'tmpl-origin',
+          name: 'Origin Device',
+          type: DeviceType.server,
+          position: GridPosition(0, 0),
+        );
+        const deviceAtCorner = DeviceModel(
+          id: 'dev-corner',
+          templateId: 'tmpl-corner',
+          name: 'Corner Device',
+          type: DeviceType.nas,
+          position: GridPosition(19, 11),
+        );
+
+        final roomWithDevices = room.copyWith(
+          devices: [deviceAtOrigin, deviceAtCorner],
+        );
+
+        final restored = RoomModel.fromJson(roomWithDevices.toJson());
+
+        expect(restored.devices.length, 2);
+        expect(restored.devices[0].position, const GridPosition(0, 0));
+        expect(restored.devices[1].position, const GridPosition(19, 11));
+      });
+
+      test('round-trip serialization preserves cloud services at boundary positions', () {
+        const serviceAtOrigin = CloudServiceModel(
+          id: 'svc-origin',
+          name: 'Origin Service',
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          position: GridPosition(0, 0),
+        );
+        const serviceAtCorner = CloudServiceModel(
+          id: 'svc-corner',
+          name: 'Corner Service',
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.storage,
+          serviceType: 'CloudStorage',
+          position: GridPosition(19, 11),
+        );
+
+        final roomWithServices = room.copyWith(
+          cloudServices: [serviceAtOrigin, serviceAtCorner],
+        );
+
+        final restored = RoomModel.fromJson(roomWithServices.toJson());
+
+        expect(restored.cloudServices.length, 2);
+        expect(restored.cloudServices[0].position, const GridPosition(0, 0));
+        expect(restored.cloudServices[1].position, const GridPosition(19, 11));
+      });
     });
 
     group('copyWith', () {

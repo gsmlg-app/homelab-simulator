@@ -118,6 +118,60 @@ void main() {
           expect(restored, original);
         }
       });
+
+      test('round-trip serialization preserves origin position (0,0)', () {
+        const deviceAtOrigin = DeviceModel(
+          id: 'dev-origin',
+          templateId: 'tmpl-origin',
+          name: 'Origin Device',
+          type: DeviceType.server,
+          position: GridPosition(0, 0),
+        );
+
+        final restored = DeviceModel.fromJson(deviceAtOrigin.toJson());
+
+        expect(restored.position, const GridPosition(0, 0));
+        expect(restored, deviceAtOrigin);
+      });
+
+      test('round-trip serialization preserves boundary positions', () {
+        // Test device at room grid boundaries (19x11 is typical max)
+        const positions = [
+          GridPosition(0, 0), // top-left
+          GridPosition(19, 0), // top-right
+          GridPosition(0, 11), // bottom-left
+          GridPosition(19, 11), // bottom-right
+        ];
+
+        for (final pos in positions) {
+          final original = DeviceModel(
+            id: 'dev-boundary-${pos.x}-${pos.y}',
+            templateId: 'tmpl-boundary',
+            name: 'Boundary Device',
+            type: DeviceType.nas,
+            position: pos,
+          );
+
+          final restored = DeviceModel.fromJson(original.toJson());
+          expect(restored.position, pos);
+          expect(restored, original);
+        }
+      });
+
+      test('round-trip serialization preserves large position values', () {
+        const deviceAtLargePos = DeviceModel(
+          id: 'dev-large',
+          templateId: 'tmpl-large',
+          name: 'Large Position Device',
+          type: DeviceType.iot,
+          position: GridPosition(1000, 1000),
+        );
+
+        final restored = DeviceModel.fromJson(deviceAtLargePos.toJson());
+
+        expect(restored.position, const GridPosition(1000, 1000));
+        expect(restored, deviceAtLargePos);
+      });
     });
 
     group('copyWith', () {
