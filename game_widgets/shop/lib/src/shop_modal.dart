@@ -73,14 +73,19 @@ class _ShopModalState extends State<ShopModal>
 
   Widget _buildShopContent(BuildContext context, GameModel model) {
     return Container(
-      width: 500,
+      width: AppSpacing.shopModalWidth,
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.8,
+        maxHeight:
+            MediaQuery.of(context).size.height *
+            AppSpacing.shopModalMaxHeightRatio,
       ),
       decoration: BoxDecoration(
         color: AppColors.grey900,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.cyan700, width: 2),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+        border: Border.all(
+          color: AppColors.cyan700,
+          width: AppSpacing.borderWidth,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.cyan900.withValues(alpha: 0.5),
@@ -111,23 +116,29 @@ class _ShopModalState extends State<ShopModal>
 
   Widget _buildHeader(BuildContext context, int credits) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.paddingM,
       decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSpacing.radiusXl - AppSpacing.borderWidth),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Row(
             children: [
-              Icon(Icons.store, color: AppColors.cyan400, size: 28),
-              SizedBox(width: 12),
+              Icon(
+                Icons.store,
+                color: AppColors.cyan400,
+                size: AppSpacing.iconSizeLarge,
+              ),
+              SizedBox(width: AppSpacing.ms),
               Text(
                 'TERMINAL',
                 style: TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 20,
+                  fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
                 ),
@@ -137,13 +148,10 @@ class _ShopModalState extends State<ShopModal>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
+                padding: AppSpacing.paddingChip,
                 decoration: BoxDecoration(
                   color: AppColors.green800,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusSmall),
                 ),
                 child: Text(
                   '\$$credits',
@@ -151,11 +159,11 @@ class _ShopModalState extends State<ShopModal>
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'monospace',
-                    fontSize: 16,
+                    fontSize: AppSpacing.fontSizeMedium,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.s),
               IconButton(
                 icon: const Icon(Icons.close, color: AppColors.textPrimary),
                 tooltip: 'Close shop',
@@ -192,12 +200,12 @@ class _ShopModalState extends State<ShopModal>
   Widget _buildDeviceList(BuildContext context, int credits) {
     return ListView.builder(
       shrinkWrap: true,
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.paddingM,
       itemCount: defaultDeviceTemplates.length,
       itemBuilder: (context, index) {
         final template = defaultDeviceTemplates[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.only(bottom: AppSpacing.s),
           child: DeviceCard(
             template: template,
             currentCredits: credits,
@@ -215,18 +223,21 @@ class _ShopModalState extends State<ShopModal>
 
     return ListView(
       shrinkWrap: true,
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.paddingM,
       children: [
         // Add Room button
         InkWell(
           onTap: () => setState(() => _showAddRoomModal = true),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: AppSpacing.paddingM,
             decoration: BoxDecoration(
               color: AppColors.modalAccentDark.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.modalAccentDark, width: 2),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+              border: Border.all(
+                color: AppColors.modalAccentDark,
+                width: AppSpacing.borderWidth,
+              ),
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -234,14 +245,14 @@ class _ShopModalState extends State<ShopModal>
                 Icon(
                   Icons.add_circle,
                   color: AppColors.modalAccentLight,
-                  size: 28,
+                  size: AppSpacing.iconSizeLarge,
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: AppSpacing.ms),
                 Text(
                   'Add New Room',
                   style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 16,
+                    fontSize: AppSpacing.fontSizeMedium,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -249,13 +260,13 @@ class _ShopModalState extends State<ShopModal>
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.m),
         // Current room info
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: AppSpacing.paddingMs,
           decoration: BoxDecoration(
             color: AppColors.overlayBackground,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,9 +276,9 @@ class _ShopModalState extends State<ShopModal>
                   Icon(
                     model.currentRoom.type.icon,
                     color: model.currentRoom.type.color,
-                    size: 20,
+                    size: AppSpacing.iconSizeDefault,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.s),
                   Text(
                     'Current: ${model.currentRoom.name}',
                     style: const TextStyle(
@@ -277,30 +288,33 @@ class _ShopModalState extends State<ShopModal>
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 '${model.currentRoom.totalObjectCount} objects, ${model.currentRoom.doors.length} doors',
-                style: const TextStyle(color: AppColors.grey500, fontSize: 12),
+                style: const TextStyle(
+                  color: AppColors.grey500,
+                  fontSize: AppSpacing.fontSizeSmall,
+                ),
               ),
             ],
           ),
         ),
         if (childRooms.isNotEmpty) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.m),
           Text(
             'Child Rooms (${childRooms.length})',
             style: const TextStyle(
               color: AppColors.grey500,
-              fontSize: 12,
+              fontSize: AppSpacing.fontSizeSmall,
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
           ...childRooms.map((room) => _buildRoomCard(context, room, model)),
         ],
         // Parent room link
         if (model.currentRoom.parentId != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.m),
           _buildParentRoomCard(context, model),
         ],
       ],
@@ -309,18 +323,22 @@ class _ShopModalState extends State<ShopModal>
 
   Widget _buildRoomCard(BuildContext context, RoomModel room, GameModel model) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: AppSpacing.s),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: AppSpacing.paddingMs,
         decoration: BoxDecoration(
           color: AppColors.overlayBackground,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
           border: Border.all(color: AppColors.grey700),
         ),
         child: Row(
           children: [
-            Icon(room.type.icon, color: room.type.color, size: 24),
-            const SizedBox(width: 12),
+            Icon(
+              room.type.icon,
+              color: room.type.color,
+              size: AppSpacing.iconSizeMedium,
+            ),
+            const SizedBox(width: AppSpacing.ms),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +354,7 @@ class _ShopModalState extends State<ShopModal>
                     '${room.totalObjectCount} objects',
                     style: const TextStyle(
                       color: AppColors.grey500,
-                      fontSize: 12,
+                      fontSize: AppSpacing.fontSizeSmall,
                     ),
                   ),
                 ],
@@ -366,16 +384,20 @@ class _ShopModalState extends State<ShopModal>
     if (parentRoom == null) return const SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: AppSpacing.paddingMs,
       decoration: BoxDecoration(
         color: AppColors.blue900.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
         border: Border.all(color: AppColors.blue700),
       ),
       child: Row(
         children: [
-          const Icon(Icons.arrow_upward, color: AppColors.blue400, size: 20),
-          const SizedBox(width: 12),
+          const Icon(
+            Icons.arrow_upward,
+            color: AppColors.blue400,
+            size: AppSpacing.iconSizeDefault,
+          ),
+          const SizedBox(width: AppSpacing.ms),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,7 +406,7 @@ class _ShopModalState extends State<ShopModal>
                   'Parent Room',
                   style: TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 12,
+                    fontSize: AppSpacing.fontSizeSmall,
                   ),
                 ),
                 Text(

@@ -242,7 +242,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             // Content
             Expanded(
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
+                duration: AppSpacing.animationFast,
                 child: _buildStepContent(),
               ),
             ),
@@ -257,7 +257,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildStepIndicator() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: AppSpacing.paddingStepIndicator,
       child: Row(
         children: [
           _buildStepDot(0, 'Name'),
@@ -278,15 +278,18 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
       child: Column(
         children: [
           Container(
-            width: 32,
-            height: 32,
+            width: AppSpacing.stepDotSize,
+            height: AppSpacing.stepDotSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isActive
                   ? AppColors.cyan500
                   : AppColors.componentBackground,
               border: isCurrent
-                  ? Border.all(color: AppColors.textPrimary, width: 2)
+                  ? Border.all(
+                      color: AppColors.textPrimary,
+                      width: AppSpacing.borderWidth,
+                    )
                   : null,
             ),
             child: Center(
@@ -301,11 +304,11 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppSpacing.fontSizeSmall,
               color: isActive ? AppColors.textPrimary : AppColors.textDisabled,
             ),
           ),
@@ -317,8 +320,8 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   Widget _buildStepLine(int afterStep) {
     final isActive = _currentStep > afterStep;
     return Container(
-      height: 2,
-      width: 40,
+      height: AppSpacing.stepLineHeight,
+      width: AppSpacing.stepLineWidth,
       color: isActive ? AppColors.cyan500 : AppColors.componentBackground,
     );
   }
@@ -338,31 +341,37 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildNameStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.paddingL,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Choose Your Name',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppSpacing.fontSizeHeading,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
           const Text(
             '2-16 characters',
-            style: TextStyle(fontSize: 14, color: AppColors.textHint),
+            style: TextStyle(
+              fontSize: AppSpacing.fontSizeDefault,
+              color: AppColors.textHint,
+            ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
 
           // Name input
           TextField(
             controller: _nameController,
             focusNode: _nameFocusNode,
             autofocus: true,
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 18),
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: AppSpacing.fontSizeLarge,
+            ),
             maxLength: CharacterNameConstants.maxLength,
             decoration: InputDecoration(
               hintText: 'Enter name...',
@@ -373,21 +382,21 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               filled: true,
               fillColor: AppColors.componentBackground,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
                 borderSide: const BorderSide(
                   color: AppColors.cyan500,
-                  width: 2,
+                  width: AppSpacing.borderWidth,
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
                 borderSide: const BorderSide(
                   color: AppColors.redAccent,
-                  width: 2,
+                  width: AppSpacing.borderWidth,
                 ),
               ),
               suffixIcon: IconButton(
@@ -400,17 +409,20 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             onSubmitted: (_) => _nextStep(),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.l),
 
           // Name suggestions
           const Text(
             'Or try one of these:',
-            style: TextStyle(fontSize: 14, color: AppColors.textTertiary),
+            style: TextStyle(
+              fontSize: AppSpacing.fontSizeDefault,
+              color: AppColors.textTertiary,
+            ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.ms),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.s,
+            runSpacing: AppSpacing.s,
             children: List.generate(5, (index) {
               final name = CharacterNameGenerator.generate();
               return ActionChip(
@@ -456,15 +468,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
         children: [
           // Character sprite (enlarged)
           Container(
-            width: 192,
-            height: 256,
+            width: AppSpacing.characterPreviewWidth,
+            height: AppSpacing.characterPreviewHeight,
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
               border: Border.all(color: AppColors.cyan700),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
               child: ClipRect(
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -472,8 +484,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                   heightFactor: 1 / spriteSheet.rows,
                   child: Image.asset(
                     spriteSheet.path,
-                    width: 192.0 * spriteSheet.columns,
-                    height: 256.0 * spriteSheet.rows,
+                    width:
+                        AppSpacing.characterPreviewWidth * spriteSheet.columns,
+                    height:
+                        AppSpacing.characterPreviewHeight * spriteSheet.rows,
                     fit: BoxFit.contain,
                     filterQuality: FilterQuality.none,
                   ),
@@ -481,27 +495,33 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.m),
 
           // Name preview
           Text(
             _nameController.text.isEmpty ? 'Unnamed' : _nameController.text,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: AppSpacing.fontSizeXl,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
 
           // Appearance summary
           Text(
             '${_skinTone.name.capitalize()} skin • ${_hairStyle.name.capitalize()} ${_hairColor.name} hair',
-            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
+            style: const TextStyle(
+              fontSize: AppSpacing.fontSizeSmall,
+              color: AppColors.textHint,
+            ),
           ),
           Text(
             '${_outfitVariant.name.capitalize()} outfit',
-            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
+            style: const TextStyle(
+              fontSize: AppSpacing.fontSizeSmall,
+              color: AppColors.textHint,
+            ),
           ),
         ],
       ),
@@ -510,19 +530,19 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildOptionsPanel() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.paddingL,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Customize Appearance',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppSpacing.fontSizeHeading,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.l),
 
           // Gender
           _buildOptionSection(
@@ -591,22 +611,22 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
     final isFocused = _currentStep == 1 && _focusedOptionIndex == rowIndex;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: AppSpacing.ml),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: AppSpacing.fontSizeDefault,
               fontWeight: FontWeight.w500,
               color: isFocused ? AppColors.cyan500 : AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.s,
+            runSpacing: AppSpacing.s,
             children: values.map((v) {
               final isSelected = v == selected;
               return ChoiceChip(
@@ -615,15 +635,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 16,
-                            height: 16,
+                            width: AppSpacing.iconSizeSmall,
+                            height: AppSpacing.iconSizeSmall,
                             decoration: BoxDecoration(
                               color: colorMapper(v),
                               shape: BoxShape.circle,
                               border: Border.all(color: AppColors.borderLight),
                             ),
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: AppSpacing.sm),
                           Text(labelMapper(v)),
                         ],
                       )
@@ -638,7 +658,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                       : AppColors.textSecondary,
                 ),
                 side: isSelected
-                    ? const BorderSide(color: AppColors.cyan500, width: 2)
+                    ? const BorderSide(
+                        color: AppColors.cyan500,
+                        width: AppSpacing.borderWidth,
+                      )
                     : BorderSide.none,
               );
             }).toList(),
@@ -667,40 +690,40 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
         : GameCharacters.mainFemale;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.paddingL,
       child: Column(
         children: [
           const Text(
             'Character Summary',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppSpacing.fontSizeHeading,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
 
           // Character preview card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: AppSpacing.paddingL,
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
               border: Border.all(color: AppColors.cyan700),
             ),
             child: Row(
               children: [
                 // Sprite
                 Container(
-                  width: 120,
-                  height: 160,
+                  width: AppSpacing.characterSummaryWidth,
+                  height: AppSpacing.characterSummaryHeight,
                   decoration: BoxDecoration(
                     color: AppColors.componentBackground,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
                     child: ClipRect(
                       child: Align(
                         alignment: Alignment.topLeft,
@@ -708,8 +731,12 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                         heightFactor: 1 / spriteSheet.rows,
                         child: Image.asset(
                           spriteSheet.path,
-                          width: 120.0 * spriteSheet.columns,
-                          height: 160.0 * spriteSheet.rows,
+                          width:
+                              AppSpacing.characterSummaryWidth *
+                              spriteSheet.columns,
+                          height:
+                              AppSpacing.characterSummaryHeight *
+                              spriteSheet.rows,
                           fit: BoxFit.contain,
                           filterQuality: FilterQuality.none,
                         ),
@@ -717,7 +744,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: AppSpacing.l),
 
                 // Details
                 Expanded(
@@ -727,12 +754,12 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                       Text(
                         _nameController.text,
                         style: const TextStyle(
-                          fontSize: 28,
+                          fontSize: AppSpacing.fontSizeTitle,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.m),
                       _buildSummaryRow(
                         'Gender',
                         _gender == Gender.male ? 'Male' : 'Female',
@@ -760,13 +787,16 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.l),
 
           Text(
             widget.isEditing
                 ? 'Your changes will be saved.'
                 : 'Your character will start with ${GameConstants.startingCredits} credits.',
-            style: const TextStyle(fontSize: 14, color: AppColors.textHint),
+            style: const TextStyle(
+              fontSize: AppSpacing.fontSizeDefault,
+              color: AppColors.textHint,
+            ),
           ),
         ],
       ),
@@ -775,19 +805,25 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildSummaryRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: AppSpacing.s),
       child: Row(
         children: [
           SizedBox(
-            width: 100,
+            width: AppSpacing.summaryLabelWidth,
             child: Text(
               label,
-              style: const TextStyle(fontSize: 14, color: AppColors.textHint),
+              style: const TextStyle(
+                fontSize: AppSpacing.fontSizeDefault,
+                color: AppColors.textHint,
+              ),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
+            style: const TextStyle(
+              fontSize: AppSpacing.fontSizeDefault,
+              color: AppColors.textPrimary,
+            ),
           ),
         ],
       ),
@@ -796,7 +832,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   Widget _buildNavigationButtons() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.paddingL,
       decoration: const BoxDecoration(
         color: AppColors.containerBackground,
         border: Border(top: BorderSide(color: AppColors.borderSubtle)),
@@ -813,21 +849,21 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 side: const BorderSide(color: AppColors.borderLight),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
+                padding: AppSpacing.paddingButton,
               ),
             )
           else
-            const SizedBox(width: 100),
+            const SizedBox(width: AppSpacing.placeholderWidth),
 
           // Gamepad hint
           Text(
             _currentStep == 2
                 ? '🎮 A: Create • B: Back'
                 : '🎮 A: Next • B: Back',
-            style: const TextStyle(fontSize: 12, color: AppColors.textHint),
+            style: const TextStyle(
+              fontSize: AppSpacing.fontSizeSmall,
+              color: AppColors.textHint,
+            ),
           ),
 
           // Next/Create button
@@ -841,7 +877,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             ),
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.cyan600,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              padding: AppSpacing.paddingButtonLarge,
             ),
           ),
         ],

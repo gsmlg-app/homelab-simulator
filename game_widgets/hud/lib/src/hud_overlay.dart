@@ -33,9 +33,9 @@ class _HudOverlayState extends State<HudOverlay> {
           children: [
             // Top bar
             Positioned(
-              top: 16,
-              left: 16,
-              right: 16,
+              top: AppSpacing.topBarOffset,
+              left: AppSpacing.topBarOffset,
+              right: AppSpacing.topBarOffset,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -47,10 +47,10 @@ class _HudOverlayState extends State<HudOverlay> {
 
             // Room summary panel - top right
             Positioned(
-              top: 56,
-              right: 16,
+              top: AppSpacing.roomSummaryOffset,
+              right: AppSpacing.topBarOffset,
               child: SizedBox(
-                width: 200,
+                width: AppSpacing.roomSummaryWidth,
                 child: RoomSummaryPanel(
                   room: state.model.currentRoom,
                   expanded: _summaryExpanded,
@@ -63,7 +63,7 @@ class _HudOverlayState extends State<HudOverlay> {
 
             // Bottom center - interaction hint
             Positioned(
-              bottom: 100,
+              bottom: AppSpacing.bottomHintOffset,
               left: 0,
               right: 0,
               child: Center(
@@ -76,9 +76,9 @@ class _HudOverlayState extends State<HudOverlay> {
             // Placement mode indicator
             if (state.model.placementMode == PlacementMode.placing)
               Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: AppSpacing.topBarOffset,
+                left: AppSpacing.topBarOffset,
+                right: AppSpacing.topBarOffset,
                 child: _buildPlacementHint(state.model),
               ),
           ],
@@ -89,16 +89,16 @@ class _HudOverlayState extends State<HudOverlay> {
 
   Widget _buildModeIndicator(GameMode mode) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: AppSpacing.paddingChip,
       decoration: BoxDecoration(
         color: mode == GameMode.sim ? AppColors.blue800 : AppColors.orange800,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSmall),
       ),
       child: Text(
         mode == GameMode.sim ? 'SIM MODE' : 'LIVE MODE',
         style: const TextStyle(
           color: AppColors.textPrimary,
-          fontSize: 12,
+          fontSize: AppSpacing.fontSizeSmall,
           fontWeight: FontWeight.bold,
           fontFamily: 'monospace',
         ),
@@ -110,25 +110,34 @@ class _HudOverlayState extends State<HudOverlay> {
     final templateName = model.selectedTemplate?.name ?? 'Device';
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: AppSpacing.paddingMs,
       decoration: BoxDecoration(
         color: AppColors.panelBackground,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.amber700, width: 2),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
+        border: Border.all(
+          color: AppColors.amber700,
+          width: AppSpacing.borderWidth,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.place, color: AppColors.amber400),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.s),
           Text(
             'Placing: $templateName',
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: AppSpacing.fontSizeDefault,
+            ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppSpacing.m),
           const Text(
             'Click to place • ESC to cancel',
-            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: AppSpacing.fontSizeSmall,
+            ),
           ),
         ],
       ),
