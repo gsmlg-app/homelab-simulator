@@ -89,7 +89,7 @@ void main() {
         await tester.pump();
 
         final textWidget = tester.widget<Text>(find.text('Loading Homelab...'));
-        expect(textWidget.style?.color, Colors.white70);
+        expect(textWidget.style?.color, AppColors.textSecondary);
       });
 
       testWidgets('loading indicator and text are centered', (tester) async {
@@ -486,7 +486,7 @@ void main() {
         await tester.pump();
 
         final textWidget = tester.widget<Text>(find.text('Loading Homelab...'));
-        expect(textWidget.style?.color, Colors.white70);
+        expect(textWidget.style?.color, AppColors.textSecondary);
       });
     });
   });
