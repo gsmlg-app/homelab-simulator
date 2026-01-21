@@ -29,7 +29,7 @@ class InteractionHint extends StatelessWidget {
 
         return AnimatedOpacity(
           opacity: 1.0,
-          duration: const Duration(milliseconds: 200),
+          duration: AppSpacing.animationFast,
           child: Container(
             padding: AppSpacing.paddingHudPill,
             decoration: BoxDecoration(

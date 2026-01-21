@@ -71,7 +71,7 @@ class DeviceCard extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+                        horizontal: AppSpacing.ms,
                         vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
