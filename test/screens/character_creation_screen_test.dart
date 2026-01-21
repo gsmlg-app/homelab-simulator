@@ -95,8 +95,9 @@ void main() {
         expect(find.text('Choose Your Name'), findsOneWidget);
       });
 
-      testWidgets('accepts valid name and proceeds to appearance step',
-          (tester) async {
+      testWidgets('accepts valid name and proceeds to appearance step', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(home: CharacterCreationScreen()),
         );
@@ -497,15 +498,17 @@ void main() {
     });
 
     group('randomize all', () {
-      testWidgets('Randomize button changes name and appearance',
-          (tester) async {
+      testWidgets('Randomize button changes name and appearance', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(home: CharacterCreationScreen()),
         );
 
         // Initially name should be empty
-        final textFieldBefore =
-            tester.widget<TextField>(find.byType(TextField));
+        final textFieldBefore = tester.widget<TextField>(
+          find.byType(TextField),
+        );
         expect(textFieldBefore.controller!.text, isEmpty);
 
         // Tap Randomize button in app bar
@@ -513,8 +516,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Name should now have text
-        final textFieldAfter =
-            tester.widget<TextField>(find.byType(TextField));
+        final textFieldAfter = tester.widget<TextField>(find.byType(TextField));
         expect(textFieldAfter.controller!.text, isNotEmpty);
       });
     });
@@ -525,8 +527,9 @@ void main() {
         expect(screen.isEditing, isFalse);
       });
 
-      testWidgets('isEditing is true when existing character provided',
-          (_) async {
+      testWidgets('isEditing is true when existing character provided', (
+        _,
+      ) async {
         final existingCharacter = CharacterModel.create(
           name: 'Test',
           gender: Gender.male,
@@ -536,8 +539,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         );
 
-        final screen =
-            CharacterCreationScreen(existingCharacter: existingCharacter);
+        final screen = CharacterCreationScreen(
+          existingCharacter: existingCharacter,
+        );
         expect(screen.isEditing, isTrue);
       });
     });

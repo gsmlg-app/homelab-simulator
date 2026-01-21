@@ -116,7 +116,9 @@ void main() {
       });
 
       test('copies outfitVariant', () {
-        final modified = character.copyWith(outfitVariant: OutfitVariant.formal);
+        final modified = character.copyWith(
+          outfitVariant: OutfitVariant.formal,
+        );
         expect(modified.outfitVariant, OutfitVariant.formal);
         expect(modified.gender, character.gender);
       });

@@ -168,10 +168,7 @@ void main() {
     group('edge cases', () {
       test('handles high position values', () {
         const farPos = GridPosition(100, 100);
-        final player = PlayerComponent(
-          initialPosition: farPos,
-          tileSize: 32.0,
-        );
+        final player = PlayerComponent(initialPosition: farPos, tileSize: 32.0);
 
         expect(player.position, Vector2(3200.0, 3200.0));
         expect(player.gridPosition, farPos);

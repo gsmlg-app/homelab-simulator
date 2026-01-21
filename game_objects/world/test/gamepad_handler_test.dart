@@ -174,9 +174,7 @@ void main() {
   group('GamepadHandler callback patterns', () {
     test('supports direction callback chain', () {
       final directions = <Direction>[];
-      final handler = GamepadHandler(
-        onDirection: (dir) => directions.add(dir),
-      );
+      final handler = GamepadHandler(onDirection: (dir) => directions.add(dir));
 
       // Simulate the callback being invoked multiple times
       handler.onDirection!(Direction.up);

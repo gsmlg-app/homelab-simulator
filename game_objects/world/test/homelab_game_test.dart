@@ -278,11 +278,7 @@ void main() {
         name: 'Room 1',
         type: RoomType.serverRoom,
       );
-      const room2 = RoomModel(
-        id: 'room-2',
-        name: 'Room 2',
-        type: RoomType.aws,
-      );
+      const room2 = RoomModel(id: 'room-2', name: 'Room 2', type: RoomType.aws);
       const multiRoomModel = GameModel(
         rooms: [room1, room2],
         currentRoomId: 'room-1',
@@ -336,10 +332,7 @@ void main() {
       final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
 
       expect(game.worldBloc.state.canInteract, isTrue);
-      expect(
-        game.worldBloc.state.availableInteraction,
-        InteractionType.door,
-      );
+      expect(game.worldBloc.state.availableInteraction, InteractionType.door);
     });
   });
 }

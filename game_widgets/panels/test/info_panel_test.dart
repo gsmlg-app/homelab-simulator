@@ -201,12 +201,7 @@ void main() {
               title: 'Nested',
               icon: Icons.layers,
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.star),
-                    Text('Nested content'),
-                  ],
-                ),
+                Row(children: [Icon(Icons.star), Text('Nested content')]),
               ],
             ),
           ),
@@ -257,11 +252,7 @@ void main() {
 
     group('widget properties', () {
       test('is a StatelessWidget', () {
-        const panel = InfoPanel(
-          title: 'test',
-          icon: Icons.info,
-          children: [],
-        );
+        const panel = InfoPanel(title: 'test', icon: Icons.info, children: []);
         expect(panel, isA<StatelessWidget>());
       });
 
@@ -286,11 +277,7 @@ void main() {
       });
 
       test('icon property is accessible', () {
-        const panel = InfoPanel(
-          title: 'test',
-          icon: Icons.star,
-          children: [],
-        );
+        const panel = InfoPanel(title: 'test', icon: Icons.star, children: []);
         expect(panel.icon, Icons.star);
       });
     });

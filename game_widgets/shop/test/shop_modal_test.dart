@@ -507,7 +507,9 @@ void main() {
 
     group('GameError state', () {
       testWidgets('renders nothing when state is GameError', (tester) async {
-        when(() => mockGameBloc.state).thenReturn(const GameError('test error'));
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(const GameError('test error'));
 
         await tester.pumpWidget(buildTestWidget());
 

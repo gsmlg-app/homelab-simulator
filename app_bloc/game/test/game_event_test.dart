@@ -457,15 +457,18 @@ void main() {
         expect(eventSet.length, 6);
       });
 
-      test('events with same type but different values deduplicate correctly', () {
-        const move1 = GameMovePlayer(Direction.up);
-        const move2 = GameMovePlayer(Direction.up);
-        const move3 = GameMovePlayer(Direction.down);
+      test(
+        'events with same type but different values deduplicate correctly',
+        () {
+          const move1 = GameMovePlayer(Direction.up);
+          const move2 = GameMovePlayer(Direction.up);
+          const move3 = GameMovePlayer(Direction.down);
 
-        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
-        final moveSet = <GameEvent>{move1, move2, move3};
-        expect(moveSet.length, 2);
-      });
+          // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+          final moveSet = <GameEvent>{move1, move2, move3};
+          expect(moveSet.length, 2);
+        },
+      );
     });
   });
 }

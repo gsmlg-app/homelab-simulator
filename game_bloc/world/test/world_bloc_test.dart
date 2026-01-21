@@ -599,7 +599,10 @@ void main() {
       });
 
       test('InteractionRequested props contains entityId and type', () {
-        const event = InteractionRequested('terminal', InteractionType.terminal);
+        const event = InteractionRequested(
+          'terminal',
+          InteractionType.terminal,
+        );
         expect(event.props.length, 2);
         expect(event.props, contains('terminal'));
         expect(event.props, contains(InteractionType.terminal));

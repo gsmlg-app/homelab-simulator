@@ -95,10 +95,7 @@ void main() {
 
       test('doorHighlight is brighter than doorNormal', () {
         // Compare blue channel as a proxy for brightness
-        expect(
-          AppColors.doorHighlight.b,
-          greaterThan(AppColors.doorNormal.b),
-        );
+        expect(AppColors.doorHighlight.b, greaterThan(AppColors.doorNormal.b));
       });
     });
 
@@ -111,8 +108,14 @@ void main() {
       });
 
       test('terminalScreen is green', () {
-        expect(AppColors.terminalScreen.g, greaterThan(AppColors.terminalScreen.r));
-        expect(AppColors.terminalScreen.g, greaterThan(AppColors.terminalScreen.b));
+        expect(
+          AppColors.terminalScreen.g,
+          greaterThan(AppColors.terminalScreen.r),
+        );
+        expect(
+          AppColors.terminalScreen.g,
+          greaterThan(AppColors.terminalScreen.b),
+        );
       });
     });
 

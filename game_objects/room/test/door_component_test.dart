@@ -241,20 +241,14 @@ void main() {
       });
 
       test('handles very small tile size', () {
-        final component = DoorComponent(
-          door: testDoorTop,
-          tileSize: 8.0,
-        );
+        final component = DoorComponent(door: testDoorTop, tileSize: 8.0);
 
         expect(component.tileSize, 8.0);
         expect(component.size, Vector2.all(8.0));
       });
 
       test('handles very large tile size', () {
-        final component = DoorComponent(
-          door: testDoorTop,
-          tileSize: 256.0,
-        );
+        final component = DoorComponent(door: testDoorTop, tileSize: 256.0);
 
         expect(component.tileSize, 256.0);
         expect(component.size, Vector2.all(256.0));

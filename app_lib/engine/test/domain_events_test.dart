@@ -693,16 +693,18 @@ void main() {
         expect(eventSet.length, 6);
       });
 
-      test('events with same type but different values deduplicate correctly',
-          () {
-        const credit1 = CreditsChanged(100);
-        const credit2 = CreditsChanged(100);
-        const credit3 = CreditsChanged(-50);
+      test(
+        'events with same type but different values deduplicate correctly',
+        () {
+          const credit1 = CreditsChanged(100);
+          const credit2 = CreditsChanged(100);
+          const credit3 = CreditsChanged(-50);
 
-        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
-        final creditSet = <DomainEvent>{credit1, credit2, credit3};
-        expect(creditSet.length, 2);
-      });
+          // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+          final creditSet = <DomainEvent>{credit1, credit2, credit3};
+          expect(creditSet.length, 2);
+        },
+      );
 
       test('singleton events deduplicate in Set', () {
         const loaded1 = GameLoaded();

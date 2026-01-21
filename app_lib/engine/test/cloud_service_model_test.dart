@@ -162,10 +162,7 @@ void main() {
           serviceType: 'EC2',
           position: GridPosition(1, 1),
           metadata: {
-            'config': {
-              'enabled': true,
-              'timeout': 5000,
-            },
+            'config': {'enabled': true, 'timeout': 5000},
             'tags': ['production', 'critical'],
           },
         );
@@ -212,7 +209,9 @@ void main() {
           },
         );
 
-        final restored = CloudServiceModel.fromJson(serviceWithUnicode.toJson());
+        final restored = CloudServiceModel.fromJson(
+          serviceWithUnicode.toJson(),
+        );
 
         expect(restored.metadata['label'], '日本語テスト');
         expect(restored.metadata['emoji'], '🚀✨');
@@ -228,15 +227,12 @@ void main() {
           category: ServiceCategory.compute,
           serviceType: 'VPS',
           position: GridPosition(4, 4),
-          metadata: {
-            'cpu': 4,
-            'memory': 8192,
-            'price': 19.99,
-            'ratio': 0.5,
-          },
+          metadata: {'cpu': 4, 'memory': 8192, 'price': 19.99, 'ratio': 0.5},
         );
 
-        final restored = CloudServiceModel.fromJson(serviceWithNumbers.toJson());
+        final restored = CloudServiceModel.fromJson(
+          serviceWithNumbers.toJson(),
+        );
 
         expect(restored.metadata['cpu'], 4);
         expect(restored.metadata['memory'], 8192);

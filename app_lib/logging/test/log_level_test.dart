@@ -82,10 +82,7 @@ void main() {
 
       test('adjacent levels differ by 1', () {
         for (int i = 1; i < LogLevel.values.length; i++) {
-          expect(
-            LogLevel.values[i].value - LogLevel.values[i - 1].value,
-            1,
-          );
+          expect(LogLevel.values[i].value - LogLevel.values[i - 1].value, 1);
         }
       });
     });

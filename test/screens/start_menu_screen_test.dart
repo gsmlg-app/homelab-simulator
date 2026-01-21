@@ -16,9 +16,7 @@ void main() {
 
     group('initial state', () {
       testWidgets('renders title', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('HOMELAB'), findsOneWidget);
@@ -26,30 +24,21 @@ void main() {
       });
 
       testWidgets('shows Create New Character button', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('CREATE NEW CHARACTER'), findsOneWidget);
       });
 
       testWidgets('shows gamepad hint', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
-        expect(
-          find.textContaining('D-Pad: Navigate'),
-          findsOneWidget,
-        );
+        expect(find.textContaining('D-Pad: Navigate'), findsOneWidget);
       });
 
       testWidgets('shows empty state when no characters', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('No saved characters'), findsOneWidget);
@@ -61,9 +50,7 @@ void main() {
       });
 
       testWidgets('shows loading indicator initially', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
 
         // Before pumpAndSettle, should show loading
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -78,9 +65,7 @@ void main() {
     group('with saved characters', () {
       Future<void> setupWithCharacters(List<CharacterModel> characters) async {
         final json = jsonEncode(characters.map((c) => c.toJson()).toList());
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
       }
 
       testWidgets('displays character cards', (tester) async {
@@ -94,9 +79,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('TestPlayer'), findsOneWidget);
@@ -114,9 +97,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.byIcon(Icons.edit_outlined), findsOneWidget);
@@ -134,9 +115,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.byIcon(Icons.delete_outline), findsOneWidget);
@@ -162,17 +141,16 @@ void main() {
         );
         await setupWithCharacters([character1, character2]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('Player1'), findsOneWidget);
         expect(find.text('Player2'), findsOneWidget);
       });
 
-      testWidgets('tapping delete button shows confirmation dialog',
-          (tester) async {
+      testWidgets('tapping delete button shows confirmation dialog', (
+        tester,
+      ) async {
         final character = CharacterModel.create(
           name: 'TestPlayer',
           gender: Gender.male,
@@ -183,9 +161,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.delete_outline));
@@ -211,9 +187,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.delete_outline));
@@ -239,9 +213,7 @@ void main() {
         );
         await setupWithCharacters([character]);
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.delete_outline));
@@ -268,13 +240,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         );
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         // Press arrow down to select first character
@@ -288,8 +256,9 @@ void main() {
         expect(shape.side.color, Colors.white);
       });
 
-      testWidgets('arrow up from first character stays at first character',
-          (tester) async {
+      testWidgets('arrow up from first character stays at first character', (
+        tester,
+      ) async {
         final character = CharacterModel.create(
           name: 'TestPlayer',
           gender: Gender.male,
@@ -299,13 +268,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         );
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         // First go to character
@@ -322,8 +287,9 @@ void main() {
         expect(shape.side.color, Colors.white);
       });
 
-      testWidgets('delete key triggers delete on selected character',
-          (tester) async {
+      testWidgets('delete key triggers delete on selected character', (
+        tester,
+      ) async {
         final character = CharacterModel.create(
           name: 'TestPlayer',
           gender: Gender.male,
@@ -333,13 +299,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         );
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         // Select the character
@@ -366,13 +328,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         ).copyWith(totalPlayTime: 30);
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('30s'), findsOneWidget);
@@ -388,13 +346,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         ).copyWith(totalPlayTime: 300); // 5 minutes
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('5m'), findsOneWidget);
@@ -410,13 +364,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         ).copyWith(totalPlayTime: 7500); // 2h 5m
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('2h 5m'), findsOneWidget);
@@ -432,61 +382,51 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         ).copyWith(lastPlayedAt: DateTime.now());
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('Today'), findsOneWidget);
       });
 
       testWidgets('formats date as Yesterday', (tester) async {
-        final character = CharacterModel.create(
-          name: 'TestPlayer',
-          gender: Gender.male,
-          skinTone: SkinTone.medium,
-          hairStyle: HairStyle.short,
-          hairColor: HairColor.brown,
-          outfitVariant: OutfitVariant.casual,
-        ).copyWith(
-          lastPlayedAt: DateTime.now().subtract(const Duration(days: 1)),
-        );
+        final character =
+            CharacterModel.create(
+              name: 'TestPlayer',
+              gender: Gender.male,
+              skinTone: SkinTone.medium,
+              hairStyle: HairStyle.short,
+              hairColor: HairColor.brown,
+              outfitVariant: OutfitVariant.casual,
+            ).copyWith(
+              lastPlayedAt: DateTime.now().subtract(const Duration(days: 1)),
+            );
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('Yesterday'), findsOneWidget);
       });
 
       testWidgets('formats date as X days ago', (tester) async {
-        final character = CharacterModel.create(
-          name: 'TestPlayer',
-          gender: Gender.male,
-          skinTone: SkinTone.medium,
-          hairStyle: HairStyle.short,
-          hairColor: HairColor.brown,
-          outfitVariant: OutfitVariant.casual,
-        ).copyWith(
-          lastPlayedAt: DateTime.now().subtract(const Duration(days: 3)),
-        );
+        final character =
+            CharacterModel.create(
+              name: 'TestPlayer',
+              gender: Gender.male,
+              skinTone: SkinTone.medium,
+              hairStyle: HairStyle.short,
+              hairColor: HairColor.brown,
+              outfitVariant: OutfitVariant.casual,
+            ).copyWith(
+              lastPlayedAt: DateTime.now().subtract(const Duration(days: 3)),
+            );
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('3 days ago'), findsOneWidget);
@@ -503,13 +443,9 @@ void main() {
           outfitVariant: OutfitVariant.casual,
         ).copyWith(lastPlayedAt: oldDate);
         final json = jsonEncode([character.toJson()]);
-        SharedPreferences.setMockInitialValues({
-          'homelab_characters': json,
-        });
+        SharedPreferences.setMockInitialValues({'homelab_characters': json});
 
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         expect(find.text('6/15/2024'), findsOneWidget);
@@ -518,9 +454,7 @@ void main() {
 
     group('gradient background', () {
       testWidgets('has gradient container decoration', (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: StartMenuScreen()),
-        );
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
         await tester.pumpAndSettle();
 
         final container = tester.widget<Container>(

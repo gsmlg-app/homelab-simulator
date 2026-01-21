@@ -270,6 +270,7 @@ class RoomModel extends Equatable {
   ];
 
   @override
-  String toString() => 'RoomModel(id: $id, name: $name, type: $type, '
+  String toString() =>
+      'RoomModel(id: $id, name: $name, type: $type, '
       'devices: ${devices.length}, doors: ${doors.length})';
 }

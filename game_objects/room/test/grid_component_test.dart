@@ -206,7 +206,11 @@ void main() {
       });
 
       test('position does not affect size', () {
-        final grid = GridComponent(gridWidth: 10, gridHeight: 10, tileSize: 32.0);
+        final grid = GridComponent(
+          gridWidth: 10,
+          gridHeight: 10,
+          tileSize: 32.0,
+        );
         grid.position = Vector2(1000, 1000);
 
         expect(grid.size, Vector2(320.0, 320.0));

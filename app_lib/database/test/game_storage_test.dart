@@ -153,11 +153,8 @@ void main() {
       test('should handle game with many rooms', () async {
         final rooms = List.generate(
           50,
-          (i) => RoomModel(
-            id: 'room-$i',
-            name: 'Room $i',
-            type: RoomType.custom,
-          ),
+          (i) =>
+              RoomModel(id: 'room-$i', name: 'Room $i', type: RoomType.custom),
         );
         final game = GameModel(
           currentRoomId: 'room-0',
@@ -228,7 +225,10 @@ void main() {
 
         expect(loaded, isNotNull);
         expect(loaded!.rooms.first.cloudServices.length, 1);
-        expect(loaded.rooms.first.cloudServices.first.provider, CloudProvider.aws);
+        expect(
+          loaded.rooms.first.cloudServices.first.provider,
+          CloudProvider.aws,
+        );
       });
 
       test('should handle game with doors in rooms', () async {
@@ -292,7 +292,10 @@ void main() {
       test('should return null for partially valid JSON', () async {
         final prefs = await SharedPreferences.getInstance();
         // Valid JSON but missing required fields
-        await prefs.setString('homelab_game_state', '{"currentRoomId": "room-1"}');
+        await prefs.setString(
+          'homelab_game_state',
+          '{"currentRoomId": "room-1"}',
+        );
 
         final result = await storage.load();
         expect(result, isNull);
@@ -314,7 +317,6 @@ void main() {
 
         expect(loaded!.credits, -500);
       });
-
     });
 
     group('storage key', () {

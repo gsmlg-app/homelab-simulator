@@ -162,7 +162,11 @@ void main() {
       });
 
       test('handles non-square dimensions', () {
-        final room = RoomComponent(gridWidth: 30, gridHeight: 10, tileSize: 32.0);
+        final room = RoomComponent(
+          gridWidth: 30,
+          gridHeight: 10,
+          tileSize: 32.0,
+        );
 
         expect(room.size.x, 960.0);
         expect(room.size.y, 320.0);
@@ -193,7 +197,11 @@ void main() {
       });
 
       test('position does not affect size', () {
-        final room = RoomComponent(gridWidth: 10, gridHeight: 10, tileSize: 32.0);
+        final room = RoomComponent(
+          gridWidth: 10,
+          gridHeight: 10,
+          tileSize: 32.0,
+        );
         room.position = Vector2(500, 500);
 
         expect(room.size, Vector2(320.0, 320.0));

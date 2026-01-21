@@ -195,7 +195,9 @@ void main() {
     });
 
     test('supportedLocales has specific language codes', () {
-      final codes = AppLocale.supportedLocales.map((l) => l.languageCode).toSet();
+      final codes = AppLocale.supportedLocales
+          .map((l) => l.languageCode)
+          .toSet();
       expect(codes.contains('en'), isTrue);
     });
 
@@ -208,7 +210,9 @@ void main() {
   });
 
   group('localization edge cases', () {
-    testWidgets('handles missing locale gracefully', (WidgetTester tester) async {
+    testWidgets('handles missing locale gracefully', (
+      WidgetTester tester,
+    ) async {
       late BuildContext capturedContext;
 
       await tester.pumpWidget(
@@ -232,7 +236,9 @@ void main() {
       expect(capturedContext.l10n, isNotNull);
     });
 
-    testWidgets('all common strings are non-empty', (WidgetTester tester) async {
+    testWidgets('all common strings are non-empty', (
+      WidgetTester tester,
+    ) async {
       late BuildContext capturedContext;
 
       await tester.pumpWidget(

@@ -284,7 +284,10 @@ void main() {
           ),
         );
 
-        expect(find.text('Very Long Device Name That Might Overflow'), findsOneWidget);
+        expect(
+          find.text('Very Long Device Name That Might Overflow'),
+          findsOneWidget,
+        );
       });
 
       testWidgets('renders short device name', (tester) async {

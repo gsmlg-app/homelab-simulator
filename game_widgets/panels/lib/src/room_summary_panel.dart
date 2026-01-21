@@ -90,10 +90,7 @@ class RoomSummaryPanel extends StatelessWidget {
         // Device counts
         if (room.devices.isNotEmpty) ...[
           _buildSectionHeader('Devices', room.devices.length),
-          if (expanded)
-            _buildDeviceCounts()
-          else
-            _buildCompactDeviceCounts(),
+          if (expanded) _buildDeviceCounts() else _buildCompactDeviceCounts(),
         ],
 
         // Cloud service counts

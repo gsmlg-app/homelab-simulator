@@ -53,7 +53,9 @@ void main() {
       expect(materialApp.title, 'Homelab Simulator');
     });
 
-    testWidgets('App has custom scaffold background', (WidgetTester tester) async {
+    testWidgets('App has custom scaffold background', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
       expect(
@@ -83,10 +85,7 @@ void main() {
     testWidgets('App has dark color scheme', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(
-        materialApp.theme?.colorScheme.brightness,
-        Brightness.dark,
-      );
+      expect(materialApp.theme?.colorScheme.brightness, Brightness.dark);
     });
 
     testWidgets('App is a StatefulWidget', (WidgetTester tester) async {
@@ -94,8 +93,9 @@ void main() {
       expect(app, isA<StatefulWidget>());
     });
 
-    testWidgets('GameBloc is initialized with GameInitialize',
-        (WidgetTester tester) async {
+    testWidgets('GameBloc is initialized with GameInitialize', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       final context = tester.element(find.byType(MaterialApp));
       final gameBloc = context.read<GameBloc>();
@@ -103,8 +103,9 @@ void main() {
       expect(gameBloc.state, isA<GameState>());
     });
 
-    testWidgets('App has correct scaffold background hex value',
-        (WidgetTester tester) async {
+    testWidgets('App has correct scaffold background hex value', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
       final bgColor = materialApp.theme?.scaffoldBackgroundColor;
@@ -112,15 +113,13 @@ void main() {
       expect(bgColor!.toARGB32(), 0xFF0D0D1A);
     });
 
-    testWidgets('App theme uses copyWith from dark theme',
-        (WidgetTester tester) async {
+    testWidgets('App theme uses copyWith from dark theme', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
       // Dark theme has dark surface colors
-      expect(
-        materialApp.theme?.colorScheme.surface,
-        isNotNull,
-      );
+      expect(materialApp.theme?.colorScheme.surface, isNotNull);
     });
   });
 }

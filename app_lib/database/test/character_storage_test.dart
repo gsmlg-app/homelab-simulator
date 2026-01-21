@@ -214,10 +214,7 @@ void main() {
     group('edge cases', () {
       test('should handle many characters', () async {
         for (int i = 0; i < 100; i++) {
-          final char = createTestCharacter(
-            id: 'char-$i',
-            name: 'Character $i',
-          );
+          final char = createTestCharacter(id: 'char-$i', name: 'Character $i');
           await storage.save(char);
         }
 
@@ -225,24 +222,24 @@ void main() {
         expect(result.length, 100);
       });
 
-      test('should handle characters with special characters in name', () async {
-        final char = createTestCharacter(
-          id: 'char-special',
-          name: 'Test "Quotes" & <Brackets>',
-        );
+      test(
+        'should handle characters with special characters in name',
+        () async {
+          final char = createTestCharacter(
+            id: 'char-special',
+            name: 'Test "Quotes" & <Brackets>',
+          );
 
-        await storage.save(char);
-        final loaded = await storage.load('char-special');
+          await storage.save(char);
+          final loaded = await storage.load('char-special');
 
-        expect(loaded, isNotNull);
-        expect(loaded!.name, 'Test "Quotes" & <Brackets>');
-      });
+          expect(loaded, isNotNull);
+          expect(loaded!.name, 'Test "Quotes" & <Brackets>');
+        },
+      );
 
       test('should handle unicode names', () async {
-        final char = createTestCharacter(
-          id: 'char-unicode',
-          name: '测试角色 🎮',
-        );
+        final char = createTestCharacter(id: 'char-unicode', name: '测试角色 🎮');
 
         await storage.save(char);
         final loaded = await storage.load('char-unicode');

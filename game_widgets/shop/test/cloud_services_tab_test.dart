@@ -217,7 +217,9 @@ void main() {
       expect(find.text('Vultr Services'), findsOneWidget);
     });
 
-    testWidgets('shows Cloudflare services header for Cloudflare room', (tester) async {
+    testWidgets('shows Cloudflare services header for Cloudflare room', (
+      tester,
+    ) async {
       const room = RoomModel(
         id: 'cf-room',
         name: 'Cloudflare Region',
@@ -234,7 +236,9 @@ void main() {
       expect(find.text('Cloudflare Services'), findsOneWidget);
     });
 
-    testWidgets('shows DigitalOcean services header for DigitalOcean room', (tester) async {
+    testWidgets('shows DigitalOcean services header for DigitalOcean room', (
+      tester,
+    ) async {
       const room = RoomModel(
         id: 'do-room',
         name: 'DO Region',

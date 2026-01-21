@@ -185,21 +185,24 @@ void main() {
         expect(result.selectedTemplate, isNull);
       });
 
-      test('clearSelectedCloudService takes precedence over selectedCloudService', () {
-        const cloudTemplate = CloudServiceTemplate(
-          provider: CloudProvider.gcp,
-          category: ServiceCategory.storage,
-          serviceType: 'CloudStorage',
-          name: 'Cloud Storage',
-          description: 'Object storage',
-        );
-        // Setting both value and clear flag should result in null
-        final result = game.copyWith(
-          selectedCloudService: cloudTemplate,
-          clearSelectedCloudService: true,
-        );
-        expect(result.selectedCloudService, isNull);
-      });
+      test(
+        'clearSelectedCloudService takes precedence over selectedCloudService',
+        () {
+          const cloudTemplate = CloudServiceTemplate(
+            provider: CloudProvider.gcp,
+            category: ServiceCategory.storage,
+            serviceType: 'CloudStorage',
+            name: 'Cloud Storage',
+            description: 'Object storage',
+          );
+          // Setting both value and clear flag should result in null
+          final result = game.copyWith(
+            selectedCloudService: cloudTemplate,
+            clearSelectedCloudService: true,
+          );
+          expect(result.selectedCloudService, isNull);
+        },
+      );
 
       test('clearSelectedTemplate false preserves template', () {
         const template = DeviceTemplate(
@@ -626,10 +629,7 @@ void main() {
       });
 
       test('removeRoom on empty rooms list returns same state', () {
-        const emptyGame = GameModel(
-          currentRoomId: 'none',
-          rooms: [],
-        );
+        const emptyGame = GameModel(currentRoomId: 'none', rooms: []);
         final afterRemove = emptyGame.removeRoom('any');
 
         expect(afterRemove.rooms, isEmpty);
@@ -664,10 +664,7 @@ void main() {
         };
 
         // This will throw because 'invalid_mode' is not a valid GameMode
-        expect(
-          () => GameModel.fromJson(json),
-          throwsA(isA<ArgumentError>()),
-        );
+        expect(() => GameModel.fromJson(json), throwsA(isA<ArgumentError>()));
       });
 
       test('rootRooms with all rooms having parents returns empty', () {
@@ -691,21 +688,24 @@ void main() {
         expect(orphanGame.rootRooms, isEmpty);
       });
 
-      test('getChildRooms with circular parent references handles gracefully', () {
-        // This tests resilience - doesn't cause infinite loop
-        const circularGame = GameModel(
-          currentRoomId: 'room-a',
-          rooms: [
-            RoomModel(id: 'room-a', name: 'A', parentId: 'room-b'),
-            RoomModel(id: 'room-b', name: 'B', parentId: 'room-a'),
-          ],
-        );
+      test(
+        'getChildRooms with circular parent references handles gracefully',
+        () {
+          // This tests resilience - doesn't cause infinite loop
+          const circularGame = GameModel(
+            currentRoomId: 'room-a',
+            rooms: [
+              RoomModel(id: 'room-a', name: 'A', parentId: 'room-b'),
+              RoomModel(id: 'room-b', name: 'B', parentId: 'room-a'),
+            ],
+          );
 
-        // Should just return direct children, not follow circular refs
-        final childrenOfA = circularGame.getChildRooms('room-a');
-        expect(childrenOfA.length, 1);
-        expect(childrenOfA.first.id, 'room-b');
-      });
+          // Should just return direct children, not follow circular refs
+          final childrenOfA = circularGame.getChildRooms('room-a');
+          expect(childrenOfA.length, 1);
+          expect(childrenOfA.first.id, 'room-b');
+        },
+      );
 
       test('removeRoom handles circular parent references', () {
         // Room A -> Room B -> Room A (circular)

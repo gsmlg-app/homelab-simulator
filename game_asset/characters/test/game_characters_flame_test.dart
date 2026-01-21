@@ -278,10 +278,7 @@ void main() {
       });
 
       test('all GameCharacters sheets have same row count', () {
-        expect(
-          GameCharacters.mainMale.rows,
-          GameCharacters.mainFemale.rows,
-        );
+        expect(GameCharacters.mainMale.rows, GameCharacters.mainFemale.rows);
       });
 
       test('all GameCharacters sheets have same walk animation length', () {

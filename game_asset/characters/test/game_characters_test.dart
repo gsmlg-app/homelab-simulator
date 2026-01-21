@@ -244,22 +244,40 @@ void main() {
 
   group('GameCharacters registry', () {
     test('mainMale and mainFemale have same dimensions', () {
-      expect(GameCharacters.mainMale.frameWidth, GameCharacters.mainFemale.frameWidth);
-      expect(GameCharacters.mainMale.frameHeight, GameCharacters.mainFemale.frameHeight);
+      expect(
+        GameCharacters.mainMale.frameWidth,
+        GameCharacters.mainFemale.frameWidth,
+      );
+      expect(
+        GameCharacters.mainMale.frameHeight,
+        GameCharacters.mainFemale.frameHeight,
+      );
     });
 
     test('mainMale and mainFemale have same grid layout', () {
-      expect(GameCharacters.mainMale.columns, GameCharacters.mainFemale.columns);
+      expect(
+        GameCharacters.mainMale.columns,
+        GameCharacters.mainFemale.columns,
+      );
       expect(GameCharacters.mainMale.rows, GameCharacters.mainFemale.rows);
     });
 
     test('mainMale and mainFemale have same animation rows', () {
-      expect(GameCharacters.mainMale.idleRow, GameCharacters.mainFemale.idleRow);
-      expect(GameCharacters.mainMale.walkRows.length, GameCharacters.mainFemale.walkRows.length);
+      expect(
+        GameCharacters.mainMale.idleRow,
+        GameCharacters.mainFemale.idleRow,
+      );
+      expect(
+        GameCharacters.mainMale.walkRows.length,
+        GameCharacters.mainFemale.walkRows.length,
+      );
     });
 
     test('mainMale and mainFemale have different paths', () {
-      expect(GameCharacters.mainMale.path, isNot(GameCharacters.mainFemale.path));
+      expect(
+        GameCharacters.mainMale.path,
+        isNot(GameCharacters.mainFemale.path),
+      );
     });
   });
 }
