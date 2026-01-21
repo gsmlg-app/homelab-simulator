@@ -142,7 +142,7 @@ void main() {
         final game = const GameModel(
           currentRoomId: '',
           rooms: [],
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(game);
@@ -161,7 +161,7 @@ void main() {
         final game = GameModel(
           currentRoomId: 'room-0',
           rooms: rooms,
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(game);
@@ -189,7 +189,7 @@ void main() {
         final game = GameModel(
           currentRoomId: 'room-with-devices',
           rooms: [roomWithDevices],
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(game);
@@ -219,7 +219,7 @@ void main() {
         final game = GameModel(
           currentRoomId: 'room-with-services',
           rooms: [roomWithServices],
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(game);
@@ -250,7 +250,7 @@ void main() {
         final game = GameModel(
           currentRoomId: 'room-with-doors',
           rooms: [roomWithDoors],
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(game);
