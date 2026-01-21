@@ -11,6 +11,17 @@ class GameConstants {
 
   /// The entity ID used for the terminal component.
   static const String terminalEntityId = 'terminal';
+
+  /// Threshold for gamepad button press detection.
+  /// Values above this are considered "pressed".
+  static const double gamepadButtonPressThreshold = 0.5;
+
+  /// Deadzone for analog stick input.
+  /// Values below this magnitude are ignored.
+  static const double gamepadAnalogDeadzone = 0.3;
+
+  /// Cooldown time in seconds for D-pad input to prevent rapid repeats.
+  static const double gamepadDpadCooldownSeconds = 0.15;
 }
 
 /// Convert grid position to pixel position

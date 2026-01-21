@@ -42,8 +42,9 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   void _handleGamepadEvent(GamepadEvent event) {
-    // Only handle button presses (value > 0.5 means pressed)
-    if (event.type == KeyType.button && event.value > 0.5) {
+    // Only handle button presses
+    if (event.type == KeyType.button &&
+        event.value > GameConstants.gamepadButtonPressThreshold) {
       _handleGamepadKey(event.key);
     }
   }

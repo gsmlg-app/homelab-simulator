@@ -31,15 +31,11 @@ class GamepadHandler extends Component {
 
   StreamSubscription<GamepadEvent>? _subscription;
 
-  // Deadzone for analog sticks
-  static const double _deadzone = 0.3;
-
   // Track current direction to avoid repeated events
   Direction _currentDirection = Direction.none;
 
   // Debounce for D-pad
   double _dpadCooldown = 0;
-  static const double _dpadCooldownTime = 0.15;
 
   GamepadHandler({
     this.onDirection,
@@ -77,7 +73,7 @@ class GamepadHandler extends Component {
   }
 
   void _handleButtonEvent(GamepadEvent event) {
-    final pressed = event.value > 0.5;
+    final pressed = event.value > GameConstants.gamepadButtonPressThreshold;
     final button = _mapKeyToButton(event.key);
 
     // Handle D-pad as direction
@@ -85,7 +81,7 @@ class GamepadHandler extends Component {
     if (direction != null && direction != Direction.none) {
       if (pressed && _dpadCooldown <= 0) {
         onDirection?.call(direction);
-        _dpadCooldown = _dpadCooldownTime;
+        _dpadCooldown = GameConstants.gamepadDpadCooldownSeconds;
       }
       return;
     }
@@ -119,7 +115,8 @@ class GamepadHandler extends Component {
     // Calculate direction from stick position
     Direction newDirection = Direction.none;
 
-    if (_leftStickX.abs() > _deadzone || _leftStickY.abs() > _deadzone) {
+    if (_leftStickX.abs() > GameConstants.gamepadAnalogDeadzone ||
+        _leftStickY.abs() > GameConstants.gamepadAnalogDeadzone) {
       // Determine primary direction
       if (_leftStickX.abs() > _leftStickY.abs()) {
         newDirection = _leftStickX > 0 ? Direction.right : Direction.left;
