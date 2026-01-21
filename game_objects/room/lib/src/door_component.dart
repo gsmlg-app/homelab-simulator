@@ -110,8 +110,9 @@ class DoorComponent extends PositionComponent
 
     // Animated glow border when interactable
     if (_isHighlighted) {
-      // Pulsing glow: stroke width oscillates 2-4px
-      final glowIntensity = 0.5 + 0.5 * math.sin(_glowTime * 4.0);
+      // Pulsing glow: stroke width oscillates 2-4px using centralized constants
+      final glowIntensity =
+          0.5 + 0.5 * math.sin(_glowTime * GameConstants.doorGlowFrequency);
       _glowPaint
         ..color = AppColors.doorHighlight.withValues(
           alpha: 0.6 + 0.4 * glowIntensity,

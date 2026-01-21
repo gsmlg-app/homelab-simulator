@@ -87,8 +87,10 @@ class PlacementGhostComponent extends PositionComponent
       return;
     }
 
-    // Breathing animation: opacity oscillates between 0.3-0.5
-    final breathe = 0.4 + 0.1 * math.sin(_breatheTime * 3.0);
+    // Breathing animation using centralized constants
+    final breathe = GameConstants.placementBreatheMinOpacity +
+        GameConstants.placementBreatheAmplitude *
+            math.sin(_breatheTime * GameConstants.placementBreatheFrequency);
     final baseColor = _isValid
         ? AppColors.validPlacementFill
         : AppColors.invalidPlacementFill;
@@ -102,12 +104,14 @@ class PlacementGhostComponent extends PositionComponent
       _fillPaint,
     );
 
-    // Border with matching animation
+    // Border with matching animation using centralized constants
     final borderColor = _isValid
         ? AppColors.validPlacementBorder
         : AppColors.invalidPlacementBorder;
     _borderPaint.color = borderColor.withValues(
-      alpha: 0.7 + 0.3 * math.sin(_breatheTime * 3.0),
+      alpha: GameConstants.placementBreatheBorderMinOpacity +
+          GameConstants.placementBreatheBorderAmplitude *
+              math.sin(_breatheTime * GameConstants.placementBreatheFrequency),
     );
 
     canvas.drawRRect(

@@ -46,8 +46,10 @@ class TerminalComponent extends PositionComponent
       _basePaint,
     );
 
-    // Screen with subtle flicker effect
-    final flicker = 0.9 + 0.1 * math.sin(_flickerTime * 2.5);
+    // Screen with subtle flicker effect using centralized animation constants
+    final flicker = GameConstants.terminalFlickerMin +
+        GameConstants.terminalFlickerAmplitude *
+            math.sin(_flickerTime * GameConstants.terminalFlickerFrequency);
     final screenColor = _isHighlighted
         ? AppColors.terminalHighlight
         : AppColors.terminalScreen;
@@ -59,7 +61,8 @@ class TerminalComponent extends PositionComponent
 
     // Animated highlight border when interactable
     if (_isHighlighted) {
-      final glowIntensity = 0.5 + 0.5 * math.sin(_flickerTime * 4.0);
+      final glowIntensity = 0.5 +
+          0.5 * math.sin(_flickerTime * GameConstants.terminalFlickerFrequency);
       _highlightPaint
         ..color = AppColors.terminalHighlight.withValues(
           alpha: 0.6 + 0.4 * glowIntensity,

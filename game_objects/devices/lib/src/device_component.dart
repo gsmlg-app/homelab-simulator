@@ -97,9 +97,13 @@ class DeviceComponent extends PositionComponent
 
     // Device lights/details with subtle flicker for running devices
     if (device.isRunning) {
-      // Subtle flicker: base brightness 0.7-1.0 with sine wave
-      final flicker =
-          0.85 + 0.15 * math.sin(_flickerTime * 3.0 + _flickerPhase);
+      // Subtle flicker using centralized animation constants
+      final flicker = GameConstants.deviceFlickerMin +
+          GameConstants.deviceFlickerAmplitude *
+              math.sin(
+                _flickerTime * GameConstants.deviceFlickerFrequency +
+                    _flickerPhase,
+              );
       _flickerPaint.color = AppColors.runningIndicator.withValues(
         alpha: flicker,
       );

@@ -42,6 +42,57 @@ void main() {
     test('gamepadDpadCooldownSeconds is 0.15', () {
       expect(GameConstants.gamepadDpadCooldownSeconds, 0.15);
     });
+
+    // Animation constants
+    group('animation constants', () {
+      test('deviceFlickerFrequency is 3.0', () {
+        expect(GameConstants.deviceFlickerFrequency, 3.0);
+      });
+
+      test('deviceFlickerMin is 0.85', () {
+        expect(GameConstants.deviceFlickerMin, 0.85);
+      });
+
+      test('deviceFlickerAmplitude is 0.15', () {
+        expect(GameConstants.deviceFlickerAmplitude, 0.15);
+      });
+
+      test('doorGlowFrequency is 4.0', () {
+        expect(GameConstants.doorGlowFrequency, 4.0);
+      });
+
+      test('terminalFlickerFrequency is 4.0', () {
+        expect(GameConstants.terminalFlickerFrequency, 4.0);
+      });
+
+      test('terminalFlickerMin is 0.9', () {
+        expect(GameConstants.terminalFlickerMin, 0.9);
+      });
+
+      test('terminalFlickerAmplitude is 0.1', () {
+        expect(GameConstants.terminalFlickerAmplitude, 0.1);
+      });
+
+      test('placementBreatheFrequency is 3.0', () {
+        expect(GameConstants.placementBreatheFrequency, 3.0);
+      });
+
+      test('placementBreatheMinOpacity is 0.4', () {
+        expect(GameConstants.placementBreatheMinOpacity, 0.4);
+      });
+
+      test('placementBreatheAmplitude is 0.1', () {
+        expect(GameConstants.placementBreatheAmplitude, 0.1);
+      });
+
+      test('placementBreatheBorderMinOpacity is 0.7', () {
+        expect(GameConstants.placementBreatheBorderMinOpacity, 0.7);
+      });
+
+      test('placementBreatheBorderAmplitude is 0.3', () {
+        expect(GameConstants.placementBreatheBorderAmplitude, 0.3);
+      });
+    });
   });
 
   group('gridToPixel', () {
