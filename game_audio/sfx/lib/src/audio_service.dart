@@ -1,6 +1,9 @@
+import 'package:logging/logging.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 import 'sfx_type.dart';
+
+final _log = Logger('AudioService');
 
 /// Service for managing game audio including sound effects and background music.
 ///
@@ -38,14 +41,21 @@ class AudioService {
 
   /// Initializes the audio service and preloads common sound effects.
   ///
-  /// This should be called once during app startup.
+  /// This should be called once during app startup. If preloading fails,
+  /// the service will still be marked as initialized but audio playback
+  /// may fail for specific sounds.
   Future<void> initialize() async {
     if (_initialized) return;
 
-    // Preload common sound effects for faster playback
-    await FlameAudio.audioCache.loadAll([
-      for (final sfx in SfxType.values) sfx.assetPath,
-    ]);
+    try {
+      // Preload common sound effects for faster playback
+      await FlameAudio.audioCache.loadAll([
+        for (final sfx in SfxType.values) sfx.assetPath,
+      ]);
+      _log.fine('Audio service initialized with ${SfxType.values.length} sounds');
+    } catch (e, stackTrace) {
+      _log.warning('Failed to preload audio assets: $e', e, stackTrace);
+    }
 
     _initialized = true;
   }
@@ -53,10 +63,15 @@ class AudioService {
   /// Plays a sound effect.
   ///
   /// Does nothing if sound effects are disabled or the service is not initialized.
+  /// Logs a warning if playback fails but does not throw.
   Future<void> playSfx(SfxType sfx) async {
     if (!_sfxEnabled || !_initialized) return;
 
-    await FlameAudio.play(sfx.assetPath, volume: _sfxVolume);
+    try {
+      await FlameAudio.play(sfx.assetPath, volume: _sfxVolume);
+    } catch (e, stackTrace) {
+      _log.warning('Failed to play sound effect ${sfx.name}: $e', e, stackTrace);
+    }
   }
 
   /// Enables or disables sound effects.
@@ -92,18 +107,28 @@ class AudioService {
   /// Starts playing background music in a loop.
   ///
   /// [filename] is the asset path relative to the audio folder.
+  /// Logs a warning if playback fails but does not throw.
   Future<void> playBackgroundMusic(String filename) async {
     if (!_musicEnabled || !_initialized) return;
 
-    await FlameAudio.bgm.play(filename, volume: _musicVolume);
+    try {
+      await FlameAudio.bgm.play(filename, volume: _musicVolume);
+    } catch (e, stackTrace) {
+      _log.warning('Failed to play background music $filename: $e', e, stackTrace);
+    }
   }
 
   /// Stops the current background music.
   ///
   /// Does nothing if the service is not initialized.
+  /// Logs a warning if stopping fails but does not throw.
   Future<void> stopBackgroundMusic() async {
     if (!_initialized) return;
-    await FlameAudio.bgm.stop();
+    try {
+      await FlameAudio.bgm.stop();
+    } catch (e, stackTrace) {
+      _log.warning('Failed to stop background music: $e', e, stackTrace);
+    }
   }
 
   /// Pauses the current background music.
@@ -126,10 +151,16 @@ class AudioService {
   ///
   /// Call this when the game is shutting down.
   /// Does nothing if the service is not initialized.
+  /// Logs a warning if cleanup fails but does not throw.
   Future<void> dispose() async {
     if (!_initialized) return;
-    await FlameAudio.bgm.stop();
-    FlameAudio.audioCache.clearAll();
+    try {
+      await FlameAudio.bgm.stop();
+      FlameAudio.audioCache.clearAll();
+      _log.fine('Audio service disposed');
+    } catch (e, stackTrace) {
+      _log.warning('Failed to dispose audio resources: $e', e, stackTrace);
+    }
     _initialized = false;
   }
 }
