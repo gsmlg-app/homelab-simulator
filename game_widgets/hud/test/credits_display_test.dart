@@ -189,7 +189,8 @@ void main() {
     });
 
     testWidgets('text has correct style', (tester) async {
-      final model = GameModel.initial().copyWith(credits: 1000);
+      final model =
+          GameModel.initial().copyWith(credits: GameConstants.startingCredits);
       when(() => mockGameBloc.state).thenReturn(GameReady(model));
 
       await tester.pumpWidget(
