@@ -193,7 +193,7 @@ void main() {
           lastPlayedAt: testTime,
           totalPlayTime: 3600,
           level: 5,
-          credits: 1000,
+          credits: GameConstants.startingCredits,
         );
 
         await storage.save(char);
