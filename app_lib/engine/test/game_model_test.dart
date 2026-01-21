@@ -441,6 +441,60 @@ void main() {
       });
     });
 
+    group('findDoorById', () {
+      test('returns door when found in current room', () {
+        const door = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'aws-room-1',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        final roomWithDoor = serverRoom.addDoor(door);
+        final gameWithDoor = game.updateRoom(roomWithDoor);
+
+        final result = gameWithDoor.findDoorById('door-1');
+
+        expect(result, isNotNull);
+        expect(result!.id, 'door-1');
+        expect(result.targetRoomId, 'aws-room-1');
+      });
+
+      test('returns null when door not found', () {
+        final result = game.findDoorById('nonexistent-door');
+
+        expect(result, isNull);
+      });
+
+      test('returns null when current room has no doors', () {
+        final result = game.findDoorById('any-door');
+
+        expect(result, isNull);
+      });
+
+      test('finds correct door among multiple doors', () {
+        const door1 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-a',
+          wallSide: WallSide.top,
+          wallPosition: 3,
+        );
+        const door2 = DoorModel(
+          id: 'door-2',
+          targetRoomId: 'room-b',
+          wallSide: WallSide.bottom,
+          wallPosition: 7,
+        );
+        final roomWithDoors = serverRoom.addDoor(door1).addDoor(door2);
+        final gameWithDoors = game.updateRoom(roomWithDoors);
+
+        final result = gameWithDoors.findDoorById('door-2');
+
+        expect(result, isNotNull);
+        expect(result!.id, 'door-2');
+        expect(result.targetRoomId, 'room-b');
+      });
+    });
+
     group('equality', () {
       test('equal games are equal', () {
         const game1 = GameModel(

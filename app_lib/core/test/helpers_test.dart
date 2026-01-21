@@ -26,6 +26,10 @@ void main() {
     test('startingCredits is 1000', () {
       expect(GameConstants.startingCredits, 1000);
     });
+
+    test('terminalEntityId is terminal', () {
+      expect(GameConstants.terminalEntityId, 'terminal');
+    });
   });
 
   group('gridToPixel', () {

@@ -3,6 +3,38 @@ import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
 void main() {
+  group('findDeviceTemplateById', () {
+    test('returns template when found', () {
+      final result = findDeviceTemplateById('server_basic');
+
+      expect(result, isNotNull);
+      expect(result!.id, 'server_basic');
+      expect(result.name, 'Basic Server');
+    });
+
+    test('returns null when template not found', () {
+      final result = findDeviceTemplateById('nonexistent_template');
+
+      expect(result, isNull);
+    });
+
+    test('finds all default templates by ID', () {
+      for (final template in defaultDeviceTemplates) {
+        final result = findDeviceTemplateById(template.id);
+        expect(result, isNotNull, reason: 'Should find template ${template.id}');
+        expect(result!.id, template.id);
+      }
+    });
+
+    test('returns correct template from multiple options', () {
+      final result = findDeviceTemplateById('router_basic');
+
+      expect(result, isNotNull);
+      expect(result!.id, 'router_basic');
+      expect(result.type, DeviceType.router);
+    });
+  });
+
   group('reduce', () {
     late GameModel model;
 
