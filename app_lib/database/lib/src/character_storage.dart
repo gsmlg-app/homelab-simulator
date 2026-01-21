@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
 /// Storage service for character persistence
 class CharacterStorage {
   static const String _storageKey = 'homelab_characters';
+  static final _log = Logger('CharacterStorage');
 
   SharedPreferences? _prefs;
 
@@ -17,15 +19,22 @@ class CharacterStorage {
   Future<List<CharacterModel>> loadAll() async {
     final prefs = await _preferences;
     final json = prefs.getString(_storageKey);
-    if (json == null) return [];
+    if (json == null) {
+      _log.fine('No saved characters found');
+      return [];
+    }
 
     try {
       final list = jsonDecode(json) as List<dynamic>;
-      return list
-          .map((e) => CharacterModel.fromJson(e as Map<String, dynamic>))
-          .toList()
-        ..sort((a, b) => b.lastPlayedAt.compareTo(a.lastPlayedAt));
-    } catch (_) {
+      final characters =
+          list
+              .map((e) => CharacterModel.fromJson(e as Map<String, dynamic>))
+              .toList()
+            ..sort((a, b) => b.lastPlayedAt.compareTo(a.lastPlayedAt));
+      _log.fine('Loaded ${characters.length} characters');
+      return characters;
+    } catch (e, stackTrace) {
+      _log.warning('Failed to load characters: $e', e, stackTrace);
       return [];
     }
   }
@@ -37,8 +46,10 @@ class CharacterStorage {
 
     if (index >= 0) {
       characters[index] = character;
+      _log.fine('Updated character: ${character.name}');
     } else {
       characters.add(character);
+      _log.fine('Created character: ${character.name}');
     }
 
     await _saveAll(characters);
@@ -49,16 +60,19 @@ class CharacterStorage {
     final characters = await loadAll();
     characters.removeWhere((c) => c.id == characterId);
     await _saveAll(characters);
+    _log.fine('Deleted character: $characterId');
   }
 
   /// Get a single character by ID
   Future<CharacterModel?> load(String characterId) async {
     final characters = await loadAll();
-    try {
-      return characters.firstWhere((c) => c.id == characterId);
-    } catch (_) {
-      return null;
+    for (final character in characters) {
+      if (character.id == characterId) {
+        return character;
+      }
     }
+    _log.fine('Character not found: $characterId');
+    return null;
   }
 
   Future<void> _saveAll(List<CharacterModel> characters) async {
