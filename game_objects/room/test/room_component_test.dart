@@ -40,7 +40,7 @@ void main() {
         final room = RoomComponent(
           gridWidth: 10,
           gridHeight: 8,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(room.size, Vector2(320.0, 256.0));
@@ -126,7 +126,7 @@ void main() {
 
     group('edge cases', () {
       test('handles minimum grid dimensions', () {
-        final room = RoomComponent(gridWidth: 1, gridHeight: 1, tileSize: 32.0);
+        final room = RoomComponent(gridWidth: 1, gridHeight: 1, tileSize: GameConstants.tileSize);
 
         expect(room.size, Vector2(32.0, 32.0));
       });
@@ -135,7 +135,7 @@ void main() {
         final room = RoomComponent(
           gridWidth: 100,
           gridHeight: 50,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(room.size, Vector2(3200.0, 1600.0));
@@ -165,7 +165,7 @@ void main() {
         final room = RoomComponent(
           gridWidth: 30,
           gridHeight: 10,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(room.size.x, 960.0);
@@ -200,7 +200,7 @@ void main() {
         final room = RoomComponent(
           gridWidth: 10,
           gridHeight: 10,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
         room.position = Vector2(500, 500);
 
