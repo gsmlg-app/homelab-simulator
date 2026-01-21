@@ -192,6 +192,29 @@ void main() {
         const b = GridPosition(3, 6);
         expect(a, isNot(b));
       });
+
+      test('positions can be used in Set collections', () {
+        const a = GridPosition(3, 5);
+        const b = GridPosition(3, 5);
+        const c = GridPosition(4, 6);
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final positionSet = {a, b, c};
+        expect(positionSet.length, 2);
+        expect(positionSet.contains(a), isTrue);
+        expect(positionSet.contains(c), isTrue);
+      });
+
+      test('positions can be used as Map keys', () {
+        const a = GridPosition(3, 5);
+        const b = GridPosition(3, 5);
+
+        final positionMap = <GridPosition, String>{a: 'first'};
+        positionMap[b] = 'second';
+
+        expect(positionMap.length, 1);
+        expect(positionMap[a], 'second');
+      });
     });
 
     group('toString', () {
