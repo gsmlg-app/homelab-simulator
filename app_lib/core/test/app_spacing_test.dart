@@ -155,7 +155,7 @@ void main() {
       });
     });
 
-    group('border radius', () {
+    group('border radius values', () {
       test('radiusSmall is 4.0', () {
         expect(AppSpacing.radiusSmall, 4.0);
       });
@@ -170,6 +170,71 @@ void main() {
 
       test('radiusXl is 16.0', () {
         expect(AppSpacing.radiusXl, 16.0);
+      });
+    });
+
+    group('border radius presets', () {
+      test('borderRadiusSmall is BorderRadius.circular(4)', () {
+        expect(
+          AppSpacing.borderRadiusSmall,
+          const BorderRadius.all(Radius.circular(4.0)),
+        );
+      });
+
+      test('borderRadiusSm is BorderRadius.circular(6)', () {
+        expect(
+          AppSpacing.borderRadiusSm,
+          const BorderRadius.all(Radius.circular(6.0)),
+        );
+      });
+
+      test('borderRadiusMedium is BorderRadius.circular(8)', () {
+        expect(
+          AppSpacing.borderRadiusMedium,
+          const BorderRadius.all(Radius.circular(8.0)),
+        );
+      });
+
+      test('borderRadiusLarge is BorderRadius.circular(12)', () {
+        expect(
+          AppSpacing.borderRadiusLarge,
+          const BorderRadius.all(Radius.circular(12.0)),
+        );
+      });
+
+      test('borderRadiusXl is BorderRadius.circular(16)', () {
+        expect(
+          AppSpacing.borderRadiusXl,
+          const BorderRadius.all(Radius.circular(16.0)),
+        );
+      });
+
+      test('borderRadiusSmall uses radiusSmall constant', () {
+        expect(
+          AppSpacing.borderRadiusSmall,
+          BorderRadius.all(Radius.circular(AppSpacing.radiusSmall)),
+        );
+      });
+
+      test('borderRadiusMedium uses radiusMedium constant', () {
+        expect(
+          AppSpacing.borderRadiusMedium,
+          BorderRadius.all(Radius.circular(AppSpacing.radiusMedium)),
+        );
+      });
+
+      test('borderRadiusLarge uses radiusLarge constant', () {
+        expect(
+          AppSpacing.borderRadiusLarge,
+          BorderRadius.all(Radius.circular(AppSpacing.radiusLarge)),
+        );
+      });
+
+      test('borderRadiusXl uses radiusXl constant', () {
+        expect(
+          AppSpacing.borderRadiusXl,
+          BorderRadius.all(Radius.circular(AppSpacing.radiusXl)),
+        );
       });
     });
 

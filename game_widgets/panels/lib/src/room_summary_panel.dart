@@ -51,9 +51,9 @@ class RoomSummaryPanel extends StatelessWidget {
             labelColor: AppColors.grey500,
           ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s),
         const Divider(color: AppColors.grey600, height: 1),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s),
 
         // Object counts header
         Row(
@@ -72,10 +72,13 @@ class RoomSummaryPanel extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm,
+                vertical: AppSpacing.borderWidth,
+              ),
+              decoration: const BoxDecoration(
                 color: AppColors.cyan800,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppSpacing.borderRadiusMedium,
               ),
               child: Text(
                 '${room.totalObjectCount}',
@@ -88,7 +91,7 @@ class RoomSummaryPanel extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s),
 
         // Device counts
         if (room.devices.isNotEmpty) ...[
@@ -98,7 +101,7 @@ class RoomSummaryPanel extends StatelessWidget {
 
         // Cloud service counts
         if (room.cloudServices.isNotEmpty) ...[
-          if (room.devices.isNotEmpty) const SizedBox(height: 8),
+          if (room.devices.isNotEmpty) const SizedBox(height: AppSpacing.s),
           _buildSectionHeader('Cloud Services', room.cloudServices.length),
           if (expanded)
             _buildCloudServiceCounts()
@@ -108,14 +111,14 @@ class RoomSummaryPanel extends StatelessWidget {
 
         // Door count
         if (room.doors.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
           _buildSectionHeader('Doors', room.doors.length),
         ],
 
         // Empty state
         if (room.totalObjectCount == 0)
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.s),
             child: Text(
               'No objects placed',
               style: TextStyle(
@@ -128,7 +131,7 @@ class RoomSummaryPanel extends StatelessWidget {
 
         // Expand/collapse button
         if (room.totalObjectCount > 0 && onToggleExpand != null) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.s),
           GestureDetector(
             onTap: onToggleExpand,
             child: Row(
@@ -139,7 +142,7 @@ class RoomSummaryPanel extends StatelessWidget {
                   color: AppColors.grey500,
                   size: 16,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Text(
                   expanded ? 'Show less' : 'Show details',
                   style: const TextStyle(
@@ -181,8 +184,8 @@ class RoomSummaryPanel extends StatelessWidget {
   Widget _buildCompactDeviceCounts() {
     final counts = countBy(room.devices, (d) => d.type);
     return Wrap(
-      spacing: 4,
-      runSpacing: 4,
+      spacing: AppSpacing.xs,
+      runSpacing: AppSpacing.xs,
       children: counts.entries.map((e) {
         return _buildCountChip(e.key.icon, e.value, AppColors.blue700);
       }).toList(),
@@ -192,8 +195,8 @@ class RoomSummaryPanel extends StatelessWidget {
   Widget _buildCompactServiceCounts() {
     final counts = countBy(room.cloudServices, (s) => s.provider);
     return Wrap(
-      spacing: 4,
-      runSpacing: 4,
+      spacing: AppSpacing.xs,
+      runSpacing: AppSpacing.xs,
       children: counts.entries.map((e) {
         return _buildCountChip(e.key.icon, e.value, e.key.color);
       }).toList(),
@@ -202,16 +205,19 @@ class RoomSummaryPanel extends StatelessWidget {
 
   Widget _buildCountChip(IconData icon, int count, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.borderWidth,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: AppSpacing.borderRadiusSmall,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             '$count',
             style: TextStyle(
@@ -231,11 +237,11 @@ class RoomSummaryPanel extends StatelessWidget {
     return Column(
       children: counts.entries.map((e) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.borderWidth),
           child: Row(
             children: [
               Icon(e.key.icon, size: 14, color: AppColors.blue400),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.s),
               Expanded(
                 child: Text(
                   e.key.displayName,
@@ -276,7 +282,10 @@ class RoomSummaryPanel extends StatelessWidget {
           children: [
             // Provider header
             Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 2),
+              padding: const EdgeInsets.only(
+                top: AppSpacing.xs,
+                bottom: AppSpacing.borderWidth,
+              ),
               child: Row(
                 children: [
                   Icon(
@@ -284,7 +293,7 @@ class RoomSummaryPanel extends StatelessWidget {
                     size: 12,
                     color: providerEntry.key.color,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       providerEntry.key.displayName,
@@ -306,7 +315,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(catEntry.key.icon, size: 12, color: AppColors.grey400),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
                         catEntry.key.displayName,

@@ -65,7 +65,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
         child: Row(
           children: [
             Icon(roomProvider.icon, color: roomProvider.color, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.s),
             Text(
               '${roomProvider.displayName} Services',
               style: const TextStyle(
@@ -96,12 +96,12 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             ),
             backgroundColor: AppColors.grey800,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.s),
           ...CloudProvider.values
               .where((p) => p != CloudProvider.none)
               .map(
                 (provider) => Padding(
-                  padding: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.only(right: AppSpacing.s),
                   child: FilterChip(
                     avatar: Icon(
                       provider.icon,
@@ -147,10 +147,10 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             ),
             backgroundColor: AppColors.grey800,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.s),
           ...ServiceCategory.values.map(
             (category) => Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.only(right: AppSpacing.s),
               child: FilterChip(
                 avatar: Icon(
                   category.icon,
@@ -200,12 +200,12 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.paddingM,
       itemCount: services.length,
       itemBuilder: (context, index) {
         final template = services[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.only(bottom: AppSpacing.s),
           child: _ServiceCard(
             template: template,
             onTap: () {
@@ -228,12 +228,12 @@ class _ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppSpacing.borderRadiusMedium,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: AppSpacing.paddingMs,
         decoration: BoxDecoration(
           color: AppColors.overlayBackground,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: AppSpacing.borderRadiusMedium,
           border: Border.all(color: AppColors.grey700),
         ),
         child: Row(
@@ -243,7 +243,7 @@ class _ServiceCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: template.provider.color.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppSpacing.borderRadiusMedium,
               ),
               child: Icon(
                 template.category.icon,
@@ -251,7 +251,7 @@ class _ServiceCard extends StatelessWidget {
                 size: 24,
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.ms),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,7 +263,7 @@ class _ServiceCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: AppSpacing.borderWidth),
                   Text(
                     template.description,
                     style: const TextStyle(
@@ -271,14 +271,14 @@ class _ServiceCard extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Row(
                     children: [
                       _buildChip(
                         template.provider.displayName,
                         template.provider.color,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       _buildChip(
                         template.category.displayName,
                         AppColors.grey600,
@@ -297,10 +297,13 @@ class _ServiceCard extends StatelessWidget {
 
   Widget _buildChip(String label, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.borderWidth,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: AppSpacing.borderRadiusSmall,
       ),
       child: Text(
         label,

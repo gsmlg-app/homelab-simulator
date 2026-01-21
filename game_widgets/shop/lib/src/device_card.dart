@@ -26,25 +26,25 @@ class DeviceCard extends StatelessWidget {
       color: AppColors.grey900,
       child: InkWell(
         onTap: canAfford ? onTap : null,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppSpacing.borderRadiusMedium,
         child: Opacity(
           opacity: canAfford ? 1.0 : 0.5,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: AppSpacing.paddingMs,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: AppSpacing.paddingS,
                       decoration: BoxDecoration(
                         color: deviceColor.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: AppSpacing.borderRadiusMedium,
                       ),
                       child: Icon(deviceIcon, color: deviceColor, size: 32),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.ms),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +72,13 @@ class DeviceCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
-                        vertical: 4,
+                        vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
                         color: canAfford
                             ? AppColors.green800
                             : AppColors.red800,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: AppSpacing.borderRadiusSmall,
                       ),
                       child: Text(
                         '\$${template.cost}',
@@ -91,7 +91,7 @@ class DeviceCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.s),
                 Text(
                   template.description,
                   style: const TextStyle(

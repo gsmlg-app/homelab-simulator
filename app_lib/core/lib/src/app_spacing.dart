@@ -156,6 +156,33 @@ abstract final class AppSpacing {
   /// Extra large border radius (16px)
   static const double radiusXl = 16.0;
 
+  // ============ BORDER RADIUS PRESETS ============
+
+  /// BorderRadius.circular(4) - small elements like tags, chips
+  static const BorderRadius borderRadiusSmall = BorderRadius.all(
+    Radius.circular(radiusSmall),
+  );
+
+  /// BorderRadius.circular(6) - small buttons
+  static const BorderRadius borderRadiusSm = BorderRadius.all(
+    Radius.circular(6.0),
+  );
+
+  /// BorderRadius.circular(8) - medium elements like cards, buttons
+  static const BorderRadius borderRadiusMedium = BorderRadius.all(
+    Radius.circular(radiusMedium),
+  );
+
+  /// BorderRadius.circular(12) - large elements
+  static const BorderRadius borderRadiusLarge = BorderRadius.all(
+    Radius.circular(radiusLarge),
+  );
+
+  /// BorderRadius.circular(16) - extra large elements like modals
+  static const BorderRadius borderRadiusXl = BorderRadius.all(
+    Radius.circular(radiusXl),
+  );
+
   // ============ BORDER WIDTHS ============
 
   /// Default border width (2px)
