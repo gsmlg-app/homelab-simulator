@@ -119,14 +119,14 @@ class _HudOverlayState extends State<HudOverlay> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.place, color: AppColors.amber400),
+          const Icon(Icons.place, color: AppColors.amber400),
           const SizedBox(width: 8),
           Text(
             'Placing: $templateName',
             style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
           ),
           const SizedBox(width: 16),
-          Text(
+          const Text(
             'Click to place • ESC to cancel',
             style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
           ),

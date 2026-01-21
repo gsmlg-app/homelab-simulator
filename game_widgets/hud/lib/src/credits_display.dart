@@ -23,7 +23,7 @@ class CreditsDisplay extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.monetization_on,
                 color: AppColors.green400,
                 size: 24,
@@ -31,7 +31,7 @@ class CreditsDisplay extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 '\$$credits',
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.green400,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

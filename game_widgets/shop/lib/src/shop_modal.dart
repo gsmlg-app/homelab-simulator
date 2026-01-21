@@ -112,18 +112,18 @@ class _ShopModalState extends State<ShopModal>
   Widget _buildHeader(BuildContext context, int credits) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          const Row(
             children: [
               Icon(Icons.store, color: AppColors.cyan400, size: 28),
-              const SizedBox(width: 12),
-              const Text(
+              SizedBox(width: 12),
+              Text(
                 'TERMINAL',
                 style: TextStyle(
                   color: AppColors.textPrimary,
@@ -279,7 +279,7 @@ class _ShopModalState extends State<ShopModal>
               const SizedBox(height: 4),
               Text(
                 '${model.currentRoom.totalObjectCount} objects, ${model.currentRoom.doors.length} doors',
-                style: TextStyle(color: AppColors.grey500, fontSize: 12),
+                style: const TextStyle(color: AppColors.grey500, fontSize: 12),
               ),
             ],
           ),
@@ -288,7 +288,7 @@ class _ShopModalState extends State<ShopModal>
           const SizedBox(height: 16),
           Text(
             'Child Rooms (${childRooms.length})',
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.grey500,
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -333,7 +333,7 @@ class _ShopModalState extends State<ShopModal>
                   ),
                   Text(
                     '${room.totalObjectCount} objects',
-                    style: TextStyle(color: AppColors.grey500, fontSize: 12),
+                    style: const TextStyle(color: AppColors.grey500, fontSize: 12),
                   ),
                 ],
               ),
@@ -367,7 +367,7 @@ class _ShopModalState extends State<ShopModal>
       ),
       child: Row(
         children: [
-          Icon(Icons.arrow_upward, color: AppColors.blue400, size: 20),
+          const Icon(Icons.arrow_upward, color: AppColors.blue400, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

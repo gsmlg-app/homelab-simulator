@@ -801,7 +801,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   Widget _buildNavigationButtons() {
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.containerBackground,
         border: Border(
           top: BorderSide(color: AppColors.borderSubtle),

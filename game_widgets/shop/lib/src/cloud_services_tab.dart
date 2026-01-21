@@ -189,7 +189,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
         : baseServices;
 
     if (services.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No services available',
           style: TextStyle(color: AppColors.grey500),
@@ -264,7 +264,7 @@ class _ServiceCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     template.description,
-                    style: TextStyle(color: AppColors.grey500, fontSize: 12),
+                    style: const TextStyle(color: AppColors.grey500, fontSize: 12),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -283,7 +283,7 @@ class _ServiceCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.add_circle_outline, color: AppColors.cyan400),
+            const Icon(Icons.add_circle_outline, color: AppColors.cyan400),
           ],
         ),
       ),

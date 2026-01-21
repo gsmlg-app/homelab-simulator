@@ -196,9 +196,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
   Widget _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,7 +235,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Select Provider',
           style: TextStyle(
             color: AppColors.textSecondary,
@@ -247,7 +247,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         ..._providerPresets.map((preset) => _buildProviderCard(preset)),
         if (_selectedProvider?.regions.isNotEmpty == true) ...[
           const SizedBox(height: 20),
-          Text(
+          const Text(
             'Select Region',
             style: TextStyle(
               color: AppColors.textSecondary,
@@ -271,9 +271,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
             style: const TextStyle(color: AppColors.textPrimary),
             decoration: InputDecoration(
               labelText: 'Room Name',
-              labelStyle: TextStyle(color: AppColors.textSecondary),
+              labelStyle: const TextStyle(color: AppColors.textSecondary),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.grey600),
+                borderSide: const BorderSide(color: AppColors.grey600),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
@@ -335,7 +335,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                     if (preset.regions.isNotEmpty)
                       Text(
                         '${preset.regions.length} regions available',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.grey500,
                           fontSize: 12,
                         ),
@@ -398,7 +398,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           ),
         ),
         const SizedBox(height: 20),
-        Text(
+        const Text(
           'Door Wall',
           style: TextStyle(
             color: AppColors.textSecondary,
@@ -414,7 +414,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               .toList(),
         ),
         const SizedBox(height: 20),
-        Text(
+        const Text(
           'Door Position',
           style: TextStyle(
             color: AppColors.textSecondary,
@@ -425,7 +425,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         const SizedBox(height: 12),
         Row(
           children: [
-            Text('1', style: TextStyle(color: AppColors.textSecondary)),
+            const Text('1', style: TextStyle(color: AppColors.textSecondary)),
             Expanded(
               child: Slider(
                 value: _doorPosition.toDouble(),
@@ -440,7 +440,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
             ),
             Text(
               '$_maxDoorPosition',
-              style: TextStyle(color: AppColors.textSecondary),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -588,9 +588,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
   Widget _buildFooter(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
