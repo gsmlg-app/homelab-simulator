@@ -233,5 +233,178 @@ void main() {
       final opacity = tester.widget<Opacity>(find.byType(Opacity).first);
       expect(opacity.opacity, 1.0);
     });
+
+    testWidgets('can afford with exact credits', (tester) async {
+      var tapped = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: serverTemplate,
+              currentCredits: 500, // Exact cost
+              onTap: () => tapped = true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(DeviceCard));
+      expect(tapped, isTrue);
+
+      final opacity = tester.widget<Opacity>(find.byType(Opacity).first);
+      expect(opacity.opacity, 1.0);
+    });
+
+    testWidgets('uses Card widget with dark background', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: serverTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      final card = tester.widget<Card>(find.byType(Card));
+      expect(card.color, Colors.grey.shade900);
+    });
+
+    testWidgets('uses InkWell for tap effect', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: serverTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(InkWell), findsOneWidget);
+    });
+
+    testWidgets('displays switch device icon', (tester) async {
+      const switchTemplate = DeviceTemplate(
+        id: 'switch_basic',
+        name: 'Basic Switch',
+        description: 'Network switch',
+        type: DeviceType.switch_,
+        cost: 300,
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: switchTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.hub), findsOneWidget);
+    });
+
+    testWidgets('displays NAS device icon', (tester) async {
+      const nasTemplate = DeviceTemplate(
+        id: 'nas_basic',
+        name: 'Basic NAS',
+        description: 'Network attached storage',
+        type: DeviceType.nas,
+        cost: 400,
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: nasTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.storage), findsOneWidget);
+    });
+
+    testWidgets('displays ROUTER type text for router', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: routerTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('ROUTER'), findsOneWidget);
+    });
+
+    testWidgets('contains Column layout', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: serverTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(Column), findsAtLeast(1));
+    });
+
+    testWidgets('contains Row layout for header', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: serverTemplate,
+              currentCredits: 1000,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(Row), findsAtLeast(1));
+    });
+
+    testWidgets('displays zero cost device', (tester) async {
+      const freeTemplate = DeviceTemplate(
+        id: 'free_item',
+        name: 'Free Item',
+        description: 'A free device',
+        type: DeviceType.server,
+        cost: 0,
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DeviceCard(
+              template: freeTemplate,
+              currentCredits: 0,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('\$0'), findsOneWidget);
+      final opacity = tester.widget<Opacity>(find.byType(Opacity).first);
+      expect(opacity.opacity, 1.0); // Can afford $0 with $0 credits
+    });
   });
 }
