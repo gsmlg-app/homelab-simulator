@@ -543,7 +543,10 @@ void main() {
       });
 
       test('returns unchanged model when removing nonexistent service', () {
-        final result = reduce(model, const CloudServiceRemoved('nonexistent-id'));
+        final result = reduce(
+          model,
+          const CloudServiceRemoved('nonexistent-id'),
+        );
 
         expect(result.currentRoom.cloudServices.length, 0);
         // Model should be functionally equivalent (same structure, different room instance)
@@ -561,7 +564,9 @@ void main() {
           type: DeviceType.server,
           position: GridPosition(5, 5),
         );
-        final roomWithOrphan = model.currentRoom.addDevice(deviceWithUnknownTemplate);
+        final roomWithOrphan = model.currentRoom.addDevice(
+          deviceWithUnknownTemplate,
+        );
         final modelWithOrphan = model.updateRoom(roomWithOrphan);
 
         final result = reduce(
