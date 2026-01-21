@@ -93,6 +93,29 @@ void main() {
         expect(GameConstants.placementBreatheBorderAmplitude, 0.3);
       });
     });
+
+    // Drawing constants
+    group('drawing constants', () {
+      test('deviceBodyPadding is 4.0', () {
+        expect(GameConstants.deviceBodyPadding, 4.0);
+      });
+
+      test('deviceCornerRadius is 4.0', () {
+        expect(GameConstants.deviceCornerRadius, 4.0);
+      });
+
+      test('deviceSelectionInset is 2.0', () {
+        expect(GameConstants.deviceSelectionInset, 2.0);
+      });
+
+      test('deviceLedRadius is 3.0', () {
+        expect(GameConstants.deviceLedRadius, 3.0);
+      });
+
+      test('deviceLedOffset is 10.0', () {
+        expect(GameConstants.deviceLedOffset, 10.0);
+      });
+    });
   });
 
   group('gridToPixel', () {

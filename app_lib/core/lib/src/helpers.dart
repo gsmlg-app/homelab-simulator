@@ -60,6 +60,23 @@ class GameConstants {
 
   /// Placement ghost breathing animation border opacity amplitude.
   static const double placementBreatheBorderAmplitude = 0.3;
+
+  // Drawing constants
+
+  /// Standard padding for device body drawing (pixels).
+  static const double deviceBodyPadding = 4.0;
+
+  /// Standard corner radius for device body (pixels).
+  static const double deviceCornerRadius = 4.0;
+
+  /// Inset for selection highlight stroke (pixels).
+  static const double deviceSelectionInset = 2.0;
+
+  /// Device LED indicator radius (pixels).
+  static const double deviceLedRadius = 3.0;
+
+  /// Device LED indicator offset from edge (pixels).
+  static const double deviceLedOffset = 10.0;
 }
 
 /// Convert grid position to pixel position

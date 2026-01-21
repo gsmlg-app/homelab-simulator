@@ -86,11 +86,17 @@ class DeviceComponent extends PositionComponent
 
   @override
   void render(Canvas canvas) {
+    const padding = GameConstants.deviceBodyPadding;
+    const radius = Radius.circular(GameConstants.deviceCornerRadius);
+    const inset = GameConstants.deviceSelectionInset;
+    const ledRadius = GameConstants.deviceLedRadius;
+    const ledOffset = GameConstants.deviceLedOffset;
+
     // Device body
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
-        const Radius.circular(4),
+        Rect.fromLTWH(padding, padding, size.x - padding * 2, size.y - padding * 2),
+        radius,
       ),
       _bodyPaint,
     );
@@ -107,17 +113,17 @@ class DeviceComponent extends PositionComponent
       _flickerPaint.color = AppColors.runningIndicator.withValues(
         alpha: flicker,
       );
-      canvas.drawCircle(Offset(size.x - 10, 10), 3, _flickerPaint);
+      canvas.drawCircle(Offset(size.x - ledOffset, ledOffset), ledRadius, _flickerPaint);
     } else {
-      canvas.drawCircle(Offset(size.x - 10, 10), 3, _offLightPaint);
+      canvas.drawCircle(Offset(size.x - ledOffset, ledOffset), ledRadius, _offLightPaint);
     }
 
     // Selection highlight
     if (_isSelected) {
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-          const Radius.circular(4),
+          Rect.fromLTWH(inset, inset, size.x - inset * 2, size.y - inset * 2),
+          radius,
         ),
         _selectPaint,
       );
@@ -126,8 +132,8 @@ class DeviceComponent extends PositionComponent
     // Border
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(4, 4, size.x - 8, size.y - 8),
-        const Radius.circular(4),
+        Rect.fromLTWH(padding, padding, size.x - padding * 2, size.y - padding * 2),
+        radius,
       ),
       _borderPaint,
     );
