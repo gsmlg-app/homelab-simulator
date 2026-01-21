@@ -473,7 +473,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
               borderRadius: AppSpacing.borderRadiusXl,
-              border: Border.fromBorderSide(BorderSide(color: AppColors.cyan700)),
+              border: Border.fromBorderSide(BorderSide(
+                color: AppColors.cyan700,
+                width: AppSpacing.borderWidth,
+              )),
             ),
             child: ClipRRect(
               borderRadius: AppSpacing.borderRadiusXl,
@@ -710,7 +713,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
               borderRadius: AppSpacing.borderRadiusXl,
-              border: Border.fromBorderSide(BorderSide(color: AppColors.cyan700)),
+              border: Border.fromBorderSide(BorderSide(
+                color: AppColors.cyan700,
+                width: AppSpacing.borderWidth,
+              )),
             ),
             child: Row(
               children: [
