@@ -322,6 +322,9 @@ abstract final class AppColors {
 
   // ============ TEXT COLORS ============
 
+  /// Pure white for primary text
+  static const Color textPrimary = Color(0xFFFFFFFF);
+
   /// White with 70% opacity (white70)
   static const Color textSecondary = Color(0xB3FFFFFF);
 
@@ -330,4 +333,21 @@ abstract final class AppColors {
 
   /// White with 40% opacity (for hints)
   static const Color textHint = Color(0x66FFFFFF);
+
+  /// White with 38% opacity (for disabled text)
+  static const Color textDisabled = Color(0x61FFFFFF);
+
+  /// White with 30% opacity (for borders/dividers)
+  static const Color borderLight = Color(0x4DFFFFFF);
+
+  /// White with 10% opacity (for subtle borders)
+  static const Color borderSubtle = Color(0x1AFFFFFF);
+
+  // ============ ADDITIONAL ACCENT COLORS ============
+
+  /// Cyan 600 - Medium dark cyan for buttons
+  static const Color cyan600 = Color(0xFF00ACC1);
+
+  /// Red accent for errors
+  static const Color redAccent = Color(0xFFFF5252);
 }

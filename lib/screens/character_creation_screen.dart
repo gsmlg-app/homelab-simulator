@@ -209,7 +209,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
             onPressed: () {
               if (_currentStep > 0) {
                 _previousStep();
@@ -220,15 +220,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           ),
           title: Text(
             widget.isEditing ? 'Edit Character' : 'Create Character',
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
           ),
           actions: [
             TextButton.icon(
               onPressed: _randomizeAll,
-              icon: const Icon(Icons.shuffle, color: Colors.cyan),
+              icon: const Icon(Icons.shuffle, color: AppColors.cyan500),
               label: const Text(
                 'Randomize',
-                style: TextStyle(color: Colors.cyan),
+                style: TextStyle(color: AppColors.cyan500),
               ),
             ),
           ],
@@ -281,16 +281,16 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isActive ? Colors.cyan : AppColors.componentBackground,
+              color: isActive ? AppColors.cyan500 : AppColors.componentBackground,
               border: isCurrent
-                  ? Border.all(color: Colors.white, width: 2)
+                  ? Border.all(color: AppColors.textPrimary, width: 2)
                   : null,
             ),
             child: Center(
               child: Text(
                 '${step + 1}',
                 style: TextStyle(
-                  color: isActive ? Colors.white : Colors.white54,
+                  color: isActive ? AppColors.textPrimary : AppColors.textTertiary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -301,7 +301,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: isActive ? Colors.white : Colors.white38,
+              color: isActive ? AppColors.textPrimary : AppColors.textDisabled,
             ),
           ),
         ],
@@ -314,7 +314,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
     return Container(
       height: 2,
       width: 40,
-      color: isActive ? Colors.cyan : AppColors.componentBackground,
+      color: isActive ? AppColors.cyan500 : AppColors.componentBackground,
     );
   }
 
@@ -342,15 +342,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             '2-16 characters',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.textHint,
             ),
           ),
           const SizedBox(height: 32),
@@ -360,15 +360,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             controller: _nameController,
             focusNode: _nameFocusNode,
             autofocus: true,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(color: AppColors.textPrimary, fontSize: 18),
             maxLength: CharacterNameConstants.maxLength,
             decoration: InputDecoration(
               hintText: 'Enter name...',
-              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
+              hintStyle: const TextStyle(color: AppColors.textHint),
               errorText: _nameError,
-              errorStyle: const TextStyle(color: Colors.redAccent),
-              counterStyle: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
+              errorStyle: const TextStyle(color: AppColors.redAccent),
+              counterStyle: const TextStyle(
+                color: AppColors.textTertiary,
               ),
               filled: true,
               fillColor: AppColors.componentBackground,
@@ -378,14 +378,14 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                borderSide: const BorderSide(color: AppColors.cyan500, width: 2),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                borderSide: const BorderSide(color: AppColors.redAccent, width: 2),
               ),
               suffixIcon: IconButton(
-                icon: const Icon(Icons.shuffle, color: Colors.cyan),
+                icon: const Icon(Icons.shuffle, color: AppColors.cyan500),
                 onPressed: _generateRandomName,
                 tooltip: 'Generate random name',
               ),
@@ -399,7 +399,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           // Name suggestions
           const Text(
             'Or try one of these:',
-            style: TextStyle(fontSize: 14, color: Colors.white54),
+            style: TextStyle(fontSize: 14, color: AppColors.textTertiary),
           ),
           const SizedBox(height: 12),
           Wrap(
@@ -410,7 +410,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               return ActionChip(
                 label: Text(name),
                 backgroundColor: AppColors.componentBackground,
-                labelStyle: const TextStyle(color: Colors.white70),
+                labelStyle: const TextStyle(color: AppColors.textSecondary),
                 side: BorderSide.none,
                 onPressed: () {
                   setState(() {
@@ -455,7 +455,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.cyan.withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.cyan700),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -483,7 +483,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
@@ -491,16 +491,16 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           // Appearance summary
           Text(
             '${_skinTone.name.capitalize()} skin • ${_hairStyle.name.capitalize()} ${_hairColor.name} hair',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.textHint,
             ),
           ),
           Text(
             '${_outfitVariant.name.capitalize()} outfit',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.textHint,
             ),
           ),
         ],
@@ -519,7 +519,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 24),
@@ -600,7 +600,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: isFocused ? Colors.cyan : Colors.white70,
+              color: isFocused ? AppColors.cyan500 : AppColors.textSecondary,
             ),
           ),
           const SizedBox(height: 8),
@@ -620,7 +620,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                             decoration: BoxDecoration(
                               color: colorMapper(v),
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white30),
+                              border: Border.all(color: AppColors.borderLight),
                             ),
                           ),
                           const SizedBox(width: 6),
@@ -631,12 +631,12 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                 selected: isSelected,
                 onSelected: (_) => onSelect(v),
                 backgroundColor: AppColors.componentBackground,
-                selectedColor: Colors.cyan.shade700,
+                selectedColor: AppColors.cyan700,
                 labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : Colors.white70,
+                  color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                 ),
                 side: isSelected
-                    ? const BorderSide(color: Colors.cyan, width: 2)
+                    ? const BorderSide(color: AppColors.cyan500, width: 2)
                     : BorderSide.none,
               );
             }).toList(),
@@ -673,7 +673,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 32),
@@ -685,7 +685,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.cyan.withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.cyan700),
             ),
             child: Row(
               children: [
@@ -727,7 +727,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -764,9 +764,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             widget.isEditing
                 ? 'Your changes will be saved.'
                 : 'Your character will start with ${GameConstants.startingCredits} credits.',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.textHint,
             ),
           ),
         ],
@@ -783,15 +783,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             width: 100,
             child: Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.6),
+                color: AppColors.textHint,
               ),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(fontSize: 14, color: Colors.white),
+            style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
           ),
         ],
       ),
@@ -804,7 +804,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
       decoration: BoxDecoration(
         color: AppColors.containerBackground,
         border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+          top: BorderSide(color: AppColors.borderSubtle),
         ),
       ),
       child: Row(
@@ -817,8 +817,8 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               icon: const Icon(Icons.arrow_back),
               label: const Text('Back'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white70,
-                side: const BorderSide(color: Colors.white30),
+                foregroundColor: AppColors.textSecondary,
+                side: const BorderSide(color: AppColors.borderLight),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 12,
@@ -833,9 +833,9 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             _currentStep == 2
                 ? '🎮 A: Create • B: Back'
                 : '🎮 A: Next • B: Back',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.4),
+              color: AppColors.textHint,
             ),
           ),
 
@@ -849,7 +849,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                   : 'Next',
             ),
             style: FilledButton.styleFrom(
-              backgroundColor: Colors.cyan.shade600,
+              backgroundColor: AppColors.cyan600,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
             ),
           ),
