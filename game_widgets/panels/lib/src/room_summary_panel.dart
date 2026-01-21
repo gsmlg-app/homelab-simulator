@@ -93,7 +93,7 @@ class RoomSummaryPanel extends StatelessWidget {
           if (expanded)
             _buildDeviceCounts()
           else
-            _buildCompactCounts('devices'),
+            _buildCompactDeviceCounts(),
         ],
 
         // Cloud service counts
@@ -103,7 +103,7 @@ class RoomSummaryPanel extends StatelessWidget {
           if (expanded)
             _buildCloudServiceCounts()
           else
-            _buildCompactCounts('services'),
+            _buildCompactServiceCounts(),
         ],
 
         // Door count
@@ -172,32 +172,26 @@ class RoomSummaryPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildCompactCounts(String type) {
-    if (type == 'devices') {
-      final counts = <DeviceType, int>{};
-      for (final device in room.devices) {
-        counts[device.type] = (counts[device.type] ?? 0) + 1;
-      }
-      return Wrap(
-        spacing: 4,
-        runSpacing: 4,
-        children: counts.entries.map((e) {
-          return _buildCountChip(e.key.icon, e.value, Colors.blue.shade700);
-        }).toList(),
-      );
-    } else {
-      final counts = <CloudProvider, int>{};
-      for (final service in room.cloudServices) {
-        counts[service.provider] = (counts[service.provider] ?? 0) + 1;
-      }
-      return Wrap(
-        spacing: 4,
-        runSpacing: 4,
-        children: counts.entries.map((e) {
-          return _buildCountChip(e.key.icon, e.value, e.key.color);
-        }).toList(),
-      );
-    }
+  Widget _buildCompactDeviceCounts() {
+    final counts = countBy(room.devices, (d) => d.type);
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      children: counts.entries.map((e) {
+        return _buildCountChip(e.key.icon, e.value, Colors.blue.shade700);
+      }).toList(),
+    );
+  }
+
+  Widget _buildCompactServiceCounts() {
+    final counts = countBy(room.cloudServices, (s) => s.provider);
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      children: counts.entries.map((e) {
+        return _buildCountChip(e.key.icon, e.value, e.key.color);
+      }).toList(),
+    );
   }
 
   Widget _buildCountChip(IconData icon, int count, Color color) {
@@ -226,10 +220,7 @@ class RoomSummaryPanel extends StatelessWidget {
   }
 
   Widget _buildDeviceCounts() {
-    final counts = <DeviceType, int>{};
-    for (final device in room.devices) {
-      counts[device.type] = (counts[device.type] ?? 0) + 1;
-    }
+    final counts = countBy(room.devices, (d) => d.type);
 
     return Column(
       children: counts.entries.map((e) {
@@ -261,17 +252,16 @@ class RoomSummaryPanel extends StatelessWidget {
   }
 
   Widget _buildCloudServiceCounts() {
-    // Group by provider and category
-    final byProvider = <CloudProvider, Map<ServiceCategory, int>>{};
-    for (final service in room.cloudServices) {
-      byProvider.putIfAbsent(service.provider, () => {});
-      byProvider[service.provider]![service.category] =
-          (byProvider[service.provider]![service.category] ?? 0) + 1;
+    // Group by provider, then count by category
+    final byProvider = groupBy(room.cloudServices, (s) => s.provider);
+    final categoryCounts = <CloudProvider, Map<ServiceCategory, int>>{};
+    for (final entry in byProvider.entries) {
+      categoryCounts[entry.key] = countBy(entry.value, (s) => s.category);
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: byProvider.entries.map((providerEntry) {
+      children: categoryCounts.entries.map((providerEntry) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

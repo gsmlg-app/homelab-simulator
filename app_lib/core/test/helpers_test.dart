@@ -161,4 +161,99 @@ void main() {
       expect(isWithinBounds(GameConstants.terminalPosition), isTrue);
     });
   });
+
+  group('countBy', () {
+    test('returns empty map for empty list', () {
+      final result = countBy<String, int>([], (s) => s.length);
+      expect(result, isEmpty);
+    });
+
+    test('counts single item', () {
+      final result = countBy(['apple'], (s) => s.length);
+      expect(result, {5: 1});
+    });
+
+    test('counts multiple items with same key', () {
+      final result = countBy(['cat', 'dog', 'cow'], (s) => s.length);
+      expect(result, {3: 3});
+    });
+
+    test('counts items with different keys', () {
+      final result = countBy(['a', 'bb', 'ccc', 'dd'], (s) => s.length);
+      expect(result, {1: 1, 2: 2, 3: 1});
+    });
+
+    test('works with enum keys', () {
+      final items = [
+        (type: 'A', value: 1),
+        (type: 'B', value: 2),
+        (type: 'A', value: 3),
+      ];
+      final result = countBy(items, (i) => i.type);
+      expect(result, {'A': 2, 'B': 1});
+    });
+
+    test('works with object field selector', () {
+      final people = [
+        _Person('Alice', 30),
+        _Person('Bob', 25),
+        _Person('Charlie', 30),
+      ];
+      final result = countBy(people, (p) => p.age);
+      expect(result, {30: 2, 25: 1});
+    });
+  });
+
+  group('groupBy', () {
+    test('returns empty map for empty list', () {
+      final result = groupBy<String, int>([], (s) => s.length);
+      expect(result, isEmpty);
+    });
+
+    test('groups single item', () {
+      final result = groupBy(['apple'], (s) => s.length);
+      expect(result, {
+        5: ['apple'],
+      });
+    });
+
+    test('groups multiple items with same key', () {
+      final result = groupBy(['cat', 'dog', 'cow'], (s) => s.length);
+      expect(result, {
+        3: ['cat', 'dog', 'cow'],
+      });
+    });
+
+    test('groups items with different keys', () {
+      final result = groupBy(['a', 'bb', 'ccc', 'dd'], (s) => s.length);
+      expect(result, {
+        1: ['a'],
+        2: ['bb', 'dd'],
+        3: ['ccc'],
+      });
+    });
+
+    test('preserves order within groups', () {
+      final result = groupBy(['apple', 'ant', 'banana', 'axe'], (s) => s[0]);
+      expect(result['a'], ['apple', 'ant', 'axe']);
+      expect(result['b'], ['banana']);
+    });
+
+    test('works with object field selector', () {
+      final people = [
+        _Person('Alice', 30),
+        _Person('Bob', 25),
+        _Person('Charlie', 30),
+      ];
+      final result = groupBy(people, (p) => p.age);
+      expect(result[30]?.map((p) => p.name).toList(), ['Alice', 'Charlie']);
+      expect(result[25]?.map((p) => p.name).toList(), ['Bob']);
+    });
+  });
+}
+
+class _Person {
+  final String name;
+  final int age;
+  _Person(this.name, this.age);
 }

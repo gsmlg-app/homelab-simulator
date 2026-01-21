@@ -33,3 +33,41 @@ bool isWithinBounds(GridPosition pos) {
       pos.y >= 0 &&
       pos.y < GameConstants.roomHeight;
 }
+
+/// Count occurrences of items by a key selector.
+///
+/// Returns a map where keys are the extracted values and values are counts.
+///
+/// Example:
+/// ```dart
+/// final devices = [Device(type: server), Device(type: router), Device(type: server)];
+/// final counts = countBy(devices, (d) => d.type);
+/// // {server: 2, router: 1}
+/// ```
+Map<K, int> countBy<T, K>(Iterable<T> items, K Function(T) keySelector) {
+  final counts = <K, int>{};
+  for (final item in items) {
+    final key = keySelector(item);
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  return counts;
+}
+
+/// Group items by a key selector.
+///
+/// Returns a map where keys are the extracted values and values are lists of items.
+///
+/// Example:
+/// ```dart
+/// final devices = [Device(type: server, name: 'a'), Device(type: server, name: 'b')];
+/// final grouped = groupBy(devices, (d) => d.type);
+/// // {server: [Device(name: 'a'), Device(name: 'b')]}
+/// ```
+Map<K, List<T>> groupBy<T, K>(Iterable<T> items, K Function(T) keySelector) {
+  final groups = <K, List<T>>{};
+  for (final item in items) {
+    final key = keySelector(item);
+    groups.putIfAbsent(key, () => []).add(item);
+  }
+  return groups;
+}
