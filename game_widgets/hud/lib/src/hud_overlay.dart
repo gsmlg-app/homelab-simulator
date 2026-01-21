@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 import 'credits_display.dart';
@@ -100,7 +101,7 @@ class _HudOverlayState extends State<HudOverlay> {
           color: AppColors.textPrimary,
           fontSize: AppSpacing.fontSizeSmall,
           fontWeight: FontWeight.bold,
-          fontFamily: 'monospace',
+          fontFamily: AppTextStyles.monospaceFontFamily,
         ),
       ),
     );

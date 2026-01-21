@@ -85,7 +85,7 @@ class DeviceCard extends StatelessWidget {
                         style: const TextStyle(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'monospace',
+                          fontFamily: AppTextStyles.monospaceFontFamily,
                         ),
                       ),
                     ),

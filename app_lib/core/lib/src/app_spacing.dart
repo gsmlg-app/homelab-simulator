@@ -208,6 +208,9 @@ abstract final class AppSpacing {
   /// Standard letter spacing (1px) - used for uppercase labels and headers
   static const double letterSpacingWide = 1.0;
 
+  /// Extra wide letter spacing (2px) - used for titles and card headers
+  static const double letterSpacingExtraWide = 2.0;
+
   // ============ FONT SIZES ============
 
   /// Extra small font size (10px) - for captions and fine print

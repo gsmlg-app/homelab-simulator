@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Shows interaction hints when near interactable objects
 class InteractionHint extends StatelessWidget {
@@ -57,7 +58,7 @@ class InteractionHint extends StatelessWidget {
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: AppTextStyles.monospaceFontFamily,
                     ),
                   ),
                 ),

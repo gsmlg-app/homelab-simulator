@@ -18,6 +18,8 @@ dependencies:
     path: ../../app_lib/core
   app_lib_engine:
     path: ../../app_lib/engine
+  app_widget_common:
+    path: ../../app_widget/common
   game_widgets_panels:
     path: ../panels
 

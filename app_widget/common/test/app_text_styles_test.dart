@@ -4,6 +4,12 @@ import 'package:app_widget_common/app_widget_common.dart';
 
 void main() {
   group('AppTextStyles', () {
+    group('font families', () {
+      test('monospaceFontFamily is monospace', () {
+        expect(AppTextStyles.monospaceFontFamily, 'monospace');
+      });
+    });
+
     group('panelTitle', () {
       test('returns TextStyle with default cyan color', () {
         final style = AppTextStyles.panelTitle();

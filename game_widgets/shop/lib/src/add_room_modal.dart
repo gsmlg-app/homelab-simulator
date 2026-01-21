@@ -220,7 +220,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                   color: AppColors.textPrimary,
                   fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
+                  letterSpacing: AppSpacing.letterSpacingExtraWide,
                 ),
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 
 /// Displays current credits
 class CreditsDisplay extends StatelessWidget {
@@ -38,7 +39,7 @@ class CreditsDisplay extends StatelessWidget {
                   color: AppColors.green400,
                   fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'monospace',
+                  fontFamily: AppTextStyles.monospaceFontFamily,
                 ),
               ),
             ],

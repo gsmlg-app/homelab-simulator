@@ -6,6 +6,11 @@ import 'package:flutter/widgets.dart';
 /// These styles provide consistent typography across all UI components.
 /// Use these instead of inline TextStyle() definitions.
 abstract final class AppTextStyles {
+  // ============ FONT FAMILIES ============
+
+  /// Monospace font family for numeric displays and code
+  static const String monospaceFontFamily = 'monospace';
+
   // ============ PANEL HEADERS ============
 
   /// Panel title style (UPPERCASE labels, cyan accent)
@@ -146,7 +151,7 @@ abstract final class AppTextStyles {
   static const TextStyle cardTitle = TextStyle(
     color: Color(0xFFFFFFFF),
     fontSize: 16,
-    letterSpacing: 2,
+    letterSpacing: AppSpacing.letterSpacingExtraWide,
   );
 
   /// Character card detail text style

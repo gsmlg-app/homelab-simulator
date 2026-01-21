@@ -268,7 +268,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                         'CREATE NEW CHARACTER',
                         style: TextStyle(
                           fontSize: AppSpacing.fontSizeMedium,
-                          letterSpacing: 2,
+                          letterSpacing: AppSpacing.letterSpacingExtraWide,
                         ),
                       ),
                       style: FilledButton.styleFrom(

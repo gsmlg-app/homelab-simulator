@@ -140,7 +140,7 @@ class _ShopModalState extends State<ShopModal>
                   color: AppColors.textPrimary,
                   fontSize: AppSpacing.fontSizeXl,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
+                  letterSpacing: AppSpacing.letterSpacingExtraWide,
                 ),
               ),
             ],
@@ -158,7 +158,7 @@ class _ShopModalState extends State<ShopModal>
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
+                    fontFamily: AppTextStyles.monospaceFontFamily,
                     fontSize: AppSpacing.fontSizeMedium,
                   ),
                 ),

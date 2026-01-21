@@ -262,6 +262,10 @@ void main() {
       test('letterSpacingWide is 1.0', () {
         expect(AppSpacing.letterSpacingWide, 1.0);
       });
+
+      test('letterSpacingExtraWide is 2.0', () {
+        expect(AppSpacing.letterSpacingExtraWide, 2.0);
+      });
     });
 
     group('font sizes', () {
