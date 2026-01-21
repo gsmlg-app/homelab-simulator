@@ -22,15 +22,12 @@ void main() {
   final errorService = ErrorReportingService();
   errorService.setupGlobalErrorHandler();
 
-  runZonedGuarded(
-    () => runApp(const App()),
-    (error, stackTrace) {
-      errorService.reportError(
-        error: error,
-        stackTrace: stackTrace,
-        context: 'Unhandled error in root zone',
-        level: LogLevel.fatal,
-      );
-    },
-  );
+  runZonedGuarded(() => runApp(const App()), (error, stackTrace) {
+    errorService.reportError(
+      error: error,
+      stackTrace: stackTrace,
+      context: 'Unhandled error in root zone',
+      level: LogLevel.fatal,
+    );
+  });
 }

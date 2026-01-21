@@ -33,24 +33,21 @@ void main() {
         }
       });
 
-      test(
-        'setupGlobalErrorHandler sets PlatformDispatcher.onError',
-        () {
-          // Store original handler
-          final originalHandler = PlatformDispatcher.instance.onError;
+      test('setupGlobalErrorHandler sets PlatformDispatcher.onError', () {
+        // Store original handler
+        final originalHandler = PlatformDispatcher.instance.onError;
 
-          try {
-            // Setup global error handler
-            errorService.setupGlobalErrorHandler();
+        try {
+          // Setup global error handler
+          errorService.setupGlobalErrorHandler();
 
-            // PlatformDispatcher.instance.onError should be set
-            expect(PlatformDispatcher.instance.onError, isNotNull);
-          } finally {
-            // Restore original handler
-            PlatformDispatcher.instance.onError = originalHandler;
-          }
-        },
-      );
+          // PlatformDispatcher.instance.onError should be set
+          expect(PlatformDispatcher.instance.onError, isNotNull);
+        } finally {
+          // Restore original handler
+          PlatformDispatcher.instance.onError = originalHandler;
+        }
+      });
 
       test('reportError creates error record with context', () async {
         // Report an error
