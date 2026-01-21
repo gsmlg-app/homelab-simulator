@@ -47,7 +47,7 @@ void main() {
         final grid = GridComponent(
           gridWidth: 10,
           gridHeight: 8,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(grid.size, Vector2(320.0, 256.0));
@@ -117,7 +117,7 @@ void main() {
 
     group('edge cases', () {
       test('handles minimum grid size of 1x1', () {
-        final grid = GridComponent(gridWidth: 1, gridHeight: 1, tileSize: 32.0);
+        final grid = GridComponent(gridWidth: 1, gridHeight: 1, tileSize: GameConstants.tileSize);
 
         expect(grid.size, Vector2(32.0, 32.0));
         expect(grid.gridWidth, 1);
@@ -128,7 +128,7 @@ void main() {
         final grid = GridComponent(
           gridWidth: 20,
           gridHeight: 5,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(grid.size.x, 640.0);
@@ -139,7 +139,7 @@ void main() {
         final grid = GridComponent(
           gridWidth: 5,
           gridHeight: 20,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(grid.size.x, 160.0);
@@ -209,7 +209,7 @@ void main() {
         final grid = GridComponent(
           gridWidth: 10,
           gridHeight: 10,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
         grid.position = Vector2(1000, 1000);
 
@@ -242,7 +242,7 @@ void main() {
     group('cached path optimization', () {
       test('creates grid path during construction', () {
         // If path is not built, construction would fail or render would throw
-        final grid = GridComponent(gridWidth: 5, gridHeight: 5, tileSize: 32.0);
+        final grid = GridComponent(gridWidth: 5, gridHeight: 5, tileSize: GameConstants.tileSize);
 
         // Verifies grid is created successfully with cached path
         expect(grid.gridWidth, 5);
