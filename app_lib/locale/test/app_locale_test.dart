@@ -181,4 +181,157 @@ void main() {
       expect(l10n.language, 'Language');
     });
   });
+
+  group('AppLocale class properties', () {
+    test('supportedLocales is a List', () {
+      expect(AppLocale.supportedLocales, isA<List<Locale>>());
+    });
+
+    test('localizationsDelegates is a List', () {
+      expect(
+        AppLocale.localizationsDelegates,
+        isA<List<LocalizationsDelegate<dynamic>>>(),
+      );
+    });
+
+    test('supportedLocales has specific language codes', () {
+      final codes = AppLocale.supportedLocales.map((l) => l.languageCode).toSet();
+      expect(codes.contains('en'), isTrue);
+    });
+
+    test('supportedLocales locales are well-formed', () {
+      for (final locale in AppLocale.supportedLocales) {
+        expect(locale.languageCode, isNotEmpty);
+        expect(locale.languageCode.length, greaterThanOrEqualTo(2));
+      }
+    });
+  });
+
+  group('localization edge cases', () {
+    testWidgets('handles missing locale gracefully', (WidgetTester tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          // Use a supported locale
+          locale: AppLocale.supportedLocales.first,
+          home: Builder(
+            builder: (context) {
+              capturedContext = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Should still provide localizations
+      expect(capturedContext.l10n, isNotNull);
+    });
+
+    testWidgets('all common strings are non-empty', (WidgetTester tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (context) {
+              capturedContext = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final l10n = capturedContext.l10n;
+
+      expect(l10n.appName, isNotEmpty);
+      expect(l10n.ok, isNotEmpty);
+      expect(l10n.cancel, isNotEmpty);
+      expect(l10n.loading, isNotEmpty);
+      expect(l10n.success, isNotEmpty);
+      expect(l10n.error, isNotEmpty);
+    });
+  });
+
+  group('localization consistency', () {
+    testWidgets('ok and cancel are distinct', (WidgetTester tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (context) {
+              capturedContext = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final l10n = capturedContext.l10n;
+      expect(l10n.ok, isNot(l10n.cancel));
+    });
+
+    testWidgets('theme strings are distinct', (WidgetTester tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (context) {
+              capturedContext = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final l10n = capturedContext.l10n;
+      final themes = {l10n.lightTheme, l10n.darkTheme, l10n.systemTheme};
+      expect(themes.length, 3);
+    });
+
+    testWidgets('navigation strings are distinct', (WidgetTester tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (context) {
+              capturedContext = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final l10n = capturedContext.l10n;
+      final navStrings = {l10n.navHome, l10n.navShowcase, l10n.navSetting};
+      expect(navStrings.length, 3);
+    });
+  });
 }

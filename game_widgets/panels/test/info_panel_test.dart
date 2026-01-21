@@ -254,5 +254,168 @@ void main() {
       );
       expect(row, findsOneWidget);
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        const panel = InfoPanel(
+          title: 'test',
+          icon: Icons.info,
+          children: [],
+        );
+        expect(panel, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-info-panel');
+        const panel = InfoPanel(
+          key: key,
+          title: 'test',
+          icon: Icons.info,
+          children: [],
+        );
+        expect(panel.key, key);
+      });
+
+      test('title property is accessible', () {
+        const panel = InfoPanel(
+          title: 'My Title',
+          icon: Icons.info,
+          children: [],
+        );
+        expect(panel.title, 'My Title');
+      });
+
+      test('icon property is accessible', () {
+        const panel = InfoPanel(
+          title: 'test',
+          icon: Icons.star,
+          children: [],
+        );
+        expect(panel.icon, Icons.star);
+      });
+    });
+
+    group('title variations', () {
+      testWidgets('handles empty title', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(title: '', icon: Icons.info, children: []),
+            ),
+          ),
+        );
+
+        // Empty title still renders (as empty uppercase string)
+        expect(find.byType(InfoPanel), findsOneWidget);
+      });
+
+      testWidgets('handles long title', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(
+                title: 'This is a very long title that might overflow',
+                icon: Icons.info,
+                children: [],
+              ),
+            ),
+          ),
+        );
+
+        expect(
+          find.text('THIS IS A VERY LONG TITLE THAT MIGHT OVERFLOW'),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('handles numeric title', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(title: '12345', icon: Icons.info, children: []),
+            ),
+          ),
+        );
+
+        expect(find.text('12345'), findsOneWidget);
+      });
+    });
+
+    group('different icon types', () {
+      testWidgets('renders outlined icon', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(
+                title: 'test',
+                icon: Icons.info_outline,
+                children: [],
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byIcon(Icons.info_outline), findsOneWidget);
+      });
+
+      testWidgets('renders rounded icon', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(
+                title: 'test',
+                icon: Icons.info_rounded,
+                children: [],
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byIcon(Icons.info_rounded), findsOneWidget);
+      });
+    });
+
+    group('children layout', () {
+      testWidgets('children are in Column', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(
+                title: 'test',
+                icon: Icons.info,
+                children: [Text('A'), Text('B')],
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byType(Column), findsWidgets);
+      });
+
+      testWidgets('can contain interactive widgets', (tester) async {
+        var buttonPressed = false;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: InfoPanel(
+                title: 'test',
+                icon: Icons.info,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => buttonPressed = true,
+                    child: const Text('Press Me'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Press Me'));
+        await tester.pump();
+
+        expect(buttonPressed, isTrue);
+      });
+    });
   });
 }

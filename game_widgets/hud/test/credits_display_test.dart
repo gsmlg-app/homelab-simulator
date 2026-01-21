@@ -272,5 +272,110 @@ void main() {
       // GameModel.initial() has 1000 credits
       expect(find.text('\$1000'), findsOneWidget);
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        const display = CreditsDisplay();
+        expect(display, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-credits-display');
+        const display = CreditsDisplay(key: key);
+        expect(display.key, key);
+      });
+    });
+
+    group('credit value boundaries', () {
+      testWidgets('displays negative credits', (tester) async {
+        final model = GameModel.initial().copyWith(credits: -100);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const CreditsDisplay(),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.text('\$-100'), findsOneWidget);
+      });
+
+      testWidgets('displays single digit credits', (tester) async {
+        final model = GameModel.initial().copyWith(credits: 5);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const CreditsDisplay(),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.text('\$5'), findsOneWidget);
+      });
+
+      testWidgets('displays very large credits', (tester) async {
+        final model = GameModel.initial().copyWith(credits: 10000000);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const CreditsDisplay(),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.text('\$10000000'), findsOneWidget);
+      });
+    });
+
+    group('layout structure', () {
+      testWidgets('contains BlocBuilder', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const CreditsDisplay(),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byType(BlocBuilder<GameBloc, GameState>), findsOneWidget);
+      });
+
+      testWidgets('has SizedBox spacing between icon and text', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const CreditsDisplay(),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byType(SizedBox), findsWidgets);
+      });
+    });
   });
 }
