@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 
-/// Renders the room grid
+/// Renders the room grid with cached path for performance
 class GridComponent extends PositionComponent {
   final int gridWidth;
   final int gridHeight;
@@ -11,6 +11,9 @@ class GridComponent extends PositionComponent {
 
   // Cached paint object for performance
   late final Paint _gridPaint;
+
+  // Cached path containing all grid lines - built once, drawn every frame
+  late final Path _gridPath;
 
   GridComponent({
     this.gridWidth = GameConstants.roomWidth,
@@ -22,26 +25,35 @@ class GridComponent extends PositionComponent {
       ..color = gridColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
+
+    _gridPath = _buildGridPath();
+  }
+
+  /// Builds and caches the grid path once during construction
+  Path _buildGridPath() {
+    final path = Path();
+    final pixelHeight = gridHeight * tileSize;
+    final pixelWidth = gridWidth * tileSize;
+
+    // Add vertical lines
+    for (var x = 0; x <= gridWidth; x++) {
+      final xPos = x * tileSize;
+      path.moveTo(xPos, 0);
+      path.lineTo(xPos, pixelHeight);
+    }
+
+    // Add horizontal lines
+    for (var y = 0; y <= gridHeight; y++) {
+      final yPos = y * tileSize;
+      path.moveTo(0, yPos);
+      path.lineTo(pixelWidth, yPos);
+    }
+
+    return path;
   }
 
   @override
   void render(Canvas canvas) {
-    // Draw vertical lines
-    for (var x = 0; x <= gridWidth; x++) {
-      canvas.drawLine(
-        Offset(x * tileSize, 0),
-        Offset(x * tileSize, gridHeight * tileSize),
-        _gridPaint,
-      );
-    }
-
-    // Draw horizontal lines
-    for (var y = 0; y <= gridHeight; y++) {
-      canvas.drawLine(
-        Offset(0, y * tileSize),
-        Offset(gridWidth * tileSize, y * tileSize),
-        _gridPaint,
-      );
-    }
+    canvas.drawPath(_gridPath, _gridPaint);
   }
 }

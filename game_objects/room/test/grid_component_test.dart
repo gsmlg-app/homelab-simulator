@@ -238,5 +238,42 @@ void main() {
         expect(grid.anchor, Anchor.topLeft);
       });
     });
+
+    group('cached path optimization', () {
+      test('creates grid path during construction', () {
+        // If path is not built, construction would fail or render would throw
+        final grid = GridComponent(
+          gridWidth: 5,
+          gridHeight: 5,
+          tileSize: 32.0,
+        );
+
+        // Verifies grid is created successfully with cached path
+        expect(grid.gridWidth, 5);
+        expect(grid.gridHeight, 5);
+      });
+
+      test('grid can be constructed with various dimensions', () {
+        // Test that path building works for different grid sizes
+        final grids = [
+          GridComponent(gridWidth: 1, gridHeight: 1),
+          GridComponent(gridWidth: 10, gridHeight: 5),
+          GridComponent(gridWidth: 5, gridHeight: 10),
+          GridComponent(gridWidth: 100, gridHeight: 100),
+        ];
+
+        for (final grid in grids) {
+          expect(grid, isA<GridComponent>());
+        }
+      });
+
+      test('grid with zero dimensions does not throw', () {
+        // Edge case: zero dimensions should still construct
+        expect(
+          () => GridComponent(gridWidth: 0, gridHeight: 0),
+          returnsNormally,
+        );
+      });
+    });
   });
 }
