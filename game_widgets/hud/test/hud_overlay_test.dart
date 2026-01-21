@@ -279,9 +279,9 @@ void main() {
 
     group('error state edge cases', () {
       testWidgets('handles GameError with special characters', (tester) async {
-        when(() => mockGameBloc.state).thenReturn(
-          const GameError('Error: <script>alert("xss")</script>'),
-        );
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(const GameError('Error: <script>alert("xss")</script>'));
 
         await tester.pumpWidget(buildWidget());
 
@@ -289,9 +289,9 @@ void main() {
       });
 
       testWidgets('handles GameError with unicode', (tester) async {
-        when(() => mockGameBloc.state).thenReturn(
-          const GameError('エラー: 日本語テスト 🚀'),
-        );
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(const GameError('エラー: 日本語テスト 🚀'));
 
         await tester.pumpWidget(buildWidget());
 
@@ -299,9 +299,9 @@ void main() {
       });
 
       testWidgets('handles GameError with newlines', (tester) async {
-        when(() => mockGameBloc.state).thenReturn(
-          const GameError('Error\nLine 2\nLine 3'),
-        );
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(const GameError('Error\nLine 2\nLine 3'));
 
         await tester.pumpWidget(buildWidget());
 
@@ -342,20 +342,22 @@ void main() {
       testWidgets('device interaction with loading state', (tester) async {
         when(() => mockGameBloc.state).thenReturn(const GameLoading());
 
-        await tester
-            .pumpWidget(buildWidget(interaction: InteractionType.device));
+        await tester.pumpWidget(
+          buildWidget(interaction: InteractionType.device),
+        );
 
         expect(find.byType(InteractionHint), findsNothing);
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });
 
       testWidgets('device interaction with error state', (tester) async {
-        when(() => mockGameBloc.state).thenReturn(
-          const GameError('Test error'),
-        );
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(const GameError('Test error'));
 
-        await tester
-            .pumpWidget(buildWidget(interaction: InteractionType.device));
+        await tester.pumpWidget(
+          buildWidget(interaction: InteractionType.device),
+        );
 
         expect(find.byType(InteractionHint), findsNothing);
         expect(find.byType(CircularProgressIndicator), findsOneWidget);

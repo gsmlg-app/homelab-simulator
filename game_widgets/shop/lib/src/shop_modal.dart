@@ -227,7 +227,11 @@ class _ShopModalState extends State<ShopModal>
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add_circle, color: AppColors.modalAccentLight, size: 28),
+                Icon(
+                  Icons.add_circle,
+                  color: AppColors.modalAccentLight,
+                  size: 28,
+                ),
                 SizedBox(width: 12),
                 Text(
                   'Add New Room',

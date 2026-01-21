@@ -205,7 +205,11 @@ class _AddRoomModalState extends State<AddRoomModal> {
         children: [
           Row(
             children: [
-              const Icon(Icons.add_home, color: AppColors.modalAccentLight, size: 28),
+              const Icon(
+                Icons.add_home,
+                color: AppColors.modalAccentLight,
+                size: 28,
+              ),
               const SizedBox(width: 12),
               Text(
                 _currentStep == 0 ? 'ADD ROOM' : 'DOOR PLACEMENT',

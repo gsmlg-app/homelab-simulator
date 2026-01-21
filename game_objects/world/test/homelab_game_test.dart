@@ -633,15 +633,8 @@ void main() {
         type: RoomType.serverRoom,
         doors: [door],
       );
-      const room2 = RoomModel(
-        id: 'room-2',
-        name: 'Room 2',
-        type: RoomType.aws,
-      );
-      const model = GameModel(
-        rooms: [room1, room2],
-        currentRoomId: 'room-1',
-      );
+      const room2 = RoomModel(id: 'room-2', name: 'Room 2', type: RoomType.aws);
+      const model = GameModel(rooms: [room1, room2], currentRoomId: 'room-1');
       when(() => gameBloc.state).thenReturn(const GameReady(model));
 
       final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);

@@ -156,7 +156,9 @@ GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
 
   // Refund half the cost if template is known, otherwise just remove device
   final refund = template != null ? template.cost ~/ 2 : 0;
-  return model.copyWith(credits: model.credits + refund).updateRoom(updatedRoom);
+  return model
+      .copyWith(credits: model.credits + refund)
+      .updateRoom(updatedRoom);
 }
 
 /// Adds a new room connected to the current room via bidirectional doors.

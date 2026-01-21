@@ -21,7 +21,11 @@ void main() {
     test('finds all default templates by ID', () {
       for (final template in defaultDeviceTemplates) {
         final result = findDeviceTemplateById(template.id);
-        expect(result, isNotNull, reason: 'Should find template ${template.id}');
+        expect(
+          result,
+          isNotNull,
+          reason: 'Should find template ${template.id}',
+        );
         expect(result!.id, template.id);
       }
     });
