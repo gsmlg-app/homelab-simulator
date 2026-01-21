@@ -263,6 +263,10 @@ void main() {
         expect(AppSpacing.fontSizeXs, 10.0);
       });
 
+      test('fontSizePanel is 11.0', () {
+        expect(AppSpacing.fontSizePanel, 11.0);
+      });
+
       test('fontSizeSmall is 12.0', () {
         expect(AppSpacing.fontSizeSmall, 12.0);
       });

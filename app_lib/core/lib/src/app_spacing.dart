@@ -208,6 +208,9 @@ abstract final class AppSpacing {
   /// Extra small font size (10px) - for captions and fine print
   static const double fontSizeXs = 10.0;
 
+  /// Panel font size (11px) - for dense panel text and labels
+  static const double fontSizePanel = 11.0;
+
   /// Small font size (12px)
   static const double fontSizeSmall = 12.0;
 

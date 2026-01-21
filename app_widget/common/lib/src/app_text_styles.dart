@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/widgets.dart';
 
 /// Centralized text styles for the Homelab Simulator app.
@@ -18,7 +19,7 @@ abstract final class AppTextStyles {
   /// Section header style (medium weight labels)
   static TextStyle sectionHeader({Color? color}) => TextStyle(
     color: color ?? const Color(0xFFBDBDBD), // grey.shade400
-    fontSize: 11,
+    fontSize: AppSpacing.fontSizePanel,
     fontWeight: FontWeight.w500,
   );
 
@@ -91,7 +92,7 @@ abstract final class AppTextStyles {
   /// Empty state / placeholder text
   static TextStyle emptyStateText({Color? color}) => TextStyle(
     color: color ?? const Color(0xFF757575), // grey.shade600
-    fontSize: 11,
+    fontSize: AppSpacing.fontSizePanel,
     fontStyle: FontStyle.italic,
   );
 

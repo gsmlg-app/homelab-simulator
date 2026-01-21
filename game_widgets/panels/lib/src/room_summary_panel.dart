@@ -29,7 +29,7 @@ class RoomSummaryPanel extends StatelessWidget {
           label: 'Type',
           value: room.type.displayName,
           valueColor: room.type.color,
-          fontSize: 11,
+          fontSize: AppSpacing.fontSizePanel,
           verticalPadding: 2,
           labelColor: AppColors.grey500,
         ),
@@ -37,7 +37,7 @@ class RoomSummaryPanel extends StatelessWidget {
           label: 'Size',
           value: '${room.width} × ${room.height}',
           valueColor: AppColors.grey400,
-          fontSize: 11,
+          fontSize: AppSpacing.fontSizePanel,
           verticalPadding: 2,
           labelColor: AppColors.grey500,
         ),
@@ -46,7 +46,7 @@ class RoomSummaryPanel extends StatelessWidget {
             label: 'Region',
             value: room.regionCode!,
             valueColor: AppColors.cyan400,
-            fontSize: 11,
+            fontSize: AppSpacing.fontSizePanel,
             verticalPadding: 2,
             labelColor: AppColors.grey500,
           ),
@@ -64,7 +64,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 'OBJECTS',
                 style: TextStyle(
                   color: AppColors.grey500,
-                  fontSize: 10,
+                  fontSize: AppSpacing.fontSizeXs,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
                 ),
@@ -84,7 +84,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 '${room.totalObjectCount}',
                 style: const TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 10,
+                  fontSize: AppSpacing.fontSizeXs,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -123,7 +123,7 @@ class RoomSummaryPanel extends StatelessWidget {
               'No objects placed',
               style: TextStyle(
                 color: AppColors.grey600,
-                fontSize: 11,
+                fontSize: AppSpacing.fontSizePanel,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -147,7 +147,7 @@ class RoomSummaryPanel extends StatelessWidget {
                   expanded ? 'Show less' : 'Show details',
                   style: const TextStyle(
                     color: AppColors.grey500,
-                    fontSize: 10,
+                    fontSize: AppSpacing.fontSizeXs,
                   ),
                 ),
               ],
@@ -167,7 +167,7 @@ class RoomSummaryPanel extends StatelessWidget {
             title,
             style: const TextStyle(
               color: AppColors.grey400,
-              fontSize: 11,
+              fontSize: AppSpacing.fontSizePanel,
               fontWeight: FontWeight.w500,
             ),
             overflow: TextOverflow.ellipsis,
@@ -222,7 +222,7 @@ class RoomSummaryPanel extends StatelessWidget {
             '$count',
             style: TextStyle(
               color: color,
-              fontSize: 10,
+              fontSize: AppSpacing.fontSizeXs,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -247,7 +247,7 @@ class RoomSummaryPanel extends StatelessWidget {
                   e.key.displayName,
                   style: const TextStyle(
                     color: AppColors.grey300,
-                    fontSize: 11,
+                    fontSize: AppSpacing.fontSizePanel,
                   ),
                 ),
               ),
@@ -255,7 +255,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 '${e.value}',
                 style: const TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 11,
+                  fontSize: AppSpacing.fontSizePanel,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -299,7 +299,7 @@ class RoomSummaryPanel extends StatelessWidget {
                       providerEntry.key.displayName,
                       style: TextStyle(
                         color: providerEntry.key.color,
-                        fontSize: 10,
+                        fontSize: AppSpacing.fontSizeXs,
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -321,7 +321,7 @@ class RoomSummaryPanel extends StatelessWidget {
                         catEntry.key.displayName,
                         style: const TextStyle(
                           color: AppColors.grey400,
-                          fontSize: 10,
+                          fontSize: AppSpacing.fontSizeXs,
                         ),
                       ),
                     ),
@@ -329,7 +329,7 @@ class RoomSummaryPanel extends StatelessWidget {
                       '${catEntry.value}',
                       style: const TextStyle(
                         color: AppColors.textPrimary,
-                        fontSize: 10,
+                        fontSize: AppSpacing.fontSizeXs,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
