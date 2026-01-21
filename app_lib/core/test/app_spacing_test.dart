@@ -212,28 +212,28 @@ void main() {
       test('borderRadiusSmall uses radiusSmall constant', () {
         expect(
           AppSpacing.borderRadiusSmall,
-          BorderRadius.all(Radius.circular(AppSpacing.radiusSmall)),
+          const BorderRadius.all(Radius.circular(AppSpacing.radiusSmall)),
         );
       });
 
       test('borderRadiusMedium uses radiusMedium constant', () {
         expect(
           AppSpacing.borderRadiusMedium,
-          BorderRadius.all(Radius.circular(AppSpacing.radiusMedium)),
+          const BorderRadius.all(Radius.circular(AppSpacing.radiusMedium)),
         );
       });
 
       test('borderRadiusLarge uses radiusLarge constant', () {
         expect(
           AppSpacing.borderRadiusLarge,
-          BorderRadius.all(Radius.circular(AppSpacing.radiusLarge)),
+          const BorderRadius.all(Radius.circular(AppSpacing.radiusLarge)),
         );
       });
 
       test('borderRadiusXl uses radiusXl constant', () {
         expect(
           AppSpacing.borderRadiusXl,
-          BorderRadius.all(Radius.circular(AppSpacing.radiusXl)),
+          const BorderRadius.all(Radius.circular(AppSpacing.radiusXl)),
         );
       });
     });

@@ -17,7 +17,7 @@ class CreditsDisplay extends StatelessWidget {
           padding: AppSpacing.paddingHudPill,
           decoration: BoxDecoration(
             color: AppColors.panelBackground,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: AppSpacing.borderRadiusMedium,
             border: Border.all(
               color: AppColors.green700,
               width: AppSpacing.borderWidth,
@@ -31,7 +31,7 @@ class CreditsDisplay extends StatelessWidget {
                 color: AppColors.green400,
                 size: 24,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.s),
               Text(
                 '\$$credits',
                 style: const TextStyle(

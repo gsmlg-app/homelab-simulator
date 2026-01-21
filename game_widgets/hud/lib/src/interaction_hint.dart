@@ -34,7 +34,7 @@ class InteractionHint extends StatelessWidget {
             padding: AppSpacing.paddingHudPill,
             decoration: BoxDecoration(
               color: AppColors.panelBackground,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppSpacing.borderRadiusMedium,
               border: Border.all(
                 color: AppColors.cyan700,
                 width: AppSpacing.borderWidth,
@@ -45,12 +45,12 @@ class InteractionHint extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                    horizontal: AppSpacing.s,
+                    vertical: AppSpacing.xs,
                   ),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.cyan800,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: AppSpacing.borderRadiusSmall,
                   ),
                   child: const Text(
                     'E',
@@ -61,7 +61,7 @@ class InteractionHint extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.s),
                 Text(
                   message,
                   style: const TextStyle(
