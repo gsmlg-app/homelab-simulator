@@ -85,8 +85,8 @@ void main() {
       test('returns correct position for top wall door', () {
         final component = DoorComponent(
           door: testDoorTop,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         expect(component.gridPosition, const GridPosition(10, 0));
@@ -95,8 +95,8 @@ void main() {
       test('returns correct position for bottom wall door', () {
         final component = DoorComponent(
           door: testDoorBottom,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         // wallPosition 5, roomHeight 12 -> y = 11
@@ -106,8 +106,8 @@ void main() {
       test('returns correct position for left wall door', () {
         final component = DoorComponent(
           door: testDoorLeft,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         expect(component.gridPosition, const GridPosition(0, 6));
@@ -116,8 +116,8 @@ void main() {
       test('returns correct position for right wall door', () {
         final component = DoorComponent(
           door: testDoorRight,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         // wallPosition 3, roomWidth 20 -> x = 19
@@ -201,8 +201,8 @@ void main() {
         );
         final component = DoorComponent(
           door: doorAtZero,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         expect(component.gridPosition, const GridPosition(0, 0));
@@ -217,8 +217,8 @@ void main() {
         );
         final component = DoorComponent(
           door: doorAtMax,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         expect(component.gridPosition, const GridPosition(19, 0));
@@ -288,14 +288,14 @@ void main() {
       test('position respects tile size', () {
         final component32 = DoorComponent(
           door: testDoorBottom,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
           tileSize: 32.0,
         );
         final component64 = DoorComponent(
           door: testDoorBottom,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
           tileSize: 64.0,
         );
 
@@ -309,13 +309,13 @@ void main() {
       test('grid position is consistent for same parameters', () {
         final component1 = DoorComponent(
           door: testDoorLeft,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
         final component2 = DoorComponent(
           door: testDoorLeft,
-          roomWidth: 20,
-          roomHeight: 12,
+          roomWidth: GameConstants.roomWidth,
+          roomHeight: GameConstants.roomHeight,
         );
 
         expect(component1.gridPosition, component2.gridPosition);
