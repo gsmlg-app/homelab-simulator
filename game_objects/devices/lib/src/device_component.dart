@@ -21,7 +21,7 @@ class DeviceComponent extends PositionComponent
   static final _selectPaint = Paint()
     ..color = AppColors.deviceSelection
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+    ..strokeWidth = GameConstants.glowStrokeBase;
   static final _offLightPaint = Paint()
     ..color = AppColors.offIndicator
     ..style = PaintingStyle.fill;
@@ -65,7 +65,7 @@ class DeviceComponent extends PositionComponent
     _borderPaint = Paint()
       ..color = _deviceColor.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = GameConstants.glowStrokeBase;
     // Random phase offset for subtle variety between devices
     _flickerPhase = math.Random().nextDouble() * GameConstants.animationPeriod;
   }

@@ -23,11 +23,11 @@ class HoverCellComponent extends PositionComponent
   static final _validBorderPaint = Paint()
     ..color = AppColors.validPlacementBorder
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+    ..strokeWidth = GameConstants.glowStrokeBase;
   static final _invalidBorderPaint = Paint()
     ..color = AppColors.invalidPlacementBorder
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+    ..strokeWidth = GameConstants.glowStrokeBase;
 
   HoverCellComponent({this.tileSize = GameConstants.tileSize})
     : super(size: Vector2.all(tileSize));
@@ -46,7 +46,8 @@ class HoverCellComponent extends PositionComponent
     final borderPaint = _isValidPlacement
         ? _validBorderPaint
         : _invalidBorderPaint;
-    canvas.drawRect(Rect.fromLTWH(1, 1, size.x - 2, size.y - 2), borderPaint);
+    const i = GameConstants.highlightBorderInset;
+    canvas.drawRect(Rect.fromLTWH(i, i, size.x - i * 2, size.y - i * 2), borderPaint);
   }
 
   @override
