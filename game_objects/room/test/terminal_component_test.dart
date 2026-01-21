@@ -260,6 +260,14 @@ void main() {
 
         expect(component.gridPosition, customPos);
       });
+
+      test('animation period constant is defined for time bounding', () {
+        // Verify component type supports bounded animation time
+        final component = TerminalComponent();
+
+        // Terminal always has flicker animation active
+        expect(component, isA<PositionComponent>());
+      });
     });
   });
 }

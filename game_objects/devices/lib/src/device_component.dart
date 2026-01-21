@@ -70,14 +70,17 @@ class DeviceComponent extends PositionComponent
     _flickerPhase = math.Random().nextDouble() * math.pi * 2;
   }
 
+  // Animation cycle period (2π for sine wave)
+  static const _animationPeriod = math.pi * 2;
+
   @override
   void update(double dt) {
     super.update(dt);
     final worldState = bloc.state;
     _isSelected = worldState.selectedEntityId == device.id;
-    // Update flicker animation for running devices
+    // Update flicker animation for running devices (bounded to prevent overflow)
     if (device.isRunning) {
-      _flickerTime += dt;
+      _flickerTime = (_flickerTime + dt) % _animationPeriod;
     }
   }
 

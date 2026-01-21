@@ -75,11 +75,14 @@ class TerminalComponent extends PositionComponent
     }
   }
 
+  // Animation cycle period (2π for sine wave)
+  static const _animationPeriod = math.pi * 2;
+
   @override
   void update(double dt) {
     super.update(dt);
-    // Update flicker animation
-    _flickerTime += dt;
+    // Update flicker animation (bounded to prevent overflow)
+    _flickerTime = (_flickerTime + dt) % _animationPeriod;
 
     final worldState = bloc.state;
     final newHighlight =

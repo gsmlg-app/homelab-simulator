@@ -131,6 +131,9 @@ class DoorComponent extends PositionComponent
     canvas.drawPath(_arrowPath, _arrowPaint);
   }
 
+  // Animation cycle period (2π for sine wave)
+  static const _animationPeriod = math.pi * 2;
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -139,9 +142,9 @@ class DoorComponent extends PositionComponent
     if (newHighlight != _isHighlighted) {
       _isHighlighted = newHighlight;
     }
-    // Update glow animation when highlighted
+    // Update glow animation when highlighted (bounded to prevent overflow)
     if (_isHighlighted) {
-      _glowTime += dt;
+      _glowTime = (_glowTime + dt) % _animationPeriod;
     } else {
       _glowTime = 0;
     }
