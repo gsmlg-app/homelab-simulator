@@ -1,6 +1,6 @@
 import 'dart:ui' show Color;
 
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 
 void main() {

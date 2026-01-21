@@ -1,4 +1,4 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
