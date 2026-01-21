@@ -31,7 +31,7 @@ class InteractionHint extends StatelessWidget {
           opacity: 1.0,
           duration: const Duration(milliseconds: 200),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: AppSpacing.paddingHudPill,
             decoration: BoxDecoration(
               color: AppColors.panelBackground,
               borderRadius: BorderRadius.circular(8),

@@ -404,10 +404,7 @@ void main() {
         ),
       );
 
-      expect(
-        container.padding,
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      );
+      expect(container.padding, AppSpacing.paddingHudPill);
     });
 
     group('widget properties', () {

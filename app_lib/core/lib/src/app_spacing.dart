@@ -81,6 +81,12 @@ abstract final class AppSpacing {
     vertical: m,
   );
 
+  /// EdgeInsets.symmetric(horizontal: 16, vertical: 8) - common HUD/pill padding
+  static const EdgeInsets paddingHudPill = EdgeInsets.symmetric(
+    horizontal: m,
+    vertical: s,
+  );
+
   // ============ WIDGET SIZES ============
 
   /// Step indicator dot size (32x32)

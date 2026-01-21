@@ -14,7 +14,7 @@ class CreditsDisplay extends StatelessWidget {
         final credits = state is GameReady ? state.model.credits : 0;
 
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: AppSpacing.paddingHudPill,
           decoration: BoxDecoration(
             color: AppColors.panelBackground,
             borderRadius: BorderRadius.circular(8),

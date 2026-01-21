@@ -60,7 +60,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
     // If in a provider room, show only that provider
     if (roomProvider != null) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: AppSpacing.paddingHudPill,
         color: AppColors.overlayBackground,
         child: Row(
           children: [
@@ -81,7 +81,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
     // In server room, allow selecting any provider
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: AppSpacing.paddingHudPill,
       child: Row(
         children: [
           FilterChip(
@@ -132,7 +132,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
   Widget _buildCategoryFilter() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: AppSpacing.paddingHudPill,
       child: Row(
         children: [
           FilterChip(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 
 /// Centralized button styles for the Homelab Simulator app.
 ///
@@ -130,7 +131,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get toggleSelected => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF00ACC1),
     foregroundColor: const Color(0xFFFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    padding: AppSpacing.paddingHudPill,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   );
 
@@ -138,7 +139,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle get toggleUnselected => ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF303030),
     foregroundColor: const Color(0x8AFFFFFF),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    padding: AppSpacing.paddingHudPill,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   );
 
