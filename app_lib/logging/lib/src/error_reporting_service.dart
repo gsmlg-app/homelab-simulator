@@ -200,6 +200,9 @@ class ErrorReportingService {
     }
   }
 
+  /// Maximum recursion depth for JSON sanitization to prevent stack overflow
+  static const int _maxSanitizeDepth = 10;
+
   String _encodeErrorRecord(Map<String, dynamic> record) {
     // Convert additional_data values to JSON-safe types
     final safeRecord = Map<String, dynamic>.from(record);
@@ -211,14 +214,21 @@ class ErrorReportingService {
     return jsonEncode(safeRecord);
   }
 
-  Map<String, dynamic> _sanitizeForJson(Map<String, dynamic> data) {
+  Map<String, dynamic> _sanitizeForJson(
+    Map<String, dynamic> data, [
+    int depth = 0,
+  ]) {
+    if (depth >= _maxSanitizeDepth) {
+      return {'_truncated': 'Max depth exceeded'};
+    }
+
     return data.map((key, value) {
       if (value == null || value is String || value is num || value is bool) {
         return MapEntry(key, value);
       } else if (value is Map) {
         return MapEntry(
           key,
-          _sanitizeForJson(Map<String, dynamic>.from(value)),
+          _sanitizeForJson(Map<String, dynamic>.from(value), depth + 1),
         );
       } else if (value is List) {
         return MapEntry(key, value.map((e) => e?.toString()).toList());
