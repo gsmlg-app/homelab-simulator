@@ -68,8 +68,16 @@ class CloudServiceModel extends Equatable with GridOccupancy {
     return CloudServiceModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      provider: CloudProvider.values.byName(json['provider'] as String),
-      category: ServiceCategory.values.byName(json['category'] as String),
+      provider: parseEnum(
+        CloudProvider.values,
+        json['provider'] as String?,
+        CloudProvider.none,
+      ),
+      category: parseEnum(
+        ServiceCategory.values,
+        json['category'] as String?,
+        ServiceCategory.other,
+      ),
       serviceType: json['serviceType'] as String,
       position: GridPosition.fromJson(json['position'] as Map<String, dynamic>),
       width: json['width'] as int? ?? 1,

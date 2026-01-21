@@ -198,9 +198,11 @@ class RoomModel extends Equatable {
     return RoomModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      type: json['type'] != null
-          ? RoomType.values.byName(json['type'] as String)
-          : RoomType.serverRoom,
+      type: parseEnum(
+        RoomType.values,
+        json['type'] as String?,
+        RoomType.serverRoom,
+      ),
       parentId: json['parentId'] as String?,
       width: json['width'] as int? ?? GameConstants.roomWidth,
       height: json['height'] as int? ?? GameConstants.roomHeight,

@@ -84,7 +84,11 @@ class DoorModel extends Equatable {
     return DoorModel(
       id: json['id'] as String,
       targetRoomId: json['targetRoomId'] as String,
-      wallSide: WallSide.values.byName(json['wallSide'] as String),
+      wallSide: parseEnum(
+        WallSide.values,
+        json['wallSide'] as String?,
+        WallSide.bottom,
+      ),
       wallPosition: json['wallPosition'] as int,
     );
   }

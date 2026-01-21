@@ -83,26 +83,33 @@ class CharacterModel extends Equatable {
   };
 
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
+    final now = DateTime.now();
     return CharacterModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      gender: json['gender'] != null
-          ? Gender.values.byName(json['gender'] as String)
-          : Gender.male,
-      skinTone: json['skinTone'] != null
-          ? SkinTone.values.byName(json['skinTone'] as String)
-          : SkinTone.medium,
-      hairStyle: json['hairStyle'] != null
-          ? HairStyle.values.byName(json['hairStyle'] as String)
-          : HairStyle.short,
-      hairColor: json['hairColor'] != null
-          ? HairColor.values.byName(json['hairColor'] as String)
-          : HairColor.brown,
-      outfitVariant: json['outfitVariant'] != null
-          ? OutfitVariant.values.byName(json['outfitVariant'] as String)
-          : OutfitVariant.casual,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      lastPlayedAt: DateTime.parse(json['lastPlayedAt'] as String),
+      gender: parseEnum(Gender.values, json['gender'] as String?, Gender.male),
+      skinTone: parseEnum(
+        SkinTone.values,
+        json['skinTone'] as String?,
+        SkinTone.medium,
+      ),
+      hairStyle: parseEnum(
+        HairStyle.values,
+        json['hairStyle'] as String?,
+        HairStyle.short,
+      ),
+      hairColor: parseEnum(
+        HairColor.values,
+        json['hairColor'] as String?,
+        HairColor.brown,
+      ),
+      outfitVariant: parseEnum(
+        OutfitVariant.values,
+        json['outfitVariant'] as String?,
+        OutfitVariant.casual,
+      ),
+      createdAt: parseDateTime(json['createdAt'] as String?, now),
+      lastPlayedAt: parseDateTime(json['lastPlayedAt'] as String?, now),
       totalPlayTime: json['totalPlayTime'] as int? ?? 0,
       level: json['level'] as int? ?? 1,
       credits: json['credits'] as int? ?? GameConstants.startingCredits,

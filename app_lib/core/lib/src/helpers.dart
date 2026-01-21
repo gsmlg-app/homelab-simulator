@@ -140,3 +140,39 @@ Map<K, List<T>> groupBy<T, K>(Iterable<T> items, K Function(T) keySelector) {
   }
   return groups;
 }
+
+/// Parse an enum value by name safely, returning [defaultValue] if parsing fails.
+///
+/// This is safer than using [Enum.byName] directly because it catches
+/// [ArgumentError] thrown when the name doesn't match any enum value.
+///
+/// Example:
+/// ```dart
+/// final type = parseEnum(DeviceType.values, json['type'], DeviceType.server);
+/// ```
+T parseEnum<T extends Enum>(List<T> values, String? name, T defaultValue) {
+  if (name == null) return defaultValue;
+  try {
+    return values.byName(name);
+  } on ArgumentError {
+    return defaultValue;
+  }
+}
+
+/// Parse a DateTime from ISO 8601 string safely, returning [defaultValue] if parsing fails.
+///
+/// This is safer than using [DateTime.parse] directly because it catches
+/// [FormatException] thrown when the string is malformed.
+///
+/// Example:
+/// ```dart
+/// final createdAt = parseDateTime(json['createdAt'], DateTime.now());
+/// ```
+DateTime parseDateTime(String? value, DateTime defaultValue) {
+  if (value == null) return defaultValue;
+  try {
+    return DateTime.parse(value);
+  } on FormatException {
+    return defaultValue;
+  }
+}

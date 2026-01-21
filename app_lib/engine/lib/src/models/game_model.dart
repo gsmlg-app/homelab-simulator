@@ -108,9 +108,11 @@ class GameModel extends Equatable {
               json['playerPosition'] as Map<String, dynamic>,
             )
           : GameConstants.playerStartPosition,
-      gameMode: json['gameMode'] != null
-          ? GameMode.values.byName(json['gameMode'] as String)
-          : GameMode.sim,
+      gameMode: parseEnum(
+        GameMode.values,
+        json['gameMode'] as String?,
+        GameMode.sim,
+      ),
     );
   }
 

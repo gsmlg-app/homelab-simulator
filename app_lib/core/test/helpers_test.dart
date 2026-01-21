@@ -340,6 +340,111 @@ void main() {
       expect(result[25]?.map((p) => p.name).toList(), ['Bob']);
     });
   });
+
+  group('parseEnum', () {
+    test('returns value for valid enum name', () {
+      expect(parseEnum(Gender.values, 'male', Gender.female), Gender.male);
+    });
+
+    test('returns value for another valid enum name', () {
+      expect(parseEnum(Gender.values, 'female', Gender.male), Gender.female);
+    });
+
+    test('returns default for null name', () {
+      expect(parseEnum(Gender.values, null, Gender.male), Gender.male);
+    });
+
+    test('returns default for invalid name', () {
+      expect(
+        parseEnum(Gender.values, 'invalid_gender', Gender.female),
+        Gender.female,
+      );
+    });
+
+    test('returns default for empty string', () {
+      expect(parseEnum(Gender.values, '', Gender.male), Gender.male);
+    });
+
+    test('returns default for case mismatch', () {
+      expect(parseEnum(Gender.values, 'MALE', Gender.female), Gender.female);
+    });
+
+    test('works with DeviceType enum', () {
+      expect(
+        parseEnum(DeviceType.values, 'server', DeviceType.router),
+        DeviceType.server,
+      );
+    });
+
+    test('works with RoomType enum', () {
+      expect(
+        parseEnum(RoomType.values, 'aws', RoomType.serverRoom),
+        RoomType.aws,
+      );
+    });
+
+    test('works with CloudProvider enum', () {
+      expect(
+        parseEnum(CloudProvider.values, 'gcp', CloudProvider.none),
+        CloudProvider.gcp,
+      );
+    });
+
+    test('returns default for typo in enum value', () {
+      expect(
+        parseEnum(DeviceType.values, 'servr', DeviceType.router),
+        DeviceType.router,
+      );
+    });
+  });
+
+  group('parseDateTime', () {
+    test('returns parsed DateTime for valid ISO 8601 string', () {
+      final result = parseDateTime('2024-01-15T10:30:00.000Z', DateTime(2000));
+      expect(result.year, 2024);
+      expect(result.month, 1);
+      expect(result.day, 15);
+      expect(result.hour, 10);
+      expect(result.minute, 30);
+    });
+
+    test('returns default for null value', () {
+      final defaultDate = DateTime(2000, 6, 15);
+      final result = parseDateTime(null, defaultDate);
+      expect(result, defaultDate);
+    });
+
+    test('returns default for empty string', () {
+      final defaultDate = DateTime(2000, 6, 15);
+      final result = parseDateTime('', defaultDate);
+      expect(result, defaultDate);
+    });
+
+    test('returns default for invalid date string', () {
+      final defaultDate = DateTime(2000, 6, 15);
+      final result = parseDateTime('not-a-date', defaultDate);
+      expect(result, defaultDate);
+    });
+
+    test('returns default for partial date string', () {
+      final defaultDate = DateTime(2000, 6, 15);
+      // 'abc-12-34' is truly invalid and can't be parsed
+      final result = parseDateTime('abc-12-34', defaultDate);
+      expect(result, defaultDate);
+    });
+
+    test('parses date without time', () {
+      final result = parseDateTime('2024-01-15', DateTime(2000));
+      expect(result.year, 2024);
+      expect(result.month, 1);
+      expect(result.day, 15);
+    });
+
+    test('parses date with timezone offset', () {
+      final result = parseDateTime('2024-01-15T10:30:00+05:00', DateTime(2000));
+      expect(result.year, 2024);
+    });
+  });
 }
 
 class _Person {

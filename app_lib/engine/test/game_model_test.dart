@@ -761,8 +761,9 @@ void main() {
           'gameMode': 'invalid_mode',
         };
 
-        // This will throw because 'invalid_mode' is not a valid GameMode
-        expect(() => GameModel.fromJson(json), throwsA(isA<ArgumentError>()));
+        // Invalid enum values now safely fall back to default (GameMode.sim)
+        final model = GameModel.fromJson(json);
+        expect(model.gameMode, GameMode.sim);
       });
 
       test('rootRooms with all rooms having parents returns empty', () {

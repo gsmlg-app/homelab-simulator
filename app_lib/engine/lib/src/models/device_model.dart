@@ -64,7 +64,11 @@ class DeviceModel extends Equatable with GridOccupancy {
       id: json['id'] as String,
       templateId: json['templateId'] as String,
       name: json['name'] as String,
-      type: DeviceType.values.byName(json['type'] as String),
+      type: parseEnum(
+        DeviceType.values,
+        json['type'] as String?,
+        DeviceType.server,
+      ),
       position: GridPosition.fromJson(json['position'] as Map<String, dynamic>),
       width: json['width'] as int? ?? 1,
       height: json['height'] as int? ?? 1,
