@@ -131,7 +131,7 @@ void main() {
         final materialApp = tester.widget<MaterialApp>(
           find.byType(MaterialApp),
         );
-        expect(materialApp.theme?.colorScheme.primary, Colors.cyan.shade400);
+        expect(materialApp.theme?.colorScheme.primary, AppColors.cyan400);
       });
 
       testWidgets('has green secondary color', (tester) async {
@@ -140,7 +140,7 @@ void main() {
         final materialApp = tester.widget<MaterialApp>(
           find.byType(MaterialApp),
         );
-        expect(materialApp.theme?.colorScheme.secondary, Colors.green.shade400);
+        expect(materialApp.theme?.colorScheme.secondary, AppColors.green400);
       });
 
       testWidgets('colorScheme uses dark mode', (tester) async {
