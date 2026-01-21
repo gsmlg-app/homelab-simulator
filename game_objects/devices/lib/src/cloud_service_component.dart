@@ -28,6 +28,11 @@ class CloudServiceComponent extends PositionComponent
   late final Paint _providerPaint;
   late final Paint _borderPaint;
 
+  // Cached render values (computed once in onLoad)
+  late final double _iconScale;
+  late final double _centerX;
+  late final double _centerY;
+
   CloudServiceComponent({
     required this.service,
     this.tileSize = GameConstants.tileSize,
@@ -59,6 +64,11 @@ class CloudServiceComponent extends PositionComponent
       ..color = _providerColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
+
+    // Cache render values
+    _iconScale = size.x / 40;
+    _centerX = size.x / 2;
+    _centerY = size.y / 2;
   }
 
   @override
@@ -116,30 +126,31 @@ class CloudServiceComponent extends PositionComponent
   }
 
   void _drawCloudIcon(Canvas canvas) {
-    final centerX = size.x / 2;
-    final centerY = size.y / 2;
-    final scale = size.x / 40; // Scale icon based on tile size
-
-    // Draw a simple cloud shape
+    // Draw a simple cloud shape using cached values
     canvas.drawCircle(
-      Offset(centerX - 5 * scale, centerY),
-      6 * scale,
+      Offset(_centerX - 5 * _iconScale, _centerY),
+      6 * _iconScale,
       _iconPaint,
     );
     canvas.drawCircle(
-      Offset(centerX + 5 * scale, centerY),
-      6 * scale,
+      Offset(_centerX + 5 * _iconScale, _centerY),
+      6 * _iconScale,
       _iconPaint,
     );
     canvas.drawCircle(
-      Offset(centerX, centerY - 3 * scale),
-      5 * scale,
+      Offset(_centerX, _centerY - 3 * _iconScale),
+      5 * _iconScale,
       _iconPaint,
     );
 
     // Draw bottom rectangle to complete cloud
     canvas.drawRect(
-      Rect.fromLTWH(centerX - 10 * scale, centerY, 20 * scale, 5 * scale),
+      Rect.fromLTWH(
+        _centerX - 10 * _iconScale,
+        _centerY,
+        20 * _iconScale,
+        5 * _iconScale,
+      ),
       _iconPaint,
     );
   }
