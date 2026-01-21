@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 58
-- **Last Commit:** 2783971
+- **Iteration:** 59
+- **Last Commit:** 6bc2dda
 
 ## Test Coverage Summary
 - **app_lib/core:** 181 tests passing
@@ -213,6 +213,9 @@ Two main feature sets from PRD.md:
 - ✅ Refactored RoomSummaryPanel to use countBy/groupBy instead of inline counting loops
 - ✅ Created GridOccupancy mixin for shared cell occupancy logic
 - ✅ Applied GridOccupancy mixin to DeviceModel and CloudServiceModel
+- ✅ Clarified GridPosition distance methods (squaredDistanceTo + distanceTo)
+- ✅ Added toString() to all model classes for better debugging
+- ✅ Added copyWith() to DeviceTemplate for consistent immutable patterns
 
 ## Next Tasks
 1. Look for more performance optimizations
@@ -261,6 +264,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 6bc2dda: refactor: add toString() and copyWith() to model classes
 - 2783971: refactor: extract GridOccupancy mixin to eliminate duplication
 - 72c1f39: refactor: clarify GridPosition distance methods (squaredDistanceTo + distanceTo)
 - bb97a7a: docs: add dartdoc comments to reducer and cloud service methods
