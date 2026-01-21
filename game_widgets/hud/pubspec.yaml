@@ -16,6 +16,8 @@ dependencies:
     path: ../../app_bloc/game
   app_lib_core:
     path: ../../app_lib/core
+  app_lib_engine:
+    path: ../../app_lib/engine
   game_widgets_panels:
     path: ../panels
 
@@ -24,5 +26,3 @@ dev_dependencies:
     sdk: flutter
   bloc_test: ^10.0.0
   mocktail: ^1.0.4
-  app_lib_engine:
-    path: ../../app_lib/engine

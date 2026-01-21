@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:flutter/material.dart';
 
 /// UI utilities for ServiceCategory
 extension ServiceCategoryUI on ServiceCategory {
@@ -19,13 +19,13 @@ extension ServiceCategoryUI on ServiceCategory {
   /// Get the color for this service category
   Color get color {
     return switch (this) {
-      ServiceCategory.compute => const Color(0xFF3498DB),
-      ServiceCategory.storage => const Color(0xFF27AE60),
-      ServiceCategory.database => const Color(0xFFF39C12),
-      ServiceCategory.networking => const Color(0xFF9B59B6),
-      ServiceCategory.serverless => const Color(0xFFE74C3C),
-      ServiceCategory.container => const Color(0xFF1ABC9C),
-      ServiceCategory.other => const Color(0xFF607D8B),
+      ServiceCategory.compute => AppColors.categoryCompute,
+      ServiceCategory.storage => AppColors.categoryStorage,
+      ServiceCategory.database => AppColors.categoryDatabase,
+      ServiceCategory.networking => AppColors.categoryNetworking,
+      ServiceCategory.serverless => AppColors.categoryServerless,
+      ServiceCategory.container => AppColors.categoryContainer,
+      ServiceCategory.other => AppColors.categoryOther,
     };
   }
 

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:flutter/material.dart';
 
 /// UI utilities for CloudProvider
 extension CloudProviderUI on CloudProvider {
@@ -19,13 +19,13 @@ extension CloudProviderUI on CloudProvider {
   /// Get the color for this cloud provider
   Color get color {
     return switch (this) {
-      CloudProvider.aws => const Color(0xFFFF9900),
-      CloudProvider.gcp => const Color(0xFF4285F4),
-      CloudProvider.cloudflare => const Color(0xFFF38020),
-      CloudProvider.vultr => const Color(0xFF007BFC),
-      CloudProvider.azure => const Color(0xFF0078D4),
-      CloudProvider.digitalOcean => const Color(0xFF0080FF),
-      CloudProvider.none => Colors.grey,
+      CloudProvider.aws => AppColors.providerAws,
+      CloudProvider.gcp => AppColors.providerGcp,
+      CloudProvider.cloudflare => AppColors.providerCloudflare,
+      CloudProvider.vultr => AppColors.providerVultr,
+      CloudProvider.azure => AppColors.providerAzure,
+      CloudProvider.digitalOcean => AppColors.providerDigitalOcean,
+      CloudProvider.none => AppColors.providerNone,
     };
   }
 

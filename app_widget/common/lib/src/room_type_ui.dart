@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:flutter/material.dart';
 
 /// UI utilities for RoomType
 extension RoomTypeUI on RoomType {
@@ -20,14 +20,14 @@ extension RoomTypeUI on RoomType {
   /// Get the color for this room type
   Color get color {
     return switch (this) {
-      RoomType.serverRoom => Colors.grey,
-      RoomType.aws => const Color(0xFFFF9900),
-      RoomType.gcp => const Color(0xFF4285F4),
-      RoomType.cloudflare => const Color(0xFFF38020),
-      RoomType.vultr => const Color(0xFF007BFC),
-      RoomType.azure => const Color(0xFF0078D4),
-      RoomType.digitalOcean => const Color(0xFF0080FF),
-      RoomType.custom => Colors.purple,
+      RoomType.serverRoom => AppColors.roomServer,
+      RoomType.aws => AppColors.providerAws,
+      RoomType.gcp => AppColors.providerGcp,
+      RoomType.cloudflare => AppColors.providerCloudflare,
+      RoomType.vultr => AppColors.providerVultr,
+      RoomType.azure => AppColors.providerAzure,
+      RoomType.digitalOcean => AppColors.providerDigitalOcean,
+      RoomType.custom => AppColors.roomCustom,
     };
   }
 

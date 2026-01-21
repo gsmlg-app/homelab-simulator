@@ -144,6 +144,9 @@ abstract final class AppColors {
   /// Cloudflare orange
   static const Color providerCloudflare = Color(0xFFF38020);
 
+  /// No provider (gray)
+  static const Color providerNone = Color(0xFF9E9E9E);
+
   // ============ SERVICE CATEGORY COLORS ============
   // Same as device type colors for consistency
 
@@ -164,6 +167,9 @@ abstract final class AppColors {
 
   /// Container category (teal)
   static const Color categoryContainer = Color(0xFF1ABC9C);
+
+  /// Other category (blue-gray)
+  static const Color categoryOther = Color(0xFF607D8B);
 
   // ============ ROOM TYPE COLORS ============
 

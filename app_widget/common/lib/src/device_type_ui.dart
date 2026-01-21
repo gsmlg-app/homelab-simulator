@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:flutter/material.dart';
 
 /// UI utilities for DeviceType
 extension DeviceTypeUI on DeviceType {
@@ -19,13 +19,13 @@ extension DeviceTypeUI on DeviceType {
   /// Get the color for this device type
   Color get color {
     return switch (this) {
-      DeviceType.server => const Color(0xFF3498DB),
-      DeviceType.computer => const Color(0xFF9B59B6),
-      DeviceType.phone => const Color(0xFFE74C3C),
-      DeviceType.router => const Color(0xFFF39C12),
-      DeviceType.switch_ => const Color(0xFF1ABC9C),
-      DeviceType.nas => const Color(0xFF34495E),
-      DeviceType.iot => const Color(0xFF27AE60),
+      DeviceType.server => AppColors.deviceServer,
+      DeviceType.computer => AppColors.deviceComputer,
+      DeviceType.phone => AppColors.devicePhone,
+      DeviceType.router => AppColors.deviceRouter,
+      DeviceType.switch_ => AppColors.deviceSwitch,
+      DeviceType.nas => AppColors.deviceNas,
+      DeviceType.iot => AppColors.deviceIot,
     };
   }
 
