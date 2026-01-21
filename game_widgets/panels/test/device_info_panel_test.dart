@@ -238,7 +238,7 @@ void main() {
       });
 
       test('onRemove property is accessible', () {
-        final callback = () {};
+        void callback() {}
         final panel = DeviceInfoPanel(device: testDevice, onRemove: callback);
 
         expect(panel.onRemove, callback);

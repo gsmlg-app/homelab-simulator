@@ -343,7 +343,7 @@ void main() {
 
     group('room type variations', () {
       testWidgets('displays GCP room correctly', (tester) async {
-        final gcpRoom = const RoomModel(
+        const gcpRoom = RoomModel(
           id: 'room-gcp',
           name: 'us-central1',
           type: RoomType.gcp,
@@ -352,7 +352,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(body: RoomSummaryPanel(room: gcpRoom)),
           ),
         );
@@ -361,7 +361,7 @@ void main() {
       });
 
       testWidgets('displays custom room correctly', (tester) async {
-        final customRoom = const RoomModel(
+        const customRoom = RoomModel(
           id: 'room-custom',
           name: 'Custom Space',
           type: RoomType.custom,
@@ -370,7 +370,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(body: RoomSummaryPanel(room: customRoom)),
           ),
         );
@@ -406,7 +406,7 @@ void main() {
 
     group('size display variations', () {
       testWidgets('displays small room size', (tester) async {
-        final smallRoom = const RoomModel(
+        const smallRoom = RoomModel(
           id: 'room-small',
           name: 'Small Room',
           type: RoomType.serverRoom,
@@ -415,7 +415,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(body: RoomSummaryPanel(room: smallRoom)),
           ),
         );
@@ -424,7 +424,7 @@ void main() {
       });
 
       testWidgets('displays large room size', (tester) async {
-        final largeRoom = const RoomModel(
+        const largeRoom = RoomModel(
           id: 'room-large',
           name: 'Large Room',
           type: RoomType.serverRoom,
@@ -433,7 +433,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(body: RoomSummaryPanel(room: largeRoom)),
           ),
         );

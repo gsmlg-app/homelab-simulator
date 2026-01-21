@@ -195,14 +195,14 @@ void main() {
 
     testWidgets('renders nested widget children', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: InfoPanel(
               title: 'Nested',
               icon: Icons.layers,
               children: [
                 Row(
-                  children: const [
+                  children: [
                     Icon(Icons.star),
                     Text('Nested content'),
                   ],
