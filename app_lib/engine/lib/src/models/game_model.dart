@@ -186,4 +186,9 @@ class GameModel extends Equatable {
     selectedCloudService,
     shopOpen,
   ];
+
+  @override
+  String toString() =>
+      'GameModel(room: $currentRoomId, credits: $credits, position: $playerPosition, '
+      'rooms: ${rooms.length})';
 }

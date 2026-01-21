@@ -91,4 +91,8 @@ class DoorModel extends Equatable {
 
   @override
   List<Object?> get props => [id, targetRoomId, wallSide, wallPosition];
+
+  @override
+  String toString() =>
+      'DoorModel(id: $id, target: $targetRoomId, $wallSide @ $wallPosition)';
 }

@@ -268,4 +268,8 @@ class RoomModel extends Equatable {
     cloudServices,
     regionCode,
   ];
+
+  @override
+  String toString() => 'RoomModel(id: $id, name: $name, type: $type, '
+      'devices: ${devices.length}, doors: ${doors.length})';
 }

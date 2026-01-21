@@ -90,6 +90,11 @@ class CloudServiceModel extends Equatable with GridOccupancy {
     height,
     metadata,
   ];
+
+  @override
+  String toString() =>
+      'CloudServiceModel(id: $id, provider: $provider, type: $serviceType, '
+      'position: $position)';
 }
 
 /// Catalog of available cloud services
@@ -334,4 +339,9 @@ class CloudServiceTemplate {
     this.width = 1,
     this.height = 1,
   });
+
+  @override
+  String toString() =>
+      'CloudServiceTemplate(provider: $provider, type: $serviceType, '
+      'name: $name)';
 }

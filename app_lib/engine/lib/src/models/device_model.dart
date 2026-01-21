@@ -83,4 +83,8 @@ class DeviceModel extends Equatable with GridOccupancy {
     height,
     isRunning,
   ];
+
+  @override
+  String toString() =>
+      'DeviceModel(id: $id, name: $name, type: $type, position: $position)';
 }
