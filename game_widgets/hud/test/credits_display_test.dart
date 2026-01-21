@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:app_widget_common/app_widget_common.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
 
 class MockGameBloc extends MockBloc<GameEvent, GameState> implements GameBloc {}
@@ -93,8 +94,8 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.color, Colors.black87);
-      expect(decoration.border?.top.color, Colors.green.shade700);
+      expect(decoration.color, AppColors.panelBackground);
+      expect(decoration.border?.top.color, AppColors.green700);
     });
 
     testWidgets('displays different credit amounts correctly', (tester) async {
@@ -183,8 +184,8 @@ void main() {
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.monetization_on));
-      expect(icon.color, Colors.green.shade400);
-      expect(icon.size, 24);
+      expect(icon.color, AppColors.green400);
+      expect(icon.size, AppSpacing.iconSizeMedium);
     });
 
     testWidgets('text has correct style', (tester) async {
@@ -204,10 +205,10 @@ void main() {
 
       final text = tester.widget<Text>(find.text('\$1000'));
       final style = text.style!;
-      expect(style.color, Colors.green.shade400);
-      expect(style.fontSize, 20);
+      expect(style.color, AppColors.green400);
+      expect(style.fontSize, AppSpacing.fontSizeXl);
       expect(style.fontWeight, FontWeight.bold);
-      expect(style.fontFamily, 'monospace');
+      expect(style.fontFamily, AppTextStyles.monospaceFontFamily);
     });
 
     testWidgets('container has border radius', (tester) async {
