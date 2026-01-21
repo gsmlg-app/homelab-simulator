@@ -126,7 +126,7 @@ class _ShopModalState extends State<ShopModal>
               const Text(
                 'TERMINAL',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -148,7 +148,7 @@ class _ShopModalState extends State<ShopModal>
                 child: Text(
                   '\$$credits',
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'monospace',
                     fontSize: 16,
@@ -239,7 +239,7 @@ class _ShopModalState extends State<ShopModal>
                 Text(
                   'Add New Room',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -270,7 +270,7 @@ class _ShopModalState extends State<ShopModal>
                   Text(
                     'Current: ${model.currentRoom.name}',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -327,7 +327,7 @@ class _ShopModalState extends State<ShopModal>
                   Text(
                     room.name,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -339,7 +339,7 @@ class _ShopModalState extends State<ShopModal>
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              icon: const Icon(Icons.delete_outline, color: AppColors.redAccent),
               onPressed: () {
                 _showDeleteConfirmation(context, room);
               },
@@ -375,12 +375,12 @@ class _ShopModalState extends State<ShopModal>
               children: [
                 const Text(
                   'Parent Room',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
                 ),
                 Text(
                   parentRoom.name,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -403,7 +403,7 @@ class _ShopModalState extends State<ShopModal>
         ),
         content: Text(
           'Are you sure you want to delete "${room.name}"? This will also remove all child rooms and their contents.',
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -415,7 +415,7 @@ class _ShopModalState extends State<ShopModal>
               context.read<GameBloc>().add(GameRemoveRoom(room.id));
               Navigator.of(ctx).pop();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.redAccent),
             child: const Text('Delete'),
           ),
         ],
