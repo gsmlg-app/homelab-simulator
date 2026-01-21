@@ -541,6 +541,123 @@ void main() {
 
         expect(result.currentRoom.cloudServices.length, 0);
       });
+
+      test('returns unchanged model when removing nonexistent service', () {
+        final result = reduce(model, const CloudServiceRemoved('nonexistent-id'));
+
+        expect(result.currentRoom.cloudServices.length, 0);
+        // Model should be functionally equivalent (same structure, different room instance)
+        expect(result.currentRoomId, model.currentRoomId);
+      });
+    });
+
+    group('DeviceRemoved edge cases', () {
+      test('refunds 0 credits when template not found', () {
+        // Add a device with unknown template directly to room
+        const deviceWithUnknownTemplate = DeviceModel(
+          id: 'orphan-device',
+          templateId: 'deleted_template',
+          name: 'Orphan Device',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        final roomWithOrphan = model.currentRoom.addDevice(deviceWithUnknownTemplate);
+        final modelWithOrphan = model.updateRoom(roomWithOrphan);
+
+        final result = reduce(
+          modelWithOrphan,
+          const DeviceRemoved('orphan-device'),
+        );
+
+        // Device should be removed
+        expect(result.currentRoom.devices.length, 0);
+        // Credits should be unchanged (0 refund for unknown template)
+        expect(result.credits, modelWithOrphan.credits);
+      });
+
+      test('uses integer division for odd cost refund', () {
+        // iot_sensor has cost 50, so refund should be 25 (50 ~/ 2)
+        final modelWithCredits = model.copyWith(credits: 1000);
+        const placeEvent = DevicePlaced(
+          templateId: 'iot_sensor',
+          position: GridPosition(5, 5),
+        );
+        final afterPlace = reduce(modelWithCredits, placeEvent);
+        final creditsAfterPlace = afterPlace.credits;
+        final deviceId = afterPlace.currentRoom.devices.first.id;
+
+        final result = reduce(afterPlace, DeviceRemoved(deviceId));
+
+        // Expect exactly half refund (50 / 2 = 25)
+        expect(result.credits, creditsAfterPlace + 25);
+      });
+    });
+
+    group('PlayerMoved edge cases', () {
+      test('allows move to cell adjacent to device', () {
+        // Place a device at (5, 5)
+        const device = DeviceModel(
+          id: 'blocker',
+          templateId: 'server_basic',
+          name: 'Blocker',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        final roomWithDevice = model.currentRoom.addDevice(device);
+        final modelWithDevice = model.updateRoom(roomWithDevice);
+
+        // Move to adjacent cell (should succeed)
+        final result = reduce(
+          modelWithDevice,
+          const PlayerMoved(GridPosition(4, 5)),
+        );
+
+        expect(result.playerPosition, const GridPosition(4, 5));
+      });
+
+      test('ignores move to out of bounds high position', () {
+        const outOfBounds = GridPosition(100, 100);
+        final result = reduce(model, const PlayerMoved(outOfBounds));
+
+        expect(result.playerPosition, model.playerPosition);
+      });
+    });
+
+    group('RoomAdded edge cases', () {
+      test('creates bidirectional doors for top wall', () {
+        const event = RoomAdded(
+          name: 'Top Room',
+          type: RoomType.gcp,
+          doorSide: WallSide.top,
+          doorPosition: 5,
+        );
+
+        final result = reduce(model, event);
+        final newRoom = result.rooms.firstWhere((r) => r.name == 'Top Room');
+
+        // Current room should have door on top
+        final currentRoom = result.getRoomById(model.currentRoomId);
+        expect(currentRoom!.doors.first.wallSide, WallSide.top);
+
+        // New room should have door on bottom (opposite)
+        expect(newRoom.doors.first.wallSide, WallSide.bottom);
+      });
+
+      test('creates bidirectional doors for left wall', () {
+        const event = RoomAdded(
+          name: 'Left Room',
+          type: RoomType.vultr,
+          doorSide: WallSide.left,
+          doorPosition: 5,
+        );
+
+        final result = reduce(model, event);
+        final newRoom = result.rooms.firstWhere((r) => r.name == 'Left Room');
+
+        final currentRoom = result.getRoomById(model.currentRoomId);
+        expect(currentRoom!.doors.first.wallSide, WallSide.left);
+        expect(newRoom.doors.first.wallSide, WallSide.right);
+      });
     });
   });
 }
