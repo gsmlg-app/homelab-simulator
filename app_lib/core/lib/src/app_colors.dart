@@ -258,8 +258,14 @@ abstract final class AppColors {
 
   // ============ ACCENT COLORS ============
 
+  /// Cyan 200 - Light cyan for text highlights
+  static const Color cyan200 = Color(0xFF80DEEA);
+
   /// Cyan 400 - Accent color for highlights
   static const Color cyan400 = Color(0xFF26C6DA);
+
+  /// Cyan 500 - Medium cyan for active states
+  static const Color cyan500 = Color(0xFF00BCD4);
 
   /// Cyan 700 - Medium cyan for borders
   static const Color cyan700 = Color(0xFF0097A7);
@@ -270,6 +276,18 @@ abstract final class AppColors {
   /// Cyan 900 - Very dark cyan for backgrounds
   static const Color cyan900 = Color(0xFF006064);
 
+  /// Green 400 - Light green for positive states
+  static const Color green400 = Color(0xFF66BB6A);
+
+  /// Green 700 - Medium green for borders
+  static const Color green700 = Color(0xFF388E3C);
+
+  /// Green 800 - Dark green for backgrounds
+  static const Color green800 = Color(0xFF2E7D32);
+
+  /// Red 800 - Dark red for error backgrounds
+  static const Color red800 = Color(0xFFC62828);
+
   /// Blue 400 - Light blue for icons
   static const Color blue400 = Color(0xFF42A5F5);
 
@@ -278,6 +296,9 @@ abstract final class AppColors {
 
   /// Blue 800 - Dark blue for backgrounds
   static const Color blue800 = Color(0xFF1565C0);
+
+  /// Blue 900 - Very dark blue for backgrounds
+  static const Color blue900 = Color(0xFF0D47A1);
 
   /// Orange 800 - Dark orange for warnings
   static const Color orange800 = Color(0xFFEF6C00);

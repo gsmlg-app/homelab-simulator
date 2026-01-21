@@ -309,14 +309,24 @@ void main() {
 
     group('Accent Colors', () {
       test('all cyan shades are defined', () {
+        expect(AppColors.cyan200, isA<Color>());
         expect(AppColors.cyan400, isA<Color>());
+        expect(AppColors.cyan500, isA<Color>());
         expect(AppColors.cyan700, isA<Color>());
         expect(AppColors.cyan800, isA<Color>());
         expect(AppColors.cyan900, isA<Color>());
       });
 
+      test('cyan200 is correct shade', () {
+        expect(AppColors.cyan200.toARGB32(), 0xFF80DEEA);
+      });
+
       test('cyan400 is correct shade', () {
         expect(AppColors.cyan400.toARGB32(), 0xFF26C6DA);
+      });
+
+      test('cyan500 is correct shade', () {
+        expect(AppColors.cyan500.toARGB32(), 0xFF00BCD4);
       });
 
       test('cyan700 is correct shade', () {
@@ -329,7 +339,15 @@ void main() {
 
       test('cyan shades get progressively darker', () {
         expect(
+          AppColors.cyan200.computeLuminance(),
+          greaterThan(AppColors.cyan400.computeLuminance()),
+        );
+        expect(
           AppColors.cyan400.computeLuminance(),
+          greaterThan(AppColors.cyan500.computeLuminance()),
+        );
+        expect(
+          AppColors.cyan500.computeLuminance(),
           greaterThan(AppColors.cyan700.computeLuminance()),
         );
         expect(
@@ -342,10 +360,49 @@ void main() {
         );
       });
 
+      test('all green shades are defined', () {
+        expect(AppColors.green400, isA<Color>());
+        expect(AppColors.green700, isA<Color>());
+        expect(AppColors.green800, isA<Color>());
+      });
+
+      test('green400 is correct shade', () {
+        expect(AppColors.green400.toARGB32(), 0xFF66BB6A);
+      });
+
+      test('green700 is correct shade', () {
+        expect(AppColors.green700.toARGB32(), 0xFF388E3C);
+      });
+
+      test('green800 is correct shade', () {
+        expect(AppColors.green800.toARGB32(), 0xFF2E7D32);
+      });
+
+      test('green shades get progressively darker', () {
+        expect(
+          AppColors.green400.computeLuminance(),
+          greaterThan(AppColors.green700.computeLuminance()),
+        );
+        expect(
+          AppColors.green700.computeLuminance(),
+          greaterThan(AppColors.green800.computeLuminance()),
+        );
+      });
+
+      test('red800 is defined', () {
+        expect(AppColors.red800, isA<Color>());
+        expect(AppColors.red800.toARGB32(), 0xFFC62828);
+      });
+
       test('all blue shades are defined', () {
         expect(AppColors.blue400, isA<Color>());
         expect(AppColors.blue700, isA<Color>());
         expect(AppColors.blue800, isA<Color>());
+        expect(AppColors.blue900, isA<Color>());
+      });
+
+      test('blue900 is correct shade', () {
+        expect(AppColors.blue900.toARGB32(), 0xFF0D47A1);
       });
 
       test('blue shades get progressively darker', () {
@@ -356,6 +413,10 @@ void main() {
         expect(
           AppColors.blue700.computeLuminance(),
           greaterThan(AppColors.blue800.computeLuminance()),
+        );
+        expect(
+          AppColors.blue800.computeLuminance(),
+          greaterThan(AppColors.blue900.computeLuminance()),
         );
       });
 
