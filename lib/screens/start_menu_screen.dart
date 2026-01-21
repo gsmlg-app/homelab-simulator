@@ -173,7 +173,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
     if (confirm == true) {
       await _storage.delete(character.id);
-      _loadCharacters();
+      await _loadCharacters();
     }
   }
 
@@ -187,7 +187,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     if (result == null || !mounted) return;
 
     await _storage.save(result);
-    _loadCharacters();
+    await _loadCharacters();
   }
 
   @override
