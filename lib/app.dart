@@ -6,6 +6,10 @@ import 'package:game_bloc_world/game_bloc_world.dart';
 
 import 'screens/start_menu_screen.dart';
 
+/// Root application widget providing BLoC state management.
+///
+/// Creates and manages [GameBloc] and [WorldBloc] instances, handling
+/// lifecycle events to auto-save game state when the app goes to background.
 class App extends StatefulWidget {
   const App({super.key});
 
