@@ -54,6 +54,12 @@ void main() {
 
         expect(overlay.currentInteraction, InteractionType.terminal);
       });
+
+      test('accepts none interaction type explicitly', () {
+        const overlay = HudOverlay(currentInteraction: InteractionType.none);
+
+        expect(overlay.currentInteraction, InteractionType.none);
+      });
     });
 
     group('loading state', () {
@@ -82,10 +88,46 @@ void main() {
 
         expect(find.byType(InteractionHint), findsNothing);
       });
+
+      testWidgets('centers loading indicator', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(Center), findsOneWidget);
+      });
+    });
+
+    group('error state', () {
+      testWidgets('shows loading indicator when GameError', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError('error'));
+
+        await tester.pumpWidget(buildWidget());
+
+        // GameError is not GameReady, so it shows loading indicator
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+
+      testWidgets('does not show credits display on error', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError('error'));
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(CreditsDisplay), findsNothing);
+      });
+
+      testWidgets('does not show interaction hint on error', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError('error'));
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(InteractionHint), findsNothing);
+      });
     });
 
     // Note: Tests for ready state with RoomSummaryPanel are skipped because
     // RoomSummaryPanel has layout overflow issues at default test viewport size.
     // The widget works correctly in production at larger viewport sizes.
+    // See: info_panel.dart:29 and info_row.dart:45 for the overflow sources.
   });
 }
