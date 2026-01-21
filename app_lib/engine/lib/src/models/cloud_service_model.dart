@@ -309,15 +309,15 @@ class CloudServiceCatalog {
     };
   }
 
-  /// Get all available services from all providers
-  static List<CloudServiceTemplate> get allServices => [
+  /// All available services from all providers (cached)
+  static final List<CloudServiceTemplate> allServices = List.unmodifiable([
     ...awsServices,
     ...gcpServices,
     ...vultrServices,
     ...cloudflareServices,
     ...azureServices,
     ...digitalOceanServices,
-  ];
+  ]);
 }
 
 /// Template for creating cloud service instances
