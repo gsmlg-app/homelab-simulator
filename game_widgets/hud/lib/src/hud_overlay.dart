@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:game_widgets_panels/game_widgets_panels.dart';
 
 import 'credits_display.dart';
@@ -107,7 +108,7 @@ class _HudOverlayState extends State<HudOverlay> {
     );
   }
 
-  Widget _buildPlacementHint(dynamic model) {
+  Widget _buildPlacementHint(GameModel model) {
     final templateName = model.selectedTemplate?.name ?? 'Device';
 
     return Container(

@@ -8,6 +8,9 @@ class GameConstants {
   static const GridPosition terminalPosition = GridPosition(2, 2);
   static const GridPosition playerStartPosition = GridPosition(10, 6);
   static const int startingCredits = 1000;
+
+  /// The entity ID used for the terminal component.
+  static const String terminalEntityId = 'terminal';
 }
 
 /// Convert grid position to pixel position

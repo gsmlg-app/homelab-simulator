@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
+import 'door_model.dart';
 import 'room_model.dart';
 import 'device_template.dart';
 import 'cloud_service_model.dart';
@@ -172,6 +173,16 @@ class GameModel extends Equatable {
   /// Navigate to a different room
   GameModel enterRoom(String roomId, GridPosition spawnPosition) {
     return copyWith(currentRoomId: roomId, playerPosition: spawnPosition);
+  }
+
+  /// Find a door in the current room by ID.
+  ///
+  /// Returns null if the door is not found.
+  DoorModel? findDoorById(String doorId) {
+    for (final door in currentRoom.doors) {
+      if (door.id == doorId) return door;
+    }
+    return null;
   }
 
   @override

@@ -70,7 +70,8 @@ class TerminalComponent extends PositionComponent
   void update(double dt) {
     super.update(dt);
     final worldState = bloc.state;
-    final newHighlight = worldState.interactableEntityId == 'terminal';
+    final newHighlight =
+        worldState.interactableEntityId == GameConstants.terminalEntityId;
     if (newHighlight != _isHighlighted) {
       _isHighlighted = newHighlight;
     }

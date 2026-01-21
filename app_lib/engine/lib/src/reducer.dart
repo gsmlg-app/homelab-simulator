@@ -7,6 +7,16 @@ import 'models/device_template.dart';
 import 'models/cloud_service_model.dart';
 import 'events/domain_events.dart';
 
+/// Finds a device template by ID.
+///
+/// Returns null if the template is not found.
+DeviceTemplate? findDeviceTemplateById(String templateId) {
+  for (final template in defaultDeviceTemplates) {
+    if (template.id == templateId) return template;
+  }
+  return null;
+}
+
 /// Pure function reducer for game state
 GameModel reduce(GameModel model, DomainEvent event) {
   return switch (event) {
@@ -90,10 +100,10 @@ GameModel _handleDevicePlaced(
   String templateId,
   GridPosition position,
 ) {
-  final template = defaultDeviceTemplates.firstWhere(
-    (t) => t.id == templateId,
-    orElse: () => defaultDeviceTemplates.first,
-  );
+  final template = findDeviceTemplateById(templateId);
+  if (template == null) {
+    return model; // Template not found, no-op
+  }
 
   // Validate position first (check bounds, occupancy, terminal, doors)
   if (!model.currentRoom.canPlaceDevice(
@@ -140,16 +150,13 @@ GameModel _handleDeviceRemoved(GameModel model, String deviceId) {
   }
 
   final device = model.currentRoom.devices[deviceIndex];
-  final template = defaultDeviceTemplates.firstWhere(
-    (t) => t.id == device.templateId,
-    orElse: () => defaultDeviceTemplates.first,
-  );
+  final template = findDeviceTemplateById(device.templateId);
 
   final updatedRoom = model.currentRoom.removeDevice(deviceId);
 
-  return model
-      .copyWith(credits: model.credits + (template.cost ~/ 2))
-      .updateRoom(updatedRoom);
+  // Refund half the cost if template is known, otherwise just remove device
+  final refund = template != null ? template.cost ~/ 2 : 0;
+  return model.copyWith(credits: model.credits + refund).updateRoom(updatedRoom);
 }
 
 /// Adds a new room connected to the current room via bidirectional doors.

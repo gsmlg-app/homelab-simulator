@@ -221,7 +221,7 @@ void main() {
         expect(result.credits, 499);
       });
 
-      test('falls back to first template if templateId not found', () {
+      test('returns unchanged model if templateId not found', () {
         final modelWithCredits = model.copyWith(credits: 10000);
         const event = DevicePlaced(
           templateId: 'nonexistent_template',
@@ -230,8 +230,9 @@ void main() {
 
         final result = reduce(modelWithCredits, event);
 
-        // Should use first template as fallback
-        expect(result.currentRoom.devices.length, 1);
+        // Should return unchanged model (no device placed)
+        expect(result.currentRoom.devices.length, 0);
+        expect(result.credits, 10000);
       });
     });
 

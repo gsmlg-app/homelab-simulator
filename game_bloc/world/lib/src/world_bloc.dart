@@ -85,11 +85,11 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
         event.position == terminalPosition) {
       emit(
         newState.copyWith(
-          interactableEntityId: 'terminal',
+          interactableEntityId: GameConstants.terminalEntityId,
           availableInteraction: InteractionType.terminal,
         ),
       );
-    } else if (state.interactableEntityId == 'terminal') {
+    } else if (state.interactableEntityId == GameConstants.terminalEntityId) {
       emit(
         newState.copyWith(
           clearInteractableEntityId: true,

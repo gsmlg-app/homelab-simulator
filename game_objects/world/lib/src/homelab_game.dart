@@ -97,11 +97,10 @@ class HomelabGame extends FlameGame
             case InteractionType.door:
               final doorId = worldState.interactableEntityId;
               if (doorId != null) {
-                final door = state.model.currentRoom.doors.firstWhere(
-                  (d) => d.id == doorId,
-                  orElse: () => state.model.currentRoom.doors.first,
-                );
-                _enterDoor(door, state.model);
+                final door = state.model.findDoorById(doorId);
+                if (door != null) {
+                  _enterDoor(door, state.model);
+                }
               }
               return;
             case InteractionType.device:
@@ -367,7 +366,10 @@ class HomelabGame extends FlameGame
     if (gridPos == model.currentRoom.terminalPosition &&
         _player.gridPosition.isAdjacentTo(gridPos)) {
       worldBloc.add(
-        const InteractionRequested('terminal', InteractionType.terminal),
+        InteractionRequested(
+          GameConstants.terminalEntityId,
+          InteractionType.terminal,
+        ),
       );
       gameBloc.add(const GameToggleShop(isOpen: true));
       return;
@@ -436,12 +438,11 @@ class HomelabGame extends FlameGame
             // Find the door by its ID and enter
             final doorId = worldState.interactableEntityId;
             if (doorId != null) {
-              final door = state.model.currentRoom.doors.firstWhere(
-                (d) => d.id == doorId,
-                orElse: () => state.model.currentRoom.doors.first,
-              );
-              _enterDoor(door, state.model);
-              return KeyEventResult.handled;
+              final door = state.model.findDoorById(doorId);
+              if (door != null) {
+                _enterDoor(door, state.model);
+                return KeyEventResult.handled;
+              }
             }
             break;
           case InteractionType.device:
