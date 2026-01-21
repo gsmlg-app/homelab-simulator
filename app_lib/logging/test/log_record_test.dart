@@ -221,6 +221,57 @@ void main() {
 
         expect(record1.hashCode, equals(record2.hashCode));
       });
+
+      test('records can be used in Set collections', () {
+        final record1 = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final record2 = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final record3 = LogRecord(
+          level: LogLevel.error,
+          message: 'Error',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final recordSet = <LogRecord>{record1, record2, record3};
+        expect(recordSet.length, 2);
+        expect(recordSet.contains(record1), isTrue);
+        expect(recordSet.contains(record3), isTrue);
+      });
+
+      test('records can be used as Map keys', () {
+        final record1 = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final record2 = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final recordMap = <LogRecord, String>{record1: 'first'};
+        recordMap[record2] = 'second';
+
+        expect(recordMap.length, 1);
+        expect(recordMap[record1], 'second');
+      });
     });
 
     group('toString', () {
