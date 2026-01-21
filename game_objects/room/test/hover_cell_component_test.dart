@@ -76,13 +76,13 @@ void main() {
 
     group('tile size immutability', () {
       test('tile size is set at construction', () {
-        final component = HoverCellComponent(tileSize: 32.0);
+        final component = HoverCellComponent(tileSize: GameConstants.tileSize);
 
         expect(component.tileSize, 32.0);
       });
 
       test('different instances can have different tile sizes', () {
-        final component1 = HoverCellComponent(tileSize: 32.0);
+        final component1 = HoverCellComponent(tileSize: GameConstants.tileSize);
         final component2 = HoverCellComponent(tileSize: 64.0);
 
         expect(component1.tileSize, 32.0);
