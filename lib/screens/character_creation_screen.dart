@@ -210,6 +210,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            tooltip: _currentStep > 0 ? 'Previous step' : 'Cancel',
             onPressed: () {
               if (_currentStep > 0) {
                 _previousStep();

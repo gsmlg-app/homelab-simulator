@@ -224,6 +224,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           ),
           IconButton(
             icon: const Icon(Icons.close, color: AppColors.textPrimary),
+            tooltip: 'Cancel',
             onPressed: widget.onClose,
           ),
         ],
