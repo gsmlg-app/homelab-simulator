@@ -133,6 +133,9 @@ abstract final class AppSpacing {
   /// Large icon size (28px)
   static const double iconSizeLarge = 28.0;
 
+  /// Error icon size (48px)
+  static const double errorIconSize = 48.0;
+
   // ============ BORDER RADIUS VALUES ============
 
   /// Small border radius (4px)

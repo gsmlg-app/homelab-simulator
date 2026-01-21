@@ -40,7 +40,7 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppSpacing.m),
                   Text(
                     'Loading Homelab...',
                     style: TextStyle(color: AppColors.textSecondary),
@@ -55,13 +55,17 @@ class _GameScreenState extends State<GameScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error, color: AppColors.redAccent, size: 48),
-                  const SizedBox(height: 16),
+                  const Icon(
+                    Icons.error,
+                    color: AppColors.redAccent,
+                    size: AppSpacing.errorIconSize,
+                  ),
+                  const SizedBox(height: AppSpacing.m),
                   Text(
                     'Error: ${gameState.message}',
                     style: const TextStyle(color: AppColors.redAccent),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.m),
                   ElevatedButton(
                     onPressed: () {
                       context.read<GameBloc>().add(const GameInitialize());
