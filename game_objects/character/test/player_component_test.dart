@@ -118,10 +118,10 @@ void main() {
     });
 
     group('moveSpeed', () {
-      test('default moveSpeed is 150', () {
+      test('default moveSpeed is playerMoveSpeed', () {
         final player = PlayerComponent();
 
-        expect(player.moveSpeed, 150);
+        expect(player.moveSpeed, GameConstants.playerMoveSpeed);
       });
 
       test('moveSpeed is immutable after construction', () {
