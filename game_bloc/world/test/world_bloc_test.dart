@@ -345,6 +345,93 @@ void main() {
         const state2 = WorldState(selectedEntityId: 'device-2');
         expect(state1, isNot(state2));
       });
+
+      test('states can be used in Set collections', () {
+        const state1 = WorldState(selectedEntityId: 'device-1');
+        const state2 = WorldState(selectedEntityId: 'device-1');
+        const state3 = WorldState(selectedEntityId: 'device-2');
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final stateSet = {state1, state2, state3};
+        expect(stateSet.length, 2);
+        expect(stateSet.contains(state1), isTrue);
+        expect(stateSet.contains(state3), isTrue);
+      });
+
+      test('states can be used as Map keys', () {
+        const state1 = WorldState(selectedEntityId: 'device-1');
+        const state2 = WorldState(selectedEntityId: 'device-1');
+
+        final stateMap = <WorldState, String>{state1: 'first'};
+        stateMap[state2] = 'second';
+
+        expect(stateMap.length, 1);
+        expect(stateMap[state1], 'second');
+      });
+    });
+
+    group('edge cases', () {
+      test('copyWith clears multiple fields simultaneously', () {
+        const original = WorldState(
+          hoveredCell: GridPosition(3, 4),
+          selectedEntityId: 'device-1',
+          interactableEntityId: 'terminal',
+          availableInteraction: InteractionType.terminal,
+        );
+
+        final cleared = original.copyWith(
+          clearHoveredCell: true,
+          clearSelectedEntityId: true,
+          clearInteractableEntityId: true,
+          availableInteraction: InteractionType.none,
+        );
+
+        expect(cleared.hoveredCell, isNull);
+        expect(cleared.selectedEntityId, isNull);
+        expect(cleared.interactableEntityId, isNull);
+        expect(cleared.availableInteraction, InteractionType.none);
+        expect(cleared.playerPosition, original.playerPosition);
+      });
+
+      test('copyWith clear flags take precedence over new values', () {
+        const original = WorldState(hoveredCell: GridPosition(3, 4));
+
+        final result = original.copyWith(
+          hoveredCell: const GridPosition(5, 5),
+          clearHoveredCell: true,
+        );
+
+        // clearHoveredCell should take precedence
+        expect(result.hoveredCell, isNull);
+      });
+
+      test('props includes all fields', () {
+        const state = WorldState(
+          hoveredCell: GridPosition(3, 4),
+          selectedEntityId: 'device-1',
+          interactableEntityId: 'terminal',
+          availableInteraction: InteractionType.terminal,
+          playerPosition: GridPosition(5, 5),
+        );
+
+        expect(state.props.length, 5);
+        expect(state.props, contains(const GridPosition(3, 4)));
+        expect(state.props, contains('device-1'));
+        expect(state.props, contains('terminal'));
+        expect(state.props, contains(InteractionType.terminal));
+        expect(state.props, contains(const GridPosition(5, 5)));
+      });
+
+      test('all InteractionTypes affect canInteract correctly', () {
+        for (final type in InteractionType.values) {
+          final state = WorldState(availableInteraction: type);
+          if (type == InteractionType.none) {
+            expect(state.canInteract, isFalse);
+          } else {
+            expect(state.canInteract, isTrue);
+          }
+        }
+      });
     });
   });
 
@@ -449,6 +536,89 @@ void main() {
         const event1 = PlayerPositionUpdated(GridPosition(5, 5));
         const event2 = PlayerPositionUpdated(GridPosition(6, 6));
         expect(event1, isNot(event2));
+      });
+    });
+
+    group('edge cases', () {
+      test('CellHovered events can be used in Set collections', () {
+        const event1 = CellHovered(GridPosition(3, 4));
+        const event2 = CellHovered(GridPosition(3, 4));
+        const event3 = CellHovered(GridPosition(5, 5));
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final eventSet = {event1, event2, event3};
+        expect(eventSet.length, 2);
+      });
+
+      test('EntitySelected events can be used as Map keys', () {
+        const event1 = EntitySelected('device-1');
+        const event2 = EntitySelected('device-1');
+
+        final eventMap = <EntitySelected, String>{event1: 'first'};
+        eventMap[event2] = 'second';
+
+        expect(eventMap.length, 1);
+        expect(eventMap[event1], 'second');
+      });
+
+      test('InteractionAvailable covers all interaction types', () {
+        for (final type in InteractionType.values) {
+          const entityId = 'test-entity';
+          final event = InteractionAvailable(entityId, type);
+          expect(event.entityId, entityId);
+          expect(event.type, type);
+        }
+      });
+
+      test('InteractionRequested covers all interaction types', () {
+        for (final type in InteractionType.values) {
+          const entityId = 'test-entity';
+          final event = InteractionRequested(entityId, type);
+          expect(event.entityId, entityId);
+          expect(event.type, type);
+        }
+      });
+
+      test('CellHovered props contains position', () {
+        const event = CellHovered(GridPosition(3, 4));
+        expect(event.props.length, 1);
+        expect(event.props, contains(const GridPosition(3, 4)));
+      });
+
+      test('EntitySelected props contains entityId', () {
+        const event = EntitySelected('device-1');
+        expect(event.props.length, 1);
+        expect(event.props, contains('device-1'));
+      });
+
+      test('InteractionAvailable props contains entityId and type', () {
+        const event = InteractionAvailable('device-1', InteractionType.device);
+        expect(event.props.length, 2);
+        expect(event.props, contains('device-1'));
+        expect(event.props, contains(InteractionType.device));
+      });
+
+      test('InteractionRequested props contains entityId and type', () {
+        const event = InteractionRequested('terminal', InteractionType.terminal);
+        expect(event.props.length, 2);
+        expect(event.props, contains('terminal'));
+        expect(event.props, contains(InteractionType.terminal));
+      });
+
+      test('PlayerPositionUpdated props contains position', () {
+        const event = PlayerPositionUpdated(GridPosition(5, 5));
+        expect(event.props.length, 1);
+        expect(event.props, contains(const GridPosition(5, 5)));
+      });
+
+      test('singleton events have empty props', () {
+        const cellHoverEnded = CellHoverEnded();
+        const clearSelection = ClearSelection();
+        const interactionUnavailable = InteractionUnavailable();
+
+        expect(cellHoverEnded.props, isEmpty);
+        expect(clearSelection.props, isEmpty);
+        expect(interactionUnavailable.props, isEmpty);
       });
     });
   });
