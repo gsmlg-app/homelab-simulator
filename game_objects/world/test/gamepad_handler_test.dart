@@ -170,4 +170,118 @@ void main() {
       }
     });
   });
+
+  group('GamepadHandler callback patterns', () {
+    test('supports direction callback chain', () {
+      final directions = <Direction>[];
+      final handler = GamepadHandler(
+        onDirection: (dir) => directions.add(dir),
+      );
+
+      // Simulate the callback being invoked multiple times
+      handler.onDirection!(Direction.up);
+      handler.onDirection!(Direction.down);
+      handler.onDirection!(Direction.left);
+      handler.onDirection!(Direction.right);
+
+      expect(directions.length, 4);
+      expect(directions, [
+        Direction.up,
+        Direction.down,
+        Direction.left,
+        Direction.right,
+      ]);
+    });
+
+    test('supports button pressed callback chain', () {
+      final buttons = <GamepadButton>[];
+      final handler = GamepadHandler(
+        onButtonPressed: (button) => buttons.add(button),
+      );
+
+      handler.onButtonPressed!(GamepadButton.south);
+      handler.onButtonPressed!(GamepadButton.east);
+
+      expect(buttons.length, 2);
+      expect(buttons, [GamepadButton.south, GamepadButton.east]);
+    });
+
+    test('supports button released callback chain', () {
+      final buttons = <GamepadButton>[];
+      final handler = GamepadHandler(
+        onButtonReleased: (button) => buttons.add(button),
+      );
+
+      handler.onButtonReleased!(GamepadButton.north);
+      handler.onButtonReleased!(GamepadButton.west);
+
+      expect(buttons.length, 2);
+      expect(buttons, [GamepadButton.north, GamepadButton.west]);
+    });
+  });
+
+  group('GamepadButton enum properties', () {
+    test('south button index is 0', () {
+      expect(GamepadButton.south.index, 0);
+    });
+
+    test('east button index is 1', () {
+      expect(GamepadButton.east.index, 1);
+    });
+
+    test('start button index is 4', () {
+      expect(GamepadButton.start.index, 4);
+    });
+
+    test('all buttons have unique indices', () {
+      final indices = GamepadButton.values.map((b) => b.index).toSet();
+      expect(indices.length, GamepadButton.values.length);
+    });
+  });
+
+  group('Direction enum integration', () {
+    test('Direction.none is distinct from directions', () {
+      expect(Direction.none, isNot(Direction.up));
+      expect(Direction.none, isNot(Direction.down));
+      expect(Direction.none, isNot(Direction.left));
+      expect(Direction.none, isNot(Direction.right));
+    });
+
+    test('all directions have unique values', () {
+      final directions = Direction.values.toSet();
+      expect(directions.length, Direction.values.length);
+    });
+  });
+
+  group('GamepadHandler edge cases', () {
+    test('can be created multiple times independently', () {
+      final handler1 = GamepadHandler();
+      final handler2 = GamepadHandler();
+
+      expect(handler1, isNot(same(handler2)));
+    });
+
+    test('different handlers can have different callbacks', () {
+      var count1 = 0;
+      var count2 = 0;
+
+      final handler1 = GamepadHandler(onDirection: (_) => count1++);
+      final handler2 = GamepadHandler(onDirection: (_) => count2++);
+
+      handler1.onDirection!(Direction.up);
+      handler2.onDirection!(Direction.down);
+      handler2.onDirection!(Direction.left);
+
+      expect(count1, 1);
+      expect(count2, 2);
+    });
+
+    test('handler without callbacks can be created', () {
+      final handler = GamepadHandler();
+
+      expect(handler.onDirection, isNull);
+      expect(handler.onButtonPressed, isNull);
+      expect(handler.onButtonReleased, isNull);
+    });
+  });
 }

@@ -209,5 +209,137 @@ void main() {
       expect(startPos.x, lessThan(GameConstants.roomWidth));
       expect(startPos.y, lessThan(GameConstants.roomHeight));
     });
+
+    test('has valid terminal position', () {
+      const terminalPos = GameConstants.terminalPosition;
+      expect(terminalPos.x, greaterThanOrEqualTo(0));
+      expect(terminalPos.y, greaterThanOrEqualTo(0));
+      expect(terminalPos.x, lessThan(GameConstants.roomWidth));
+      expect(terminalPos.y, lessThan(GameConstants.roomHeight));
+    });
+  });
+
+  group('GridPosition helpers edge cases', () {
+    test('gridToPixel works with zero position', () {
+      final (x, y) = gridToPixel(const GridPosition(0, 0));
+      expect(x, 0);
+      expect(y, 0);
+    });
+
+    test('gridToPixel works with large coordinates', () {
+      final (x, y) = gridToPixel(const GridPosition(100, 100));
+      expect(x, 100 * GameConstants.tileSize);
+      expect(y, 100 * GameConstants.tileSize);
+    });
+
+    test('pixelToGrid handles zero coordinates', () {
+      final gridPos = pixelToGrid(0, 0);
+      expect(gridPos.x, 0);
+      expect(gridPos.y, 0);
+    });
+
+    test('pixelToGrid rounds down fractional tile positions', () {
+      const tileSize = GameConstants.tileSize;
+      final gridPos = pixelToGrid(tileSize * 2.9, tileSize * 3.9);
+      expect(gridPos.x, 2);
+      expect(gridPos.y, 3);
+    });
+
+    test('isWithinBounds with custom bounds', () {
+      // Default bounds use GameConstants
+      expect(isWithinBounds(const GridPosition(5, 5)), isTrue);
+    });
+  });
+
+  group('HomelabGame state transitions', () {
+    late MockGameBloc gameBloc;
+    late MockWorldBloc worldBloc;
+
+    setUp(() {
+      gameBloc = MockGameBloc();
+      worldBloc = MockWorldBloc();
+      when(() => gameBloc.state).thenReturn(const GameLoading());
+      when(() => gameBloc.stream).thenAnswer((_) => const Stream.empty());
+      when(() => worldBloc.state).thenReturn(const WorldState());
+      when(() => worldBloc.stream).thenAnswer((_) => const Stream.empty());
+    });
+
+    test('game handles GameLoading state', () {
+      when(() => gameBloc.state).thenReturn(const GameLoading());
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      expect(game.gameBloc.state, isA<GameLoading>());
+    });
+
+    test('game handles GameReady with multiple rooms', () {
+      const room1 = RoomModel(
+        id: 'room-1',
+        name: 'Room 1',
+        type: RoomType.serverRoom,
+      );
+      const room2 = RoomModel(
+        id: 'room-2',
+        name: 'Room 2',
+        type: RoomType.aws,
+      );
+      const multiRoomModel = GameModel(
+        rooms: [room1, room2],
+        currentRoomId: 'room-1',
+      );
+      when(() => gameBloc.state).thenReturn(const GameReady(multiRoomModel));
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      final state = game.gameBloc.state as GameReady;
+      expect(state.model.rooms.length, 2);
+    });
+  });
+
+  group('WorldState integration', () {
+    late MockGameBloc gameBloc;
+    late MockWorldBloc worldBloc;
+
+    setUp(() {
+      gameBloc = MockGameBloc();
+      worldBloc = MockWorldBloc();
+      when(() => gameBloc.state).thenReturn(const GameLoading());
+      when(() => gameBloc.stream).thenAnswer((_) => const Stream.empty());
+      when(() => worldBloc.stream).thenAnswer((_) => const Stream.empty());
+    });
+
+    test('game handles WorldState with hovered cell', () {
+      const worldState = WorldState(hoveredCell: GridPosition(5, 5));
+      when(() => worldBloc.state).thenReturn(worldState);
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      expect(game.worldBloc.state.hoveredCell, const GridPosition(5, 5));
+    });
+
+    test('game handles WorldState with selected entity', () {
+      const worldState = WorldState(selectedEntityId: 'device-1');
+      when(() => worldBloc.state).thenReturn(worldState);
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      expect(game.worldBloc.state.selectedEntityId, 'device-1');
+    });
+
+    test('game handles WorldState with interaction available', () {
+      const worldState = WorldState(
+        interactableEntityId: 'door-1',
+        availableInteraction: InteractionType.door,
+      );
+      when(() => worldBloc.state).thenReturn(worldState);
+
+      final game = HomelabGame(gameBloc: gameBloc, worldBloc: worldBloc);
+
+      expect(game.worldBloc.state.canInteract, isTrue);
+      expect(
+        game.worldBloc.state.availableInteraction,
+        InteractionType.door,
+      );
+    });
   });
 }
