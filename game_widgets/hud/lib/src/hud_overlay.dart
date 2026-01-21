@@ -112,23 +112,23 @@ class _HudOverlayState extends State<HudOverlay> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: AppColors.panelBackground,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.amber.shade700, width: 2),
+        border: Border.all(color: AppColors.amber700, width: 2),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.place, color: Colors.amber.shade400),
+          Icon(Icons.place, color: AppColors.amber400),
           const SizedBox(width: 8),
           Text(
             'Placing: $templateName',
             style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
           const SizedBox(width: 16),
-          const Text(
+          Text(
             'Click to place • ESC to cancel',
-            style: TextStyle(color: Colors.white70, fontSize: 12),
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
           ),
         ],
       ),

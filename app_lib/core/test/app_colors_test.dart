@@ -424,6 +424,23 @@ void main() {
         expect(AppColors.orange800, isA<Color>());
         expect(AppColors.orange800.toARGB32(), 0xFFEF6C00);
       });
+
+      test('amber400 is defined', () {
+        expect(AppColors.amber400, isA<Color>());
+        expect(AppColors.amber400.toARGB32(), 0xFFFFCA28);
+      });
+
+      test('amber700 is defined', () {
+        expect(AppColors.amber700, isA<Color>());
+        expect(AppColors.amber700.toARGB32(), 0xFFFFA000);
+      });
+
+      test('amber shades get progressively darker', () {
+        expect(
+          AppColors.amber400.computeLuminance(),
+          greaterThan(AppColors.amber700.computeLuminance()),
+        );
+      });
     });
 
     group('Panel/Overlay Colors', () {

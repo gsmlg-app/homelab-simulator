@@ -303,6 +303,12 @@ abstract final class AppColors {
   /// Orange 800 - Dark orange for warnings
   static const Color orange800 = Color(0xFFEF6C00);
 
+  /// Amber 400 - Light amber for icons and highlights
+  static const Color amber400 = Color(0xFFFFCA28);
+
+  /// Amber 700 - Dark amber for borders
+  static const Color amber700 = Color(0xFFFFA000);
+
   // ============ PANEL/OVERLAY COLORS ============
 
   /// Panel background - equivalent to Colors.black87 (0xDD000000)
