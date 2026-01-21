@@ -98,7 +98,10 @@ void main() {
         'does not change state (handled by listeners)',
         build: () => WorldBloc(),
         act: (bloc) => bloc.add(
-          const InteractionRequested('terminal', InteractionType.terminal),
+          const InteractionRequested(
+            GameConstants.terminalEntityId,
+            InteractionType.terminal,
+          ),
         ),
         expect: () => <WorldState>[],
       );
@@ -155,7 +158,7 @@ void main() {
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(2, 3),
-            interactableEntityId: 'terminal',
+            interactableEntityId: GameConstants.terminalEntityId,
             availableInteraction: InteractionType.terminal,
           ),
         ],
@@ -169,7 +172,7 @@ void main() {
         expect: () => [
           const WorldState(
             playerPosition: GridPosition(2, 2),
-            interactableEntityId: 'terminal',
+            interactableEntityId: GameConstants.terminalEntityId,
             availableInteraction: InteractionType.terminal,
           ),
         ],
@@ -180,7 +183,7 @@ void main() {
         build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         seed: () => const WorldState(
           playerPosition: GridPosition(2, 3),
-          interactableEntityId: 'terminal',
+          interactableEntityId: GameConstants.terminalEntityId,
           availableInteraction: InteractionType.terminal,
         ),
         act: (bloc) =>
@@ -284,14 +287,18 @@ void main() {
 
       test('updates interactableEntityId', () {
         const original = WorldState();
-        final updated = original.copyWith(interactableEntityId: 'terminal');
-        expect(updated.interactableEntityId, 'terminal');
+        final updated = original.copyWith(
+          interactableEntityId: GameConstants.terminalEntityId,
+        );
+        expect(updated.interactableEntityId, GameConstants.terminalEntityId);
       });
 
       test(
         'clears interactableEntityId with clearInteractableEntityId flag',
         () {
-          const original = WorldState(interactableEntityId: 'terminal');
+          const original = WorldState(
+            interactableEntityId: GameConstants.terminalEntityId,
+          );
           final updated = original.copyWith(clearInteractableEntityId: true);
           expect(updated.interactableEntityId, isNull);
         },
@@ -317,7 +324,7 @@ void main() {
         const original = WorldState(
           hoveredCell: GridPosition(3, 4),
           selectedEntityId: 'device-1',
-          interactableEntityId: 'terminal',
+          interactableEntityId: GameConstants.terminalEntityId,
           availableInteraction: InteractionType.terminal,
           playerPosition: GridPosition(5, 5),
         );
@@ -375,7 +382,7 @@ void main() {
         const original = WorldState(
           hoveredCell: GridPosition(3, 4),
           selectedEntityId: 'device-1',
-          interactableEntityId: 'terminal',
+          interactableEntityId: GameConstants.terminalEntityId,
           availableInteraction: InteractionType.terminal,
         );
 
@@ -409,7 +416,7 @@ void main() {
         const state = WorldState(
           hoveredCell: GridPosition(3, 4),
           selectedEntityId: 'device-1',
-          interactableEntityId: 'terminal',
+          interactableEntityId: GameConstants.terminalEntityId,
           availableInteraction: InteractionType.terminal,
           playerPosition: GridPosition(5, 5),
         );
@@ -417,7 +424,7 @@ void main() {
         expect(state.props.length, 5);
         expect(state.props, contains(const GridPosition(3, 4)));
         expect(state.props, contains('device-1'));
-        expect(state.props, contains('terminal'));
+        expect(state.props, contains(GameConstants.terminalEntityId));
         expect(state.props, contains(InteractionType.terminal));
         expect(state.props, contains(const GridPosition(5, 5)));
       });
@@ -483,11 +490,11 @@ void main() {
     group('InteractionRequested', () {
       test('equal events are equal', () {
         const event1 = InteractionRequested(
-          'terminal',
+          GameConstants.terminalEntityId,
           InteractionType.terminal,
         );
         const event2 = InteractionRequested(
-          'terminal',
+          GameConstants.terminalEntityId,
           InteractionType.terminal,
         );
         expect(event1, event2);
@@ -495,7 +502,7 @@ void main() {
 
       test('different events are not equal', () {
         const event1 = InteractionRequested(
-          'terminal',
+          GameConstants.terminalEntityId,
           InteractionType.terminal,
         );
         const event2 = InteractionRequested('device-1', InteractionType.device);
@@ -600,11 +607,11 @@ void main() {
 
       test('InteractionRequested props contains entityId and type', () {
         const event = InteractionRequested(
-          'terminal',
+          GameConstants.terminalEntityId,
           InteractionType.terminal,
         );
         expect(event.props.length, 2);
-        expect(event.props, contains('terminal'));
+        expect(event.props, contains(GameConstants.terminalEntityId));
         expect(event.props, contains(InteractionType.terminal));
       });
 
