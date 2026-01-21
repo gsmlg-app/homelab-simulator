@@ -33,7 +33,7 @@ class InteractionHint extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.black87,
+              color: AppColors.panelBackground,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.cyan700, width: 2),
             ),
@@ -52,7 +52,7 @@ class InteractionHint extends StatelessWidget {
                   child: const Text(
                     'E',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'monospace',
                     ),
@@ -61,7 +61,7 @@ class InteractionHint extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   message,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                 ),
               ],
             ),

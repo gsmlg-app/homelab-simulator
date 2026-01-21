@@ -97,7 +97,7 @@ class _HudOverlayState extends State<HudOverlay> {
       child: Text(
         mode == GameMode.sim ? 'SIM MODE' : 'LIVE MODE',
         style: const TextStyle(
-          color: Colors.white,
+          color: AppColors.textPrimary,
           fontSize: 12,
           fontWeight: FontWeight.bold,
           fontFamily: 'monospace',
@@ -123,7 +123,7 @@ class _HudOverlayState extends State<HudOverlay> {
           const SizedBox(width: 8),
           Text(
             'Placing: $templateName',
-            style: const TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
           ),
           const SizedBox(width: 16),
           Text(

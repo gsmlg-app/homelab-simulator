@@ -73,9 +73,9 @@ class _AppContent extends StatelessWidget {
       title: 'Homelab Simulator',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: AppColors.darkBackground,
-        colorScheme: ColorScheme.dark(
-          primary: Colors.cyan.shade400,
-          secondary: Colors.green.shade400,
+        colorScheme: const ColorScheme.dark(
+          primary: AppColors.cyan400,
+          secondary: AppColors.green400,
         ),
       ),
       home: const StartMenuScreen(),

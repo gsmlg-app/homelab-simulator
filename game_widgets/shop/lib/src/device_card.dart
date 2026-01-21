@@ -52,7 +52,7 @@ class DeviceCard extends StatelessWidget {
                           Text(
                             template.name,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: AppColors.textPrimary,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -76,14 +76,14 @@ class DeviceCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: canAfford
-                            ? Colors.green.shade800
-                            : Colors.red.shade800,
+                            ? AppColors.green800
+                            : AppColors.red800,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         '\$${template.cost}',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'monospace',
                         ),

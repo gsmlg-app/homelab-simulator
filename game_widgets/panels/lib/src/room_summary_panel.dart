@@ -52,7 +52,7 @@ class RoomSummaryPanel extends StatelessWidget {
           ),
 
         const SizedBox(height: 8),
-        const Divider(color: Colors.grey, height: 1),
+        const Divider(color: AppColors.grey600, height: 1),
         const SizedBox(height: 8),
 
         // Object counts header
@@ -80,7 +80,7 @@ class RoomSummaryPanel extends StatelessWidget {
               child: Text(
                 '${room.totalObjectCount}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
@@ -242,7 +242,7 @@ class RoomSummaryPanel extends StatelessWidget {
               Text(
                 '${e.value}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                 ),
@@ -317,7 +317,7 @@ class RoomSummaryPanel extends StatelessWidget {
                     Text(
                       '${catEntry.value}',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),

@@ -32,7 +32,7 @@ class InfoRow extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
-    this.valueColor = Colors.white,
+    this.valueColor = AppColors.textPrimary,
     this.labelColor,
     this.fontSize = 12,
     this.verticalPadding = 4,
