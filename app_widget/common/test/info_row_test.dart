@@ -8,7 +8,7 @@ void main() {
     Widget buildSubject({
       String label = 'Label',
       String value = 'Value',
-      Color valueColor = Colors.white,
+      Color valueColor = AppColors.textPrimary,
       Color? labelColor,
       double fontSize = AppSpacing.fontSizeSmall,
       double verticalPadding = 4,
@@ -79,7 +79,7 @@ void main() {
         await tester.pumpWidget(buildSubject());
 
         final labelText = tester.widget<Text>(find.text('Label'));
-        expect(labelText.style?.color, Colors.grey.shade400);
+        expect(labelText.style?.color, AppColors.grey400);
       });
 
       testWidgets('uses custom labelColor when provided', (tester) async {
@@ -136,7 +136,7 @@ void main() {
     });
 
     group('defaults', () {
-      testWidgets('default valueColor is white', (tester) async {
+      testWidgets('default valueColor is textPrimary', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
@@ -146,7 +146,7 @@ void main() {
         );
 
         final valueText = tester.widget<Text>(find.text('V'));
-        expect(valueText.style?.color, Colors.white);
+        expect(valueText.style?.color, AppColors.textPrimary);
       });
 
       testWidgets('default fontSize is fontSizeSmall', (tester) async {
