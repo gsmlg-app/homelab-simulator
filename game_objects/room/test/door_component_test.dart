@@ -69,7 +69,7 @@ void main() {
 
     group('size', () {
       test('is one tile size', () {
-        final component = DoorComponent(door: testDoorTop, tileSize: 32.0);
+        final component = DoorComponent(door: testDoorTop, tileSize: GameConstants.tileSize);
 
         expect(component.size, Vector2.all(32.0));
       });
@@ -290,7 +290,7 @@ void main() {
           door: testDoorBottom,
           roomWidth: GameConstants.roomWidth,
           roomHeight: GameConstants.roomHeight,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
         final component64 = DoorComponent(
           door: testDoorBottom,
