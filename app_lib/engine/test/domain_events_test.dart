@@ -644,5 +644,74 @@ void main() {
         expect(creditNeg100.amount, -100);
       });
     });
+
+    group('edge cases', () {
+      test('events can be used in Set collections', () {
+        const event1 = PlayerMoved(GridPosition(5, 5));
+        const event2 = PlayerMoved(GridPosition(5, 5));
+        const event3 = ShopToggled(true);
+        const event4 = DeviceRemoved('dev-1');
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final eventSet = <DomainEvent>{event1, event2, event3, event4};
+        expect(eventSet.length, 3);
+        expect(eventSet.contains(event1), isTrue);
+        expect(eventSet.contains(event3), isTrue);
+        expect(eventSet.contains(event4), isTrue);
+      });
+
+      test('events can be used as Map keys', () {
+        const event1 = CreditsChanged(100);
+        const event2 = CreditsChanged(100);
+
+        final eventMap = <DomainEvent, String>{event1: 'first'};
+        eventMap[event2] = 'second';
+
+        expect(eventMap.length, 1);
+        expect(eventMap[event1], 'second');
+      });
+
+      test('mixed event types can be used in Set', () {
+        const playerMoved = PlayerMoved(GridPosition(3, 4));
+        const shopToggled = ShopToggled(false);
+        const creditsChanged = CreditsChanged(50);
+        const gameModeChanged = GameModeChanged(GameMode.sim);
+        const gameLoaded = GameLoaded();
+        const roomEntered = RoomEntered(
+          roomId: 'room-1',
+          spawnPosition: GridPosition(2, 2),
+        );
+
+        final eventSet = <DomainEvent>{
+          playerMoved,
+          shopToggled,
+          creditsChanged,
+          gameModeChanged,
+          gameLoaded,
+          roomEntered,
+        };
+        expect(eventSet.length, 6);
+      });
+
+      test('events with same type but different values deduplicate correctly',
+          () {
+        const credit1 = CreditsChanged(100);
+        const credit2 = CreditsChanged(100);
+        const credit3 = CreditsChanged(-50);
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final creditSet = <DomainEvent>{credit1, credit2, credit3};
+        expect(creditSet.length, 2);
+      });
+
+      test('singleton events deduplicate in Set', () {
+        const loaded1 = GameLoaded();
+        const loaded2 = GameLoaded();
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final loadedSet = <DomainEvent>{loaded1, loaded2};
+        expect(loadedSet.length, 1);
+      });
+    });
   });
 }
