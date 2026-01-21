@@ -11,14 +11,14 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 53
-- **Last Commit:** 273a14f
+- **Iteration:** 54
+- **Last Commit:** 25ee125
 
 ## Test Coverage Summary
-- **app_lib/core:** 134 tests passing
+- **app_lib/core:** 146 tests passing
   - CharacterName: 37 tests (+25 edge case tests)
   - GridPosition: 25 tests
-  - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds): 27 tests (+6 edge cases)
+  - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds, countBy, groupBy): 40 tests (+6 edge cases, +12 new)
   - IDs: 15 tests
   - Enums: 30 tests
 - **app_lib/engine:** 272 tests passing
@@ -106,7 +106,7 @@ Two main feature sets from PRD.md:
 - **test/:** 20 tests passing
   - App: 19 tests (NEW) (+1 skipped for BLoC timing)
   - widget_test: 1 test
-- **Total:** 1458 unit tests
+- **Total:** 1470 unit tests
 
 ## Completed Work
 
@@ -208,6 +208,8 @@ Two main feature sets from PRD.md:
 - ✅ Removed duplicate _providerColor from CloudServiceComponent, _getProvider* from RoomSummaryPanel
 - ✅ Extracted ServiceCategoryUI extension to app_widget_common (icon, color, displayName)
 - ✅ Removed duplicate _categoryColor from CloudServiceComponent, _getCategory* from RoomSummaryPanel
+- ✅ Extracted countBy/groupBy utility functions to app_lib_core helpers
+- ✅ Refactored RoomSummaryPanel to use countBy/groupBy instead of inline counting loops
 
 ## Next Tasks
 1. Look for more performance optimizations
@@ -256,6 +258,8 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 25ee125: refactor: extract countBy/groupBy utilities to reduce duplication
+- 6d5e27a: style: apply dart format to test files
 - 273a14f: refactor: extract InfoRow widget to app_widget_common
 - a6337e4: refactor: consolidate color constants into AppColors
 - f858832: fix: improve error handling in reducer and HomelabGame
