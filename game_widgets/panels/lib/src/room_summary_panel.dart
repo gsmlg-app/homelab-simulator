@@ -59,10 +59,10 @@ class RoomSummaryPanel extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
+            const Flexible(
               child: Text(
                 'OBJECTS',
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.grey500,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
