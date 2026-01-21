@@ -579,6 +579,104 @@ void main() {
       final str = template.toString();
       expect(str, contains('Kubernetes Cluster'));
     });
+
+    group('equality', () {
+      test('equal templates are equal', () {
+        const template1 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2 Instance',
+          description: 'Virtual machines',
+        );
+        const template2 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2 Instance',
+          description: 'Virtual machines',
+        );
+
+        expect(template1, template2);
+        expect(template1.hashCode, template2.hashCode);
+      });
+
+      test('different templates are not equal', () {
+        const template1 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2 Instance',
+          description: 'Virtual machines',
+        );
+        const template2 = CloudServiceTemplate(
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.compute,
+          serviceType: 'ComputeEngine',
+          name: 'Compute Engine',
+          description: 'GCP VMs',
+        );
+
+        expect(template1, isNot(template2));
+      });
+
+      test('templates can be used in Set collections', () {
+        const template1 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'VMs',
+        );
+        const template2 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'VMs',
+        );
+        const template3 = CloudServiceTemplate(
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.storage,
+          serviceType: 'CloudStorage',
+          name: 'Cloud Storage',
+          description: 'Object storage',
+        );
+
+        // ignore: equal_elements_in_set - intentional duplicate to test deduplication
+        final templateSet = <CloudServiceTemplate>{
+          template1,
+          template2,
+          template3,
+        };
+        expect(templateSet.length, 2);
+        expect(templateSet.contains(template1), isTrue);
+        expect(templateSet.contains(template3), isTrue);
+      });
+
+      test('templates can be used as Map keys', () {
+        const template1 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'VMs',
+        );
+        const template2 = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'VMs',
+        );
+
+        final templateMap = <CloudServiceTemplate, String>{template1: 'first'};
+        templateMap[template2] = 'second';
+
+        expect(templateMap.length, 1);
+        expect(templateMap[template1], 'second');
+      });
+    });
   });
 
   group('CloudServiceCatalog', () {
