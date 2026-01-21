@@ -18,7 +18,10 @@ class CreditsDisplay extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.panelBackground,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.green700, width: 2),
+            border: Border.all(
+              color: AppColors.green700,
+              width: AppSpacing.borderWidth,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

@@ -35,7 +35,10 @@ class InteractionHint extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.panelBackground,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.cyan700, width: 2),
+              border: Border.all(
+                color: AppColors.cyan700,
+                width: AppSpacing.borderWidth,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

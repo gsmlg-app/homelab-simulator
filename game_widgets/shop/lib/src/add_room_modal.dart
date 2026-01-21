@@ -166,7 +166,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
       decoration: BoxDecoration(
         color: AppColors.grey900,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.modalAccentDark, width: 2),
+        border: Border.all(
+          color: AppColors.modalAccentDark,
+          width: AppSpacing.borderWidth,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.modalAccentDark.withValues(alpha: 0.5),
@@ -531,7 +534,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
         height: height * cellSize,
         decoration: BoxDecoration(
           color: AppColors.secondaryBackground,
-          border: Border.all(color: AppColors.grey700, width: 2),
+          border: Border.all(
+            color: AppColors.grey700,
+            width: AppSpacing.borderWidth,
+          ),
         ),
         child: Stack(
           children: [
@@ -561,7 +567,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 height: cellSize,
                 decoration: BoxDecoration(
                   color: _accentColor,
-                  border: Border.all(color: AppColors.textPrimary, width: 2),
+                  border: Border.all(
+                    color: AppColors.textPrimary,
+                    width: AppSpacing.borderWidth,
+                  ),
                 ),
                 child: const Center(
                   child: Icon(

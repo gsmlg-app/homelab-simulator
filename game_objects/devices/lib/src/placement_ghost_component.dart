@@ -22,7 +22,7 @@ class PlacementGhostComponent extends PositionComponent
   final Paint _fillPaint = Paint()..style = PaintingStyle.fill;
   final Paint _borderPaint = Paint()
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+    ..strokeWidth = GameConstants.glowStrokeBase;
 
   PlacementGhostComponent({this.tileSize = GameConstants.tileSize})
     : super(size: Vector2.all(tileSize));
