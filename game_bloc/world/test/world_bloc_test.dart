@@ -168,10 +168,10 @@ void main() {
         'sets terminal interaction when at terminal position',
         build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         act: (bloc) =>
-            bloc.add(const PlayerPositionUpdated(GridPosition(2, 2))),
+            bloc.add(PlayerPositionUpdated(GameConstants.terminalPosition)),
         expect: () => [
-          const WorldState(
-            playerPosition: GridPosition(2, 2),
+          WorldState(
+            playerPosition: GameConstants.terminalPosition,
             interactableEntityId: GameConstants.terminalEntityId,
             availableInteraction: InteractionType.terminal,
           ),
