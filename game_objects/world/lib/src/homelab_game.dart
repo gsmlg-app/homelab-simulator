@@ -366,7 +366,7 @@ class HomelabGame extends FlameGame
     if (gridPos == model.currentRoom.terminalPosition &&
         _player.gridPosition.isAdjacentTo(gridPos)) {
       worldBloc.add(
-        InteractionRequested(
+        const InteractionRequested(
           GameConstants.terminalEntityId,
           InteractionType.terminal,
         ),
