@@ -9,12 +9,19 @@ class GameStorage with SharedPreferencesMixin {
   static const String _storageKey = 'homelab_game_state';
   static final _log = Logger('GameStorage');
 
-  /// Save game state to persistent storage
+  /// Save game state to persistent storage.
+  ///
+  /// Logs a warning if save fails but does not throw, allowing the app
+  /// to continue functioning even if persistence is unavailable.
   Future<void> save(GameModel model) async {
-    final prefs = await preferences;
-    final json = jsonEncode(model.toJson());
-    await prefs.setString(_storageKey, json);
-    _log.fine('Game state saved');
+    try {
+      final prefs = await preferences;
+      final json = jsonEncode(model.toJson());
+      await prefs.setString(_storageKey, json);
+      _log.fine('Game state saved');
+    } catch (e, stackTrace) {
+      _log.warning('Failed to save game state: $e', e, stackTrace);
+    }
   }
 
   /// Load game state from persistent storage

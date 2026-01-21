@@ -119,9 +119,9 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   void _selectCharacter(CharacterModel character) {
-    // Update last played time
+    // Update last played time (fire-and-forget, errors handled in save())
     final updated = character.copyWith(lastPlayedAt: DateTime.now());
-    _storage.save(updated);
+    unawaited(_storage.save(updated));
 
     Navigator.of(
       context,

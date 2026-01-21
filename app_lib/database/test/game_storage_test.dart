@@ -70,12 +70,14 @@ void main() {
         expect(result, isNull);
       });
 
-      test('should return null for invalid game data structure', () async {
+      test('should use defaults for invalid game data structure', () async {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('homelab_game_state', '{"invalid": "data"}');
 
+        // GameModel.fromJson uses defaults for missing fields
         final result = await storage.load();
-        expect(result, isNull);
+        expect(result, isNotNull);
+        expect(result!.credits, GameModel.initial().credits);
       });
     });
 
@@ -289,16 +291,19 @@ void main() {
         expect(loaded!.credits, 0);
       });
 
-      test('should return null for partially valid JSON', () async {
+      test('should use defaults for partially valid JSON', () async {
         final prefs = await SharedPreferences.getInstance();
-        // Valid JSON but missing required fields
+        // Valid JSON but missing most fields - fromJson uses defaults
         await prefs.setString(
           'homelab_game_state',
           '{"currentRoomId": "room-1"}',
         );
 
+        // GameModel.fromJson uses defaults for missing fields
         final result = await storage.load();
-        expect(result, isNull);
+        expect(result, isNotNull);
+        expect(result!.currentRoomId, 'room-1');
+        expect(result.credits, GameModel.initial().credits);
       });
 
       test('should return null for JSON array instead of object', () async {
