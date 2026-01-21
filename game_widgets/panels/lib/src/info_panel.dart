@@ -17,10 +17,10 @@ class InfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.paddingM,
       decoration: BoxDecoration(
         color: AppColors.panelBackground,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
         border: Border.all(color: AppColors.grey700),
       ),
       child: Column(
@@ -29,14 +29,18 @@ class InfoPanel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: AppColors.cyan400, size: 20),
-              const SizedBox(width: 8),
+              Icon(
+                icon,
+                color: AppColors.cyan400,
+                size: AppSpacing.iconSizeDefault,
+              ),
+              const SizedBox(width: AppSpacing.s),
               Expanded(
                 child: Text(
                   title.toUpperCase(),
                   style: const TextStyle(
                     color: AppColors.cyan400,
-                    fontSize: 14,
+                    fontSize: AppSpacing.fontSizeDefault,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                   ),

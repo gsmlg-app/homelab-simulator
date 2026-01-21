@@ -29,7 +29,7 @@ class DeviceInfoPanel extends StatelessWidget {
           value: device.isRunning ? 'Running' : 'Stopped',
         ),
         if (onRemove != null) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.ms),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
@@ -37,7 +37,7 @@ class DeviceInfoPanel extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.red800,
               ),
-              icon: const Icon(Icons.delete, size: 18),
+              icon: const Icon(Icons.delete, size: AppSpacing.fontSizeLarge),
               label: const Text('Remove Device'),
             ),
           ),
