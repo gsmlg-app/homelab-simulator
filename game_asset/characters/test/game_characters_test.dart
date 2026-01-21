@@ -131,5 +131,135 @@ void main() {
       expect(CharacterDirection.values, contains(CharacterDirection.downLeft));
       expect(CharacterDirection.values, contains(CharacterDirection.downRight));
     });
+
+    test('direction indices are sequential', () {
+      for (int i = 0; i < CharacterDirection.values.length; i++) {
+        expect(CharacterDirection.values[i].index, i);
+      }
+    });
+
+    test('all directions have unique indices', () {
+      final indices = CharacterDirection.values.map((d) => d.index).toSet();
+      expect(indices.length, CharacterDirection.values.length);
+    });
+  });
+
+  group('CharacterSpriteSheet edge cases', () {
+    const minimalSheet = CharacterSpriteSheet(
+      path: 'minimal.png',
+      frameWidth: 1,
+      frameHeight: 1,
+      columns: 1,
+      rows: 1,
+      idleRow: 0,
+      walkRows: [0],
+    );
+
+    test('handles minimal dimensions', () {
+      expect(minimalSheet.frameWidth, 1);
+      expect(minimalSheet.frameHeight, 1);
+    });
+
+    test('handles minimal grid', () {
+      expect(minimalSheet.columns, 1);
+      expect(minimalSheet.rows, 1);
+    });
+
+    test('handles single walk row', () {
+      expect(minimalSheet.walkRows.length, 1);
+    });
+
+    const largeSheet = CharacterSpriteSheet(
+      path: 'large.png',
+      frameWidth: 1024,
+      frameHeight: 1024,
+      columns: 100,
+      rows: 100,
+      idleRow: 0,
+      walkRows: [1, 2, 3, 4, 5],
+    );
+
+    test('handles large dimensions', () {
+      expect(largeSheet.frameWidth, 1024);
+      expect(largeSheet.frameHeight, 1024);
+    });
+
+    test('handles large grid', () {
+      expect(largeSheet.columns, 100);
+      expect(largeSheet.rows, 100);
+    });
+
+    test('handles multiple walk rows', () {
+      expect(largeSheet.walkRows.length, 5);
+    });
+  });
+
+  group('CharacterSpriteSheet equality', () {
+    const sheet1 = CharacterSpriteSheet(
+      path: 'test.png',
+      frameWidth: 192,
+      frameHeight: 256,
+      columns: 8,
+      rows: 4,
+      idleRow: 0,
+      walkRows: [1, 2, 3],
+    );
+
+    const sheet2 = CharacterSpriteSheet(
+      path: 'test.png',
+      frameWidth: 192,
+      frameHeight: 256,
+      columns: 8,
+      rows: 4,
+      idleRow: 0,
+      walkRows: [1, 2, 3],
+    );
+
+    const sheet3 = CharacterSpriteSheet(
+      path: 'different.png',
+      frameWidth: 192,
+      frameHeight: 256,
+      columns: 8,
+      rows: 4,
+      idleRow: 0,
+      walkRows: [1, 2, 3],
+    );
+
+    test('same properties have same hashCode', () {
+      expect(sheet1.hashCode, sheet2.hashCode);
+    });
+
+    test('different path has different hashCode', () {
+      expect(sheet1.hashCode, isNot(sheet3.hashCode));
+    });
+
+    test('columnForDirection returns valid column for all directions', () {
+      for (final direction in CharacterDirection.values) {
+        final column = sheet1.columnForDirection(direction);
+        expect(column, greaterThanOrEqualTo(0));
+        expect(column, lessThan(sheet1.columns));
+      }
+    });
+  });
+
+  group('GameCharacters registry', () {
+    test('mainMale and mainFemale have same dimensions', () {
+      expect(GameCharacters.mainMale.frameWidth, GameCharacters.mainFemale.frameWidth);
+      expect(GameCharacters.mainMale.frameHeight, GameCharacters.mainFemale.frameHeight);
+    });
+
+    test('mainMale and mainFemale have same grid layout', () {
+      expect(GameCharacters.mainMale.columns, GameCharacters.mainFemale.columns);
+      expect(GameCharacters.mainMale.rows, GameCharacters.mainFemale.rows);
+    });
+
+    test('mainMale and mainFemale have same animation rows', () {
+      expect(GameCharacters.mainMale.idleRow, GameCharacters.mainFemale.idleRow);
+      expect(GameCharacters.mainMale.walkRows.length, GameCharacters.mainFemale.walkRows.length);
+    });
+
+    test('mainMale and mainFemale have different paths', () {
+      expect(GameCharacters.mainMale.path, isNot(GameCharacters.mainFemale.path));
+    });
   });
 }

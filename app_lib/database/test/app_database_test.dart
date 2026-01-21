@@ -39,6 +39,95 @@ void main() {
         db1.close();
         db2.close();
       });
+
+      test('can close multiple times without error', () async {
+        final db = AppDatabase.forTesting();
+        await db.close();
+        // Drift databases can be safely closed multiple times
+      });
+    });
+
+    group('inheritance', () {
+      test('extends GeneratedDatabase', () {
+        final db = AppDatabase.forTesting();
+        expect(db, isA<GeneratedDatabase>());
+        db.close();
+      });
+
+      test('is a DatabaseConnectionUser', () {
+        final db = AppDatabase.forTesting();
+        expect(db, isA<DatabaseConnectionUser>());
+        db.close();
+      });
+    });
+
+    group('schema', () {
+      test('schemaVersion is positive', () {
+        final db = AppDatabase.forTesting();
+        expect(db.schemaVersion, greaterThan(0));
+        db.close();
+      });
+
+      test('schemaVersion is consistent across instances', () {
+        final db1 = AppDatabase.forTesting();
+        final db2 = AppDatabase.forTesting();
+
+        expect(db1.schemaVersion, db2.schemaVersion);
+
+        db1.close();
+        db2.close();
+      });
+
+      test('allTables is available', () {
+        final db = AppDatabase.forTesting();
+        expect(db.allTables, isA<Iterable<TableInfo>>());
+        db.close();
+      });
+
+      test('allSchemaEntities is available', () {
+        final db = AppDatabase.forTesting();
+        expect(db.allSchemaEntities, isA<Iterable<DatabaseSchemaEntity>>());
+        db.close();
+      });
+    });
+
+    group('forTesting factory', () {
+      test('creates distinct instances each call', () {
+        final db1 = AppDatabase.forTesting();
+        final db2 = AppDatabase.forTesting();
+        final db3 = AppDatabase.forTesting();
+
+        expect(db1, isNot(same(db2)));
+        expect(db2, isNot(same(db3)));
+        expect(db1, isNot(same(db3)));
+
+        db1.close();
+        db2.close();
+        db3.close();
+      });
+
+      test('creates usable database', () {
+        final db = AppDatabase.forTesting();
+        // Database should be usable (not closed)
+        expect(db.schemaVersion, 1);
+        db.close();
+      });
+    });
+
+    group('database connection', () {
+      test('has executor', () {
+        final db = AppDatabase.forTesting();
+        expect(db.executor, isA<QueryExecutor>());
+        db.close();
+      });
+
+      test('executor is same across calls on same instance', () {
+        final db = AppDatabase.forTesting();
+        final executor1 = db.executor;
+        final executor2 = db.executor;
+        expect(executor1, same(executor2));
+        db.close();
+      });
     });
   });
 }

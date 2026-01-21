@@ -62,5 +62,105 @@ void main() {
         }
       }
     });
+
+    group('edge cases', () {
+      test('all levels have unique values', () {
+        final values = LogLevel.values.map((l) => l.value).toSet();
+        expect(values.length, LogLevel.values.length);
+      });
+
+      test('all levels have unique names', () {
+        final names = LogLevel.values.map((l) => l.name).toSet();
+        expect(names.length, LogLevel.values.length);
+      });
+
+      test('values are sequential from 0', () {
+        for (int i = 0; i < LogLevel.values.length; i++) {
+          expect(LogLevel.values[i].value, i);
+        }
+      });
+
+      test('adjacent levels differ by 1', () {
+        for (int i = 1; i < LogLevel.values.length; i++) {
+          expect(
+            LogLevel.values[i].value - LogLevel.values[i - 1].value,
+            1,
+          );
+        }
+      });
+    });
+
+    group('level count', () {
+      test('has exactly 6 levels', () {
+        expect(LogLevel.values.length, 6);
+      });
+    });
+
+    group('level transitions', () {
+      test('each level is strictly greater than previous', () {
+        LogLevel previous = LogLevel.verbose;
+        for (final level in LogLevel.values.skip(1)) {
+          expect(level > previous, isTrue);
+          previous = level;
+        }
+      });
+
+      test('each level is strictly less than next', () {
+        for (int i = 0; i < LogLevel.values.length - 1; i++) {
+          expect(LogLevel.values[i] < LogLevel.values[i + 1], isTrue);
+        }
+      });
+    });
+
+    group('equality comparison', () {
+      test('level equals itself', () {
+        for (final level in LogLevel.values) {
+          expect(level >= level, isTrue);
+          expect(level <= level, isTrue);
+        }
+      });
+
+      test('level is not less than itself', () {
+        for (final level in LogLevel.values) {
+          expect(level < level, isFalse);
+        }
+      });
+
+      test('level is not greater than itself', () {
+        for (final level in LogLevel.values) {
+          expect(level > level, isFalse);
+        }
+      });
+    });
+
+    group('boundary comparisons', () {
+      test('verbose is less than or equal to all levels', () {
+        for (final level in LogLevel.values) {
+          expect(LogLevel.verbose <= level, isTrue);
+        }
+      });
+
+      test('fatal is greater than or equal to all levels', () {
+        for (final level in LogLevel.values) {
+          expect(LogLevel.fatal >= level, isTrue);
+        }
+      });
+
+      test('verbose not greater than any level except itself', () {
+        for (final level in LogLevel.values) {
+          if (level != LogLevel.verbose) {
+            expect(LogLevel.verbose > level, isFalse);
+          }
+        }
+      });
+
+      test('fatal not less than any level except itself', () {
+        for (final level in LogLevel.values) {
+          if (level != LogLevel.fatal) {
+            expect(LogLevel.fatal < level, isFalse);
+          }
+        }
+      });
+    });
   });
 }
