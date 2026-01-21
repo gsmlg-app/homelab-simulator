@@ -523,5 +523,24 @@ void main() {
         expect(AppColors.roomBackground, AppColors.secondaryBackground);
       });
     });
+
+    group('Button Colors', () {
+      test('red700 is defined (danger button color)', () {
+        expect(AppColors.red700, isA<Color>());
+        expect(AppColors.red700.toARGB32(), 0xFFD32F2F);
+      });
+
+      test('grey300Dark is defined (toggle unselected background)', () {
+        expect(AppColors.grey300Dark, isA<Color>());
+        expect(AppColors.grey300Dark.toARGB32(), 0xFF303030);
+      });
+
+      test('grey300Dark is darker than grey700', () {
+        expect(
+          AppColors.grey300Dark.computeLuminance(),
+          lessThan(AppColors.grey700.computeLuminance()),
+        );
+      });
+    });
   });
 }

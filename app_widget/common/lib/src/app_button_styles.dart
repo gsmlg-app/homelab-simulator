@@ -10,8 +10,8 @@ abstract final class AppButtonStyles {
 
   /// Primary button style (cyan accent)
   static ButtonStyle get primary => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF00ACC1), // cyan.shade600
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.cyan600,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -22,7 +22,7 @@ abstract final class AppButtonStyles {
   static ButtonStyle primaryColored(Color backgroundColor) =>
       ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        foregroundColor: const Color(0xFFFFFFFF),
+        foregroundColor: AppColors.textPrimary,
         padding: AppSpacing.paddingButton,
         shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusMedium,
@@ -33,8 +33,8 @@ abstract final class AppButtonStyles {
 
   /// Secondary button style (outlined, cyan border)
   static ButtonStyle get secondary => OutlinedButton.styleFrom(
-    foregroundColor: const Color(0xFF26C6DA), // cyan.shade400
-    side: const BorderSide(color: Color(0xFF26C6DA)),
+    foregroundColor: AppColors.cyan400,
+    side: const BorderSide(color: AppColors.cyan400),
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -55,8 +55,8 @@ abstract final class AppButtonStyles {
 
   /// Danger button style (red)
   static ButtonStyle get danger => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFFD32F2F), // red.shade700
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.red700,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -65,8 +65,8 @@ abstract final class AppButtonStyles {
 
   /// Danger outlined button style
   static ButtonStyle get dangerOutlined => OutlinedButton.styleFrom(
-    foregroundColor: const Color(0xFFD32F2F),
-    side: const BorderSide(color: Color(0xFFD32F2F)),
+    foregroundColor: AppColors.red700,
+    side: const BorderSide(color: AppColors.red700),
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -77,8 +77,8 @@ abstract final class AppButtonStyles {
 
   /// Modal primary button style (purple accent)
   static ButtonStyle get modalPrimary => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF9C27B0), // purple
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.modalAccent,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -87,8 +87,8 @@ abstract final class AppButtonStyles {
 
   /// Modal secondary button style (gray)
   static ButtonStyle get modalSecondary => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF424242), // grey.shade800
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.grey800,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingButton,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -115,8 +115,8 @@ abstract final class AppButtonStyles {
 
   /// Small button style
   static ButtonStyle get small => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF00ACC1),
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.cyan600,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingChip,
     minimumSize: const Size(
       AppSpacing.buttonMinWidthSmall,
@@ -130,8 +130,8 @@ abstract final class AppButtonStyles {
 
   /// Small outlined button style
   static ButtonStyle get smallOutlined => OutlinedButton.styleFrom(
-    foregroundColor: const Color(0xFF26C6DA),
-    side: const BorderSide(color: Color(0xFF26C6DA)),
+    foregroundColor: AppColors.cyan400,
+    side: const BorderSide(color: AppColors.cyan400),
     padding: AppSpacing.paddingChip,
     minimumSize: const Size(
       AppSpacing.buttonMinWidthSmall,
@@ -148,8 +148,8 @@ abstract final class AppButtonStyles {
   /// Apply disabled style to any button style
   static ButtonStyle disabled(ButtonStyle baseStyle) {
     return baseStyle.copyWith(
-      backgroundColor: WidgetStateProperty.all(const Color(0xFF616161)),
-      foregroundColor: WidgetStateProperty.all(const Color(0x61FFFFFF)),
+      backgroundColor: WidgetStateProperty.all(AppColors.grey700),
+      foregroundColor: WidgetStateProperty.all(AppColors.textDisabled),
     );
   }
 
@@ -157,8 +157,8 @@ abstract final class AppButtonStyles {
 
   /// Toggle button style (selected state)
   static ButtonStyle get toggleSelected => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF00ACC1),
-    foregroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: AppColors.cyan600,
+    foregroundColor: AppColors.textPrimary,
     padding: AppSpacing.paddingHudPill,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,
@@ -167,8 +167,8 @@ abstract final class AppButtonStyles {
 
   /// Toggle button style (unselected state)
   static ButtonStyle get toggleUnselected => ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF303030),
-    foregroundColor: const Color(0x8AFFFFFF),
+    backgroundColor: AppColors.grey300Dark,
+    foregroundColor: AppColors.textTertiary,
     padding: AppSpacing.paddingHudPill,
     shape: const RoundedRectangleBorder(
       borderRadius: AppSpacing.borderRadiusMedium,

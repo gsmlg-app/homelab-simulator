@@ -356,4 +356,10 @@ abstract final class AppColors {
 
   /// Red with 70% opacity for delete icons
   static const Color redMuted = Color(0xB3F44336);
+
+  /// Red 700 - Dark red for danger buttons
+  static const Color red700 = Color(0xFFD32F2F);
+
+  /// Grey 300 dark - Very dark grey for backgrounds
+  static const Color grey300Dark = Color(0xFF303030);
 }
