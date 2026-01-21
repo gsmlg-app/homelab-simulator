@@ -149,7 +149,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
     return GestureDetector(
       onTap: widget.onClose,
       child: Container(
-        color: Colors.black54,
+        color: AppColors.overlayBackground,
         child: Center(
           child: GestureDetector(onTap: () {}, child: _buildContent(context)),
         ),
@@ -164,7 +164,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: AppColors.grey900,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.modalAccentDark, width: 2),
         boxShadow: [
@@ -196,9 +196,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
   Widget _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+      decoration: BoxDecoration(
+        color: AppColors.overlayBackground,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,10 +235,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Select Provider',
           style: TextStyle(
-            color: Colors.white70,
+            color: AppColors.textSecondary,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -247,10 +247,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
         ..._providerPresets.map((preset) => _buildProviderCard(preset)),
         if (_selectedProvider?.regions.isNotEmpty == true) ...[
           const SizedBox(height: 20),
-          const Text(
+          Text(
             'Select Region',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondary,
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
@@ -271,9 +271,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'Room Name',
-              labelStyle: const TextStyle(color: Colors.white70),
+              labelStyle: TextStyle(color: AppColors.textSecondary),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade600),
+                borderSide: BorderSide(color: AppColors.grey600),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
@@ -307,10 +307,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
           decoration: BoxDecoration(
             color: isSelected
                 ? preset.color.withValues(alpha: 0.2)
-                : Colors.black26,
+                : AppColors.overlayBackground,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? preset.color : Colors.grey.shade700,
+              color: isSelected ? preset.color : AppColors.grey700,
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -325,7 +325,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                     Text(
                       preset.name,
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.white70,
+                        color: isSelected ? Colors.white : AppColors.textSecondary,
                         fontSize: 16,
                         fontWeight: isSelected
                             ? FontWeight.bold
@@ -336,7 +336,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                       Text(
                         '${preset.regions.length} regions available',
                         style: TextStyle(
-                          color: Colors.grey.shade500,
+                          color: AppColors.grey500,
                           fontSize: 12,
                         ),
                       ),
@@ -362,9 +362,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
       },
       selectedColor: _accentColor.withValues(alpha: 0.3),
       checkmarkColor: _accentColor,
-      labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.white70),
-      backgroundColor: Colors.black26,
-      side: BorderSide(color: isSelected ? _accentColor : Colors.grey.shade700),
+      labelStyle: TextStyle(color: isSelected ? Colors.white : AppColors.textSecondary),
+      backgroundColor: AppColors.overlayBackground,
+      side: BorderSide(color: isSelected ? _accentColor : AppColors.grey700),
     );
   }
 
@@ -375,7 +375,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.black26,
+            color: AppColors.overlayBackground,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -398,10 +398,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
           ),
         ),
         const SizedBox(height: 20),
-        const Text(
+        Text(
           'Door Wall',
           style: TextStyle(
-            color: Colors.white70,
+            color: AppColors.textSecondary,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -414,10 +414,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
               .toList(),
         ),
         const SizedBox(height: 20),
-        const Text(
+        Text(
           'Door Position',
           style: TextStyle(
-            color: Colors.white70,
+            color: AppColors.textSecondary,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -425,7 +425,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         const SizedBox(height: 12),
         Row(
           children: [
-            const Text('1', style: TextStyle(color: Colors.white70)),
+            Text('1', style: TextStyle(color: AppColors.textSecondary)),
             Expanded(
               child: Slider(
                 value: _doorPosition.toDouble(),
@@ -440,7 +440,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
             ),
             Text(
               '$_maxDoorPosition',
-              style: const TextStyle(color: Colors.white70),
+              style: TextStyle(color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -483,10 +483,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
         decoration: BoxDecoration(
           color: isSelected
               ? _accentColor.withValues(alpha: 0.3)
-              : Colors.black26,
+              : AppColors.overlayBackground,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected ? _accentColor : Colors.grey.shade700,
+            color: isSelected ? _accentColor : AppColors.grey700,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -494,14 +494,14 @@ class _AddRoomModalState extends State<AddRoomModal> {
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white70,
+              color: isSelected ? Colors.white : AppColors.textSecondary,
               size: 20,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.white70,
+                color: isSelected ? Colors.white : AppColors.textSecondary,
                 fontSize: 12,
               ),
             ),
@@ -522,7 +522,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         height: height * cellSize,
         decoration: BoxDecoration(
           color: AppColors.secondaryBackground,
-          border: Border.all(color: Colors.grey.shade700, width: 2),
+          border: Border.all(color: AppColors.grey700, width: 2),
         ),
         child: Stack(
           children: [
@@ -532,7 +532,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 left: (i + 1) * cellSize,
                 top: 0,
                 bottom: 0,
-                child: Container(width: 1, color: Colors.grey.shade800),
+                child: Container(width: 1, color: AppColors.grey800),
               );
             }),
             ...List.generate(height - 1, (i) {
@@ -540,7 +540,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 left: 0,
                 right: 0,
                 top: (i + 1) * cellSize,
-                child: Container(height: 1, color: Colors.grey.shade800),
+                child: Container(height: 1, color: AppColors.grey800),
               );
             }),
             // Door indicator
@@ -588,9 +588,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
   Widget _buildFooter(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Colors.black26,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(14)),
+      decoration: BoxDecoration(
+        color: AppColors.overlayBackground,
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -600,7 +600,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               onPressed: () => setState(() => _currentStep--),
               icon: const Icon(Icons.arrow_back),
               label: const Text('Back'),
-              style: TextButton.styleFrom(foregroundColor: Colors.white70),
+              style: TextButton.styleFrom(foregroundColor: AppColors.textSecondary),
             )
           else
             const SizedBox.shrink(),
