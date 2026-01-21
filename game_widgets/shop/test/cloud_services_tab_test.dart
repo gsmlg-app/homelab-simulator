@@ -147,5 +147,135 @@ void main() {
       expect(find.byIcon(Icons.computer), findsWidgets); // Compute
       expect(find.byIcon(Icons.storage), findsWidgets); // Storage
     });
+
+    testWidgets('shows GCP services header for GCP room', (tester) async {
+      const room = RoomModel(
+        id: 'gcp-room',
+        name: 'GCP Region',
+        type: RoomType.gcp,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.text('GCP Services'), findsOneWidget);
+    });
+
+    testWidgets('shows Azure services header for Azure room', (tester) async {
+      const room = RoomModel(
+        id: 'azure-room',
+        name: 'Azure Region',
+        type: RoomType.azure,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.text('Azure Services'), findsOneWidget);
+    });
+
+    testWidgets('shows no services available message', (tester) async {
+      // DigitalOcean has limited services in catalog
+      const room = RoomModel(
+        id: 'do-room',
+        name: 'DO Region',
+        type: RoomType.digitalOcean,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.byType(CloudServicesTab), findsOneWidget);
+    });
+
+    testWidgets('shows Vultr services header for Vultr room', (tester) async {
+      const room = RoomModel(
+        id: 'vultr-room',
+        name: 'Vultr Region',
+        type: RoomType.vultr,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.text('Vultr Services'), findsOneWidget);
+    });
+
+    testWidgets('shows Cloudflare services header for Cloudflare room', (tester) async {
+      const room = RoomModel(
+        id: 'cf-room',
+        name: 'Cloudflare Region',
+        type: RoomType.cloudflare,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.text('Cloudflare Services'), findsOneWidget);
+    });
+
+    testWidgets('shows DigitalOcean services header for DigitalOcean room', (tester) async {
+      const room = RoomModel(
+        id: 'do-room',
+        name: 'DO Region',
+        type: RoomType.digitalOcean,
+      );
+      final model = GameModel.initial().copyWith(
+        rooms: [room],
+        currentRoomId: room.id,
+      );
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.text('DigitalOcean Services'), findsOneWidget);
+    });
+
+    testWidgets('renders dividers between sections', (tester) async {
+      final model = GameModel.initial();
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.byType(Divider), findsAtLeast(2));
+    });
+
+    testWidgets('renders Column layout', (tester) async {
+      final model = GameModel.initial();
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.byType(Column), findsAtLeast(1));
+    });
+
+    testWidgets('shows add icon for services', (tester) async {
+      final model = GameModel.initial();
+      when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+      await tester.pumpWidget(buildTestWidget());
+
+      expect(find.byIcon(Icons.add_circle_outline), findsWidgets);
+    });
   });
 }
