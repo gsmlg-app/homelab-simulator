@@ -107,10 +107,9 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(
-        materialApp.theme?.scaffoldBackgroundColor?.value,
-        0xFF0D0D1A,
-      );
+      final bgColor = materialApp.theme?.scaffoldBackgroundColor;
+      expect(bgColor, isNotNull);
+      expect(bgColor!.toARGB32(), 0xFF0D0D1A);
     });
 
     testWidgets('App theme uses copyWith from dark theme',
