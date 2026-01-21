@@ -264,6 +264,10 @@ class HomelabGame extends FlameGame
     }
   }
 
+  // Reusable Sets for sync operations to reduce GC pressure
+  final Set<String> _syncModelIds = {};
+  final Set<String> _syncExistingIds = {};
+
   /// Generic sync helper for component lists.
   ///
   /// Removes components whose models no longer exist and adds components
@@ -275,20 +279,30 @@ class HomelabGame extends FlameGame
     required String Function(C) getComponentId,
     required C Function(M) createComponent,
   }) {
+    // Build model IDs set (reuse to reduce allocations)
+    _syncModelIds.clear();
+    for (final model in models) {
+      _syncModelIds.add(getModelId(model));
+    }
+
     // Remove components for deleted models
-    final modelIds = models.map(getModelId).toSet();
     components.removeWhere((comp) {
-      if (!modelIds.contains(getComponentId(comp))) {
+      if (!_syncModelIds.contains(getComponentId(comp))) {
         comp.removeFromParent();
         return true;
       }
       return false;
     });
 
+    // Build existing IDs set (reuse to reduce allocations)
+    _syncExistingIds.clear();
+    for (final comp in components) {
+      _syncExistingIds.add(getComponentId(comp));
+    }
+
     // Add components for new models
-    final existingIds = components.map(getComponentId).toSet();
     for (final model in models) {
-      if (!existingIds.contains(getModelId(model))) {
+      if (!_syncExistingIds.contains(getModelId(model))) {
         final comp = createComponent(model);
         components.add(comp);
         _addWithWorldBloc(comp);
