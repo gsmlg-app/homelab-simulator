@@ -59,13 +59,16 @@ class RoomSummaryPanel extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'OBJECTS',
-              style: TextStyle(
-                color: Colors.grey.shade500,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
+            Flexible(
+              child: Text(
+                'OBJECTS',
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Container(
@@ -153,12 +156,15 @@ class RoomSummaryPanel extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: Colors.grey.shade400,
-            fontSize: 11,
-            fontWeight: FontWeight.w500,
+        Flexible(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.grey.shade400,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Text(
@@ -273,12 +279,15 @@ class RoomSummaryPanel extends StatelessWidget {
                     color: providerEntry.key.color,
                   ),
                   const SizedBox(width: 6),
-                  Text(
-                    providerEntry.key.displayName,
-                    style: TextStyle(
-                      color: providerEntry.key.color,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      providerEntry.key.displayName,
+                      style: TextStyle(
+                        color: providerEntry.key.color,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

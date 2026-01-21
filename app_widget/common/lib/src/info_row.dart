@@ -45,19 +45,27 @@ class InfoRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: labelColor ?? Colors.grey.shade400,
-              fontSize: fontSize,
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: labelColor ?? Colors.grey.shade400,
+                fontSize: fontSize,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              color: valueColor,
-              fontSize: fontSize,
-              fontWeight: boldValue ? FontWeight.bold : FontWeight.normal,
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: valueColor,
+                fontSize: fontSize,
+                fontWeight: boldValue ? FontWeight.bold : FontWeight.normal,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
             ),
           ),
         ],

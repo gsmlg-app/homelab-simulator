@@ -244,65 +244,50 @@ void main() {
     });
 
     group('ready state', () {
-      // Skip tests that render the full game Stack due to pre-existing layout
-      // overflow bugs in InfoPanel/RoomSummaryPanel at small viewports.
-      // See CONTINUITY.md Mistakes & Learnings #7.
-      testWidgets(
-        'renders game content when GameReady',
-        (tester) async {
-          final gameModel = GameModel.initial();
+      testWidgets('renders game content when GameReady', (tester) async {
+        final gameModel = GameModel.initial();
 
-          whenListen(
-            mockGameBloc,
-            Stream<GameState>.fromIterable([GameReady(gameModel)]),
-            initialState: GameReady(gameModel),
-          );
-          whenListen(
-            mockWorldBloc,
-            Stream<WorldState>.fromIterable([const WorldState()]),
-            initialState: const WorldState(),
-          );
+        whenListen(
+          mockGameBloc,
+          Stream<GameState>.fromIterable([GameReady(gameModel)]),
+          initialState: GameReady(gameModel),
+        );
+        whenListen(
+          mockWorldBloc,
+          Stream<WorldState>.fromIterable([const WorldState()]),
+          initialState: const WorldState(),
+        );
 
-          await tester.pumpWidget(buildSubject());
-          await tester.pump();
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
 
-          // Should not show loading or error
-          expect(find.byType(CircularProgressIndicator), findsNothing);
-          expect(find.text('Error:'), findsNothing);
+        // Should not show loading or error
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.text('Error:'), findsNothing);
 
-          // Should have Scaffold as the root widget
-          expect(find.byType(Scaffold), findsOneWidget);
-        },
-        // Skip due to pre-existing layout overflow bugs in
-        // InfoPanel/RoomSummaryPanel at small test viewports
-        skip: true,
-      );
+        // Should have Scaffold as the root widget
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-      testWidgets(
-        'does not show loading indicator when ready',
-        (tester) async {
-          final gameModel = GameModel.initial();
+      testWidgets('does not show loading indicator when ready', (tester) async {
+        final gameModel = GameModel.initial();
 
-          whenListen(
-            mockGameBloc,
-            Stream<GameState>.fromIterable([GameReady(gameModel)]),
-            initialState: GameReady(gameModel),
-          );
-          whenListen(
-            mockWorldBloc,
-            Stream<WorldState>.fromIterable([const WorldState()]),
-            initialState: const WorldState(),
-          );
+        whenListen(
+          mockGameBloc,
+          Stream<GameState>.fromIterable([GameReady(gameModel)]),
+          initialState: GameReady(gameModel),
+        );
+        whenListen(
+          mockWorldBloc,
+          Stream<WorldState>.fromIterable([const WorldState()]),
+          initialState: const WorldState(),
+        );
 
-          await tester.pumpWidget(buildSubject());
-          await tester.pump();
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
 
-          expect(find.byType(CircularProgressIndicator), findsNothing);
-        },
-        // Skip due to pre-existing layout overflow bugs in
-        // InfoPanel/RoomSummaryPanel at small test viewports
-        skip: true,
-      );
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+      });
     });
 
     group('state transitions', () {
