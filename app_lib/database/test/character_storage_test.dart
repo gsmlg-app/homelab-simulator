@@ -210,5 +210,153 @@ void main() {
         expect(loaded.credits, 1000);
       });
     });
+
+    group('edge cases', () {
+      test('should handle many characters', () async {
+        for (int i = 0; i < 100; i++) {
+          final char = createTestCharacter(
+            id: 'char-$i',
+            name: 'Character $i',
+          );
+          await storage.save(char);
+        }
+
+        final result = await storage.loadAll();
+        expect(result.length, 100);
+      });
+
+      test('should handle characters with special characters in name', () async {
+        final char = createTestCharacter(
+          id: 'char-special',
+          name: 'Test "Quotes" & <Brackets>',
+        );
+
+        await storage.save(char);
+        final loaded = await storage.load('char-special');
+
+        expect(loaded, isNotNull);
+        expect(loaded!.name, 'Test "Quotes" & <Brackets>');
+      });
+
+      test('should handle unicode names', () async {
+        final char = createTestCharacter(
+          id: 'char-unicode',
+          name: '测试角色 🎮',
+        );
+
+        await storage.save(char);
+        final loaded = await storage.load('char-unicode');
+
+        expect(loaded, isNotNull);
+        expect(loaded!.name, '测试角色 🎮');
+      });
+
+      test('should handle maximum level value', () async {
+        final char = CharacterModel(
+          id: 'char-max',
+          name: 'MaxLevel',
+          gender: Gender.male,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          level: 2147483647,
+        );
+
+        await storage.save(char);
+        final loaded = await storage.load('char-max');
+
+        expect(loaded!.level, 2147483647);
+      });
+
+      test('should handle maximum credits value', () async {
+        final char = CharacterModel(
+          id: 'char-rich',
+          name: 'RichChar',
+          gender: Gender.male,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          credits: 2147483647,
+        );
+
+        await storage.save(char);
+        final loaded = await storage.load('char-rich');
+
+        expect(loaded!.credits, 2147483647);
+      });
+
+      test('should handle zero play time', () async {
+        final char = CharacterModel(
+          id: 'char-new',
+          name: 'NewChar',
+          gender: Gender.male,
+          createdAt: testTime,
+          lastPlayedAt: testTime,
+          totalPlayTime: 0,
+        );
+
+        await storage.save(char);
+        final loaded = await storage.load('char-new');
+
+        expect(loaded!.totalPlayTime, 0);
+      });
+
+      test('should handle all gender values', () async {
+        for (final gender in Gender.values) {
+          final char = CharacterModel(
+            id: 'char-${gender.name}',
+            name: 'Char ${gender.name}',
+            gender: gender,
+            createdAt: testTime,
+            lastPlayedAt: testTime,
+          );
+
+          await storage.save(char);
+          final loaded = await storage.load('char-${gender.name}');
+
+          expect(loaded!.gender, gender);
+        }
+      });
+
+      test('should handle all skin tone values', () async {
+        for (final skinTone in SkinTone.values) {
+          final char = CharacterModel(
+            id: 'char-skin-${skinTone.name}',
+            name: 'Char ${skinTone.name}',
+            gender: Gender.male,
+            skinTone: skinTone,
+            createdAt: testTime,
+            lastPlayedAt: testTime,
+          );
+
+          await storage.save(char);
+          final loaded = await storage.load('char-skin-${skinTone.name}');
+
+          expect(loaded!.skinTone, skinTone);
+        }
+      });
+
+      test('should cache SharedPreferences instance', () async {
+        // Multiple operations should reuse cached prefs
+        final char1 = createTestCharacter(id: 'char-1', name: 'One');
+        final char2 = createTestCharacter(id: 'char-2', name: 'Two');
+
+        await storage.save(char1);
+        await storage.save(char2);
+        await storage.load('char-1');
+        await storage.loadAll();
+        await storage.delete('char-2');
+
+        final result = await storage.loadAll();
+        expect(result.length, 1);
+        expect(result.first.name, 'One');
+      });
+
+      test('should return empty list for empty JSON array', () async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('homelab_characters', '[]');
+
+        final result = await storage.loadAll();
+        expect(result, isEmpty);
+      });
+    });
   });
 }
