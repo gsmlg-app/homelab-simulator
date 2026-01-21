@@ -12,11 +12,13 @@ class HoverCellComponent extends PositionComponent
   bool _isValidPlacement = true;
 
   // Cached paint objects for performance
+  // Alpha 0x44 / 255 ≈ 0.27 (27% opacity)
+  static const double _hoverAlpha = 0x44 / 255;
   static final _validFillPaint = Paint()
-    ..color = AppColors.validPlacementFill.withAlpha(0x44)
+    ..color = AppColors.validPlacementFill.withValues(alpha: _hoverAlpha)
     ..style = PaintingStyle.fill;
   static final _invalidFillPaint = Paint()
-    ..color = AppColors.invalidPlacementFill.withAlpha(0x44)
+    ..color = AppColors.invalidPlacementFill.withValues(alpha: _hoverAlpha)
     ..style = PaintingStyle.fill;
   static final _validBorderPaint = Paint()
     ..color = AppColors.validPlacementBorder
