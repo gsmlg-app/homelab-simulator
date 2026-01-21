@@ -123,5 +123,107 @@ void main() {
         expect(room2.gridHeight, 15);
       });
     });
+
+    group('edge cases', () {
+      test('handles minimum grid dimensions', () {
+        final room = RoomComponent(gridWidth: 1, gridHeight: 1, tileSize: 32.0);
+
+        expect(room.size, Vector2(32.0, 32.0));
+      });
+
+      test('handles large grid dimensions', () {
+        final room = RoomComponent(
+          gridWidth: 100,
+          gridHeight: 50,
+          tileSize: 32.0,
+        );
+
+        expect(room.size, Vector2(3200.0, 1600.0));
+      });
+
+      test('handles small tile size', () {
+        final room = RoomComponent(
+          gridWidth: 10,
+          gridHeight: 10,
+          tileSize: 1.0,
+        );
+
+        expect(room.size, Vector2(10.0, 10.0));
+      });
+
+      test('handles large tile size', () {
+        final room = RoomComponent(
+          gridWidth: 10,
+          gridHeight: 10,
+          tileSize: 128.0,
+        );
+
+        expect(room.size, Vector2(1280.0, 1280.0));
+      });
+
+      test('handles non-square dimensions', () {
+        final room = RoomComponent(gridWidth: 30, gridHeight: 10, tileSize: 32.0);
+
+        expect(room.size.x, 960.0);
+        expect(room.size.y, 320.0);
+      });
+    });
+
+    group('position manipulation', () {
+      test('initial position is zero', () {
+        final room = RoomComponent();
+
+        expect(room.position, Vector2.zero());
+      });
+
+      test('position can be set', () {
+        final room = RoomComponent();
+        room.position = Vector2(100, 200);
+
+        expect(room.position.x, 100);
+        expect(room.position.y, 200);
+      });
+
+      test('position can be negative', () {
+        final room = RoomComponent();
+        room.position = Vector2(-50, -100);
+
+        expect(room.position.x, -50);
+        expect(room.position.y, -100);
+      });
+
+      test('position does not affect size', () {
+        final room = RoomComponent(gridWidth: 10, gridHeight: 10, tileSize: 32.0);
+        room.position = Vector2(500, 500);
+
+        expect(room.size, Vector2(320.0, 320.0));
+      });
+    });
+
+    group('component properties', () {
+      test('can have priority set', () {
+        final room = RoomComponent();
+        room.priority = 10;
+
+        expect(room.priority, 10);
+      });
+
+      test('can have anchor set', () {
+        final room = RoomComponent();
+        room.anchor = Anchor.center;
+
+        expect(room.anchor, Anchor.center);
+      });
+
+      test('default anchor is top left', () {
+        final room = RoomComponent();
+
+        expect(room.anchor, Anchor.topLeft);
+      });
+
+      test('is a PositionComponent', () {
+        expect(RoomComponent(), isA<PositionComponent>());
+      });
+    });
   });
 }
