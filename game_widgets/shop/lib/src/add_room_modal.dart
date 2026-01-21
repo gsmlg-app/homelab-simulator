@@ -523,7 +523,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         width: width * cellSize,
         height: height * cellSize,
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1A2E),
+          color: AppColors.secondaryBackground,
           border: Border.all(color: Colors.grey.shade700, width: 2),
         ),
         child: Stack(

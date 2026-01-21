@@ -1,6 +1,7 @@
+import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app_bloc_game/app_bloc_game.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
 import 'screens/start_menu_screen.dart';
@@ -71,7 +72,7 @@ class _AppContent extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Homelab Simulator',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0D0D1A),
+        scaffoldBackgroundColor: AppColors.darkBackground,
         colorScheme: ColorScheme.dark(
           primary: Colors.cyan.shade400,
           secondary: Colors.green.shade400,

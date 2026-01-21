@@ -204,7 +204,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
       autofocus: true,
       onKeyEvent: (node, event) => _handleKeyEvent(event),
       child: Scaffold(
-        backgroundColor: const Color(0xFF0D0D1A),
+        backgroundColor: AppColors.darkBackground,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -281,7 +281,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isActive ? Colors.cyan : const Color(0xFF252540),
+              color: isActive ? Colors.cyan : AppColors.componentBackground,
               border: isCurrent
                   ? Border.all(color: Colors.white, width: 2)
                   : null,
@@ -314,7 +314,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
     return Container(
       height: 2,
       width: 40,
-      color: isActive ? Colors.cyan : const Color(0xFF252540),
+      color: isActive ? Colors.cyan : AppColors.componentBackground,
     );
   }
 
@@ -371,7 +371,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                 color: Colors.white.withValues(alpha: 0.5),
               ),
               filled: true,
-              fillColor: const Color(0xFF252540),
+              fillColor: AppColors.componentBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -409,7 +409,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
               final name = CharacterNameGenerator.generate();
               return ActionChip(
                 label: Text(name),
-                backgroundColor: const Color(0xFF252540),
+                backgroundColor: AppColors.componentBackground,
                 labelStyle: const TextStyle(color: Colors.white70),
                 side: BorderSide.none,
                 onPressed: () {
@@ -444,7 +444,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
         : GameCharacters.mainFemale;
 
     return Container(
-      color: const Color(0xFF151528),
+      color: AppColors.containerBackground,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -453,7 +453,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             width: 192,
             height: 256,
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1A2E),
+              color: AppColors.secondaryBackground,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.cyan.withValues(alpha: 0.3)),
             ),
@@ -630,7 +630,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                     : Text(labelMapper(v)),
                 selected: isSelected,
                 onSelected: (_) => onSelect(v),
-                backgroundColor: const Color(0xFF252540),
+                backgroundColor: AppColors.componentBackground,
                 selectedColor: Colors.cyan.shade700,
                 labelStyle: TextStyle(
                   color: isSelected ? Colors.white : Colors.white70,
@@ -647,24 +647,16 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   }
 
   Color _hairColorToColor(HairColor color) {
-    switch (color) {
-      case HairColor.black:
-        return const Color(0xFF1A1A1A);
-      case HairColor.brown:
-        return const Color(0xFF8B4513);
-      case HairColor.blonde:
-        return const Color(0xFFFFD700);
-      case HairColor.red:
-        return const Color(0xFFB22222);
-      case HairColor.gray:
-        return const Color(0xFF808080);
-      case HairColor.blue:
-        return const Color(0xFF4169E1);
-      case HairColor.green:
-        return const Color(0xFF228B22);
-      case HairColor.purple:
-        return const Color(0xFF9932CC);
-    }
+    return switch (color) {
+      HairColor.black => AppColors.hairBlack,
+      HairColor.brown => AppColors.hairBrown,
+      HairColor.blonde => AppColors.hairBlonde,
+      HairColor.red => AppColors.hairRed,
+      HairColor.gray => AppColors.hairGray,
+      HairColor.blue => AppColors.hairBlue,
+      HairColor.green => AppColors.hairGreen,
+      HairColor.purple => AppColors.hairPurple,
+    };
   }
 
   Widget _buildSummaryStep() {
@@ -691,7 +683,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1A2E),
+              color: AppColors.secondaryBackground,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.cyan.withValues(alpha: 0.3)),
             ),
@@ -702,7 +694,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                   width: 120,
                   height: 160,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF252540),
+                    color: AppColors.componentBackground,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ClipRRect(
@@ -810,7 +802,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF151528),
+        color: AppColors.containerBackground,
         border: Border(
           top: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
         ),

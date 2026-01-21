@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'package:app_database/app_database.dart';
+import 'package:app_lib_core/app_lib_core.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
-import 'package:app_lib_engine/app_lib_engine.dart';
-import 'package:app_database/app_database.dart';
 
 import 'game_screen.dart';
 import 'character_creation_screen.dart';
@@ -146,7 +147,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A2E),
+        backgroundColor: AppColors.secondaryBackground,
         title: const Text(
           'Delete Character',
           style: TextStyle(color: Colors.white),
@@ -205,7 +206,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xFF0D0D1A), Color(0xFF1A1A2E)],
+              colors: [AppColors.darkBackground, AppColors.secondaryBackground],
             ),
           ),
           child: SafeArea(
@@ -387,7 +388,9 @@ class _CharacterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      color: isSelected ? const Color(0xFF303060) : const Color(0xFF252540),
+      color: isSelected
+          ? AppColors.selectionBackground
+          : AppColors.componentBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: isSelected
