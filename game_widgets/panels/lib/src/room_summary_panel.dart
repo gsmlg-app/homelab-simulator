@@ -140,7 +140,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 Icon(
                   expanded ? Icons.expand_less : Icons.expand_more,
                   color: AppColors.grey500,
-                  size: 16,
+                  size: AppSpacing.iconSizeSmall,
                 ),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
@@ -216,7 +216,7 @@ class RoomSummaryPanel extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: color),
+          Icon(icon, size: AppSpacing.iconSizeXs, color: color),
           const SizedBox(width: AppSpacing.xs),
           Text(
             '$count',
@@ -240,7 +240,7 @@ class RoomSummaryPanel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.borderWidth),
           child: Row(
             children: [
-              Icon(e.key.icon, size: 14, color: AppColors.blue400),
+              Icon(e.key.icon, size: AppSpacing.iconSizeSm, color: AppColors.blue400),
               const SizedBox(width: AppSpacing.s),
               Expanded(
                 child: Text(
@@ -290,7 +290,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 children: [
                   Icon(
                     providerEntry.key.icon,
-                    size: 12,
+                    size: AppSpacing.iconSizeXs,
                     color: providerEntry.key.color,
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -314,7 +314,7 @@ class RoomSummaryPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 18, top: 1, bottom: 1),
                 child: Row(
                   children: [
-                    Icon(catEntry.key.icon, size: 12, color: AppColors.grey400),
+                    Icon(catEntry.key.icon, size: AppSpacing.iconSizeXs, color: AppColors.grey400),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(

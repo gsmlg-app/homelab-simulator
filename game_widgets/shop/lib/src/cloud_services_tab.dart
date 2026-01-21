@@ -64,7 +64,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
         color: AppColors.overlayBackground,
         child: Row(
           children: [
-            Icon(roomProvider.icon, color: roomProvider.color, size: 20),
+            Icon(roomProvider.icon, color: roomProvider.color, size: AppSpacing.iconSizeDefault),
             const SizedBox(width: AppSpacing.s),
             Text(
               '${roomProvider.displayName} Services',
@@ -108,7 +108,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                       color: _selectedProvider == provider
                           ? AppColors.textPrimary
                           : provider.color,
-                      size: 18,
+                      size: AppSpacing.iconSizeCompact,
                     ),
                     label: Text(provider.displayName),
                     selected: _selectedProvider == provider,
@@ -248,7 +248,7 @@ class _ServiceCard extends StatelessWidget {
               child: Icon(
                 template.category.icon,
                 color: template.provider.color,
-                size: 24,
+                size: AppSpacing.iconSizeMedium,
               ),
             ),
             const SizedBox(width: AppSpacing.ms),

@@ -42,7 +42,7 @@ class DeviceCard extends StatelessWidget {
                         color: deviceColor.withValues(alpha: 0.2),
                         borderRadius: AppSpacing.borderRadiusMedium,
                       ),
-                      child: Icon(deviceIcon, color: deviceColor, size: 32),
+                      child: Icon(deviceIcon, color: deviceColor, size: AppSpacing.iconSizeXl),
                     ),
                     const SizedBox(width: AppSpacing.ms),
                     Expanded(

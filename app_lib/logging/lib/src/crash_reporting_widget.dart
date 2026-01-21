@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 
 import 'error_reporting_service.dart';
@@ -92,7 +93,7 @@ class ErrorScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline, size: 64, color: Colors.red[700]),
+              Icon(Icons.error_outline, size: AppSpacing.iconSizeHero, color: Colors.red[700]),
               const SizedBox(height: 24),
               Text(
                 'Oops! Something went wrong',

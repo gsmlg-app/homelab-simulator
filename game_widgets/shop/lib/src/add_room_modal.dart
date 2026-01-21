@@ -211,7 +211,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               const Icon(
                 Icons.add_home,
                 color: AppColors.modalAccentLight,
-                size: 28,
+                size: AppSpacing.iconSizeLarge,
               ),
               const SizedBox(width: AppSpacing.ms),
               Text(
@@ -320,7 +320,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           ),
           child: Row(
             children: [
-              Icon(preset.icon, color: preset.color, size: 32),
+              Icon(preset.icon, color: preset.color, size: AppSpacing.iconSizeXl),
               const SizedBox(width: AppSpacing.ms),
               Expanded(
                 child: Column(
@@ -350,7 +350,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 ),
               ),
               if (isSelected)
-                Icon(Icons.check_circle, color: preset.color, size: 24),
+                Icon(Icons.check_circle, color: preset.color, size: AppSpacing.iconSizeMedium),
             ],
           ),
         ),
@@ -391,7 +391,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               Icon(
                 _selectedProvider?.icon ?? Icons.room,
                 color: _accentColor,
-                size: 24,
+                size: AppSpacing.iconSizeMedium,
               ),
               const SizedBox(width: AppSpacing.ms),
               Text(
@@ -508,7 +508,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               color: isSelected
                   ? AppColors.textPrimary
                   : AppColors.textSecondary,
-              size: 20,
+              size: AppSpacing.iconSizeDefault,
             ),
             const SizedBox(height: AppSpacing.xs),
             Text(
@@ -579,7 +579,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                   child: Icon(
                     Icons.door_front_door,
                     color: AppColors.textPrimary,
-                    size: 14,
+                    size: AppSpacing.iconSizeSm,
                   ),
                 ),
               ),

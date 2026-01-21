@@ -127,8 +127,17 @@ abstract final class AppSpacing {
 
   // ============ ICON SIZES ============
 
+  /// Extra small icon size (12px) - for compact badges/counts
+  static const double iconSizeXs = 12.0;
+
+  /// Small-compact icon size (14px) - for dense list items
+  static const double iconSizeSm = 14.0;
+
   /// Small icon size (16px)
   static const double iconSizeSmall = 16.0;
+
+  /// Compact icon size (18px) - for slightly larger list items
+  static const double iconSizeCompact = 18.0;
 
   /// Default icon size (20px)
   static const double iconSizeDefault = 20.0;
@@ -139,8 +148,14 @@ abstract final class AppSpacing {
   /// Large icon size (28px)
   static const double iconSizeLarge = 28.0;
 
+  /// XL icon size (32px) - for feature cards
+  static const double iconSizeXl = 32.0;
+
   /// Error icon size (48px)
   static const double errorIconSize = 48.0;
+
+  /// Hero icon size (64px) - for large error/empty states
+  static const double iconSizeHero = 64.0;
 
   // ============ BORDER RADIUS VALUES ============
 

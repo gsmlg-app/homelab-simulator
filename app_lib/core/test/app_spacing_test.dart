@@ -134,8 +134,20 @@ void main() {
     });
 
     group('icon sizes', () {
+      test('iconSizeXs is 12.0', () {
+        expect(AppSpacing.iconSizeXs, 12.0);
+      });
+
+      test('iconSizeSm is 14.0', () {
+        expect(AppSpacing.iconSizeSm, 14.0);
+      });
+
       test('iconSizeSmall is 16.0', () {
         expect(AppSpacing.iconSizeSmall, 16.0);
+      });
+
+      test('iconSizeCompact is 18.0', () {
+        expect(AppSpacing.iconSizeCompact, 18.0);
       });
 
       test('iconSizeDefault is 20.0', () {
@@ -150,8 +162,16 @@ void main() {
         expect(AppSpacing.iconSizeLarge, 28.0);
       });
 
+      test('iconSizeXl is 32.0', () {
+        expect(AppSpacing.iconSizeXl, 32.0);
+      });
+
       test('errorIconSize is 48.0', () {
         expect(AppSpacing.errorIconSize, 48.0);
+      });
+
+      test('iconSizeHero is 64.0', () {
+        expect(AppSpacing.iconSizeHero, 64.0);
       });
     });
 
