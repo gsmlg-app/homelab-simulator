@@ -160,7 +160,7 @@ void main() {
         final player32 = PlayerComponent(tileSize: GameConstants.tileSize);
         final player64 = PlayerComponent(tileSize: 64.0);
 
-        expect(player32.size, Vector2.all(32.0));
+        expect(player32.size, Vector2.all(GameConstants.tileSize));
         expect(player64.size, Vector2.all(64.0));
       });
     });

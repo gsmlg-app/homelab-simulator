@@ -71,7 +71,7 @@ void main() {
       test('is one tile size', () {
         final component = DoorComponent(door: testDoorTop, tileSize: GameConstants.tileSize);
 
-        expect(component.size, Vector2.all(32.0));
+        expect(component.size, Vector2.all(GameConstants.tileSize));
       });
 
       test('respects custom tile size', () {
