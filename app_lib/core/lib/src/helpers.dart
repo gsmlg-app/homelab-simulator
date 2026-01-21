@@ -182,6 +182,10 @@ class GameConstants {
   /// Glow intensity oscillation center (0.5 for balanced sine wave).
   static const double glowIntensityCenter = 0.5;
 
+  /// Animation cycle period (2π for sine wave modulo). Use for bounding
+  /// animation time values to prevent float overflow during extended sessions.
+  static const double animationPeriod = 6.283185307179586; // math.pi * 2
+
   // Player character drawing constants
 
   /// Player head vertical offset from center (pixels).

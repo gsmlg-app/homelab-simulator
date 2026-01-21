@@ -300,6 +300,22 @@ void main() {
       });
     });
 
+    // Animation constants
+    group('animation constants', () {
+      test('animationPeriod equals 2π', () {
+        // Animation period should equal 2π (approximately 6.283185...)
+        expect(GameConstants.animationPeriod, closeTo(6.283185, 0.000001));
+      });
+
+      test('animationPeriod equals pi times 2', () {
+        // Verify the constant matches the mathematical value
+        expect(
+          GameConstants.animationPeriod,
+          closeTo(3.141592653589793 * 2, 0.0000001),
+        );
+      });
+    });
+
     // Gamepad key constants
     group('gamepad key constants', () {
       test('dpadUpKeys contains expected keys', () {

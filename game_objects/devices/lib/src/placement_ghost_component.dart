@@ -59,8 +59,7 @@ class PlacementGhostComponent extends PositionComponent
   /// Get current grid position
   GridPosition? get currentPosition => _currentPosition;
 
-  // Animation cycle period (2π for sine wave)
-  static const _animationPeriod = math.pi * 2;
+  // Use centralized animation period constant
 
   @override
   void update(double dt) {
@@ -69,7 +68,7 @@ class PlacementGhostComponent extends PositionComponent
     if (_template == null && _cloudService == null) return;
 
     // Update breathing animation (bounded to prevent overflow)
-    _breatheTime = (_breatheTime + dt) % _animationPeriod;
+    _breatheTime = (_breatheTime + dt) % GameConstants.animationPeriod;
 
     final worldState = bloc.state;
     final hoveredCell = worldState.hoveredCell;

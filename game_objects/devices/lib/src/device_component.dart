@@ -67,11 +67,10 @@ class DeviceComponent extends PositionComponent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
     // Random phase offset for subtle variety between devices
-    _flickerPhase = math.Random().nextDouble() * math.pi * 2;
+    _flickerPhase = math.Random().nextDouble() * GameConstants.animationPeriod;
   }
 
-  // Animation cycle period (2π for sine wave)
-  static const _animationPeriod = math.pi * 2;
+  // Use centralized animation period constant
 
   @override
   void update(double dt) {
@@ -80,7 +79,7 @@ class DeviceComponent extends PositionComponent
     _isSelected = worldState.selectedEntityId == device.id;
     // Update flicker animation for running devices (bounded to prevent overflow)
     if (device.isRunning) {
-      _flickerTime = (_flickerTime + dt) % _animationPeriod;
+      _flickerTime = (_flickerTime + dt) % GameConstants.animationPeriod;
     }
   }
 
