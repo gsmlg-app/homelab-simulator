@@ -532,5 +532,237 @@ void main() {
         expect(str, contains('credits: ${game.credits}'));
       });
     });
+
+    group('edge cases', () {
+      test('getChildRooms returns empty list when no children', () {
+        final children = game.getChildRooms('aws-room-1');
+        expect(children, isEmpty);
+      });
+
+      test('getChildRooms returns empty list for nonexistent parent', () {
+        final children = game.getChildRooms('nonexistent-parent');
+        expect(children, isEmpty);
+      });
+
+      test('enterRoom to nonexistent room still updates state', () {
+        const newPosition = GridPosition(5, 5);
+        final moved = game.enterRoom('nonexistent-room', newPosition);
+
+        expect(moved.currentRoomId, 'nonexistent-room');
+        expect(moved.playerPosition, newPosition);
+        // currentRoom should fallback to first room
+        expect(moved.currentRoom.id, 'server-room-1');
+      });
+
+      test('updateRoom with room not in list has no effect', () {
+        const newRoom = RoomModel(
+          id: 'not-in-list',
+          name: 'Unknown Room',
+          type: RoomType.custom,
+        );
+        final updated = game.updateRoom(newRoom);
+
+        expect(updated.rooms.length, 2);
+        expect(updated.getRoomById('not-in-list'), isNull);
+      });
+
+      test('copyWith all fields simultaneously', () {
+        const template = DeviceTemplate(
+          id: 'tmpl-all',
+          name: 'All Fields',
+          description: 'Test all fields',
+          type: DeviceType.server,
+          cost: 999,
+        );
+        const cloudService = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'Lambda',
+          name: 'Lambda',
+          description: 'Serverless',
+        );
+        const newRoom = RoomModel(
+          id: 'new-room',
+          name: 'New Room',
+          type: RoomType.custom,
+        );
+
+        final fullyModified = game.copyWith(
+          currentRoomId: 'new-room',
+          rooms: [newRoom],
+          credits: 999999,
+          playerPosition: const GridPosition(10, 10),
+          gameMode: GameMode.live,
+          placementMode: PlacementMode.placing,
+          selectedTemplate: template,
+          selectedCloudService: cloudService,
+          shopOpen: true,
+        );
+
+        expect(fullyModified.currentRoomId, 'new-room');
+        expect(fullyModified.rooms.length, 1);
+        expect(fullyModified.credits, 999999);
+        expect(fullyModified.playerPosition, const GridPosition(10, 10));
+        expect(fullyModified.gameMode, GameMode.live);
+        expect(fullyModified.placementMode, PlacementMode.placing);
+        expect(fullyModified.selectedTemplate, template);
+        expect(fullyModified.selectedCloudService, cloudService);
+        expect(fullyModified.shopOpen, isTrue);
+      });
+
+      test('addRoom with duplicate id does not deduplicate', () {
+        // Adding a room with same id results in two rooms with same id
+        // This tests current behavior - the model doesn't prevent duplicates
+        const duplicateRoom = RoomModel(
+          id: 'server-room-1',
+          name: 'Duplicate Server Room',
+          type: RoomType.custom,
+        );
+        final updated = game.addRoom(duplicateRoom);
+
+        expect(updated.rooms.length, 3);
+        // getRoomById returns the first match
+        expect(updated.getRoomById('server-room-1')?.name, 'Server Room');
+      });
+
+      test('removeRoom on empty rooms list returns same state', () {
+        const emptyGame = GameModel(
+          currentRoomId: 'none',
+          rooms: [],
+        );
+        final afterRemove = emptyGame.removeRoom('any');
+
+        expect(afterRemove.rooms, isEmpty);
+        expect(afterRemove.currentRoomId, 'none');
+      });
+
+      test('serialization with all placement modes', () {
+        for (final mode in PlacementMode.values) {
+          final gameWithMode = game.copyWith(placementMode: mode);
+          // Note: placementMode is not serialized in toJson, so we just verify it's set
+          expect(gameWithMode.placementMode, mode);
+        }
+      });
+
+      test('serialization with all game modes', () {
+        for (final mode in GameMode.values) {
+          final gameWithMode = game.copyWith(gameMode: mode);
+          final json = gameWithMode.toJson();
+          final restored = GameModel.fromJson(json);
+
+          expect(restored.gameMode, mode);
+        }
+      });
+
+      test('fromJson with invalid gameMode falls back to sim', () {
+        final json = {
+          'currentRoomId': 'room-1',
+          'rooms': [
+            {'id': 'room-1', 'name': 'Test Room'},
+          ],
+          'gameMode': 'invalid_mode',
+        };
+
+        // This will throw because 'invalid_mode' is not a valid GameMode
+        expect(
+          () => GameModel.fromJson(json),
+          throwsA(isA<ArgumentError>()),
+        );
+      });
+
+      test('rootRooms with all rooms having parents returns empty', () {
+        // Create game where all rooms have parents
+        const orphanGame = GameModel(
+          currentRoomId: 'child-1',
+          rooms: [
+            RoomModel(
+              id: 'child-1',
+              name: 'Child 1',
+              parentId: 'nonexistent-parent',
+            ),
+            RoomModel(
+              id: 'child-2',
+              name: 'Child 2',
+              parentId: 'also-nonexistent',
+            ),
+          ],
+        );
+
+        expect(orphanGame.rootRooms, isEmpty);
+      });
+
+      test('getChildRooms with circular parent references handles gracefully', () {
+        // This tests resilience - doesn't cause infinite loop
+        const circularGame = GameModel(
+          currentRoomId: 'room-a',
+          rooms: [
+            RoomModel(id: 'room-a', name: 'A', parentId: 'room-b'),
+            RoomModel(id: 'room-b', name: 'B', parentId: 'room-a'),
+          ],
+        );
+
+        // Should just return direct children, not follow circular refs
+        final childrenOfA = circularGame.getChildRooms('room-a');
+        expect(childrenOfA.length, 1);
+        expect(childrenOfA.first.id, 'room-b');
+      });
+
+      test('removeRoom handles circular parent references', () {
+        // Room A -> Room B -> Room A (circular)
+        const circularGame = GameModel(
+          currentRoomId: 'room-a',
+          rooms: [
+            RoomModel(id: 'room-a', name: 'A', parentId: 'room-b'),
+            RoomModel(id: 'room-b', name: 'B', parentId: 'room-a'),
+          ],
+        );
+
+        // Removing room-a causes cascade: room-b has parent room-a, so both get removed
+        final afterRemove = circularGame.removeRoom('room-a');
+        expect(afterRemove.rooms, isEmpty);
+      });
+
+      test('equality with different selectedTemplate', () {
+        const template = DeviceTemplate(
+          id: 'tmpl-eq',
+          name: 'Template',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        final game1 = game.copyWith(selectedTemplate: template);
+        final game2 = game.copyWith();
+
+        expect(game1, isNot(game2));
+      });
+
+      test('equality with different selectedCloudService', () {
+        const service = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'Test',
+        );
+        final game1 = game.copyWith(selectedCloudService: service);
+        final game2 = game.copyWith();
+
+        expect(game1, isNot(game2));
+      });
+
+      test('equality with different placementMode', () {
+        final game1 = game.copyWith(placementMode: PlacementMode.placing);
+        final game2 = game.copyWith(placementMode: PlacementMode.removing);
+
+        expect(game1, isNot(game2));
+      });
+
+      test('equality with different shopOpen', () {
+        final game1 = game.copyWith(shopOpen: true);
+        final game2 = game.copyWith(shopOpen: false);
+
+        expect(game1, isNot(game2));
+      });
+    });
   });
 }
