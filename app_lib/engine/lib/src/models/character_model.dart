@@ -32,10 +32,13 @@ class CharacterModel extends Equatable {
     this.credits = GameConstants.startingCredits,
   });
 
+  /// Get the sprite sheet for this character's gender
+  CharacterSpriteSheet get spriteSheet => gender == Gender.male
+      ? GameCharacters.mainMale
+      : GameCharacters.mainFemale;
+
   /// Get the sprite asset path for this character's gender
-  String get spritePath => gender == Gender.male
-      ? GameCharacters.mainMale.path
-      : GameCharacters.mainFemale.path;
+  String get spritePath => spriteSheet.path;
 
   CharacterModel copyWith({
     String? id,

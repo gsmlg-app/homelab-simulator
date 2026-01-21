@@ -436,12 +436,12 @@ class _CharacterCard extends StatelessWidget {
                   child: ClipRect(
                     child: Align(
                       alignment: Alignment.topLeft,
-                      widthFactor: 1 / 8,
-                      heightFactor: 1 / 3,
+                      widthFactor: 1 / character.spriteSheet.columns,
+                      heightFactor: 1 / character.spriteSheet.rows,
                       child: Image.asset(
                         character.spritePath,
-                        width: AppSpacing.avatarSize * 8,
-                        height: AppSpacing.avatarSize * 3,
+                        width: AppSpacing.avatarSize * character.spriteSheet.columns,
+                        height: AppSpacing.avatarSize * character.spriteSheet.rows,
                         fit: BoxFit.contain,
                       ),
                     ),

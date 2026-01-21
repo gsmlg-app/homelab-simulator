@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
+import 'package:game_asset_characters/game_asset_characters.dart';
 
 void main() {
   group('CharacterModel', () {
@@ -184,6 +185,14 @@ void main() {
       expect(created.outfitVariant, OutfitVariant.sporty);
       expect(created.level, 1);
       expect(created.credits, GameConstants.startingCredits);
+    });
+
+    test('spriteSheet returns correct sprite sheet based on gender', () {
+      final male = character.copyWith(gender: Gender.male);
+      final female = character.copyWith(gender: Gender.female);
+
+      expect(male.spriteSheet, GameCharacters.mainMale);
+      expect(female.spriteSheet, GameCharacters.mainFemale);
     });
 
     test('spritePath returns correct path based on gender', () {
