@@ -185,8 +185,8 @@ void main() {
           tileSize: GameConstants.tileSize,
         );
 
-        expect(component.position.x, 999 * 32.0);
-        expect(component.position.y, 999 * 32.0);
+        expect(component.position.x, 999 * GameConstants.tileSize);
+        expect(component.position.y, 999 * GameConstants.tileSize);
       });
     });
 

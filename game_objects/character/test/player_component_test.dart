@@ -201,8 +201,8 @@ void main() {
           tileSize: GameConstants.tileSize,
         );
 
-        expect(player.position.x, 999 * 32.0);
-        expect(player.position.y, 999 * 32.0);
+        expect(player.position.x, 999 * GameConstants.tileSize);
+        expect(player.position.y, 999 * GameConstants.tileSize);
       });
     });
 

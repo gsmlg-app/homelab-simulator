@@ -300,8 +300,8 @@ void main() {
         );
 
         // gridPosition is (5, 11)
-        expect(component32.gridPosition.x * 32.0, 160.0);
-        expect(component32.gridPosition.y * 32.0, 352.0);
+        expect(component32.gridPosition.x * GameConstants.tileSize, 160.0);
+        expect(component32.gridPosition.y * GameConstants.tileSize, 352.0);
         expect(component64.gridPosition.x * 64.0, 320.0);
         expect(component64.gridPosition.y * 64.0, 704.0);
       });
