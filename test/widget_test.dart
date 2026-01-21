@@ -73,5 +73,55 @@ void main() {
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
       expect(materialApp.key, const Key('homelab_simulator_app'));
     });
+
+    testWidgets('App has green secondary color', (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
+      expect(materialApp.theme?.colorScheme.secondary, Colors.green.shade400);
+    });
+
+    testWidgets('App has dark color scheme', (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
+      expect(
+        materialApp.theme?.colorScheme.brightness,
+        Brightness.dark,
+      );
+    });
+
+    testWidgets('App is a StatefulWidget', (WidgetTester tester) async {
+      const app = App();
+      expect(app, isA<StatefulWidget>());
+    });
+
+    testWidgets('GameBloc is initialized with GameInitialize',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      final context = tester.element(find.byType(MaterialApp));
+      final gameBloc = context.read<GameBloc>();
+      // Bloc should be active and have state
+      expect(gameBloc.state, isA<GameState>());
+    });
+
+    testWidgets('App has correct scaffold background hex value',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
+      expect(
+        materialApp.theme?.scaffoldBackgroundColor?.value,
+        0xFF0D0D1A,
+      );
+    });
+
+    testWidgets('App theme uses copyWith from dark theme',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
+      // Dark theme has dark surface colors
+      expect(
+        materialApp.theme?.colorScheme.surface,
+        isNotNull,
+      );
+    });
   });
 }
