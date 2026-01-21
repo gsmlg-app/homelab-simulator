@@ -168,6 +168,66 @@ void main() {
         final cleared = withService.copyWith(clearSelectedCloudService: true);
         expect(cleared.selectedCloudService, isNull);
       });
+
+      test('clearSelectedTemplate takes precedence over selectedTemplate', () {
+        const template = DeviceTemplate(
+          id: 'tmpl-2',
+          name: 'Switch',
+          description: 'A network switch',
+          type: DeviceType.switch_,
+          cost: 50,
+        );
+        // Setting both value and clear flag should result in null
+        final result = game.copyWith(
+          selectedTemplate: template,
+          clearSelectedTemplate: true,
+        );
+        expect(result.selectedTemplate, isNull);
+      });
+
+      test('clearSelectedCloudService takes precedence over selectedCloudService', () {
+        const cloudTemplate = CloudServiceTemplate(
+          provider: CloudProvider.gcp,
+          category: ServiceCategory.storage,
+          serviceType: 'CloudStorage',
+          name: 'Cloud Storage',
+          description: 'Object storage',
+        );
+        // Setting both value and clear flag should result in null
+        final result = game.copyWith(
+          selectedCloudService: cloudTemplate,
+          clearSelectedCloudService: true,
+        );
+        expect(result.selectedCloudService, isNull);
+      });
+
+      test('clearSelectedTemplate false preserves template', () {
+        const template = DeviceTemplate(
+          id: 'tmpl-3',
+          name: 'Router',
+          description: 'A router',
+          type: DeviceType.router,
+          cost: 75,
+        );
+        final withTemplate = game.copyWith(selectedTemplate: template);
+        // Explicitly setting clear to false should keep the template
+        final result = withTemplate.copyWith(clearSelectedTemplate: false);
+        expect(result.selectedTemplate, template);
+      });
+
+      test('clearSelectedCloudService false preserves service', () {
+        const cloudTemplate = CloudServiceTemplate(
+          provider: CloudProvider.azure,
+          category: ServiceCategory.database,
+          serviceType: 'CosmosDB',
+          name: 'Cosmos DB',
+          description: 'NoSQL database',
+        );
+        final withService = game.copyWith(selectedCloudService: cloudTemplate);
+        // Explicitly setting clear to false should keep the service
+        final result = withService.copyWith(clearSelectedCloudService: false);
+        expect(result.selectedCloudService, cloudTemplate);
+      });
     });
 
     group('room management', () {
