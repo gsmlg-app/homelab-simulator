@@ -341,7 +341,7 @@ void main() {
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
-      expect(icon.size, 64);
+      expect(icon.size, AppSpacing.iconSizeHero);
     });
   });
 }

@@ -156,7 +156,7 @@ void main() {
 
         final iconWidget = tester.widget<Icon>(find.byIcon(Icons.error));
         expect(iconWidget.color, AppColors.redAccent);
-        expect(iconWidget.size, 48);
+        expect(iconWidget.size, AppSpacing.errorIconSize);
       });
 
       testWidgets('error text is red', (tester) async {
