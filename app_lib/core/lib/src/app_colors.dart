@@ -232,4 +232,58 @@ abstract final class AppColors {
 
   /// Cloud service icon color (white)
   static const Color cloudServiceIcon = Color(0xFFFFFFFF);
+
+  // ============ GREY SCALE (for UI elements) ============
+
+  /// Grey 300 - Light grey for text/values
+  static const Color grey300 = Color(0xFFE0E0E0);
+
+  /// Grey 400 - Medium light grey for secondary text
+  static const Color grey400 = Color(0xFFBDBDBD);
+
+  /// Grey 500 - Medium grey for labels/hints
+  static const Color grey500 = Color(0xFF9E9E9E);
+
+  /// Grey 600 - Medium dark grey for muted text
+  static const Color grey600 = Color(0xFF757575);
+
+  /// Grey 700 - Dark grey for borders
+  static const Color grey700 = Color(0xFF616161);
+
+  /// Grey 800 - Very dark grey for backgrounds
+  static const Color grey800 = Color(0xFF424242);
+
+  /// Grey 900 - Nearly black for dark backgrounds
+  static const Color grey900 = Color(0xFF212121);
+
+  // ============ ACCENT COLORS ============
+
+  /// Cyan 400 - Accent color for highlights
+  static const Color cyan400 = Color(0xFF26C6DA);
+
+  /// Cyan 800 - Dark cyan for badges/chips
+  static const Color cyan800 = Color(0xFF00838F);
+
+  /// Blue 400 - Light blue for icons
+  static const Color blue400 = Color(0xFF42A5F5);
+
+  /// Blue 700 - Medium blue for chips
+  static const Color blue700 = Color(0xFF1976D2);
+
+  /// Blue 800 - Dark blue for backgrounds
+  static const Color blue800 = Color(0xFF1565C0);
+
+  /// Orange 800 - Dark orange for warnings
+  static const Color orange800 = Color(0xFFEF6C00);
+
+  // ============ TEXT COLORS ============
+
+  /// White with 70% opacity (white70)
+  static const Color textSecondary = Color(0xB3FFFFFF);
+
+  /// White with 54% opacity (white54)
+  static const Color textTertiary = Color(0x8AFFFFFF);
+
+  /// White with 40% opacity (for hints)
+  static const Color textHint = Color(0x66FFFFFF);
 }

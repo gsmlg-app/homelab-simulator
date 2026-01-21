@@ -240,6 +240,141 @@ void main() {
       });
     });
 
+    group('Grey Scale', () {
+      test('all grey shades are defined', () {
+        expect(AppColors.grey300, isA<Color>());
+        expect(AppColors.grey400, isA<Color>());
+        expect(AppColors.grey500, isA<Color>());
+        expect(AppColors.grey600, isA<Color>());
+        expect(AppColors.grey700, isA<Color>());
+        expect(AppColors.grey800, isA<Color>());
+        expect(AppColors.grey900, isA<Color>());
+      });
+
+      test('grey300 is correct shade', () {
+        expect(AppColors.grey300.toARGB32(), 0xFFE0E0E0);
+      });
+
+      test('grey400 is correct shade', () {
+        expect(AppColors.grey400.toARGB32(), 0xFFBDBDBD);
+      });
+
+      test('grey500 is correct shade', () {
+        expect(AppColors.grey500.toARGB32(), 0xFF9E9E9E);
+      });
+
+      test('grey600 is correct shade', () {
+        expect(AppColors.grey600.toARGB32(), 0xFF757575);
+      });
+
+      test('grey700 is correct shade', () {
+        expect(AppColors.grey700.toARGB32(), 0xFF616161);
+      });
+
+      test('grey800 is correct shade', () {
+        expect(AppColors.grey800.toARGB32(), 0xFF424242);
+      });
+
+      test('grey900 is correct shade', () {
+        expect(AppColors.grey900.toARGB32(), 0xFF212121);
+      });
+
+      test('grey shades get progressively darker', () {
+        expect(
+          AppColors.grey300.computeLuminance(),
+          greaterThan(AppColors.grey400.computeLuminance()),
+        );
+        expect(
+          AppColors.grey400.computeLuminance(),
+          greaterThan(AppColors.grey500.computeLuminance()),
+        );
+        expect(
+          AppColors.grey500.computeLuminance(),
+          greaterThan(AppColors.grey600.computeLuminance()),
+        );
+        expect(
+          AppColors.grey600.computeLuminance(),
+          greaterThan(AppColors.grey700.computeLuminance()),
+        );
+        expect(
+          AppColors.grey700.computeLuminance(),
+          greaterThan(AppColors.grey800.computeLuminance()),
+        );
+        expect(
+          AppColors.grey800.computeLuminance(),
+          greaterThan(AppColors.grey900.computeLuminance()),
+        );
+      });
+    });
+
+    group('Accent Colors', () {
+      test('all cyan shades are defined', () {
+        expect(AppColors.cyan400, isA<Color>());
+        expect(AppColors.cyan800, isA<Color>());
+      });
+
+      test('cyan400 is correct shade', () {
+        expect(AppColors.cyan400.toARGB32(), 0xFF26C6DA);
+      });
+
+      test('cyan800 is darker than cyan400', () {
+        expect(
+          AppColors.cyan800.computeLuminance(),
+          lessThan(AppColors.cyan400.computeLuminance()),
+        );
+      });
+
+      test('all blue shades are defined', () {
+        expect(AppColors.blue400, isA<Color>());
+        expect(AppColors.blue700, isA<Color>());
+        expect(AppColors.blue800, isA<Color>());
+      });
+
+      test('blue shades get progressively darker', () {
+        expect(
+          AppColors.blue400.computeLuminance(),
+          greaterThan(AppColors.blue700.computeLuminance()),
+        );
+        expect(
+          AppColors.blue700.computeLuminance(),
+          greaterThan(AppColors.blue800.computeLuminance()),
+        );
+      });
+
+      test('orange800 is defined', () {
+        expect(AppColors.orange800, isA<Color>());
+        expect(AppColors.orange800.toARGB32(), 0xFFEF6C00);
+      });
+    });
+
+    group('Text Colors', () {
+      test('textSecondary is white with 70% opacity', () {
+        expect(AppColors.textSecondary, isA<Color>());
+        expect(AppColors.textSecondary.toARGB32(), 0xB3FFFFFF);
+        // Alpha 0xB3 = 179/255 ≈ 70%
+        expect(AppColors.textSecondary.a, closeTo(0.70, 0.01));
+      });
+
+      test('textTertiary is white with 54% opacity', () {
+        expect(AppColors.textTertiary, isA<Color>());
+        expect(AppColors.textTertiary.toARGB32(), 0x8AFFFFFF);
+        // Alpha 0x8A = 138/255 ≈ 54%
+        expect(AppColors.textTertiary.a, closeTo(0.54, 0.01));
+      });
+
+      test('textHint is white with 40% opacity', () {
+        expect(AppColors.textHint, isA<Color>());
+        expect(AppColors.textHint.toARGB32(), 0x66FFFFFF);
+        // Alpha 0x66 = 102/255 ≈ 40%
+        expect(AppColors.textHint.a, closeTo(0.40, 0.01));
+      });
+
+      test('text opacities decrease in order', () {
+        expect(AppColors.textSecondary.a, greaterThan(AppColors.textTertiary.a));
+        expect(AppColors.textTertiary.a, greaterThan(AppColors.textHint.a));
+      });
+    });
+
     group('Color Consistency', () {
       test('all colors are const', () {
         // These should compile without error since they're const
