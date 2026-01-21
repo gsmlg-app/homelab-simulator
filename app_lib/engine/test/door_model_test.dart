@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 
 void main() {
@@ -158,8 +159,8 @@ void main() {
     });
 
     group('getPosition', () {
-      const roomWidth = 20;
-      const roomHeight = 12;
+      const roomWidth = GameConstants.roomWidth;
+      const roomHeight = GameConstants.roomHeight;
 
       test('returns correct position for top wall', () {
         const topDoor = DoorModel(
@@ -215,8 +216,8 @@ void main() {
     });
 
     group('getSpawnPosition', () {
-      const roomWidth = 20;
-      const roomHeight = 12;
+      const roomWidth = GameConstants.roomWidth;
+      const roomHeight = GameConstants.roomHeight;
 
       test('returns position one step inward from top wall', () {
         const topDoor = DoorModel(
