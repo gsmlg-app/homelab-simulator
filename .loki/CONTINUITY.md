@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 59
-- **Last Commit:** 6bc2dda
+- **Iteration:** 60
+- **Last Commit:** a557d70
 
 ## Test Coverage Summary
 - **app_lib/core:** 181 tests passing
@@ -32,11 +32,11 @@ Two main feature sets from PRD.md:
   - DeviceTemplate: 26 tests (NEW)
   - Reducer: 35 tests (+10 credit edge cases)
   - DomainEvents: 58 tests
-- **app_lib/database:** 44 tests passing
+- **app_lib/database:** 47 tests passing
   - GameStorage: 11 tests
   - CharacterStorage: 15 tests
-  - app_database_test: 1 test
-  - TypeConverter: 17 tests (NEW)
+  - AppDatabase: 4 tests (UPDATED from placeholder)
+  - TypeConverter: 17 tests
 - **app_lib/logging:** 145 tests passing
   - LogLevel: 8 tests
   - LogRecord: 14 tests
@@ -107,7 +107,7 @@ Two main feature sets from PRD.md:
 - **test/:** 20 tests passing
   - App: 19 tests (NEW) (+1 skipped for BLoC timing)
   - widget_test: 1 test
-- **Total:** 1521 unit tests
+- **Total:** 1524 unit tests
 
 ## Completed Work
 
@@ -264,6 +264,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- a557d70: test: replace placeholder with proper AppDatabase tests (4 tests)
 - 6bc2dda: refactor: add toString() and copyWith() to model classes
 - 2783971: refactor: extract GridOccupancy mixin to eliminate duplication
 - 72c1f39: refactor: clarify GridPosition distance methods (squaredDistanceTo + distanceTo)
