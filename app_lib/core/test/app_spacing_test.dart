@@ -258,6 +258,12 @@ void main() {
       });
     });
 
+    group('letter spacing', () {
+      test('letterSpacingWide is 1.0', () {
+        expect(AppSpacing.letterSpacingWide, 1.0);
+      });
+    });
+
     group('font sizes', () {
       test('fontSizeXs is 10.0', () {
         expect(AppSpacing.fontSizeXs, 10.0);

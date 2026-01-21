@@ -13,7 +13,7 @@ abstract final class AppTextStyles {
     color: color ?? const Color(0xFF26C6DA), // cyan.shade400
     fontSize: 14,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1,
+    letterSpacing: AppSpacing.letterSpacingWide,
   );
 
   /// Section header style (medium weight labels)
@@ -28,7 +28,7 @@ abstract final class AppTextStyles {
     color: color ?? const Color(0xFF9E9E9E), // grey.shade500
     fontSize: 10,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1,
+    letterSpacing: AppSpacing.letterSpacingWide,
   );
 
   // ============ BODY TEXT ============

@@ -42,7 +42,7 @@ class InfoPanel extends StatelessWidget {
                     color: AppColors.cyan400,
                     fontSize: AppSpacing.fontSizeDefault,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                    letterSpacing: AppSpacing.letterSpacingWide,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

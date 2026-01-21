@@ -63,7 +63,7 @@ class DeviceCard extends StatelessWidget {
                               color: deviceColor,
                               fontSize: AppSpacing.fontSizeXs,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
+                              letterSpacing: AppSpacing.letterSpacingWide,
                             ),
                           ),
                         ],

@@ -66,7 +66,7 @@ class RoomSummaryPanel extends StatelessWidget {
                   color: AppColors.grey500,
                   fontSize: AppSpacing.fontSizeXs,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  letterSpacing: AppSpacing.letterSpacingWide,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -175,7 +175,10 @@ class RoomSummaryPanel extends StatelessWidget {
         ),
         Text(
           '$count',
-          style: const TextStyle(color: AppColors.grey400, fontSize: 11),
+          style: const TextStyle(
+            color: AppColors.grey400,
+            fontSize: AppSpacing.fontSizePanel,
+          ),
         ),
       ],
     );

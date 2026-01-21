@@ -203,6 +203,11 @@ abstract final class AppSpacing {
   /// Default border width (2px)
   static const double borderWidth = 2.0;
 
+  // ============ LETTER SPACING ============
+
+  /// Standard letter spacing (1px) - used for uppercase labels and headers
+  static const double letterSpacingWide = 1.0;
+
   // ============ FONT SIZES ============
 
   /// Extra small font size (10px) - for captions and fine print
