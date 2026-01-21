@@ -72,6 +72,27 @@ void main() {
       });
     });
 
+    group('squaredDistanceTo', () {
+      test('returns 0 for same position', () {
+        const a = GridPosition(3, 5);
+        const b = GridPosition(3, 5);
+        expect(a.squaredDistanceTo(b), 0);
+      });
+
+      test('returns squared distance', () {
+        const a = GridPosition(0, 0);
+        const b = GridPosition(3, 4);
+        // 3^2 + 4^2 = 9 + 16 = 25
+        expect(a.squaredDistanceTo(b), 25);
+      });
+
+      test('is symmetric', () {
+        const a = GridPosition(1, 2);
+        const b = GridPosition(4, 6);
+        expect(a.squaredDistanceTo(b), b.squaredDistanceTo(a));
+      });
+    });
+
     group('distanceTo', () {
       test('returns 0 for same position', () {
         const a = GridPosition(3, 5);
@@ -79,17 +100,24 @@ void main() {
         expect(a.distanceTo(b), 0);
       });
 
-      test('returns squared distance', () {
+      test('returns Euclidean distance', () {
         const a = GridPosition(0, 0);
         const b = GridPosition(3, 4);
-        // 3^2 + 4^2 = 9 + 16 = 25
-        expect(a.distanceTo(b), 25);
+        // sqrt(3^2 + 4^2) = sqrt(25) = 5
+        expect(a.distanceTo(b), 5);
       });
 
       test('is symmetric', () {
         const a = GridPosition(1, 2);
         const b = GridPosition(4, 6);
         expect(a.distanceTo(b), b.distanceTo(a));
+      });
+
+      test('returns correct distance for diagonal', () {
+        const a = GridPosition(0, 0);
+        const b = GridPosition(1, 1);
+        // sqrt(1^2 + 1^2) = sqrt(2) ≈ 1.414
+        expect(a.distanceTo(b), closeTo(1.414, 0.001));
       });
     });
 

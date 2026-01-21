@@ -1,3 +1,5 @@
+import 'dart:math' show sqrt;
+
 import 'package:equatable/equatable.dart';
 
 /// Grid position in the game world
@@ -21,10 +23,22 @@ class GridPosition extends Equatable {
     return GridPosition(x - other.x, y - other.y);
   }
 
-  double distanceTo(GridPosition other) {
+  /// Returns the squared Euclidean distance to another position.
+  ///
+  /// Use this for distance comparisons to avoid the cost of sqrt().
+  /// For actual distance, use [distanceTo].
+  double squaredDistanceTo(GridPosition other) {
     final dx = (x - other.x).toDouble();
     final dy = (y - other.y).toDouble();
-    return (dx * dx + dy * dy);
+    return dx * dx + dy * dy;
+  }
+
+  /// Returns the Euclidean distance to another position.
+  ///
+  /// For performance-critical comparisons where only relative ordering
+  /// matters, prefer [squaredDistanceTo] to avoid the sqrt() cost.
+  double distanceTo(GridPosition other) {
+    return sqrt(squaredDistanceTo(other));
   }
 
   bool isAdjacentTo(GridPosition other) {
