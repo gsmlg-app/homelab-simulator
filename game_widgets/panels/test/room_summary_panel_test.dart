@@ -317,5 +317,129 @@ void main() {
         expect(find.text('Storage'), findsOneWidget);
       });
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        final panel = RoomSummaryPanel(room: serverRoom);
+        expect(panel, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-room-summary');
+        final panel = RoomSummaryPanel(key: key, room: serverRoom);
+        expect(panel.key, key);
+      });
+
+      test('room property is accessible', () {
+        final panel = RoomSummaryPanel(room: serverRoom);
+        expect(panel.room, serverRoom);
+      });
+
+      test('expanded default is false', () {
+        final panel = RoomSummaryPanel(room: serverRoom);
+        expect(panel.expanded, isFalse);
+      });
+    });
+
+    group('room type variations', () {
+      testWidgets('displays GCP room correctly', (tester) async {
+        final gcpRoom = const RoomModel(
+          id: 'room-gcp',
+          name: 'us-central1',
+          type: RoomType.gcp,
+          width: 20,
+          height: 15,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: gcpRoom)),
+          ),
+        );
+
+        expect(find.text('US-CENTRAL1'), findsOneWidget);
+      });
+
+      testWidgets('displays custom room correctly', (tester) async {
+        final customRoom = const RoomModel(
+          id: 'room-custom',
+          name: 'Custom Space',
+          type: RoomType.custom,
+          width: 30,
+          height: 20,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: customRoom)),
+          ),
+        );
+
+        expect(find.text('CUSTOM SPACE'), findsOneWidget);
+        expect(find.text('30 × 20'), findsOneWidget);
+      });
+    });
+
+    group('object counts', () {
+      testWidgets('shows correct device count', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: roomWithDevices)),
+          ),
+        );
+
+        // Should show device count
+        expect(find.text('3'), findsWidgets);
+      });
+
+      testWidgets('shows correct cloud service count', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: roomWithCloudServices)),
+          ),
+        );
+
+        // Should show service count
+        expect(find.text('2'), findsWidgets);
+      });
+    });
+
+    group('size display variations', () {
+      testWidgets('displays small room size', (tester) async {
+        final smallRoom = const RoomModel(
+          id: 'room-small',
+          name: 'Small Room',
+          type: RoomType.serverRoom,
+          width: 5,
+          height: 5,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: smallRoom)),
+          ),
+        );
+
+        expect(find.text('5 × 5'), findsOneWidget);
+      });
+
+      testWidgets('displays large room size', (tester) async {
+        final largeRoom = const RoomModel(
+          id: 'room-large',
+          name: 'Large Room',
+          type: RoomType.serverRoom,
+          width: 100,
+          height: 80,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: RoomSummaryPanel(room: largeRoom)),
+          ),
+        );
+
+        expect(find.text('100 × 80'), findsOneWidget);
+      });
+    });
   });
 }

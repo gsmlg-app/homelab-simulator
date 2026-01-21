@@ -430,5 +430,78 @@ void main() {
         expect(screen1.key, screen2.key);
       });
     });
+
+    group('error message variations', () {
+      testWidgets('displays empty error message', (tester) async {
+        whenListen(
+          mockGameBloc,
+          Stream<GameState>.fromIterable([const GameError('')]),
+          initialState: const GameError(''),
+        );
+        whenListen(
+          mockWorldBloc,
+          Stream<WorldState>.fromIterable([const WorldState()]),
+          initialState: const WorldState(),
+        );
+
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
+
+        expect(find.text('Error: '), findsOneWidget);
+      });
+
+      testWidgets('displays long error message', (tester) async {
+        final longError = 'Very long error message: ${'x' * 100}';
+        whenListen(
+          mockGameBloc,
+          Stream<GameState>.fromIterable([GameError(longError)]),
+          initialState: GameError(longError),
+        );
+        whenListen(
+          mockWorldBloc,
+          Stream<WorldState>.fromIterable([const WorldState()]),
+          initialState: const WorldState(),
+        );
+
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
+
+        expect(find.textContaining('Very long error message'), findsOneWidget);
+      });
+    });
+
+    group('widget properties', () {
+      test('GameScreen is a StatefulWidget', () {
+        const screen = GameScreen();
+        expect(screen, isA<StatefulWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-game-screen');
+        const screen = GameScreen(key: key);
+        expect(screen.key, key);
+      });
+    });
+
+    group('loading text styling', () {
+      testWidgets('loading text has white70 color', (tester) async {
+        whenListen(
+          mockGameBloc,
+          Stream<GameState>.fromIterable([const GameLoading()]),
+          initialState: const GameLoading(),
+        );
+        whenListen(
+          mockWorldBloc,
+          Stream<WorldState>.fromIterable([const WorldState()]),
+          initialState: const WorldState(),
+        );
+
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
+
+        final textWidget = tester.widget<Text>(find.text('Loading Homelab...'));
+        expect(textWidget.style?.color, Colors.white70);
+      });
+    });
   });
 }

@@ -390,5 +390,125 @@ void main() {
         expect(find.text('Error'), findsNothing); // No dialog title
       });
     });
+
+    group('retry callback behavior', () {
+      testWidgets('shows RETRY button when onRetry provided for low severity', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: ElevatedButton(
+                  onPressed: () => ErrorDisplay.showError(
+                    context,
+                    'Error',
+                    severity: ErrorSeverity.low,
+                    onRetry: () {},
+                  ),
+                  child: const Text('Show Error'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Show Error'));
+        await tester.pump();
+
+        expect(find.text('RETRY'), findsOneWidget);
+      });
+
+      testWidgets('calls onRetry when RETRY tapped in high severity', (
+        tester,
+      ) async {
+        bool retryCalled = false;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: ElevatedButton(
+                  onPressed: () => ErrorDisplay.showError(
+                    context,
+                    'Error',
+                    severity: ErrorSeverity.high,
+                    onRetry: () => retryCalled = true,
+                  ),
+                  child: const Text('Show Error'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Show Error'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('RETRY'));
+        await tester.pump();
+
+        expect(retryCalled, isTrue);
+      });
+    });
+
+    group('error message edge cases', () {
+      testWidgets('handles empty error message', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: ElevatedButton(
+                  onPressed: () => ErrorDisplay.showError(
+                    context,
+                    '',
+                    severity: ErrorSeverity.low,
+                  ),
+                  child: const Text('Show Error'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Show Error'));
+        await tester.pump();
+
+        expect(find.byType(SnackBar), findsOneWidget);
+      });
+
+      testWidgets('handles long error message', (tester) async {
+        final longMessage = 'x' * 200;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: ElevatedButton(
+                  onPressed: () => ErrorDisplay.showError(
+                    context,
+                    longMessage,
+                    severity: ErrorSeverity.low,
+                  ),
+                  child: const Text('Show Error'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Show Error'));
+        await tester.pump();
+
+        expect(find.textContaining('x' * 50), findsOneWidget);
+      });
+    });
+  });
+
+  group('ErrorSeverity ordering', () {
+    test('severity indices are sequential', () {
+      expect(ErrorSeverity.low.index, 0);
+      expect(ErrorSeverity.medium.index, 1);
+      expect(ErrorSeverity.high.index, 2);
+      expect(ErrorSeverity.critical.index, 3);
+    });
   });
 }

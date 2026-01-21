@@ -255,4 +255,92 @@ void main() {
       expect(find.text('Nested Child'), findsOneWidget);
     });
   });
+
+  group('CrashReportingWidget widget properties', () {
+    test('is a StatefulWidget', () {
+      const widget = CrashReportingWidget(child: Text('Child'));
+      expect(widget, isA<StatefulWidget>());
+    });
+
+    test('key can be provided', () {
+      const key = Key('test-crash-widget');
+      const widget = CrashReportingWidget(key: key, child: Text('Child'));
+      expect(widget.key, key);
+    });
+
+    test('child property is accessible', () {
+      const child = Text('TestChild');
+      const widget = CrashReportingWidget(child: child);
+      expect(widget.child, child);
+    });
+
+    test('showErrorScreen default is true', () {
+      const widget = CrashReportingWidget(child: Text('Child'));
+      expect(widget.showErrorScreen, isTrue);
+    });
+  });
+
+  group('ErrorScreen widget properties', () {
+    test('is a StatelessWidget', () {
+      final details = FlutterErrorDetails(exception: Exception('Test'));
+      final screen = ErrorScreen(errorDetails: details);
+      expect(screen, isA<StatelessWidget>());
+    });
+
+    test('key can be provided', () {
+      const key = Key('test-error-screen');
+      final details = FlutterErrorDetails(exception: Exception('Test'));
+      final screen = ErrorScreen(key: key, errorDetails: details);
+      expect(screen.key, key);
+    });
+
+    test('errorDetails property is accessible', () {
+      final details = FlutterErrorDetails(exception: Exception('TestError'));
+      final screen = ErrorScreen(errorDetails: details);
+      expect(screen.errorDetails, details);
+    });
+  });
+
+  group('ErrorBoundary widget properties', () {
+    test('is a StatelessWidget', () {
+      const widget = ErrorBoundary(child: Text('Child'));
+      expect(widget, isA<StatelessWidget>());
+    });
+
+    test('key can be provided', () {
+      const key = Key('test-error-boundary');
+      const widget = ErrorBoundary(key: key, child: Text('Child'));
+      expect(widget.key, key);
+    });
+
+    test('child property is accessible', () {
+      const child = Text('TestChild');
+      const widget = ErrorBoundary(child: child);
+      expect(widget.child, child);
+    });
+  });
+
+  group('ErrorScreen styling', () {
+    testWidgets('error icon is red shade', (tester) async {
+      final details = FlutterErrorDetails(exception: Exception('Test error'));
+
+      await tester.pumpWidget(
+        MaterialApp(home: ErrorScreen(errorDetails: details)),
+      );
+
+      final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
+      expect(icon.color, Colors.red[700]);
+    });
+
+    testWidgets('error icon is size 64', (tester) async {
+      final details = FlutterErrorDetails(exception: Exception('Test error'));
+
+      await tester.pumpWidget(
+        MaterialApp(home: ErrorScreen(errorDetails: details)),
+      );
+
+      final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
+      expect(icon.size, 64);
+    });
+  });
 }
