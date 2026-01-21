@@ -3,7 +3,7 @@
     "id": "todo-0",
     "type": "todo",
     "payload": {
-      "action": "Add tests for RoomTypeUI extension"
+      "action": "Run tests and commit"
     }
   }
 ]
