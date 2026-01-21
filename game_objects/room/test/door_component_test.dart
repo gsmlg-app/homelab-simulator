@@ -190,5 +190,142 @@ void main() {
         expect(rightComponent.door.wallSide, WallSide.right);
       });
     });
+
+    group('edge cases', () {
+      test('handles door at wall position 0', () {
+        const doorAtZero = DoorModel(
+          id: 'door-zero',
+          targetRoomId: 'room-target',
+          wallSide: WallSide.top,
+          wallPosition: 0,
+        );
+        final component = DoorComponent(
+          door: doorAtZero,
+          roomWidth: 20,
+          roomHeight: 12,
+        );
+
+        expect(component.gridPosition, const GridPosition(0, 0));
+      });
+
+      test('handles door at maximum wall position', () {
+        const doorAtMax = DoorModel(
+          id: 'door-max',
+          targetRoomId: 'room-target',
+          wallSide: WallSide.top,
+          wallPosition: 19,
+        );
+        final component = DoorComponent(
+          door: doorAtMax,
+          roomWidth: 20,
+          roomHeight: 12,
+        );
+
+        expect(component.gridPosition, const GridPosition(19, 0));
+      });
+
+      test('handles very large room dimensions', () {
+        const doorLargeRoom = DoorModel(
+          id: 'door-large',
+          targetRoomId: 'room-target',
+          wallSide: WallSide.bottom,
+          wallPosition: 50,
+        );
+        final component = DoorComponent(
+          door: doorLargeRoom,
+          roomWidth: 100,
+          roomHeight: 50,
+        );
+
+        expect(component.gridPosition, const GridPosition(50, 49));
+      });
+
+      test('handles very small tile size', () {
+        final component = DoorComponent(
+          door: testDoorTop,
+          tileSize: 8.0,
+        );
+
+        expect(component.tileSize, 8.0);
+        expect(component.size, Vector2.all(8.0));
+      });
+
+      test('handles very large tile size', () {
+        final component = DoorComponent(
+          door: testDoorTop,
+          tileSize: 256.0,
+        );
+
+        expect(component.tileSize, 256.0);
+        expect(component.size, Vector2.all(256.0));
+      });
+
+      test('default anchor is top left', () {
+        final component = DoorComponent(door: testDoorTop);
+
+        expect(component.anchor, Anchor.topLeft);
+      });
+    });
+
+    group('component properties', () {
+      test('can have priority set', () {
+        final component = DoorComponent(door: testDoorTop);
+        component.priority = 10;
+
+        expect(component.priority, 10);
+      });
+
+      test('can have anchor changed', () {
+        final component = DoorComponent(door: testDoorTop);
+        component.anchor = Anchor.center;
+
+        expect(component.anchor, Anchor.center);
+      });
+
+      test('size can be modified', () {
+        final component = DoorComponent(door: testDoorTop);
+        component.size = Vector2(100, 100);
+
+        expect(component.size, Vector2(100, 100));
+      });
+    });
+
+    group('position calculation', () {
+      test('position respects tile size', () {
+        final component32 = DoorComponent(
+          door: testDoorBottom,
+          roomWidth: 20,
+          roomHeight: 12,
+          tileSize: 32.0,
+        );
+        final component64 = DoorComponent(
+          door: testDoorBottom,
+          roomWidth: 20,
+          roomHeight: 12,
+          tileSize: 64.0,
+        );
+
+        // gridPosition is (5, 11)
+        expect(component32.gridPosition.x * 32.0, 160.0);
+        expect(component32.gridPosition.y * 32.0, 352.0);
+        expect(component64.gridPosition.x * 64.0, 320.0);
+        expect(component64.gridPosition.y * 64.0, 704.0);
+      });
+
+      test('grid position is consistent for same parameters', () {
+        final component1 = DoorComponent(
+          door: testDoorLeft,
+          roomWidth: 20,
+          roomHeight: 12,
+        );
+        final component2 = DoorComponent(
+          door: testDoorLeft,
+          roomWidth: 20,
+          roomHeight: 12,
+        );
+
+        expect(component1.gridPosition, component2.gridPosition);
+      });
+    });
   });
 }

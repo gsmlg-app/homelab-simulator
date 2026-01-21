@@ -146,5 +146,98 @@ void main() {
         expect(component.tileSize, tileSize);
       });
     });
+
+    group('edge cases', () {
+      test('handles position at high coordinates', () {
+        const highPos = GridPosition(100, 100);
+        final component = TerminalComponent(
+          gridPosition: highPos,
+          tileSize: 32.0,
+        );
+
+        expect(component.position, Vector2(3200.0, 3200.0));
+      });
+
+      test('handles very small tile size', () {
+        final component = TerminalComponent(tileSize: 8.0);
+
+        expect(component.tileSize, 8.0);
+        expect(component.size, Vector2.all(8.0));
+      });
+
+      test('handles very large tile size', () {
+        final component = TerminalComponent(tileSize: 256.0);
+
+        expect(component.tileSize, 256.0);
+        expect(component.size, Vector2.all(256.0));
+      });
+
+      test('default anchor is top left', () {
+        final component = TerminalComponent();
+
+        expect(component.anchor, Anchor.topLeft);
+      });
+
+      test('position at high grid coordinates', () {
+        const gridPos = GridPosition(999, 999);
+        final component = TerminalComponent(
+          gridPosition: gridPos,
+          tileSize: 32.0,
+        );
+
+        expect(component.position.x, 999 * 32.0);
+        expect(component.position.y, 999 * 32.0);
+      });
+    });
+
+    group('component properties', () {
+      test('can have priority set', () {
+        final component = TerminalComponent();
+        component.priority = 10;
+
+        expect(component.priority, 10);
+      });
+
+      test('can have anchor changed', () {
+        final component = TerminalComponent();
+        component.anchor = Anchor.center;
+
+        expect(component.anchor, Anchor.center);
+      });
+
+      test('size can be modified', () {
+        final component = TerminalComponent();
+        component.size = Vector2(100, 100);
+
+        expect(component.size, Vector2(100, 100));
+      });
+    });
+
+    group('position calculation', () {
+      test('position scales with tile size', () {
+        const gridPos = GridPosition(5, 5);
+
+        final component32 = TerminalComponent(
+          gridPosition: gridPos,
+          tileSize: 32.0,
+        );
+        final component64 = TerminalComponent(
+          gridPosition: gridPos,
+          tileSize: 64.0,
+        );
+
+        expect(component32.position, Vector2(160.0, 160.0));
+        expect(component64.position, Vector2(320.0, 320.0));
+      });
+
+      test('position is consistent for same parameters', () {
+        const gridPos = GridPosition(7, 9);
+
+        final component1 = TerminalComponent(gridPosition: gridPos);
+        final component2 = TerminalComponent(gridPosition: gridPos);
+
+        expect(component1.position, component2.position);
+      });
+    });
   });
 }
