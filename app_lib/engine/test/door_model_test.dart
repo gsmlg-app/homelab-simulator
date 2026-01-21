@@ -105,6 +105,56 @@ void main() {
         expect(modified.wallSide, WallSide.left);
         expect(modified.wallPosition, 5);
       });
+
+      test('modifies all fields simultaneously', () {
+        final modified = door.copyWith(
+          id: 'door-new',
+          targetRoomId: 'room-99',
+          wallSide: WallSide.top,
+          wallPosition: 15,
+        );
+
+        expect(modified.id, 'door-new');
+        expect(modified.targetRoomId, 'room-99');
+        expect(modified.wallSide, WallSide.top);
+        expect(modified.wallPosition, 15);
+      });
+
+      test('modifies id alone', () {
+        final modified = door.copyWith(id: 'door-renamed');
+
+        expect(modified.id, 'door-renamed');
+        expect(modified.targetRoomId, door.targetRoomId);
+        expect(modified.wallSide, door.wallSide);
+        expect(modified.wallPosition, door.wallPosition);
+      });
+
+      test('modifies targetRoomId alone', () {
+        final modified = door.copyWith(targetRoomId: 'room-other');
+
+        expect(modified.id, door.id);
+        expect(modified.targetRoomId, 'room-other');
+        expect(modified.wallSide, door.wallSide);
+        expect(modified.wallPosition, door.wallPosition);
+      });
+
+      test('modifies wallSide alone', () {
+        final modified = door.copyWith(wallSide: WallSide.bottom);
+
+        expect(modified.id, door.id);
+        expect(modified.targetRoomId, door.targetRoomId);
+        expect(modified.wallSide, WallSide.bottom);
+        expect(modified.wallPosition, door.wallPosition);
+      });
+
+      test('modifies wallPosition alone', () {
+        final modified = door.copyWith(wallPosition: 10);
+
+        expect(modified.id, door.id);
+        expect(modified.targetRoomId, door.targetRoomId);
+        expect(modified.wallSide, door.wallSide);
+        expect(modified.wallPosition, 10);
+      });
     });
 
     group('getPosition', () {
@@ -249,6 +299,70 @@ void main() {
         final door2 = door1.copyWith(wallPosition: 6);
 
         expect(door1, isNot(door2));
+      });
+
+      test('equal doors have same hashCode', () {
+        const door1 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        const door2 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+
+        expect(door1.hashCode, door2.hashCode);
+      });
+
+      test('doors can be used in Set collections', () {
+        const door1 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        const door2 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        const door3 = DoorModel(
+          id: 'door-3',
+          targetRoomId: 'room-4',
+          wallSide: WallSide.left,
+          wallPosition: 3,
+        );
+
+        final doorSet = {door1, door2, door3};
+        expect(doorSet.length, 2); // door1 and door2 are equal, so deduplicated
+        expect(doorSet.contains(door1), isTrue);
+        expect(doorSet.contains(door3), isTrue);
+      });
+
+      test('doors can be used as Map keys', () {
+        const door1 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        const door2 = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+
+        final doorMap = <DoorModel, String>{door1: 'first'};
+        doorMap[door2] = 'second';
+
+        expect(doorMap.length, 1); // Same key, overwrites
+        expect(doorMap[door1], 'second');
       });
     });
 
