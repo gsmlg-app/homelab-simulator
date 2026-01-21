@@ -166,10 +166,10 @@ class _AddRoomModalState extends State<AddRoomModal> {
       decoration: BoxDecoration(
         color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.purple.shade700, width: 2),
+        border: Border.all(color: AppColors.modalAccentDark, width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.purple.shade900.withValues(alpha: 0.5),
+            color: AppColors.modalAccentDark.withValues(alpha: 0.5),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -205,7 +205,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
         children: [
           Row(
             children: [
-              Icon(Icons.add_home, color: Colors.purple.shade400, size: 28),
+              const Icon(Icons.add_home, color: AppColors.modalAccentLight, size: 28),
               const SizedBox(width: 12),
               Text(
                 _currentStep == 0 ? 'ADD ROOM' : 'DOOR PLACEMENT',
@@ -273,7 +273,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.purple.shade400),
+                borderSide: const BorderSide(color: AppColors.modalAccentLight),
                 borderRadius: BorderRadius.circular(8),
               ),
             ),

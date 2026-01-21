@@ -22,6 +22,17 @@ abstract final class AppColors {
   /// Selection/active state background
   static const Color selectionBackground = Color(0xFF303060);
 
+  // ============ MODAL/DIALOG COLORS ============
+
+  /// Modal accent color (purple)
+  static const Color modalAccent = Color(0xFF9C27B0);
+
+  /// Modal accent light variant
+  static const Color modalAccentLight = Color(0xFFBA68C8);
+
+  /// Modal accent dark variant
+  static const Color modalAccentDark = Color(0xFF7B1FA2);
+
   // ============ GAME COMPONENT COLORS ============
 
   /// Room background color
