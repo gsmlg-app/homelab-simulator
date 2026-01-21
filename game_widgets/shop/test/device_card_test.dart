@@ -174,7 +174,7 @@ void main() {
       );
 
       final decoration = priceContainer.decoration as BoxDecoration;
-      expect(decoration.color, Colors.green.shade800);
+      expect(decoration.color, AppColors.green800);
     });
 
     testWidgets('shows red price when cannot afford', (tester) async {
@@ -197,7 +197,7 @@ void main() {
       );
 
       final decoration = priceContainer.decoration as BoxDecoration;
-      expect(decoration.color, Colors.red.shade800);
+      expect(decoration.color, AppColors.red800);
     });
 
     testWidgets('has reduced opacity when cannot afford', (tester) async {
@@ -269,7 +269,7 @@ void main() {
       );
 
       final card = tester.widget<Card>(find.byType(Card));
-      expect(card.color, Colors.grey.shade900);
+      expect(card.color, AppColors.grey900);
     });
 
     testWidgets('uses InkWell for tap effect', (tester) async {
