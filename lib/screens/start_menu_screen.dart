@@ -60,21 +60,17 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     final lowerKey = key.toLowerCase();
 
     // Navigation
-    if (lowerKey == 'dpad up' || lowerKey == 'up') {
+    if (GameConstants.dpadUpKeys.contains(lowerKey)) {
       _navigateUp();
-    } else if (lowerKey == 'dpad down' || lowerKey == 'down') {
+    } else if (GameConstants.dpadDownKeys.contains(lowerKey)) {
       _navigateDown();
     }
     // Confirm (A button)
-    else if (lowerKey == 'a' ||
-        lowerKey == 'button south' ||
-        lowerKey == 'cross') {
+    else if (GameConstants.buttonSouthKeys.contains(lowerKey)) {
       _confirmSelection();
     }
     // Delete (X button)
-    else if (lowerKey == 'x' ||
-        lowerKey == 'button west' ||
-        lowerKey == 'square') {
+    else if (GameConstants.buttonWestKeys.contains(lowerKey)) {
       _deleteSelected();
     }
   }

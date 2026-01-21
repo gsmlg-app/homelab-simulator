@@ -116,6 +116,103 @@ void main() {
         expect(GameConstants.deviceLedOffset, 10.0);
       });
     });
+
+    // Gamepad key constants
+    group('gamepad key constants', () {
+      test('dpadUpKeys contains expected keys', () {
+        expect(GameConstants.dpadUpKeys, contains('dpad up'));
+        expect(GameConstants.dpadUpKeys, contains('up'));
+        expect(GameConstants.dpadUpKeys.length, 2);
+      });
+
+      test('dpadDownKeys contains expected keys', () {
+        expect(GameConstants.dpadDownKeys, contains('dpad down'));
+        expect(GameConstants.dpadDownKeys, contains('down'));
+        expect(GameConstants.dpadDownKeys.length, 2);
+      });
+
+      test('dpadLeftKeys contains expected keys', () {
+        expect(GameConstants.dpadLeftKeys, contains('dpad left'));
+        expect(GameConstants.dpadLeftKeys, contains('left'));
+        expect(GameConstants.dpadLeftKeys.length, 2);
+      });
+
+      test('dpadRightKeys contains expected keys', () {
+        expect(GameConstants.dpadRightKeys, contains('dpad right'));
+        expect(GameConstants.dpadRightKeys, contains('right'));
+        expect(GameConstants.dpadRightKeys.length, 2);
+      });
+
+      test('buttonSouthKeys contains expected keys', () {
+        expect(GameConstants.buttonSouthKeys, contains('a'));
+        expect(GameConstants.buttonSouthKeys, contains('button south'));
+        expect(GameConstants.buttonSouthKeys, contains('cross'));
+        expect(GameConstants.buttonSouthKeys.length, 3);
+      });
+
+      test('buttonEastKeys contains expected keys', () {
+        expect(GameConstants.buttonEastKeys, contains('b'));
+        expect(GameConstants.buttonEastKeys, contains('button east'));
+        expect(GameConstants.buttonEastKeys, contains('circle'));
+        expect(GameConstants.buttonEastKeys.length, 3);
+      });
+
+      test('buttonWestKeys contains expected keys', () {
+        expect(GameConstants.buttonWestKeys, contains('x'));
+        expect(GameConstants.buttonWestKeys, contains('button west'));
+        expect(GameConstants.buttonWestKeys, contains('square'));
+        expect(GameConstants.buttonWestKeys.length, 3);
+      });
+
+      test('buttonNorthKeys contains expected keys', () {
+        expect(GameConstants.buttonNorthKeys, contains('y'));
+        expect(GameConstants.buttonNorthKeys, contains('button north'));
+        expect(GameConstants.buttonNorthKeys, contains('triangle'));
+        expect(GameConstants.buttonNorthKeys.length, 3);
+      });
+
+      test('buttonStartKeys contains expected keys', () {
+        expect(GameConstants.buttonStartKeys, contains('start'));
+        expect(GameConstants.buttonStartKeys, contains('options'));
+        expect(GameConstants.buttonStartKeys, contains('menu'));
+        expect(GameConstants.buttonStartKeys.length, 3);
+      });
+
+      test('buttonSelectKeys contains expected keys', () {
+        expect(GameConstants.buttonSelectKeys, contains('select'));
+        expect(GameConstants.buttonSelectKeys, contains('back'));
+        expect(GameConstants.buttonSelectKeys, contains('share'));
+        expect(GameConstants.buttonSelectKeys.length, 3);
+      });
+
+      test('leftBumperKeys contains expected keys', () {
+        expect(GameConstants.leftBumperKeys, contains('left bumper'));
+        expect(GameConstants.leftBumperKeys, contains('lb'));
+        expect(GameConstants.leftBumperKeys, contains('l1'));
+        expect(GameConstants.leftBumperKeys.length, 3);
+      });
+
+      test('rightBumperKeys contains expected keys', () {
+        expect(GameConstants.rightBumperKeys, contains('right bumper'));
+        expect(GameConstants.rightBumperKeys, contains('rb'));
+        expect(GameConstants.rightBumperKeys, contains('r1'));
+        expect(GameConstants.rightBumperKeys.length, 3);
+      });
+
+      test('leftTriggerKeys contains expected keys', () {
+        expect(GameConstants.leftTriggerKeys, contains('left trigger'));
+        expect(GameConstants.leftTriggerKeys, contains('lt'));
+        expect(GameConstants.leftTriggerKeys, contains('l2'));
+        expect(GameConstants.leftTriggerKeys.length, 3);
+      });
+
+      test('rightTriggerKeys contains expected keys', () {
+        expect(GameConstants.rightTriggerKeys, contains('right trigger'));
+        expect(GameConstants.rightTriggerKeys, contains('rt'));
+        expect(GameConstants.rightTriggerKeys, contains('r2'));
+        expect(GameConstants.rightTriggerKeys.length, 3);
+      });
+    });
   });
 
   group('gridToPixel', () {

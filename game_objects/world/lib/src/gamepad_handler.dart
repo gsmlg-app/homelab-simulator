@@ -142,28 +142,54 @@ class GamepadHandler extends Component {
   }
 
   GamepadButton? _mapKeyToButton(String key) {
-    return switch (key.toLowerCase()) {
-      'a' || 'button south' || 'cross' => GamepadButton.south,
-      'b' || 'button east' || 'circle' => GamepadButton.east,
-      'x' || 'button west' || 'square' => GamepadButton.west,
-      'y' || 'button north' || 'triangle' => GamepadButton.north,
-      'start' || 'options' || 'menu' => GamepadButton.start,
-      'select' || 'back' || 'share' => GamepadButton.select,
-      'left bumper' || 'lb' || 'l1' => GamepadButton.leftBumper,
-      'right bumper' || 'rb' || 'r1' => GamepadButton.rightBumper,
-      'left trigger' || 'lt' || 'l2' => GamepadButton.leftTrigger,
-      'right trigger' || 'rt' || 'r2' => GamepadButton.rightTrigger,
-      _ => null,
-    };
+    final lowerKey = key.toLowerCase();
+    if (GameConstants.buttonSouthKeys.contains(lowerKey)) {
+      return GamepadButton.south;
+    }
+    if (GameConstants.buttonEastKeys.contains(lowerKey)) {
+      return GamepadButton.east;
+    }
+    if (GameConstants.buttonWestKeys.contains(lowerKey)) {
+      return GamepadButton.west;
+    }
+    if (GameConstants.buttonNorthKeys.contains(lowerKey)) {
+      return GamepadButton.north;
+    }
+    if (GameConstants.buttonStartKeys.contains(lowerKey)) {
+      return GamepadButton.start;
+    }
+    if (GameConstants.buttonSelectKeys.contains(lowerKey)) {
+      return GamepadButton.select;
+    }
+    if (GameConstants.leftBumperKeys.contains(lowerKey)) {
+      return GamepadButton.leftBumper;
+    }
+    if (GameConstants.rightBumperKeys.contains(lowerKey)) {
+      return GamepadButton.rightBumper;
+    }
+    if (GameConstants.leftTriggerKeys.contains(lowerKey)) {
+      return GamepadButton.leftTrigger;
+    }
+    if (GameConstants.rightTriggerKeys.contains(lowerKey)) {
+      return GamepadButton.rightTrigger;
+    }
+    return null;
   }
 
   Direction? _mapKeyToDirection(String key) {
-    return switch (key.toLowerCase()) {
-      'dpad up' || 'up' => Direction.up,
-      'dpad down' || 'down' => Direction.down,
-      'dpad left' || 'left' => Direction.left,
-      'dpad right' || 'right' => Direction.right,
-      _ => null,
-    };
+    final lowerKey = key.toLowerCase();
+    if (GameConstants.dpadUpKeys.contains(lowerKey)) {
+      return Direction.up;
+    }
+    if (GameConstants.dpadDownKeys.contains(lowerKey)) {
+      return Direction.down;
+    }
+    if (GameConstants.dpadLeftKeys.contains(lowerKey)) {
+      return Direction.left;
+    }
+    if (GameConstants.dpadRightKeys.contains(lowerKey)) {
+      return Direction.right;
+    }
+    return null;
   }
 }

@@ -23,6 +23,50 @@ class GameConstants {
   /// Cooldown time in seconds for D-pad input to prevent rapid repeats.
   static const double gamepadDpadCooldownSeconds = 0.15;
 
+  // Gamepad key constants (lowercase for comparison)
+
+  /// D-pad up key variations.
+  static const Set<String> dpadUpKeys = {'dpad up', 'up'};
+
+  /// D-pad down key variations.
+  static const Set<String> dpadDownKeys = {'dpad down', 'down'};
+
+  /// D-pad left key variations.
+  static const Set<String> dpadLeftKeys = {'dpad left', 'left'};
+
+  /// D-pad right key variations.
+  static const Set<String> dpadRightKeys = {'dpad right', 'right'};
+
+  /// South button (A/Cross) key variations.
+  static const Set<String> buttonSouthKeys = {'a', 'button south', 'cross'};
+
+  /// East button (B/Circle) key variations.
+  static const Set<String> buttonEastKeys = {'b', 'button east', 'circle'};
+
+  /// West button (X/Square) key variations.
+  static const Set<String> buttonWestKeys = {'x', 'button west', 'square'};
+
+  /// North button (Y/Triangle) key variations.
+  static const Set<String> buttonNorthKeys = {'y', 'button north', 'triangle'};
+
+  /// Start button key variations.
+  static const Set<String> buttonStartKeys = {'start', 'options', 'menu'};
+
+  /// Select button key variations.
+  static const Set<String> buttonSelectKeys = {'select', 'back', 'share'};
+
+  /// Left bumper key variations.
+  static const Set<String> leftBumperKeys = {'left bumper', 'lb', 'l1'};
+
+  /// Right bumper key variations.
+  static const Set<String> rightBumperKeys = {'right bumper', 'rb', 'r1'};
+
+  /// Left trigger key variations.
+  static const Set<String> leftTriggerKeys = {'left trigger', 'lt', 'l2'};
+
+  /// Right trigger key variations.
+  static const Set<String> rightTriggerKeys = {'right trigger', 'rt', 'r2'};
+
   // Animation constants
 
   /// Device LED flicker animation frequency multiplier.
