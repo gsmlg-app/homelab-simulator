@@ -16,7 +16,7 @@ class RoomComponent extends PositionComponent
   final double tileSize;
 
   // Cached background paint for performance
-  static final _bgPaint = Paint()..color = const Color(0xFF1A1A2E);
+  static final _bgPaint = Paint()..color = AppColors.roomBackground;
 
   late final GridComponent _grid;
   late final TerminalComponent _terminal;

@@ -15,11 +15,11 @@ class CloudServiceComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _selectPaint = Paint()
-    ..color = const Color(0xFFFFFF00)
+    ..color = AppColors.deviceSelection
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
   static final _iconPaint = Paint()
-    ..color = const Color(0xFFFFFFFF)
+    ..color = AppColors.cloudServiceIcon
     ..style = PaintingStyle.fill;
 
   // Instance-level cached paints (depend on service properties)

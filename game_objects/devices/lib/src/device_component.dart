@@ -14,14 +14,14 @@ class DeviceComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _selectPaint = Paint()
-    ..color = const Color(0xFFFFFF00)
+    ..color = AppColors.deviceSelection
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
   static final _runningLightPaint = Paint()
-    ..color = const Color(0xFF00FF00)
+    ..color = AppColors.runningIndicator
     ..style = PaintingStyle.fill;
   static final _offLightPaint = Paint()
-    ..color = const Color(0xFF666666)
+    ..color = AppColors.offIndicator
     ..style = PaintingStyle.fill;
 
   // Instance-level cached paints (depend on device type)
@@ -41,13 +41,13 @@ class DeviceComponent extends PositionComponent
 
   Color get _deviceColor {
     return switch (device.type) {
-      DeviceType.server => const Color(0xFF3498DB),
-      DeviceType.computer => const Color(0xFF9B59B6),
-      DeviceType.phone => const Color(0xFFE74C3C),
-      DeviceType.router => const Color(0xFFF39C12),
-      DeviceType.switch_ => const Color(0xFF1ABC9C),
-      DeviceType.nas => const Color(0xFF34495E),
-      DeviceType.iot => const Color(0xFF27AE60),
+      DeviceType.server => AppColors.deviceServer,
+      DeviceType.computer => AppColors.deviceComputer,
+      DeviceType.phone => AppColors.devicePhone,
+      DeviceType.router => AppColors.deviceRouter,
+      DeviceType.switch_ => AppColors.deviceSwitch,
+      DeviceType.nas => AppColors.deviceNas,
+      DeviceType.iot => AppColors.deviceIot,
     };
   }
 

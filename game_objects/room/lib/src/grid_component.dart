@@ -16,7 +16,7 @@ class GridComponent extends PositionComponent {
     this.gridWidth = GameConstants.roomWidth,
     this.gridHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
-    this.gridColor = const Color(0x33FFFFFF),
+    this.gridColor = AppColors.gridOverlay,
   }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize)) {
     _gridPaint = Paint()
       ..color = gridColor

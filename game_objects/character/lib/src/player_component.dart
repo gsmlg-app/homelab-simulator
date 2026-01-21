@@ -14,10 +14,10 @@ class PlayerComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _bodyPaint = Paint()
-    ..color = const Color(0xFF4ECDC4)
+    ..color = AppColors.playerBody
     ..style = PaintingStyle.fill;
   static final _outlinePaint = Paint()
-    ..color = const Color(0xFF2E8B84)
+    ..color = AppColors.playerOutline
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
 

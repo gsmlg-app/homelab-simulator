@@ -13,16 +13,16 @@ class TerminalComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _basePaint = Paint()
-    ..color = const Color(0xFF2D2D2D)
+    ..color = AppColors.terminalBase
     ..style = PaintingStyle.fill;
   static final _screenNormalPaint = Paint()
-    ..color = const Color(0xFF00AA55)
+    ..color = AppColors.terminalScreen
     ..style = PaintingStyle.fill;
   static final _screenHighlightPaint = Paint()
-    ..color = const Color(0xFF00FF88)
+    ..color = AppColors.terminalHighlight
     ..style = PaintingStyle.fill;
   static final _highlightBorderPaint = Paint()
-    ..color = const Color(0xFF00FF88)
+    ..color = AppColors.terminalHighlight
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
 

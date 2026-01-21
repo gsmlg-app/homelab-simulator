@@ -19,23 +19,23 @@ class DoorComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _framePaint = Paint()
-    ..color = const Color(0xFF4A4A5A)
+    ..color = AppColors.doorFrame
     ..style = PaintingStyle.fill;
   static final _doorNormalPaint = Paint()
-    ..color = const Color(0xFF3366CC)
+    ..color = AppColors.doorNormal
     ..style = PaintingStyle.fill;
   static final _doorHighlightPaint = Paint()
-    ..color = const Color(0xFF5588FF)
+    ..color = AppColors.doorHighlight
     ..style = PaintingStyle.fill;
   static final _handlePaint = Paint()
-    ..color = const Color(0xFFFFD700)
+    ..color = AppColors.doorHandle
     ..style = PaintingStyle.fill;
   static final _highlightBorderPaint = Paint()
-    ..color = const Color(0xFF5588FF)
+    ..color = AppColors.doorHighlight
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
   static final _arrowPaint = Paint()
-    ..color = const Color(0xFFFFFFFF)
+    ..color = AppColors.doorArrow
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;

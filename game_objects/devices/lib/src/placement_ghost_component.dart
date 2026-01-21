@@ -16,17 +16,17 @@ class PlacementGhostComponent extends PositionComponent
 
   // Cached paint objects for performance
   static final _validFillPaint = Paint()
-    ..color = const Color(0x6600FF88)
+    ..color = AppColors.validPlacementFill
     ..style = PaintingStyle.fill;
   static final _invalidFillPaint = Paint()
-    ..color = const Color(0x66FF4444)
+    ..color = AppColors.invalidPlacementFill
     ..style = PaintingStyle.fill;
   static final _validBorderPaint = Paint()
-    ..color = const Color(0xFF00FF88)
+    ..color = AppColors.validPlacementBorder
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
   static final _invalidBorderPaint = Paint()
-    ..color = const Color(0xFFFF4444)
+    ..color = AppColors.invalidPlacementBorder
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
 
