@@ -37,31 +37,31 @@ void main() {
 
     group('color', () {
       test('compute returns blue', () {
-        expect(ServiceCategory.compute.color, const Color(0xFF3498DB));
+        expect(ServiceCategory.compute.color, AppColors.categoryCompute);
       });
 
       test('storage returns green', () {
-        expect(ServiceCategory.storage.color, const Color(0xFF27AE60));
+        expect(ServiceCategory.storage.color, AppColors.categoryStorage);
       });
 
       test('database returns orange', () {
-        expect(ServiceCategory.database.color, const Color(0xFFF39C12));
+        expect(ServiceCategory.database.color, AppColors.categoryDatabase);
       });
 
       test('networking returns purple', () {
-        expect(ServiceCategory.networking.color, const Color(0xFF9B59B6));
+        expect(ServiceCategory.networking.color, AppColors.categoryNetworking);
       });
 
       test('serverless returns red', () {
-        expect(ServiceCategory.serverless.color, const Color(0xFFE74C3C));
+        expect(ServiceCategory.serverless.color, AppColors.categoryServerless);
       });
 
       test('container returns teal', () {
-        expect(ServiceCategory.container.color, const Color(0xFF1ABC9C));
+        expect(ServiceCategory.container.color, AppColors.categoryContainer);
       });
 
       test('other returns blue grey', () {
-        expect(ServiceCategory.other.color, const Color(0xFF607D8B));
+        expect(ServiceCategory.other.color, AppColors.categoryOther);
       });
     });
 

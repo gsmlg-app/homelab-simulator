@@ -37,31 +37,31 @@ void main() {
 
     group('color', () {
       test('server returns blue', () {
-        expect(DeviceType.server.color, const Color(0xFF3498DB));
+        expect(DeviceType.server.color, AppColors.deviceServer);
       });
 
       test('computer returns purple', () {
-        expect(DeviceType.computer.color, const Color(0xFF9B59B6));
+        expect(DeviceType.computer.color, AppColors.deviceComputer);
       });
 
       test('phone returns red', () {
-        expect(DeviceType.phone.color, const Color(0xFFE74C3C));
+        expect(DeviceType.phone.color, AppColors.devicePhone);
       });
 
       test('router returns orange', () {
-        expect(DeviceType.router.color, const Color(0xFFF39C12));
+        expect(DeviceType.router.color, AppColors.deviceRouter);
       });
 
       test('switch_ returns teal', () {
-        expect(DeviceType.switch_.color, const Color(0xFF1ABC9C));
+        expect(DeviceType.switch_.color, AppColors.deviceSwitch);
       });
 
       test('nas returns dark grey', () {
-        expect(DeviceType.nas.color, const Color(0xFF34495E));
+        expect(DeviceType.nas.color, AppColors.deviceNas);
       });
 
       test('iot returns green', () {
-        expect(DeviceType.iot.color, const Color(0xFF27AE60));
+        expect(DeviceType.iot.color, AppColors.deviceIot);
       });
     });
 
