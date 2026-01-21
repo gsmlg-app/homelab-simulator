@@ -46,15 +46,23 @@ class CharacterStorage with SharedPreferencesMixin {
       _log.fine('Created character: ${character.name}');
     }
 
-    await _saveAll(characters);
+    try {
+      await _saveAll(characters);
+    } catch (e, stackTrace) {
+      _log.warning('Failed to save character: $e', e, stackTrace);
+    }
   }
 
   /// Delete a character by ID
   Future<void> delete(String characterId) async {
     final characters = await loadAll();
     characters.removeWhere((c) => c.id == characterId);
-    await _saveAll(characters);
-    _log.fine('Deleted character: $characterId');
+    try {
+      await _saveAll(characters);
+      _log.fine('Deleted character: $characterId');
+    } catch (e, stackTrace) {
+      _log.warning('Failed to delete character: $e', e, stackTrace);
+    }
   }
 
   /// Get a single character by ID
