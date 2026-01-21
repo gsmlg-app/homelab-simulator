@@ -282,5 +282,172 @@ void main() {
         expect(characterMap[character], 'second');
       });
     });
+
+    group('edge cases', () {
+      test('create factory with minimal parameters uses defaults', () {
+        final minimal = CharacterModel.create(
+          name: 'MinimalPlayer',
+          gender: Gender.male,
+        );
+
+        expect(minimal.name, 'MinimalPlayer');
+        expect(minimal.gender, Gender.male);
+        expect(minimal.skinTone, SkinTone.medium);
+        expect(minimal.hairStyle, HairStyle.short);
+        expect(minimal.hairColor, HairColor.brown);
+        expect(minimal.outfitVariant, OutfitVariant.casual);
+        expect(minimal.level, 1);
+        expect(minimal.credits, GameConstants.startingCredits);
+        expect(minimal.totalPlayTime, 0);
+        expect(minimal.createdAt, minimal.lastPlayedAt);
+      });
+
+      test('fromJson supports all Gender values', () {
+        for (final gender in Gender.values) {
+          final json = {
+            'id': 'test-${gender.name}',
+            'name': 'Test',
+            'gender': gender.name,
+            'createdAt': testTime.toIso8601String(),
+            'lastPlayedAt': testTime.toIso8601String(),
+          };
+          final restored = CharacterModel.fromJson(json);
+          expect(restored.gender, gender);
+        }
+      });
+
+      test('fromJson supports all SkinTone values', () {
+        for (final skinTone in SkinTone.values) {
+          final json = {
+            'id': 'test-${skinTone.name}',
+            'name': 'Test',
+            'gender': 'male',
+            'skinTone': skinTone.name,
+            'createdAt': testTime.toIso8601String(),
+            'lastPlayedAt': testTime.toIso8601String(),
+          };
+          final restored = CharacterModel.fromJson(json);
+          expect(restored.skinTone, skinTone);
+        }
+      });
+
+      test('fromJson supports all HairStyle values', () {
+        for (final hairStyle in HairStyle.values) {
+          final json = {
+            'id': 'test-${hairStyle.name}',
+            'name': 'Test',
+            'gender': 'male',
+            'hairStyle': hairStyle.name,
+            'createdAt': testTime.toIso8601String(),
+            'lastPlayedAt': testTime.toIso8601String(),
+          };
+          final restored = CharacterModel.fromJson(json);
+          expect(restored.hairStyle, hairStyle);
+        }
+      });
+
+      test('fromJson supports all HairColor values', () {
+        for (final hairColor in HairColor.values) {
+          final json = {
+            'id': 'test-${hairColor.name}',
+            'name': 'Test',
+            'gender': 'male',
+            'hairColor': hairColor.name,
+            'createdAt': testTime.toIso8601String(),
+            'lastPlayedAt': testTime.toIso8601String(),
+          };
+          final restored = CharacterModel.fromJson(json);
+          expect(restored.hairColor, hairColor);
+        }
+      });
+
+      test('fromJson supports all OutfitVariant values', () {
+        for (final outfit in OutfitVariant.values) {
+          final json = {
+            'id': 'test-${outfit.name}',
+            'name': 'Test',
+            'gender': 'male',
+            'outfitVariant': outfit.name,
+            'createdAt': testTime.toIso8601String(),
+            'lastPlayedAt': testTime.toIso8601String(),
+          };
+          final restored = CharacterModel.fromJson(json);
+          expect(restored.outfitVariant, outfit);
+        }
+      });
+
+      test('fromJson handles missing gender with male default', () {
+        final json = {
+          'id': 'test-no-gender',
+          'name': 'Test',
+          'createdAt': testTime.toIso8601String(),
+          'lastPlayedAt': testTime.toIso8601String(),
+        };
+        final restored = CharacterModel.fromJson(json);
+        expect(restored.gender, Gender.male);
+      });
+
+      test('fromJson handles null gender with male default', () {
+        final json = {
+          'id': 'test-null-gender',
+          'name': 'Test',
+          'gender': null,
+          'createdAt': testTime.toIso8601String(),
+          'lastPlayedAt': testTime.toIso8601String(),
+        };
+        final restored = CharacterModel.fromJson(json);
+        expect(restored.gender, Gender.male);
+      });
+
+      test('round-trip serialization preserves all data', () {
+        final original = CharacterModel(
+          id: 'round-trip-id',
+          name: 'RoundTrip',
+          gender: Gender.female,
+          skinTone: SkinTone.dark,
+          hairStyle: HairStyle.ponytail,
+          hairColor: HairColor.purple,
+          outfitVariant: OutfitVariant.formal,
+          createdAt: testTime,
+          lastPlayedAt: testTime.add(const Duration(days: 5)),
+          totalPlayTime: 86400,
+          level: 50,
+          credits: 100000,
+        );
+
+        final json = original.toJson();
+        final restored = CharacterModel.fromJson(json);
+
+        expect(restored, original);
+      });
+
+      test('props includes all fields', () {
+        expect(character.props.length, 12);
+        expect(character.props, contains(character.id));
+        expect(character.props, contains(character.name));
+        expect(character.props, contains(character.gender));
+        expect(character.props, contains(character.skinTone));
+        expect(character.props, contains(character.hairStyle));
+        expect(character.props, contains(character.hairColor));
+        expect(character.props, contains(character.outfitVariant));
+        expect(character.props, contains(character.createdAt));
+        expect(character.props, contains(character.lastPlayedAt));
+        expect(character.props, contains(character.totalPlayTime));
+        expect(character.props, contains(character.level));
+        expect(character.props, contains(character.credits));
+      });
+
+      test('create generates unique IDs', () {
+        final ids = <String>{};
+        for (var i = 0; i < 10; i++) {
+          final created = CharacterModel.create(
+            name: 'Test$i',
+            gender: Gender.male,
+          );
+          ids.add(created.id);
+        }
+        expect(ids.length, 10);
+      });
+    });
   });
 }
