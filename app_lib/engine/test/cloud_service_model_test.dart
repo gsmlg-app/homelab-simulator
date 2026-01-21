@@ -289,6 +289,32 @@ void main() {
         expect(service1, isNot(service2));
       });
     });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        final str = service.toString();
+        expect(str, contains('CloudServiceModel'));
+        expect(str, contains('svc-1'));
+        expect(str, contains('CloudProvider.aws'));
+        expect(str, contains('EC2'));
+      });
+    });
+  });
+
+  group('CloudServiceTemplate', () {
+    test('toString returns descriptive string', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.gcp,
+        category: ServiceCategory.compute,
+        serviceType: 'ComputeEngine',
+        name: 'Compute Engine',
+        description: 'Virtual machines',
+      );
+      final str = template.toString();
+      expect(str, contains('CloudServiceTemplate'));
+      expect(str, contains('CloudProvider.gcp'));
+      expect(str, contains('ComputeEngine'));
+    });
   });
 
   group('CloudServiceCatalog', () {

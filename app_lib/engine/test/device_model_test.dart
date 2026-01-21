@@ -368,6 +368,16 @@ void main() {
         expect(device1, isNot(device2));
       });
     });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        final str = device.toString();
+        expect(str, contains('DeviceModel'));
+        expect(str, contains('dev-1'));
+        expect(str, contains('My Server'));
+        expect(str, contains('DeviceType.server'));
+      });
+    });
   });
 
   group('DeviceTemplate', () {
@@ -474,6 +484,17 @@ void main() {
         );
 
         expect(template1, template2);
+      });
+    });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        final str = template.toString();
+        expect(str, contains('DeviceTemplate'));
+        expect(str, contains('tmpl-1'));
+        expect(str, contains('Basic Server'));
+        expect(str, contains('DeviceType.server'));
+        expect(str, contains('500'));
       });
     });
   });

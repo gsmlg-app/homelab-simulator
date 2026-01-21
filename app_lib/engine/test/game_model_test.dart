@@ -404,5 +404,15 @@ void main() {
         expect(game1, isNot(game2));
       });
     });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        final str = game.toString();
+        expect(str, contains('GameModel'));
+        expect(str, contains(game.currentRoomId));
+        expect(str, contains('rooms: ${game.rooms.length}'));
+        expect(str, contains('credits: ${game.credits}'));
+      });
+    });
   });
 }

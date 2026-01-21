@@ -334,5 +334,21 @@ void main() {
         expect(WallSide.right.name, 'right');
       });
     });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        const door = DoorModel(
+          id: 'door-test',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        final str = door.toString();
+        expect(str, contains('DoorModel'));
+        expect(str, contains('door-test'));
+        expect(str, contains('room-2'));
+        expect(str, contains('WallSide.right'));
+      });
+    });
   });
 }

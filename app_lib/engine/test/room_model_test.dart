@@ -703,5 +703,35 @@ void main() {
         expect(room1, isNot(room2));
       });
     });
+
+    group('toString', () {
+      test('returns descriptive string', () {
+        final str = room.toString();
+        expect(str, contains('RoomModel'));
+        expect(str, contains(room.id));
+        expect(str, contains(room.name));
+        expect(str, contains('RoomType.serverRoom'));
+      });
+
+      test('includes device and door counts', () {
+        const device = DeviceModel(
+          id: 'dev-1',
+          templateId: 'tmpl',
+          name: 'Server',
+          type: DeviceType.server,
+          position: GridPosition(5, 5),
+        );
+        const door = DoorModel(
+          id: 'door-1',
+          targetRoomId: 'room-2',
+          wallSide: WallSide.right,
+          wallPosition: 5,
+        );
+        final fullRoom = room.addDevice(device).addDoor(door);
+        final str = fullRoom.toString();
+        expect(str, contains('devices: 1'));
+        expect(str, contains('doors: 1'));
+      });
+    });
   });
 }
