@@ -215,21 +215,21 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
               children: [
                 const SizedBox(height: 60),
                 // Title
-                Text(
+                const Text(
                   'HOMELAB',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: Colors.cyan.shade400,
+                    color: AppColors.cyan400,
                     letterSpacing: 8,
                   ),
                 ),
-                Text(
+                const Text(
                   'SIMULATOR',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w300,
-                    color: Colors.cyan.shade200,
+                    color: AppColors.cyan200,
                     letterSpacing: 12,
                   ),
                 ),
@@ -257,10 +257,10 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                       ),
                       style: FilledButton.styleFrom(
                         backgroundColor: _selectedIndex == -1
-                            ? Colors.cyan.shade500
-                            : Colors.cyan.shade700,
+                            ? AppColors.cyan500
+                            : AppColors.cyan700,
                         side: _selectedIndex == -1
-                            ? const BorderSide(color: Colors.white, width: 2)
+                            ? const BorderSide(color: AppColors.textPrimary, width: 2)
                             : null,
                       ),
                     ),
@@ -268,13 +268,13 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
                 ),
 
                 // Gamepad hint
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 16),
                   child: Text(
                     '🎮 D-Pad: Navigate • A: Select • X: Delete',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white.withValues(alpha: 0.4),
+                      color: AppColors.textHint,
                     ),
                   ),
                 ),
@@ -307,29 +307,29 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
   Widget _buildContent() {
     if (_characters.isEmpty) {
-      return Center(
+      return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.person_add,
               size: 64,
-              color: Colors.white.withValues(alpha: 0.3),
+              color: AppColors.borderLight,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               'No saved characters',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.white.withValues(alpha: 0.5),
+                color: AppColors.textTertiary,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               'Create a new character to start playing',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.3),
+                color: AppColors.borderLight,
               ),
             ),
           ],
@@ -395,7 +395,7 @@ class _CharacterCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: isSelected
-            ? const BorderSide(color: Colors.white, width: 2)
+            ? const BorderSide(color: AppColors.textPrimary, width: 2)
             : BorderSide.none,
       ),
       child: InkWell(
@@ -410,7 +410,7 @@ class _CharacterCard extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: Colors.cyan.shade900,
+                  color: AppColors.cyan900,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -442,37 +442,37 @@ class _CharacterCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.access_time,
                           size: 14,
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: AppColors.textTertiary,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           _formatPlayTime(character.totalPlayTime),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: AppColors.textTertiary,
                           ),
                         ),
                         const SizedBox(width: 16),
-                        Icon(
+                        const Icon(
                           Icons.calendar_today,
                           size: 14,
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: AppColors.textTertiary,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           _formatDate(character.lastPlayedAt),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: AppColors.textTertiary,
                           ),
                         ),
                       ],
@@ -488,7 +488,7 @@ class _CharacterCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade800,
+                  color: AppColors.green800,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
@@ -496,7 +496,7 @@ class _CharacterCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ),
@@ -504,9 +504,9 @@ class _CharacterCard extends StatelessWidget {
               // Edit button
               IconButton(
                 onPressed: onEdit,
-                icon: Icon(
+                icon: const Icon(
                   Icons.edit_outlined,
-                  color: Colors.cyan.withValues(alpha: 0.7),
+                  color: AppColors.cyanMuted,
                 ),
                 tooltip: 'Edit character',
               ),
@@ -514,9 +514,9 @@ class _CharacterCard extends StatelessWidget {
               // Delete button
               IconButton(
                 onPressed: onDelete,
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline,
-                  color: Colors.red.withValues(alpha: 0.7),
+                  color: AppColors.redMuted,
                 ),
                 tooltip: 'Delete character',
               ),

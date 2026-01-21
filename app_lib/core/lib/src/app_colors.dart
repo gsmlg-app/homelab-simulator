@@ -348,6 +348,12 @@ abstract final class AppColors {
   /// Cyan 600 - Medium dark cyan for buttons
   static const Color cyan600 = Color(0xFF00ACC1);
 
+  /// Cyan with 70% opacity for icons
+  static const Color cyanMuted = Color(0xB300BCD4);
+
   /// Red accent for errors
   static const Color redAccent = Color(0xFFFF5252);
+
+  /// Red with 70% opacity for delete icons
+  static const Color redMuted = Color(0xB3F44336);
 }
