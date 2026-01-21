@@ -191,7 +191,7 @@ void main() {
         ),
       );
 
-      expect(container.padding, const EdgeInsets.all(16));
+      expect(container.padding, AppSpacing.paddingM);
     });
 
     testWidgets('renders nested widget children', (tester) async {
