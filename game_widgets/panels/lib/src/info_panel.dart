@@ -19,7 +19,7 @@ class InfoPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: AppColors.panelBackground,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColors.grey700),
       ),
@@ -45,7 +45,7 @@ class InfoPanel extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(color: Colors.grey),
+          const Divider(color: AppColors.divider),
           ...children,
         ],
       ),

@@ -426,6 +426,32 @@ void main() {
       });
     });
 
+    group('Panel/Overlay Colors', () {
+      test('panelBackground is defined (black87 equivalent)', () {
+        expect(AppColors.panelBackground, isA<Color>());
+        expect(AppColors.panelBackground.toARGB32(), 0xDD000000);
+        // Alpha 0xDD = 221/255 ≈ 87%
+        expect(AppColors.panelBackground.a, closeTo(0.87, 0.01));
+      });
+
+      test('overlayBackground is defined (black54 equivalent)', () {
+        expect(AppColors.overlayBackground, isA<Color>());
+        expect(AppColors.overlayBackground.toARGB32(), 0x8A000000);
+        // Alpha 0x8A = 138/255 ≈ 54%
+        expect(AppColors.overlayBackground.a, closeTo(0.54, 0.01));
+      });
+
+      test('divider is neutral grey', () {
+        expect(AppColors.divider, isA<Color>());
+        expect(AppColors.divider.toARGB32(), 0xFF9E9E9E);
+      });
+
+      test('panelBackground is darker than overlayBackground', () {
+        // Higher alpha means more opaque (darker)
+        expect(AppColors.panelBackground.a, greaterThan(AppColors.overlayBackground.a));
+      });
+    });
+
     group('Text Colors', () {
       test('textSecondary is white with 70% opacity', () {
         expect(AppColors.textSecondary, isA<Color>());

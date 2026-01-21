@@ -58,7 +58,7 @@ class _ShopModalState extends State<ShopModal>
             context.read<GameBloc>().add(const GameToggleShop(isOpen: false));
           },
           child: Container(
-            color: Colors.black54,
+            color: AppColors.overlayBackground,
             child: Center(
               child: GestureDetector(
                 onTap: () {}, // Prevent closing when tapping modal
@@ -78,12 +78,12 @@ class _ShopModalState extends State<ShopModal>
         maxHeight: MediaQuery.of(context).size.height * 0.8,
       ),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: AppColors.grey900,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.cyan.shade700, width: 2),
+        border: Border.all(color: AppColors.cyan700, width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.cyan.shade900.withValues(alpha: 0.5),
+            color: AppColors.cyan900.withValues(alpha: 0.5),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -112,16 +112,16 @@ class _ShopModalState extends State<ShopModal>
   Widget _buildHeader(BuildContext context, int credits) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+      decoration: BoxDecoration(
+        color: AppColors.overlayBackground,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Icon(Icons.store, color: Colors.cyan.shade400, size: 28),
+              Icon(Icons.store, color: AppColors.cyan400, size: 28),
               const SizedBox(width: 12),
               const Text(
                 'TERMINAL',
@@ -142,7 +142,7 @@ class _ShopModalState extends State<ShopModal>
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade800,
+                  color: AppColors.green800,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -173,12 +173,12 @@ class _ShopModalState extends State<ShopModal>
 
   Widget _buildTabs() {
     return Container(
-      color: Colors.black26,
+      color: AppColors.overlayBackground,
       child: TabBar(
         controller: _tabController,
-        indicatorColor: Colors.cyan.shade400,
-        labelColor: Colors.cyan.shade400,
-        unselectedLabelColor: Colors.white70,
+        indicatorColor: AppColors.cyan400,
+        labelColor: AppColors.cyan400,
+        unselectedLabelColor: AppColors.textSecondary,
         tabs: const [
           Tab(icon: Icon(Icons.devices), text: 'Devices'),
           Tab(icon: Icon(Icons.cloud), text: 'Services'),
@@ -253,7 +253,7 @@ class _ShopModalState extends State<ShopModal>
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.black26,
+            color: AppColors.overlayBackground,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
@@ -279,7 +279,7 @@ class _ShopModalState extends State<ShopModal>
               const SizedBox(height: 4),
               Text(
                 '${model.currentRoom.totalObjectCount} objects, ${model.currentRoom.doors.length} doors',
-                style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                style: TextStyle(color: AppColors.grey500, fontSize: 12),
               ),
             ],
           ),
@@ -289,7 +289,7 @@ class _ShopModalState extends State<ShopModal>
           Text(
             'Child Rooms (${childRooms.length})',
             style: TextStyle(
-              color: Colors.grey.shade500,
+              color: AppColors.grey500,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -312,9 +312,9 @@ class _ShopModalState extends State<ShopModal>
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.black26,
+          color: AppColors.overlayBackground,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade700),
+          border: Border.all(color: AppColors.grey700),
         ),
         child: Row(
           children: [
@@ -333,7 +333,7 @@ class _ShopModalState extends State<ShopModal>
                   ),
                   Text(
                     '${room.totalObjectCount} objects',
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey500, fontSize: 12),
                   ),
                 ],
               ),
@@ -361,13 +361,13 @@ class _ShopModalState extends State<ShopModal>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.shade900.withValues(alpha: 0.2),
+        color: AppColors.blue900.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue.shade700),
+        border: Border.all(color: AppColors.blue700),
       ),
       child: Row(
         children: [
-          Icon(Icons.arrow_upward, color: Colors.blue.shade400, size: 20),
+          Icon(Icons.arrow_upward, color: AppColors.blue400, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -396,7 +396,7 @@ class _ShopModalState extends State<ShopModal>
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: AppColors.grey900,
         title: const Text(
           'Delete Room?',
           style: TextStyle(color: Colors.white),

@@ -303,6 +303,17 @@ abstract final class AppColors {
   /// Orange 800 - Dark orange for warnings
   static const Color orange800 = Color(0xFFEF6C00);
 
+  // ============ PANEL/OVERLAY COLORS ============
+
+  /// Panel background - equivalent to Colors.black87 (0xDD000000)
+  static const Color panelBackground = Color(0xDD000000);
+
+  /// Overlay background - equivalent to Colors.black54 (0x8A000000)
+  static const Color overlayBackground = Color(0x8A000000);
+
+  /// Divider color - neutral grey for separating content
+  static const Color divider = Color(0xFF9E9E9E);
+
   // ============ TEXT COLORS ============
 
   /// White with 70% opacity (white70)

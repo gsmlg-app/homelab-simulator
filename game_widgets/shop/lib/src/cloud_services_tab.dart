@@ -61,7 +61,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
     if (roomProvider != null) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        color: Colors.black26,
+        color: AppColors.overlayBackground,
         child: Row(
           children: [
             Icon(roomProvider.icon, color: roomProvider.color, size: 20),
@@ -88,11 +88,12 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             label: const Text('All'),
             selected: _selectedProvider == null,
             onSelected: (_) => setState(() => _selectedProvider = null),
-            selectedColor: Colors.cyan.shade700,
+            selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
-              color: _selectedProvider == null ? Colors.white : Colors.white70,
+              color:
+                  _selectedProvider == null ? Colors.white : AppColors.textSecondary,
             ),
-            backgroundColor: Colors.grey.shade800,
+            backgroundColor: AppColors.grey800,
           ),
           const SizedBox(width: 8),
           ...CloudProvider.values
@@ -116,9 +117,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                     labelStyle: TextStyle(
                       color: _selectedProvider == provider
                           ? Colors.white
-                          : Colors.white70,
+                          : AppColors.textSecondary,
                     ),
-                    backgroundColor: Colors.grey.shade800,
+                    backgroundColor: AppColors.grey800,
                   ),
                 ),
               ),
@@ -137,11 +138,12 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             label: const Text('All'),
             selected: _selectedCategory == null,
             onSelected: (_) => setState(() => _selectedCategory = null),
-            selectedColor: Colors.cyan.shade700,
+            selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
-              color: _selectedCategory == null ? Colors.white : Colors.white70,
+              color:
+                  _selectedCategory == null ? Colors.white : AppColors.textSecondary,
             ),
-            backgroundColor: Colors.grey.shade800,
+            backgroundColor: AppColors.grey800,
           ),
           const SizedBox(width: 8),
           ...ServiceCategory.values.map(
@@ -152,7 +154,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                   category.icon,
                   color: _selectedCategory == category
                       ? Colors.white
-                      : Colors.white70,
+                      : AppColors.textSecondary,
                   size: 18,
                 ),
                 label: Text(category.displayName),
@@ -162,9 +164,9 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                 labelStyle: TextStyle(
                   color: _selectedCategory == category
                       ? Colors.white
-                      : Colors.white70,
+                      : AppColors.textSecondary,
                 ),
-                backgroundColor: Colors.grey.shade800,
+                backgroundColor: AppColors.grey800,
               ),
             ),
           ),
@@ -190,7 +192,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
       return Center(
         child: Text(
           'No services available',
-          style: TextStyle(color: Colors.grey.shade500),
+          style: TextStyle(color: AppColors.grey500),
         ),
       );
     }
@@ -228,9 +230,9 @@ class _ServiceCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.black26,
+          color: AppColors.overlayBackground,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade700),
+          border: Border.all(color: AppColors.grey700),
         ),
         child: Row(
           children: [
@@ -262,7 +264,7 @@ class _ServiceCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     template.description,
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey500, fontSize: 12),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -274,14 +276,14 @@ class _ServiceCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       _buildChip(
                         template.category.displayName,
-                        Colors.grey.shade600,
+                        AppColors.grey600,
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            Icon(Icons.add_circle_outline, color: Colors.cyan.shade400),
+            Icon(Icons.add_circle_outline, color: AppColors.cyan400),
           ],
         ),
       ),

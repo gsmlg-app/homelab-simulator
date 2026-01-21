@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_widget_common/app_widget_common.dart';
 
@@ -34,7 +35,7 @@ class DeviceInfoPanel extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: onRemove,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red.shade800,
+                backgroundColor: AppColors.red800,
               ),
               icon: const Icon(Icons.delete, size: 18),
               label: const Text('Remove Device'),
