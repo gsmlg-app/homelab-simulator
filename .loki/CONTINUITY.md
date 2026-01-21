@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 52
-- **Last Commit:** a6337e4
+- **Iteration:** 53
+- **Last Commit:** 273a14f
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -93,11 +93,12 @@ Two main feature sets from PRD.md:
 - **game_objects/world:** 40 tests passing
   - GamepadHandler: 23 tests
   - HomelabGame: 17 tests (NEW)
-- **app_widget/common:** 91 tests passing
+- **app_widget/common:** 109 tests passing
   - RoomTypeUI: 25 tests
   - DeviceTypeUI: 22 tests
   - CloudProviderUI: 22 tests (NEW)
   - ServiceCategoryUI: 22 tests (NEW)
+  - InfoRow: 18 tests (NEW)
 - **test/screens:** 106 tests passing (NEW)
   - StartMenuScreen: 38 tests (NEW)
   - CharacterCreationScreen: 53 tests (NEW)
@@ -105,7 +106,7 @@ Two main feature sets from PRD.md:
 - **test/:** 20 tests passing
   - App: 19 tests (NEW) (+1 skipped for BLoC timing)
   - widget_test: 1 test
-- **Total:** 1440 unit tests
+- **Total:** 1458 unit tests
 
 ## Completed Work
 
@@ -255,6 +256,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 273a14f: refactor: extract InfoRow widget to app_widget_common
 - a6337e4: refactor: consolidate color constants into AppColors
 - f858832: fix: improve error handling in reducer and HomelabGame
 - f0ac676: refactor: add structured logging to storage services
