@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:app_widget_common/app_widget_common.dart';
 
@@ -22,7 +23,7 @@ class DeviceCard extends StatelessWidget {
     final deviceIcon = template.type.icon;
 
     return Card(
-      color: Colors.grey.shade900,
+      color: AppColors.grey900,
       child: InkWell(
         onTap: canAfford ? onTap : null,
         borderRadius: BorderRadius.circular(8),
@@ -93,7 +94,7 @@ class DeviceCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   template.description,
-                  style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                  style: const TextStyle(color: AppColors.grey400, fontSize: 12),
                 ),
               ],
             ),
