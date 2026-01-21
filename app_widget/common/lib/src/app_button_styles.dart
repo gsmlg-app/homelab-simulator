@@ -13,7 +13,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF00ACC1), // cyan.shade600
     foregroundColor: const Color(0xFFFFFFFF),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Primary button style with custom color
@@ -22,7 +24,9 @@ abstract final class AppButtonStyles {
         backgroundColor: backgroundColor,
         foregroundColor: const Color(0xFFFFFFFF),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: AppSpacing.borderRadiusMedium,
+        ),
       );
 
   // ============ SECONDARY BUTTONS ============
@@ -32,7 +36,9 @@ abstract final class AppButtonStyles {
     foregroundColor: const Color(0xFF26C6DA), // cyan.shade400
     side: const BorderSide(color: Color(0xFF26C6DA)),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Secondary button style with custom color
@@ -40,7 +46,9 @@ abstract final class AppButtonStyles {
     foregroundColor: color,
     side: BorderSide(color: color),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   // ============ DANGER / DESTRUCTIVE BUTTONS ============
@@ -50,7 +58,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFFD32F2F), // red.shade700
     foregroundColor: const Color(0xFFFFFFFF),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Danger outlined button style
@@ -58,7 +68,9 @@ abstract final class AppButtonStyles {
     foregroundColor: const Color(0xFFD32F2F),
     side: const BorderSide(color: Color(0xFFD32F2F)),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   // ============ MODAL / DIALOG BUTTONS ============
@@ -68,7 +80,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF9C27B0), // purple
     foregroundColor: const Color(0xFFFFFFFF),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Modal secondary button style (gray)
@@ -76,7 +90,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF424242), // grey.shade800
     foregroundColor: const Color(0xFFFFFFFF),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   // ============ ICON BUTTONS ============
@@ -89,7 +105,9 @@ abstract final class AppButtonStyles {
 
   /// Icon button style with rounded rectangle
   static ButtonStyle get iconRounded => IconButton.styleFrom(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
     padding: const EdgeInsets.all(8),
   );
 
@@ -101,7 +119,9 @@ abstract final class AppButtonStyles {
     foregroundColor: const Color(0xFFFFFFFF),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     minimumSize: const Size(60, 32),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusSm,
+    ),
     textStyle: const TextStyle(fontSize: 12),
   );
 
@@ -111,7 +131,9 @@ abstract final class AppButtonStyles {
     side: const BorderSide(color: Color(0xFF26C6DA)),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     minimumSize: const Size(60, 32),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusSm,
+    ),
     textStyle: const TextStyle(fontSize: 12),
   );
 
@@ -132,7 +154,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF00ACC1),
     foregroundColor: const Color(0xFFFFFFFF),
     padding: AppSpacing.paddingHudPill,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Toggle button style (unselected state)
@@ -140,7 +164,9 @@ abstract final class AppButtonStyles {
     backgroundColor: const Color(0xFF303030),
     foregroundColor: const Color(0x8AFFFFFF),
     padding: AppSpacing.paddingHudPill,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppSpacing.borderRadiusMedium,
+    ),
   );
 
   /// Toggle button style based on selection state

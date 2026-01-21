@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_widget_common/app_widget_common.dart';
 
 void main() {
@@ -208,7 +209,7 @@ void main() {
         final shape = style.shape?.resolve({});
         expect(shape, isA<RoundedRectangleBorder>());
         if (shape is RoundedRectangleBorder) {
-          expect(shape.borderRadius, BorderRadius.circular(8));
+          expect(shape.borderRadius, AppSpacing.borderRadiusMedium);
         }
       });
 
@@ -217,7 +218,7 @@ void main() {
         final shape = style.shape?.resolve({});
         expect(shape, isA<RoundedRectangleBorder>());
         if (shape is RoundedRectangleBorder) {
-          expect(shape.borderRadius, BorderRadius.circular(8));
+          expect(shape.borderRadius, AppSpacing.borderRadiusMedium);
         }
       });
 
@@ -226,7 +227,7 @@ void main() {
         final shape = style.shape?.resolve({});
         expect(shape, isA<RoundedRectangleBorder>());
         if (shape is RoundedRectangleBorder) {
-          expect(shape.borderRadius, BorderRadius.circular(6));
+          expect(shape.borderRadius, AppSpacing.borderRadiusSm);
         }
       });
     });
