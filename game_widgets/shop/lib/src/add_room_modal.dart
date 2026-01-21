@@ -257,7 +257,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
             'Select Region',
             style: TextStyle(
               color: AppColors.textSecondary,
-              fontSize: 14,
+              fontSize: AppSpacing.fontSizeDefault,
               fontWeight: FontWeight.w500,
             ),
           ),
