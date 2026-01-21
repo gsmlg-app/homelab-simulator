@@ -170,7 +170,7 @@ void main() {
 
     group('DevicePlaced', () {
       test('places device at valid position', () {
-        final modelWithCredits = model.copyWith(credits: 1000);
+        final modelWithCredits = model.copyWith(credits: GameConstants.startingCredits);
         const event = DevicePlaced(
           templateId: 'server_basic',
           position: GridPosition(5, 5),
@@ -201,7 +201,7 @@ void main() {
       });
 
       test('does not place device at invalid position', () {
-        final modelWithCredits = model.copyWith(credits: 1000);
+        final modelWithCredits = model.copyWith(credits: GameConstants.startingCredits);
         // Terminal position is typically at (2,2)
         const event = DevicePlaced(
           templateId: 'server_basic',
@@ -275,7 +275,7 @@ void main() {
     group('DeviceRemoved', () {
       test('removes device and refunds partial cost', () {
         // First place a device
-        final modelWithCredits = model.copyWith(credits: 1000);
+        final modelWithCredits = model.copyWith(credits: GameConstants.startingCredits);
         const placeEvent = DevicePlaced(
           templateId: 'server_basic',
           position: GridPosition(5, 5),
@@ -296,7 +296,7 @@ void main() {
 
       test('refunds exactly half for even cost (integer division)', () {
         // server_basic has cost of 500, so refund should be 250
-        final modelWithCredits = model.copyWith(credits: 1000);
+        final modelWithCredits = model.copyWith(credits: GameConstants.startingCredits);
         const placeEvent = DevicePlaced(
           templateId: 'server_basic',
           position: GridPosition(5, 5),
@@ -582,7 +582,7 @@ void main() {
 
       test('uses integer division for odd cost refund', () {
         // iot_sensor has cost 50, so refund should be 25 (50 ~/ 2)
-        final modelWithCredits = model.copyWith(credits: 1000);
+        final modelWithCredits = model.copyWith(credits: GameConstants.startingCredits);
         const placeEvent = DevicePlaced(
           templateId: 'iot_sensor',
           position: GridPosition(5, 5),
