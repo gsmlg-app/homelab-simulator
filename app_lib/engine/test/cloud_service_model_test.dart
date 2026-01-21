@@ -486,6 +486,99 @@ void main() {
       expect(str, contains('CloudProvider.gcp'));
       expect(str, contains('ComputeEngine'));
     });
+
+    test('creates with required fields', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.aws,
+        category: ServiceCategory.storage,
+        serviceType: 'S3',
+        name: 'S3 Bucket',
+        description: 'Object storage',
+      );
+
+      expect(template.provider, CloudProvider.aws);
+      expect(template.category, ServiceCategory.storage);
+      expect(template.serviceType, 'S3');
+      expect(template.name, 'S3 Bucket');
+      expect(template.description, 'Object storage');
+    });
+
+    test('has default width of 1', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        serviceType: 'EC2',
+        name: 'EC2',
+        description: 'VM',
+      );
+
+      expect(template.width, 1);
+    });
+
+    test('has default height of 1', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.aws,
+        category: ServiceCategory.compute,
+        serviceType: 'EC2',
+        name: 'EC2',
+        description: 'VM',
+      );
+
+      expect(template.height, 1);
+    });
+
+    test('accepts custom width and height', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.azure,
+        category: ServiceCategory.database,
+        serviceType: 'CosmosDB',
+        name: 'Cosmos DB',
+        description: 'Database',
+        width: 2,
+        height: 3,
+      );
+
+      expect(template.width, 2);
+      expect(template.height, 3);
+    });
+
+    test('supports all cloud providers', () {
+      for (final provider in CloudProvider.values) {
+        final template = CloudServiceTemplate(
+          provider: provider,
+          category: ServiceCategory.compute,
+          serviceType: 'Test',
+          name: 'Test',
+          description: 'Test',
+        );
+        expect(template.provider, provider);
+      }
+    });
+
+    test('supports all service categories', () {
+      for (final category in ServiceCategory.values) {
+        final template = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: category,
+          serviceType: 'Test',
+          name: 'Test',
+          description: 'Test',
+        );
+        expect(template.category, category);
+      }
+    });
+
+    test('toString includes name field', () {
+      const template = CloudServiceTemplate(
+        provider: CloudProvider.vultr,
+        category: ServiceCategory.container,
+        serviceType: 'K8s',
+        name: 'Kubernetes Cluster',
+        description: 'Managed K8s',
+      );
+      final str = template.toString();
+      expect(str, contains('Kubernetes Cluster'));
+    });
   });
 
   group('CloudServiceCatalog', () {
