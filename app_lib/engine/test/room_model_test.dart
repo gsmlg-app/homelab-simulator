@@ -11,8 +11,8 @@ void main() {
         id: 'room-1',
         name: 'Test Room',
         type: RoomType.serverRoom,
-        width: 20,
-        height: 12,
+        width: GameConstants.roomWidth,
+        height: GameConstants.roomHeight,
       );
     });
 
@@ -21,8 +21,8 @@ void main() {
         expect(room.id, 'room-1');
         expect(room.name, 'Test Room');
         expect(room.type, RoomType.serverRoom);
-        expect(room.width, 20);
-        expect(room.height, 12);
+        expect(room.width, GameConstants.roomWidth);
+        expect(room.height, GameConstants.roomHeight);
         expect(room.parentId, isNull);
         expect(room.devices, isEmpty);
         expect(room.doors, isEmpty);
