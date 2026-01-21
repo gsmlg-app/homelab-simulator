@@ -11,13 +11,13 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 56
-- **Last Commit:** bb97a7a
+- **Iteration:** 57
+- **Last Commit:** 72c1f39
 
 ## Test Coverage Summary
 - **app_lib/core:** 181 tests passing
   - CharacterName: 37 tests (+25 edge case tests)
-  - GridPosition: 25 tests
+  - GridPosition: 29 tests (+4 distance tests)
   - Helpers (GameConstants, gridToPixel, pixelToGrid, isWithinBounds, countBy, groupBy): 40 tests (+6 edge cases, +12 new)
   - IDs: 15 tests
   - Enums: 30 tests
@@ -107,7 +107,7 @@ Two main feature sets from PRD.md:
 - **test/:** 20 tests passing
   - App: 19 tests (NEW) (+1 skipped for BLoC timing)
   - widget_test: 1 test
-- **Total:** 1505 unit tests
+- **Total:** 1509 unit tests
 
 ## Completed Work
 
@@ -259,6 +259,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 72c1f39: refactor: clarify GridPosition distance methods (squaredDistanceTo + distanceTo)
 - bb97a7a: docs: add dartdoc comments to reducer and cloud service methods
 - 5e08927: docs: update CONTINUITY.md iteration 55
 - 5248350: test: add unit tests for AppColors constants (35 tests)
