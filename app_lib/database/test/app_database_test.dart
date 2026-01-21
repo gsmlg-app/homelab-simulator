@@ -128,6 +128,33 @@ void main() {
         expect(executor1, same(executor2));
         db.close();
       });
+
+      test('different instances have different executors', () {
+        final db1 = AppDatabase.forTesting();
+        final db2 = AppDatabase.forTesting();
+        expect(db1.executor, isNot(same(db2.executor)));
+        db1.close();
+        db2.close();
+      });
+    });
+
+    group('database type', () {
+      test('is assignable to GeneratedDatabase', () {
+        final db = AppDatabase.forTesting();
+        GeneratedDatabase genericDb = db;
+        expect(genericDb, isA<GeneratedDatabase>());
+        db.close();
+      });
+    });
+
+    group('concurrent operations', () {
+      test('can create and close databases rapidly', () async {
+        for (int i = 0; i < 10; i++) {
+          final db = AppDatabase.forTesting();
+          expect(db.schemaVersion, 1);
+          await db.close();
+        }
+      });
     });
   });
 }

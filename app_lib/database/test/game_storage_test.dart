@@ -305,6 +305,45 @@ void main() {
         final result = await storage.load();
         expect(result, isNull);
       });
+
+      test('should handle negative credits', () async {
+        final game = GameModel.initial().copyWith(credits: -500);
+
+        await storage.save(game);
+        final loaded = await storage.load();
+
+        expect(loaded!.credits, -500);
+      });
+
+    });
+
+    group('storage key', () {
+      test('uses homelab_game_state key', () async {
+        final game = GameModel.initial();
+        await storage.save(game);
+
+        final prefs = await SharedPreferences.getInstance();
+        expect(prefs.containsKey('homelab_game_state'), isTrue);
+      });
+
+      test('does not pollute other keys', () async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('other_key', 'other_value');
+
+        final game = GameModel.initial();
+        await storage.save(game);
+
+        expect(prefs.getString('other_key'), 'other_value');
+      });
+    });
+
+    group('GameStorage class', () {
+      test('can be instantiated multiple times', () {
+        final storage1 = GameStorage();
+        final storage2 = GameStorage();
+        expect(storage1, isA<GameStorage>());
+        expect(storage2, isA<GameStorage>());
+      });
     });
   });
 }

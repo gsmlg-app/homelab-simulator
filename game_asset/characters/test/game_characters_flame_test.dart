@@ -222,5 +222,88 @@ void main() {
         }
       });
     });
+
+    group('CharacterDirection enum', () {
+      test('has 8 directions', () {
+        expect(CharacterDirection.values.length, 8);
+      });
+
+      test('all directions have unique indices', () {
+        final indices = CharacterDirection.values.map((d) => d.index).toSet();
+        expect(indices.length, 8);
+      });
+
+      test('contains all cardinal directions', () {
+        expect(
+          CharacterDirection.values,
+          containsAll([
+            CharacterDirection.up,
+            CharacterDirection.down,
+            CharacterDirection.left,
+            CharacterDirection.right,
+          ]),
+        );
+      });
+
+      test('contains all diagonal directions', () {
+        expect(
+          CharacterDirection.values,
+          containsAll([
+            CharacterDirection.upLeft,
+            CharacterDirection.upRight,
+            CharacterDirection.downLeft,
+            CharacterDirection.downRight,
+          ]),
+        );
+      });
+    });
+
+    group('sprite sheet consistency', () {
+      test('all GameCharacters sheets have same frame dimensions', () {
+        expect(
+          GameCharacters.mainMale.frameWidth,
+          GameCharacters.mainFemale.frameWidth,
+        );
+        expect(
+          GameCharacters.mainMale.frameHeight,
+          GameCharacters.mainFemale.frameHeight,
+        );
+      });
+
+      test('all GameCharacters sheets have same column count', () {
+        expect(
+          GameCharacters.mainMale.columns,
+          GameCharacters.mainFemale.columns,
+        );
+      });
+
+      test('all GameCharacters sheets have same row count', () {
+        expect(
+          GameCharacters.mainMale.rows,
+          GameCharacters.mainFemale.rows,
+        );
+      });
+
+      test('all GameCharacters sheets have same walk animation length', () {
+        expect(
+          GameCharacters.mainMale.walkRows.length,
+          GameCharacters.mainFemale.walkRows.length,
+        );
+      });
+    });
+
+    group('column calculation symmetry', () {
+      test('left and right columns are different', () {
+        final leftCol = testSheet.columnForDirection(CharacterDirection.left);
+        final rightCol = testSheet.columnForDirection(CharacterDirection.right);
+        expect(leftCol, isNot(rightCol));
+      });
+
+      test('up and down columns are different', () {
+        final upCol = testSheet.columnForDirection(CharacterDirection.up);
+        final downCol = testSheet.columnForDirection(CharacterDirection.down);
+        expect(upCol, isNot(downCol));
+      });
+    });
   });
 }
