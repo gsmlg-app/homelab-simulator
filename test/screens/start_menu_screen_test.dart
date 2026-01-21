@@ -253,7 +253,7 @@ void main() {
         // Card with selected state has a white border
         final card = tester.widget<Card>(find.byType(Card));
         final shape = card.shape as RoundedRectangleBorder;
-        expect(shape.side.color, Colors.white);
+        expect(shape.side.color, AppColors.textPrimary);
       });
 
       testWidgets('arrow up from first character stays at first character', (
@@ -284,7 +284,7 @@ void main() {
         // Card should still be selected (navigation clamped, doesn't wrap)
         final card = tester.widget<Card>(find.byType(Card));
         final shape = card.shape as RoundedRectangleBorder;
-        expect(shape.side.color, Colors.white);
+        expect(shape.side.color, AppColors.textPrimary);
       });
 
       testWidgets('delete key triggers delete on selected character', (
