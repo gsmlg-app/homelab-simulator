@@ -99,7 +99,7 @@ class PlacementGhostComponent extends PositionComponent
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-        const Radius.circular(4),
+        const Radius.circular(GameConstants.componentCornerRadius),
       ),
       _fillPaint,
     );
@@ -118,7 +118,7 @@ class PlacementGhostComponent extends PositionComponent
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
-        const Radius.circular(4),
+        const Radius.circular(GameConstants.componentCornerRadius),
       ),
       _borderPaint,
     );

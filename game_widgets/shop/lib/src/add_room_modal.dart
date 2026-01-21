@@ -201,7 +201,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
       padding: AppSpacing.paddingM,
       decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSpacing.radiusXl - AppSpacing.borderWidth),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -611,7 +613,9 @@ class _AddRoomModalState extends State<AddRoomModal> {
       padding: AppSpacing.paddingM,
       decoration: const BoxDecoration(
         color: AppColors.overlayBackground,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(14)),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(AppSpacing.radiusXl - AppSpacing.borderWidth),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
