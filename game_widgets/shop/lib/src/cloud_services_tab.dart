@@ -69,7 +69,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             Text(
               '${roomProvider.displayName} Services',
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -91,7 +91,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
               color:
-                  _selectedProvider == null ? Colors.white : AppColors.textSecondary,
+                  _selectedProvider == null ? AppColors.textPrimary : AppColors.textSecondary,
             ),
             backgroundColor: AppColors.grey800,
           ),
@@ -105,7 +105,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                     avatar: Icon(
                       provider.icon,
                       color: _selectedProvider == provider
-                          ? Colors.white
+                          ? AppColors.textPrimary
                           : provider.color,
                       size: 18,
                     ),
@@ -116,7 +116,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                     selectedColor: provider.color,
                     labelStyle: TextStyle(
                       color: _selectedProvider == provider
-                          ? Colors.white
+                          ? AppColors.textPrimary
                           : AppColors.textSecondary,
                     ),
                     backgroundColor: AppColors.grey800,
@@ -141,7 +141,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
             selectedColor: AppColors.cyan700,
             labelStyle: TextStyle(
               color:
-                  _selectedCategory == null ? Colors.white : AppColors.textSecondary,
+                  _selectedCategory == null ? AppColors.textPrimary : AppColors.textSecondary,
             ),
             backgroundColor: AppColors.grey800,
           ),
@@ -153,7 +153,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                 avatar: Icon(
                   category.icon,
                   color: _selectedCategory == category
-                      ? Colors.white
+                      ? AppColors.textPrimary
                       : AppColors.textSecondary,
                   size: 18,
                 ),
@@ -163,7 +163,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
                 selectedColor: category.color,
                 labelStyle: TextStyle(
                   color: _selectedCategory == category
-                      ? Colors.white
+                      ? AppColors.textPrimary
                       : AppColors.textSecondary,
                 ),
                 backgroundColor: AppColors.grey800,
@@ -257,7 +257,7 @@ class _ServiceCard extends StatelessWidget {
                   Text(
                     template.name,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

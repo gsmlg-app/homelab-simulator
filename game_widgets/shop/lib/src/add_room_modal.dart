@@ -214,7 +214,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               Text(
                 _currentStep == 0 ? 'ADD ROOM' : 'DOOR PLACEMENT',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -223,7 +223,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
+            icon: const Icon(Icons.close, color: AppColors.textPrimary),
             onPressed: widget.onClose,
           ),
         ],
@@ -268,7 +268,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
           const SizedBox(height: 20),
           TextField(
             controller: _nameController,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
             decoration: InputDecoration(
               labelText: 'Room Name',
               labelStyle: TextStyle(color: AppColors.textSecondary),
@@ -325,7 +325,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                     Text(
                       preset.name,
                       style: TextStyle(
-                        color: isSelected ? Colors.white : AppColors.textSecondary,
+                        color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                         fontSize: 16,
                         fontWeight: isSelected
                             ? FontWeight.bold
@@ -362,7 +362,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
       },
       selectedColor: _accentColor.withValues(alpha: 0.3),
       checkmarkColor: _accentColor,
-      labelStyle: TextStyle(color: isSelected ? Colors.white : AppColors.textSecondary),
+      labelStyle: TextStyle(color: isSelected ? AppColors.textPrimary : AppColors.textSecondary),
       backgroundColor: AppColors.overlayBackground,
       side: BorderSide(color: isSelected ? _accentColor : AppColors.grey700),
     );
@@ -389,7 +389,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
               Text(
                 _roomName,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -494,14 +494,14 @@ class _AddRoomModalState extends State<AddRoomModal> {
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : AppColors.textSecondary,
+              color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
               size: 20,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Colors.white : AppColors.textSecondary,
+                color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                 fontSize: 12,
               ),
             ),
@@ -552,12 +552,12 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 height: cellSize,
                 decoration: BoxDecoration(
                   color: _accentColor,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(color: AppColors.textPrimary, width: 2),
                 ),
                 child: const Center(
                   child: Icon(
                     Icons.door_front_door,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     size: 14,
                   ),
                 ),
@@ -610,7 +610,7 @@ class _AddRoomModalState extends State<AddRoomModal> {
                 : (_canCreate ? _createRoom : null),
             style: ElevatedButton.styleFrom(
               backgroundColor: _accentColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppColors.textPrimary,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
             child: Text(_currentStep == 0 ? 'Next' : 'Create Room'),
