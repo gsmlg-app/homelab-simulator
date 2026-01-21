@@ -471,5 +471,20 @@ void main() {
         expect(decoration.gradient, isA<LinearGradient>());
       });
     });
+
+    group('storage error handling', () {
+      testWidgets('shows empty list on storage error', (tester) async {
+        // Set up corrupted data that will cause parsing to fail
+        SharedPreferences.setMockInitialValues({
+          'saved_characters': ['not_valid_json{'],
+        });
+
+        await tester.pumpWidget(const MaterialApp(home: StartMenuScreen()));
+        await tester.pumpAndSettle();
+
+        // Should show empty state, not crash
+        expect(find.text('No saved characters'), findsOneWidget);
+      });
+    });
   });
 }

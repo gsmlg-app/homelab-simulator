@@ -111,11 +111,21 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
   }
 
   Future<void> _loadCharacters() async {
-    final characters = await _storage.loadAll();
-    setState(() {
-      _characters = characters;
-      _isLoading = false;
-    });
+    try {
+      final characters = await _storage.loadAll();
+      if (!mounted) return;
+      setState(() {
+        _characters = characters;
+        _isLoading = false;
+      });
+    } catch (_) {
+      // Storage errors are handled by CharacterStorage - just show empty list
+      if (!mounted) return;
+      setState(() {
+        _characters = [];
+        _isLoading = false;
+      });
+    }
   }
 
   void _selectCharacter(CharacterModel character) {
