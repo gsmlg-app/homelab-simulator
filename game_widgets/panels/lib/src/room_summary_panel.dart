@@ -25,14 +25,31 @@ class RoomSummaryPanel extends StatelessWidget {
       icon: room.type.icon,
       children: [
         // Room type and size
-        _buildInfoRow('Type', room.type.displayName, room.type.color),
-        _buildInfoRow(
-          'Size',
-          '${room.width} × ${room.height}',
-          Colors.grey.shade400,
+        InfoRow(
+          label: 'Type',
+          value: room.type.displayName,
+          valueColor: room.type.color,
+          fontSize: 11,
+          verticalPadding: 2,
+          labelColor: Colors.grey.shade500,
+        ),
+        InfoRow(
+          label: 'Size',
+          value: '${room.width} × ${room.height}',
+          valueColor: Colors.grey.shade400,
+          fontSize: 11,
+          verticalPadding: 2,
+          labelColor: Colors.grey.shade500,
         ),
         if (room.regionCode != null)
-          _buildInfoRow('Region', room.regionCode!, Colors.cyan.shade400),
+          InfoRow(
+            label: 'Region',
+            value: room.regionCode!,
+            valueColor: Colors.cyan.shade400,
+            fontSize: 11,
+            verticalPadding: 2,
+            labelColor: Colors.grey.shade500,
+          ),
 
         const SizedBox(height: 8),
         const Divider(color: Colors.grey, height: 1),
@@ -132,29 +149,6 @@ class RoomSummaryPanel extends StatelessWidget {
           ),
         ],
       ],
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value, Color valueColor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              color: valueColor,
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

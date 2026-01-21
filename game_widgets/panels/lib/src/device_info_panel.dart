@@ -17,10 +17,16 @@ class DeviceInfoPanel extends StatelessWidget {
       title: 'Device Info',
       icon: device.type.icon,
       children: [
-        _buildRow('Name', device.name),
-        _buildRow('Type', device.type.name),
-        _buildRow('Position', '(${device.position.x}, ${device.position.y})'),
-        _buildRow('Status', device.isRunning ? 'Running' : 'Stopped'),
+        InfoRow(label: 'Name', value: device.name),
+        InfoRow(label: 'Type', value: device.type.name),
+        InfoRow(
+          label: 'Position',
+          value: '(${device.position.x}, ${device.position.y})',
+        ),
+        InfoRow(
+          label: 'Status',
+          value: device.isRunning ? 'Running' : 'Stopped',
+        ),
         if (onRemove != null) ...[
           const SizedBox(height: 12),
           SizedBox(
@@ -36,29 +42,6 @@ class DeviceInfoPanel extends StatelessWidget {
           ),
         ],
       ],
-    );
-  }
-
-  Widget _buildRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
