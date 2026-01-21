@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 
 /// A reusable row widget for displaying label-value pairs.
@@ -15,7 +16,7 @@ class InfoRow extends StatelessWidget {
   /// Color for the value text. Defaults to white.
   final Color valueColor;
 
-  /// Color for the label text. Defaults to grey.shade400.
+  /// Color for the label text. Defaults to AppColors.grey400.
   final Color? labelColor;
 
   /// Font size for both label and value. Defaults to 12.
@@ -49,7 +50,7 @@ class InfoRow extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: labelColor ?? Colors.grey.shade400,
+                color: labelColor ?? AppColors.grey400,
                 fontSize: fontSize,
               ),
               overflow: TextOverflow.ellipsis,

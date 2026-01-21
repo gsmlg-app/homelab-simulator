@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:flutter/material.dart';
 
 /// Generic info panel widget
@@ -20,7 +21,7 @@ class InfoPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black87,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade700),
+        border: Border.all(color: AppColors.grey700),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,13 +29,13 @@ class InfoPanel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.cyan.shade400, size: 20),
+              Icon(icon, color: AppColors.cyan400, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   title.toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.cyan.shade400,
+                  style: const TextStyle(
+                    color: AppColors.cyan400,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,

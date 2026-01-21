@@ -31,24 +31,24 @@ class RoomSummaryPanel extends StatelessWidget {
           valueColor: room.type.color,
           fontSize: 11,
           verticalPadding: 2,
-          labelColor: Colors.grey.shade500,
+          labelColor: AppColors.grey500,
         ),
         InfoRow(
           label: 'Size',
           value: '${room.width} × ${room.height}',
-          valueColor: Colors.grey.shade400,
+          valueColor: AppColors.grey400,
           fontSize: 11,
           verticalPadding: 2,
-          labelColor: Colors.grey.shade500,
+          labelColor: AppColors.grey500,
         ),
         if (room.regionCode != null)
           InfoRow(
             label: 'Region',
             value: room.regionCode!,
-            valueColor: Colors.cyan.shade400,
+            valueColor: AppColors.cyan400,
             fontSize: 11,
             verticalPadding: 2,
-            labelColor: Colors.grey.shade500,
+            labelColor: AppColors.grey500,
           ),
 
         const SizedBox(height: 8),
@@ -62,8 +62,8 @@ class RoomSummaryPanel extends StatelessWidget {
             Flexible(
               child: Text(
                 'OBJECTS',
-                style: TextStyle(
-                  color: Colors.grey.shade500,
+                style: const TextStyle(
+                  color: AppColors.grey500,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
@@ -74,7 +74,7 @@ class RoomSummaryPanel extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.cyan.shade800,
+                color: AppColors.cyan800,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -114,12 +114,12 @@ class RoomSummaryPanel extends StatelessWidget {
 
         // Empty state
         if (room.totalObjectCount == 0)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
               'No objects placed',
               style: TextStyle(
-                color: Colors.grey.shade600,
+                color: AppColors.grey600,
                 fontSize: 11,
                 fontStyle: FontStyle.italic,
               ),
@@ -136,13 +136,13 @@ class RoomSummaryPanel extends StatelessWidget {
               children: [
                 Icon(
                   expanded ? Icons.expand_less : Icons.expand_more,
-                  color: Colors.grey.shade500,
+                  color: AppColors.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   expanded ? 'Show less' : 'Show details',
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
+                  style: const TextStyle(color: AppColors.grey500, fontSize: 10),
                 ),
               ],
             ),
@@ -159,8 +159,8 @@ class RoomSummaryPanel extends StatelessWidget {
         Flexible(
           child: Text(
             title,
-            style: TextStyle(
-              color: Colors.grey.shade400,
+            style: const TextStyle(
+              color: AppColors.grey400,
               fontSize: 11,
               fontWeight: FontWeight.w500,
             ),
@@ -169,7 +169,7 @@ class RoomSummaryPanel extends StatelessWidget {
         ),
         Text(
           '$count',
-          style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
+          style: const TextStyle(color: AppColors.grey400, fontSize: 11),
         ),
       ],
     );
@@ -181,7 +181,7 @@ class RoomSummaryPanel extends StatelessWidget {
       spacing: 4,
       runSpacing: 4,
       children: counts.entries.map((e) {
-        return _buildCountChip(e.key.icon, e.value, Colors.blue.shade700);
+        return _buildCountChip(e.key.icon, e.value, AppColors.blue700);
       }).toList(),
     );
   }
@@ -231,12 +231,12 @@ class RoomSummaryPanel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(
             children: [
-              Icon(e.key.icon, size: 14, color: Colors.blue.shade400),
+              Icon(e.key.icon, size: 14, color: AppColors.blue400),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   e.key.displayName,
-                  style: TextStyle(color: Colors.grey.shade300, fontSize: 11),
+                  style: const TextStyle(color: AppColors.grey300, fontSize: 11),
                 ),
               ),
               Text(
@@ -302,14 +302,14 @@ class RoomSummaryPanel extends StatelessWidget {
                     Icon(
                       catEntry.key.icon,
                       size: 12,
-                      color: Colors.grey.shade400,
+                      color: AppColors.grey400,
                     ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         catEntry.key.displayName,
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
+                        style: const TextStyle(
+                          color: AppColors.grey400,
                           fontSize: 10,
                         ),
                       ),
