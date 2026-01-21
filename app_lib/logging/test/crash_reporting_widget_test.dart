@@ -1,3 +1,4 @@
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_logging/app_logging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -329,7 +330,7 @@ void main() {
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
-      expect(icon.color, Colors.red[700]);
+      expect(icon.color, AppColors.red700);
     });
 
     testWidgets('error icon is size 64', (tester) async {
