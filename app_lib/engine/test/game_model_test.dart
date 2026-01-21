@@ -95,6 +95,50 @@ void main() {
         expect(restored.gameMode, GameMode.sim);
       });
 
+      test('fromJson handles null rooms gracefully', () {
+        final json = <String, dynamic>{
+          'currentRoomId': 'room-1',
+          'rooms': null,
+        };
+
+        final restored = GameModel.fromJson(json);
+
+        expect(restored.rooms, isEmpty);
+        expect(restored.currentRoomId, 'room-1');
+      });
+
+      test('fromJson handles missing currentRoomId', () {
+        final json = <String, dynamic>{
+          'rooms': [
+            {'id': 'room-1', 'name': 'Test Room'},
+          ],
+        };
+
+        final restored = GameModel.fromJson(json);
+
+        expect(restored.currentRoomId, '');
+        expect(restored.rooms.length, 1);
+      });
+
+      test('fromJson filters out malformed room entries', () {
+        final json = {
+          'currentRoomId': 'room-1',
+          'rooms': [
+            {'id': 'room-1', 'name': 'Valid Room'},
+            'invalid string entry',
+            42,
+            null,
+            {'id': 'room-2', 'name': 'Also Valid'},
+          ],
+        };
+
+        final restored = GameModel.fromJson(json);
+
+        expect(restored.rooms.length, 2);
+        expect(restored.rooms[0].id, 'room-1');
+        expect(restored.rooms[1].id, 'room-2');
+      });
+
       test('round-trip serialization preserves all data', () {
         const door = DoorModel(
           id: 'door-1',

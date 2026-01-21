@@ -87,11 +87,21 @@ class GameModel extends Equatable {
   };
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
+    final roomsJson = json['rooms'];
+    final List<RoomModel> parsedRooms;
+
+    if (roomsJson is List) {
+      parsedRooms = roomsJson
+          .whereType<Map<String, dynamic>>()
+          .map(RoomModel.fromJson)
+          .toList();
+    } else {
+      parsedRooms = [];
+    }
+
     return GameModel(
-      currentRoomId: json['currentRoomId'] as String,
-      rooms: (json['rooms'] as List<dynamic>)
-          .map((r) => RoomModel.fromJson(r as Map<String, dynamic>))
-          .toList(),
+      currentRoomId: json['currentRoomId'] as String? ?? '',
+      rooms: parsedRooms,
       credits: json['credits'] as int? ?? GameConstants.startingCredits,
       playerPosition: json['playerPosition'] != null
           ? GridPosition.fromJson(
