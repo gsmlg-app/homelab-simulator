@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 51
-- **Last Commit:** f858832
+- **Iteration:** 52
+- **Last Commit:** a6337e4
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -255,6 +255,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- a6337e4: refactor: consolidate color constants into AppColors
 - f858832: fix: improve error handling in reducer and HomelabGame
 - f0ac676: refactor: add structured logging to storage services
 - c196c1f: chore: add shared_preferences as dev dependency for tests
