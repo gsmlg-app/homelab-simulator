@@ -11,8 +11,8 @@ Two main feature sets from PRD.md:
 ## Current State
 - **Phase:** VALIDATION
 - **Last Updated:** 2026-01-21
-- **Iteration:** 47
-- **Last Commit:** ba3fc1f
+- **Iteration:** 48
+- **Last Commit:** 24cd826
 
 ## Test Coverage Summary
 - **app_lib/core:** 134 tests passing
@@ -102,7 +102,10 @@ Two main feature sets from PRD.md:
   - StartMenuScreen: 38 tests (NEW)
   - CharacterCreationScreen: 53 tests (NEW)
   - GameScreen: 15 tests (NEW) (+2 skipped for layout bugs)
-- **Total:** 1421 unit tests
+- **test/:** 20 tests passing
+  - App: 19 tests (NEW) (+1 skipped for BLoC timing)
+  - widget_test: 1 test
+- **Total:** 1440 unit tests
 
 ## Completed Work
 
@@ -252,6 +255,7 @@ Two main feature sets from PRD.md:
 - Core Enums: `app_lib/core/lib/src/enums.dart`
 
 ## Git Checkpoints
+- 24cd826: test: add comprehensive widget tests for App (19 tests)
 - ba3fc1f: test: add widget tests for GameScreen (15 tests)
 - b7ca8b9: test: add unit tests for DeviceTemplate (26 tests)
 - 59f007d: style: apply dart format
