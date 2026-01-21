@@ -149,7 +149,7 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'sets terminal interaction when adjacent to terminal',
-        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         act: (bloc) =>
             bloc.add(const PlayerPositionUpdated(GridPosition(2, 3))),
         expect: () => [
@@ -163,7 +163,7 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'sets terminal interaction when at terminal position',
-        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         act: (bloc) =>
             bloc.add(const PlayerPositionUpdated(GridPosition(2, 2))),
         expect: () => [
@@ -177,7 +177,7 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'clears terminal interaction when moving away from terminal',
-        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         seed: () => const WorldState(
           playerPosition: GridPosition(2, 3),
           interactableEntityId: 'terminal',
@@ -196,7 +196,7 @@ void main() {
 
       blocTest<WorldBloc, WorldState>(
         'does not clear device interaction when moving away from terminal',
-        build: () => WorldBloc(terminalPosition: const GridPosition(2, 2)),
+        build: () => WorldBloc(terminalPosition: GameConstants.terminalPosition),
         seed: () => const WorldState(
           playerPosition: GridPosition(5, 5),
           interactableEntityId: 'device-1',
