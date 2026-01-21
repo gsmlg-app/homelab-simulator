@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -12,14 +13,15 @@ class DeviceComponent extends PositionComponent
   final double tileSize;
   bool _isSelected = false;
 
+  // Animation state for server light flicker
+  double _flickerTime = 0;
+  double _flickerPhase = 0; // Random phase offset for variety
+
   // Cached paint objects for performance
   static final _selectPaint = Paint()
     ..color = AppColors.deviceSelection
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2;
-  static final _runningLightPaint = Paint()
-    ..color = AppColors.runningIndicator
-    ..style = PaintingStyle.fill;
   static final _offLightPaint = Paint()
     ..color = AppColors.offIndicator
     ..style = PaintingStyle.fill;
@@ -62,6 +64,8 @@ class DeviceComponent extends PositionComponent
       ..color = _deviceColor.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
+    // Random phase offset for subtle variety between devices
+    _flickerPhase = math.Random().nextDouble() * math.pi * 2;
   }
 
   @override
@@ -69,6 +73,10 @@ class DeviceComponent extends PositionComponent
     super.update(dt);
     final worldState = bloc.state;
     _isSelected = worldState.selectedEntityId == device.id;
+    // Update flicker animation for running devices
+    if (device.isRunning) {
+      _flickerTime += dt;
+    }
   }
 
   @override
@@ -82,9 +90,18 @@ class DeviceComponent extends PositionComponent
       _bodyPaint,
     );
 
-    // Device lights/details
-    final detailPaint = device.isRunning ? _runningLightPaint : _offLightPaint;
-    canvas.drawCircle(Offset(size.x - 10, 10), 3, detailPaint);
+    // Device lights/details with subtle flicker for running devices
+    if (device.isRunning) {
+      // Subtle flicker: base brightness 0.7-1.0 with sine wave
+      final flicker =
+          0.85 + 0.15 * math.sin(_flickerTime * 3.0 + _flickerPhase);
+      final flickerPaint = Paint()
+        ..color = AppColors.runningIndicator.withValues(alpha: flicker)
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(Offset(size.x - 10, 10), 3, flickerPaint);
+    } else {
+      canvas.drawCircle(Offset(size.x - 10, 10), 3, _offLightPaint);
+    }
 
     // Selection highlight
     if (_isSelected) {

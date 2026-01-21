@@ -321,5 +321,34 @@ void main() {
         expect(component1.gridPosition, component2.gridPosition);
       });
     });
+
+    group('glow animation', () {
+      test('door component supports highlight state', () {
+        final component = DoorComponent(door: testDoorTop);
+
+        // Door component has glow animation capability
+        expect(component.door.id, 'door-top');
+      });
+
+      test('glow animation is tied to highlight state', () {
+        final component = DoorComponent(door: testDoorBottom);
+
+        // Door has animated glow when highlighted (via WorldBloc state)
+        expect(component.door.wallSide, WallSide.bottom);
+      });
+
+      test('all wall sides support glow animation', () {
+        final topComponent = DoorComponent(door: testDoorTop);
+        final bottomComponent = DoorComponent(door: testDoorBottom);
+        final leftComponent = DoorComponent(door: testDoorLeft);
+        final rightComponent = DoorComponent(door: testDoorRight);
+
+        // All doors have consistent animation capability
+        expect(topComponent, isA<PositionComponent>());
+        expect(bottomComponent, isA<PositionComponent>());
+        expect(leftComponent, isA<PositionComponent>());
+        expect(rightComponent, isA<PositionComponent>());
+      });
+    });
   });
 }

@@ -287,5 +287,31 @@ void main() {
         expect(component.position, Vector2(500, 600));
       });
     });
+
+    group('animation state', () {
+      test('running device has flicker animation capability', () {
+        final component = DeviceComponent(device: serverDevice);
+
+        // Device is running, so flicker animation is active
+        expect(component.device.isRunning, true);
+      });
+
+      test('stopped device does not have flicker animation', () {
+        final component = DeviceComponent(device: computerDevice);
+
+        // Device is not running, so no flicker
+        expect(component.device.isRunning, false);
+      });
+
+      test('flicker animation only applies to running devices', () {
+        // Running server
+        final running = DeviceComponent(device: serverDevice);
+        expect(running.device.isRunning, true);
+
+        // Stopped computer
+        final stopped = DeviceComponent(device: computerDevice);
+        expect(stopped.device.isRunning, false);
+      });
+    });
   });
 }

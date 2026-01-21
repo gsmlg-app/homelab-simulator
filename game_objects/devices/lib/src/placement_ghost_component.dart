@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -14,21 +15,8 @@ class PlacementGhostComponent extends PositionComponent
   bool _isValid = true;
   GridPosition? _currentPosition;
 
-  // Cached paint objects for performance
-  static final _validFillPaint = Paint()
-    ..color = AppColors.validPlacementFill
-    ..style = PaintingStyle.fill;
-  static final _invalidFillPaint = Paint()
-    ..color = AppColors.invalidPlacementFill
-    ..style = PaintingStyle.fill;
-  static final _validBorderPaint = Paint()
-    ..color = AppColors.validPlacementBorder
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
-  static final _invalidBorderPaint = Paint()
-    ..color = AppColors.invalidPlacementBorder
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
+  // Animation state for breathing effect
+  double _breatheTime = 0;
 
   PlacementGhostComponent({this.tileSize = GameConstants.tileSize})
     : super(size: Vector2.all(tileSize));
@@ -71,6 +59,9 @@ class PlacementGhostComponent extends PositionComponent
 
     if (_template == null && _cloudService == null) return;
 
+    // Update breathing animation
+    _breatheTime += dt;
+
     final worldState = bloc.state;
     final hoveredCell = worldState.hoveredCell;
 
@@ -87,7 +78,15 @@ class PlacementGhostComponent extends PositionComponent
       return;
     }
 
-    final fillPaint = _isValid ? _validFillPaint : _invalidFillPaint;
+    // Breathing animation: opacity oscillates between 0.3-0.5
+    final breathe = 0.4 + 0.1 * math.sin(_breatheTime * 3.0);
+    final baseColor = _isValid
+        ? AppColors.validPlacementFill
+        : AppColors.invalidPlacementFill;
+    final fillPaint = Paint()
+      ..color = baseColor.withValues(alpha: breathe)
+      ..style = PaintingStyle.fill;
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),
@@ -96,7 +95,17 @@ class PlacementGhostComponent extends PositionComponent
       fillPaint,
     );
 
-    final borderPaint = _isValid ? _validBorderPaint : _invalidBorderPaint;
+    // Border with matching animation
+    final borderColor = _isValid
+        ? AppColors.validPlacementBorder
+        : AppColors.invalidPlacementBorder;
+    final borderPaint = Paint()
+      ..color = borderColor.withValues(
+        alpha: 0.7 + 0.3 * math.sin(_breatheTime * 3.0),
+      )
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(2, 2, size.x - 4, size.y - 4),

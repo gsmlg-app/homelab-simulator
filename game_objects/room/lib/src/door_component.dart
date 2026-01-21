@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -13,6 +14,9 @@ class DoorComponent extends PositionComponent
   final int roomHeight;
   final double tileSize;
   bool _isHighlighted = false;
+
+  // Animation state for glow effect
+  double _glowTime = 0;
 
   // Cached arrow path (built once in onLoad)
   late final Path _arrowPath;
@@ -30,10 +34,6 @@ class DoorComponent extends PositionComponent
   static final _handlePaint = Paint()
     ..color = AppColors.doorHandle
     ..style = PaintingStyle.fill;
-  static final _highlightBorderPaint = Paint()
-    ..color = AppColors.doorHighlight
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
   static final _arrowPaint = Paint()
     ..color = AppColors.doorArrow
     ..style = PaintingStyle.stroke
@@ -105,14 +105,22 @@ class DoorComponent extends PositionComponent
     // Arrow indicator showing direction
     _drawArrow(canvas);
 
-    // Highlight border when interactable
+    // Animated glow border when interactable
     if (_isHighlighted) {
+      // Pulsing glow: stroke width oscillates 2-4px
+      final glowIntensity = 0.5 + 0.5 * math.sin(_glowTime * 4.0);
+      final glowPaint = Paint()
+        ..color = AppColors.doorHighlight.withValues(
+          alpha: 0.6 + 0.4 * glowIntensity,
+        )
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2 + 2 * glowIntensity;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(1, 1, size.x - 2, size.y - 2),
           const Radius.circular(4),
         ),
-        _highlightBorderPaint,
+        glowPaint,
       );
     }
   }
@@ -128,6 +136,12 @@ class DoorComponent extends PositionComponent
     final newHighlight = worldState.interactableEntityId == door.id;
     if (newHighlight != _isHighlighted) {
       _isHighlighted = newHighlight;
+    }
+    // Update glow animation when highlighted
+    if (_isHighlighted) {
+      _glowTime += dt;
+    } else {
+      _glowTime = 0;
     }
   }
 }

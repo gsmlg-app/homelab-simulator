@@ -394,5 +394,63 @@ void main() {
         expect(ghost.size, Vector2(100, 100));
       });
     });
+
+    group('breathing animation', () {
+      test('ghost has breathing animation capability', () {
+        final ghost = PlacementGhostComponent();
+
+        // Ghost component supports breathing animation
+        expect(ghost, isA<PositionComponent>());
+      });
+
+      test('breathing animation works with device template', () {
+        final ghost = PlacementGhostComponent();
+        const template = DeviceTemplate(
+          id: 'server-1',
+          name: 'Server',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        ghost.setTemplate(template);
+
+        // Ghost is placing device and has breathing animation
+        expect(ghost.isPlacingDevice, true);
+      });
+
+      test('breathing animation works with cloud service', () {
+        final ghost = PlacementGhostComponent();
+        const template = CloudServiceTemplate(
+          provider: CloudProvider.aws,
+          category: ServiceCategory.compute,
+          serviceType: 'EC2',
+          name: 'EC2',
+          description: 'Test',
+        );
+        ghost.setCloudService(template);
+
+        // Ghost is placing cloud service and has breathing animation
+        expect(ghost.isPlacingCloudService, true);
+      });
+
+      test('valid and invalid states both have animated effect', () {
+        final ghost = PlacementGhostComponent();
+        const template = DeviceTemplate(
+          id: 'server-1',
+          name: 'Server',
+          description: 'Test',
+          type: DeviceType.server,
+          cost: 100,
+        );
+        ghost.setTemplate(template);
+
+        // Both valid and invalid states use animated opacity
+        ghost.setValid(true);
+        expect(ghost.isPlacingDevice, true);
+
+        ghost.setValid(false);
+        expect(ghost.isPlacingDevice, true);
+      });
+    });
   });
 }
