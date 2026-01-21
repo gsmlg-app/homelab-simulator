@@ -409,5 +409,123 @@ void main() {
         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       );
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        const hint = InteractionHint(interactionType: InteractionType.none);
+        expect(hint, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-interaction-hint');
+        const hint = InteractionHint(
+          key: key,
+          interactionType: InteractionType.none,
+        );
+        expect(hint.key, key);
+      });
+
+      test('interactionType property is accessible', () {
+        const hint = InteractionHint(interactionType: InteractionType.door);
+        expect(hint.interactionType, InteractionType.door);
+      });
+    });
+
+    group('all interaction types', () {
+      test('all interaction types can be constructed', () {
+        for (final type in InteractionType.values) {
+          final hint = InteractionHint(interactionType: type);
+          expect(hint.interactionType, type);
+        }
+      });
+
+      test('interaction type count is 4', () {
+        expect(InteractionType.values.length, 4);
+      });
+    });
+
+    group('message content', () {
+      testWidgets('terminal message contains shop', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const InteractionHint(
+                  interactionType: InteractionType.terminal,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.textContaining('shop'), findsOneWidget);
+      });
+
+      testWidgets('door message contains enter', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const InteractionHint(
+                  interactionType: InteractionType.door,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.textContaining('enter'), findsOneWidget);
+      });
+
+      testWidgets('device message contains interact', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const InteractionHint(
+                  interactionType: InteractionType.device,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.textContaining('interact'), findsOneWidget);
+      });
+    });
+
+    group('visibility states', () {
+      testWidgets('visible when game ready and shop closed', (tester) async {
+        final model = GameModel.initial().copyWith(shopOpen: false);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: BlocProvider<GameBloc>.value(
+                value: mockGameBloc,
+                child: const InteractionHint(
+                  interactionType: InteractionType.terminal,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.text('Press E to open shop'), findsOneWidget);
+      });
+    });
   });
 }

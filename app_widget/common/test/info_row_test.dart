@@ -189,5 +189,115 @@ void main() {
         expect(valueText.style?.fontWeight, FontWeight.bold);
       });
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        const row = InfoRow(label: 'L', value: 'V');
+        expect(row, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-info-row');
+        const row = InfoRow(key: key, label: 'L', value: 'V');
+        expect(row.key, key);
+      });
+
+      test('label property is accessible', () {
+        const row = InfoRow(label: 'MyLabel', value: 'V');
+        expect(row.label, 'MyLabel');
+      });
+
+      test('value property is accessible', () {
+        const row = InfoRow(label: 'L', value: 'MyValue');
+        expect(row.value, 'MyValue');
+      });
+    });
+
+    group('edge cases', () {
+      testWidgets('handles empty label', (tester) async {
+        await tester.pumpWidget(buildSubject(label: ''));
+
+        expect(find.text(''), findsOneWidget);
+      });
+
+      testWidgets('handles empty value', (tester) async {
+        await tester.pumpWidget(buildSubject(value: ''));
+
+        expect(find.byType(InfoRow), findsOneWidget);
+      });
+
+      testWidgets('handles long label', (tester) async {
+        await tester.pumpWidget(
+          buildSubject(label: 'This is a very long label'),
+        );
+
+        expect(find.text('This is a very long label'), findsOneWidget);
+      });
+
+      testWidgets('handles long value', (tester) async {
+        await tester.pumpWidget(
+          buildSubject(value: 'This is a very long value that might wrap'),
+        );
+
+        expect(
+          find.text('This is a very long value that might wrap'),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('handles zero verticalPadding', (tester) async {
+        await tester.pumpWidget(buildSubject(verticalPadding: 0));
+
+        final padding = tester.widget<Padding>(find.byType(Padding));
+        expect(padding.padding, EdgeInsets.zero);
+      });
+
+      testWidgets('handles large verticalPadding', (tester) async {
+        await tester.pumpWidget(buildSubject(verticalPadding: 100));
+
+        final padding = tester.widget<Padding>(find.byType(Padding));
+        expect(padding.padding, const EdgeInsets.symmetric(vertical: 100));
+      });
+
+      testWidgets('handles small fontSize', (tester) async {
+        await tester.pumpWidget(buildSubject(fontSize: 8));
+
+        final labelText = tester.widget<Text>(find.text('Label'));
+        expect(labelText.style?.fontSize, 8);
+      });
+
+      testWidgets('handles large fontSize', (tester) async {
+        await tester.pumpWidget(buildSubject(fontSize: 24));
+
+        final labelText = tester.widget<Text>(find.text('Label'));
+        expect(labelText.style?.fontSize, 24);
+      });
+    });
+
+    group('color combinations', () {
+      testWidgets('can set both label and value colors', (tester) async {
+        await tester.pumpWidget(
+          buildSubject(labelColor: Colors.blue, valueColor: Colors.green),
+        );
+
+        final labelText = tester.widget<Text>(find.text('Label'));
+        final valueText = tester.widget<Text>(find.text('Value'));
+
+        expect(labelText.style?.color, Colors.blue);
+        expect(valueText.style?.color, Colors.green);
+      });
+
+      testWidgets('label and value can have same color', (tester) async {
+        await tester.pumpWidget(
+          buildSubject(labelColor: Colors.red, valueColor: Colors.red),
+        );
+
+        final labelText = tester.widget<Text>(find.text('Label'));
+        final valueText = tester.widget<Text>(find.text('Value'));
+
+        expect(labelText.style?.color, Colors.red);
+        expect(valueText.style?.color, Colors.red);
+      });
+    });
   });
 }

@@ -305,5 +305,172 @@ void main() {
         expect(str, contains('error: null'));
       });
     });
+
+    group('edge cases', () {
+      test('handles empty message', () {
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: '',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.message, '');
+      });
+
+      test('handles empty loggerName', () {
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: '',
+          time: testTime,
+        );
+
+        expect(record.loggerName, '');
+      });
+
+      test('handles very long message', () {
+        final longMessage = 'x' * 10000;
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: longMessage,
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.message.length, 10000);
+      });
+
+      test('handles unicode message', () {
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: '日本語メッセージ 🔥',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.message, '日本語メッセージ 🔥');
+      });
+
+      test('handles null error explicitly', () {
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+          error: null,
+        );
+
+        expect(record.error, isNull);
+      });
+    });
+
+    group('copyWith edge cases', () {
+      test('copies with changed loggerName', () {
+        final original = LogRecord(
+          level: LogLevel.info,
+          message: 'Original',
+          loggerName: 'OldLogger',
+          time: testTime,
+        );
+
+        final copy = original.copyWith(loggerName: 'NewLogger');
+
+        expect(copy.loggerName, 'NewLogger');
+        expect(copy.message, 'Original');
+      });
+
+      test('copies with changed stackTrace', () {
+        final original = LogRecord(
+          level: LogLevel.error,
+          message: 'Error',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final newStackTrace = StackTrace.current;
+        final copy = original.copyWith(stackTrace: newStackTrace);
+
+        expect(copy.stackTrace, newStackTrace);
+      });
+
+      test('copies with changed time', () {
+        final original = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final newTime = DateTime(2025, 6, 1);
+        final copy = original.copyWith(time: newTime);
+
+        expect(copy.time, newTime);
+      });
+    });
+
+    group('all log levels', () {
+      test('can create record for each level', () {
+        for (final level in LogLevel.values) {
+          final record = LogRecord(
+            level: level,
+            message: 'Test message',
+            loggerName: 'Test',
+            time: testTime,
+          );
+
+          expect(record.level, level);
+        }
+      });
+
+      test('verbose level record', () {
+        final record = LogRecord(
+          level: LogLevel.verbose,
+          message: 'Verbose message',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.level, LogLevel.verbose);
+      });
+
+      test('debug level record', () {
+        final record = LogRecord(
+          level: LogLevel.debug,
+          message: 'Debug message',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.level, LogLevel.debug);
+      });
+
+      test('fatal level record', () {
+        final record = LogRecord(
+          level: LogLevel.fatal,
+          message: 'Fatal message',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        expect(record.level, LogLevel.fatal);
+      });
+    });
+
+    group('hashCode consistency', () {
+      test('hashCode is stable', () {
+        final record = LogRecord(
+          level: LogLevel.info,
+          message: 'Test',
+          loggerName: 'Test',
+          time: testTime,
+        );
+
+        final hash1 = record.hashCode;
+        final hash2 = record.hashCode;
+
+        expect(hash1, hash2);
+      });
+    });
   });
 }
