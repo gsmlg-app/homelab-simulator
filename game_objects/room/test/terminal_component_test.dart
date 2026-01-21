@@ -152,7 +152,7 @@ void main() {
         const highPos = GridPosition(100, 100);
         final component = TerminalComponent(
           gridPosition: highPos,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.position, Vector2(3200.0, 3200.0));
@@ -182,7 +182,7 @@ void main() {
         const gridPos = GridPosition(999, 999);
         final component = TerminalComponent(
           gridPosition: gridPos,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.position.x, 999 * 32.0);
@@ -219,7 +219,7 @@ void main() {
 
         final component32 = TerminalComponent(
           gridPosition: gridPos,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
         final component64 = TerminalComponent(
           gridPosition: gridPos,
