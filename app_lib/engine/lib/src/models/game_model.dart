@@ -123,7 +123,10 @@ class GameModel extends Equatable {
     );
   }
 
-  /// Get room by ID
+  /// Get room by ID.
+  ///
+  /// Returns the [RoomModel] with the matching [id], or `null` if no room
+  /// with that ID exists in the game.
   RoomModel? getRoomById(String id) {
     for (final room in rooms) {
       if (room.id == id) return room;

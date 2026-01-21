@@ -73,7 +73,10 @@ class RoomModel extends Equatable {
     return doors.any((door) => door.getPosition(width, height) == cell);
   }
 
-  /// Get door at a specific cell
+  /// Get door at a specific cell.
+  ///
+  /// Returns the [DoorModel] at the given [cell] position, or `null` if
+  /// no door exists at that position.
   DoorModel? getDoorAt(GridPosition cell) {
     for (final door in doors) {
       if (door.getPosition(width, height) == cell) return door;
@@ -99,7 +102,11 @@ class RoomModel extends Equatable {
     return true;
   }
 
-  /// Get device at a specific cell
+  /// Get device at a specific cell.
+  ///
+  /// Returns the [DeviceModel] that occupies the given [cell] position,
+  /// or `null` if no device is at that position. A device may occupy
+  /// multiple cells based on its width and height.
   DeviceModel? getDeviceAt(GridPosition cell) {
     for (final device in devices) {
       if (device.occupiesCell(cell)) return device;
@@ -107,7 +114,11 @@ class RoomModel extends Equatable {
     return null;
   }
 
-  /// Get cloud service at a specific cell
+  /// Get cloud service at a specific cell.
+  ///
+  /// Returns the [CloudServiceModel] that occupies the given [cell] position,
+  /// or `null` if no cloud service is at that position. A cloud service
+  /// occupies a single 1x1 cell.
   CloudServiceModel? getCloudServiceAt(GridPosition cell) {
     for (final service in cloudServices) {
       if (service.occupiesCell(cell)) return service;
