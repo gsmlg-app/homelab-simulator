@@ -145,7 +145,7 @@ void main() {
 
         final player32 = PlayerComponent(
           initialPosition: gridPos,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
         final player64 = PlayerComponent(
           initialPosition: gridPos,
@@ -157,7 +157,7 @@ void main() {
       });
 
       test('tileSize affects component size', () {
-        final player32 = PlayerComponent(tileSize: 32.0);
+        final player32 = PlayerComponent(tileSize: GameConstants.tileSize);
         final player64 = PlayerComponent(tileSize: 64.0);
 
         expect(player32.size, Vector2.all(32.0));
@@ -168,7 +168,7 @@ void main() {
     group('edge cases', () {
       test('handles high position values', () {
         const farPos = GridPosition(100, 100);
-        final player = PlayerComponent(initialPosition: farPos, tileSize: 32.0);
+        final player = PlayerComponent(initialPosition: farPos, tileSize: GameConstants.tileSize);
 
         expect(player.position, Vector2(3200.0, 3200.0));
         expect(player.gridPosition, farPos);
@@ -198,7 +198,7 @@ void main() {
         const gridPos = GridPosition(999, 999);
         final player = PlayerComponent(
           initialPosition: gridPos,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(player.position.x, 999 * 32.0);
