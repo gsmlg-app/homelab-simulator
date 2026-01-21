@@ -79,7 +79,7 @@ void main() {
       test('handles origin position', () {
         final component = CloudServiceComponent(
           service: cloudflareService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.position, Vector2(0, 0));
@@ -99,7 +99,7 @@ void main() {
       test('calculates from service width and height', () {
         final component = CloudServiceComponent(
           service: awsService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         // Default service is 1x1
@@ -109,7 +109,7 @@ void main() {
       test('respects service dimensions', () {
         final component = CloudServiceComponent(
           service: gcpService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         // 2x2 service
@@ -232,7 +232,7 @@ void main() {
         );
         final component = CloudServiceComponent(
           service: farService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.position, Vector2(3200.0, 3200.0));
@@ -251,7 +251,7 @@ void main() {
         );
         final component = CloudServiceComponent(
           service: largeService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.size, Vector2(160.0, 96.0));
@@ -352,7 +352,7 @@ void main() {
       test('initial position uses service grid position', () {
         final component = CloudServiceComponent(
           service: awsService,
-          tileSize: 32.0,
+          tileSize: GameConstants.tileSize,
         );
 
         expect(component.position.x, 160.0); // 5 * 32
