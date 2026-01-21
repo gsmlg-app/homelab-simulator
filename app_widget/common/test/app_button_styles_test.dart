@@ -9,13 +9,13 @@ void main() {
       test('returns ButtonStyle with cyan background', () {
         final style = AppButtonStyles.primary;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF00ACC1));
+        expect(bgColor, AppColors.cyan600);
       });
 
       test('returns ButtonStyle with white foreground', () {
         final style = AppButtonStyles.primary;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFFFFFFFF));
+        expect(fgColor, AppColors.textPrimary);
       });
     });
 
@@ -31,7 +31,7 @@ void main() {
         const customColor = Color(0xFF00FF00);
         final style = AppButtonStyles.primaryColored(customColor);
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFFFFFFFF));
+        expect(fgColor, AppColors.textPrimary);
       });
     });
 
@@ -39,13 +39,13 @@ void main() {
       test('returns ButtonStyle with cyan foreground', () {
         final style = AppButtonStyles.secondary;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFF26C6DA));
+        expect(fgColor, AppColors.cyan400);
       });
 
       test('returns ButtonStyle with cyan border', () {
         final style = AppButtonStyles.secondary;
         final side = style.side?.resolve({});
-        expect(side?.color, const Color(0xFF26C6DA));
+        expect(side?.color, AppColors.cyan400);
       });
     });
 
@@ -67,13 +67,13 @@ void main() {
       test('returns ButtonStyle with red background', () {
         final style = AppButtonStyles.danger;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFFD32F2F));
+        expect(bgColor, AppColors.red700);
       });
 
       test('returns ButtonStyle with white foreground', () {
         final style = AppButtonStyles.danger;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFFFFFFFF));
+        expect(fgColor, AppColors.textPrimary);
       });
     });
 
@@ -81,13 +81,13 @@ void main() {
       test('returns ButtonStyle with red foreground', () {
         final style = AppButtonStyles.dangerOutlined;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFFD32F2F));
+        expect(fgColor, AppColors.red700);
       });
 
       test('returns ButtonStyle with red border', () {
         final style = AppButtonStyles.dangerOutlined;
         final side = style.side?.resolve({});
-        expect(side?.color, const Color(0xFFD32F2F));
+        expect(side?.color, AppColors.red700);
       });
     });
 
@@ -95,7 +95,7 @@ void main() {
       test('returns ButtonStyle with purple background', () {
         final style = AppButtonStyles.modalPrimary;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF9C27B0));
+        expect(bgColor, AppColors.modalAccent);
       });
     });
 
@@ -103,7 +103,7 @@ void main() {
       test('returns ButtonStyle with gray background', () {
         final style = AppButtonStyles.modalSecondary;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF424242));
+        expect(bgColor, AppColors.grey800);
       });
     });
 
@@ -127,13 +127,19 @@ void main() {
       test('returns ButtonStyle with cyan background', () {
         final style = AppButtonStyles.small;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF00ACC1));
+        expect(bgColor, AppColors.cyan600);
       });
 
       test('returns ButtonStyle with smaller minimumSize', () {
         final style = AppButtonStyles.small;
         final minSize = style.minimumSize?.resolve({});
-        expect(minSize, const Size(60, 32));
+        expect(
+          minSize,
+          const Size(
+            AppSpacing.buttonMinWidthSmall,
+            AppSpacing.buttonMinHeightSmall,
+          ),
+        );
       });
     });
 
@@ -141,13 +147,19 @@ void main() {
       test('returns ButtonStyle with cyan foreground', () {
         final style = AppButtonStyles.smallOutlined;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0xFF26C6DA));
+        expect(fgColor, AppColors.cyan400);
       });
 
       test('returns ButtonStyle with smaller minimumSize', () {
         final style = AppButtonStyles.smallOutlined;
         final minSize = style.minimumSize?.resolve({});
-        expect(minSize, const Size(60, 32));
+        expect(
+          minSize,
+          const Size(
+            AppSpacing.buttonMinWidthSmall,
+            AppSpacing.buttonMinHeightSmall,
+          ),
+        );
       });
     });
 
@@ -156,14 +168,14 @@ void main() {
         final baseStyle = AppButtonStyles.primary;
         final disabledStyle = AppButtonStyles.disabled(baseStyle);
         final bgColor = disabledStyle.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF616161));
+        expect(bgColor, AppColors.grey700);
       });
 
       test('applies semi-transparent foreground to any style', () {
         final baseStyle = AppButtonStyles.primary;
         final disabledStyle = AppButtonStyles.disabled(baseStyle);
         final fgColor = disabledStyle.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0x61FFFFFF));
+        expect(fgColor, AppColors.textDisabled);
       });
     });
 
@@ -171,7 +183,7 @@ void main() {
       test('returns ButtonStyle with cyan background', () {
         final style = AppButtonStyles.toggleSelected;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF00ACC1));
+        expect(bgColor, AppColors.cyan600);
       });
     });
 
@@ -179,13 +191,13 @@ void main() {
       test('returns ButtonStyle with dark gray background', () {
         final style = AppButtonStyles.toggleUnselected;
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF303030));
+        expect(bgColor, AppColors.grey300Dark);
       });
 
       test('returns ButtonStyle with semi-transparent foreground', () {
         final style = AppButtonStyles.toggleUnselected;
         final fgColor = style.foregroundColor?.resolve({});
-        expect(fgColor, const Color(0x8AFFFFFF));
+        expect(fgColor, AppColors.textTertiary);
       });
     });
 
@@ -193,13 +205,13 @@ void main() {
       test('returns toggleSelected when selected is true', () {
         final style = AppButtonStyles.toggle(selected: true);
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF00ACC1));
+        expect(bgColor, AppColors.cyan600);
       });
 
       test('returns toggleUnselected when selected is false', () {
         final style = AppButtonStyles.toggle(selected: false);
         final bgColor = style.backgroundColor?.resolve({});
-        expect(bgColor, const Color(0xFF303030));
+        expect(bgColor, AppColors.grey300Dark);
       });
     });
 
