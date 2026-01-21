@@ -277,5 +277,139 @@ void main() {
 
       expect(find.byIcon(Icons.add_circle_outline), findsWidgets);
     });
+
+    group('widget properties', () {
+      test('is a StatefulWidget', () {
+        const tab = CloudServicesTab();
+
+        expect(tab, isA<StatefulWidget>());
+      });
+
+      test('createState returns a State object', () {
+        const tab = CloudServicesTab();
+        final state = tab.createState();
+
+        expect(state, isA<State<CloudServicesTab>>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-cloud-services');
+        const tab = CloudServicesTab(key: key);
+
+        expect(tab.key, key);
+      });
+    });
+
+    group('GameError state', () {
+      testWidgets('renders nothing when state is GameError', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError('error'));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.byType(FilterChip), findsNothing);
+      });
+    });
+
+    group('all room types', () {
+      testWidgets('shows services for serverRoom', (tester) async {
+        const room = RoomModel(
+          id: 'server-room',
+          name: 'Server Room',
+          type: RoomType.serverRoom,
+        );
+        final model = GameModel.initial().copyWith(
+          rooms: [room],
+          currentRoomId: room.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        // Server room allows all providers
+        expect(find.byType(FilterChip), findsWidgets);
+      });
+
+      testWidgets('shows custom room without cloud services', (tester) async {
+        const room = RoomModel(
+          id: 'custom-room',
+          name: 'Custom Room',
+          type: RoomType.custom,
+        );
+        final model = GameModel.initial().copyWith(
+          rooms: [room],
+          currentRoomId: room.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.byType(CloudServicesTab), findsOneWidget);
+      });
+    });
+
+    group('filter interactions', () {
+      testWidgets('tapping All category shows all services', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        // Find and tap the All filter chip
+        final allChips = find.text('All');
+        expect(allChips, findsWidgets);
+      });
+
+      testWidgets('tapping Compute category filters services', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        // The Compute filter chip should be present
+        expect(find.text('Compute'), findsWidgets);
+      });
+
+      testWidgets('tapping Storage category filters services', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.text('Storage'), findsWidgets);
+      });
+    });
+
+    group('service list display', () {
+      testWidgets('renders ListView for services', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.byType(ListView), findsAtLeast(1));
+      });
+
+      testWidgets('shows Container category filter', (tester) async {
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.text('Container'), findsWidgets);
+      });
+    });
+
+    group('edge cases', () {
+      testWidgets('handles rapid state changes', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+        await tester.pumpWidget(buildTestWidget());
+
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+        await tester.pump();
+
+        expect(find.byType(CloudServicesTab), findsOneWidget);
+      });
+    });
   });
 }

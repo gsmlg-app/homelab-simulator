@@ -129,5 +129,108 @@ void main() {
     // RoomSummaryPanel has layout overflow issues at default test viewport size.
     // The widget works correctly in production at larger viewport sizes.
     // See: info_panel.dart:29 and info_row.dart:45 for the overflow sources.
+
+    group('interaction types', () {
+      test('all interaction types are valid', () {
+        for (final type in InteractionType.values) {
+          final overlay = HudOverlay(currentInteraction: type);
+          expect(overlay.currentInteraction, type);
+        }
+      });
+
+      test('interaction type values have expected count', () {
+        // terminal, device, door, none
+        expect(InteractionType.values.length, 4);
+      });
+    });
+
+    group('widget properties', () {
+      test('is a StatefulWidget', () {
+        const overlay = HudOverlay();
+
+        expect(overlay, isA<StatefulWidget>());
+      });
+
+      test('createState returns a State object', () {
+        const overlay = HudOverlay();
+        final state = overlay.createState();
+
+        expect(state, isA<State<HudOverlay>>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-hud');
+        const overlay = HudOverlay(key: key);
+
+        expect(overlay.key, key);
+      });
+    });
+
+    group('constructor immutability', () {
+      test('interaction type cannot be changed after construction', () {
+        const overlay = HudOverlay(currentInteraction: InteractionType.door);
+
+        // Interaction type is final and set at construction
+        expect(overlay.currentInteraction, InteractionType.door);
+      });
+
+      test('different instances can have different interactions', () {
+        const overlay1 = HudOverlay(currentInteraction: InteractionType.door);
+        const overlay2 = HudOverlay(currentInteraction: InteractionType.device);
+
+        expect(overlay1.currentInteraction, InteractionType.door);
+        expect(overlay2.currentInteraction, InteractionType.device);
+      });
+    });
+
+    group('GameLoading variants', () {
+      testWidgets('handles fresh GameLoading state', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+    });
+
+    group('GameError variants', () {
+      testWidgets('handles GameError with empty message', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError(''));
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+
+      testWidgets('handles GameError with long message', (tester) async {
+        final longError = 'Error: ${'x' * 100}';
+        when(() => mockGameBloc.state).thenReturn(GameError(longError));
+
+        await tester.pumpWidget(buildWidget());
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+    });
+
+    group('interaction hint variations', () {
+      testWidgets('passes door interaction to hint', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(buildWidget(interaction: InteractionType.door));
+
+        // Loading state doesn't show interaction hint
+        expect(find.byType(InteractionHint), findsNothing);
+      });
+
+      testWidgets('passes terminal interaction to hint', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameLoading());
+
+        await tester.pumpWidget(
+          buildWidget(interaction: InteractionType.terminal),
+        );
+
+        expect(find.byType(InteractionHint), findsNothing);
+      });
+    });
   });
 }

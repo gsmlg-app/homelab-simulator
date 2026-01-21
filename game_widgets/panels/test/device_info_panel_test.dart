@@ -216,5 +216,164 @@ void main() {
       expect(find.text('Position'), findsOneWidget);
       expect(find.text('Status'), findsOneWidget);
     });
+
+    group('widget properties', () {
+      test('is a StatelessWidget', () {
+        const panel = DeviceInfoPanel(device: testDevice);
+
+        expect(panel, isA<StatelessWidget>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-device-panel');
+        const panel = DeviceInfoPanel(key: key, device: testDevice);
+
+        expect(panel.key, key);
+      });
+
+      test('device property is accessible', () {
+        const panel = DeviceInfoPanel(device: testDevice);
+
+        expect(panel.device, testDevice);
+      });
+
+      test('onRemove property is accessible', () {
+        final callback = () {};
+        final panel = DeviceInfoPanel(device: testDevice, onRemove: callback);
+
+        expect(panel.onRemove, callback);
+      });
+    });
+
+    group('position display variations', () {
+      testWidgets('renders position at origin', (tester) async {
+        final originDevice = testDevice.copyWith(
+          position: const GridPosition(0, 0),
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: originDevice)),
+          ),
+        );
+
+        expect(find.text('(0, 0)'), findsOneWidget);
+      });
+
+      testWidgets('renders position at high coordinates', (tester) async {
+        final farDevice = testDevice.copyWith(
+          position: const GridPosition(100, 200),
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: farDevice)),
+          ),
+        );
+
+        expect(find.text('(100, 200)'), findsOneWidget);
+      });
+    });
+
+    group('device name variations', () {
+      testWidgets('renders long device name', (tester) async {
+        final longNameDevice = testDevice.copyWith(
+          name: 'Very Long Device Name That Might Overflow',
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: longNameDevice)),
+          ),
+        );
+
+        expect(find.text('Very Long Device Name That Might Overflow'), findsOneWidget);
+      });
+
+      testWidgets('renders short device name', (tester) async {
+        final shortNameDevice = testDevice.copyWith(name: 'A');
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: shortNameDevice)),
+          ),
+        );
+
+        expect(find.text('A'), findsOneWidget);
+      });
+    });
+
+    group('all device types coverage', () {
+      testWidgets('all device types can be rendered', (tester) async {
+        // server, computer, phone, router, switch_, nas, iot
+        for (final type in DeviceType.values) {
+          final device = testDevice.copyWith(type: type);
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(body: DeviceInfoPanel(device: device)),
+            ),
+          );
+
+          expect(find.text(type.name), findsOneWidget);
+        }
+      });
+
+      testWidgets('device type count is expected', (tester) async {
+        // server, computer, phone, router, switch_, nas, iot
+        expect(DeviceType.values.length, 7);
+      });
+    });
+
+    group('remove button edge cases', () {
+      testWidgets('remove button can be tapped multiple times', (tester) async {
+        var callCount = 0;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DeviceInfoPanel(
+                device: testDevice,
+                onRemove: () => callCount++,
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Remove Device'));
+        await tester.pump();
+        await tester.tap(find.text('Remove Device'));
+        await tester.pump();
+
+        expect(callCount, 2);
+      });
+    });
+
+    group('layout structure', () {
+      testWidgets('renders within Container', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
+          ),
+        );
+
+        expect(find.byType(Container), findsWidgets);
+      });
+
+      testWidgets('renders Column layout', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
+          ),
+        );
+
+        expect(find.byType(Column), findsWidgets);
+      });
+
+      testWidgets('renders Row layout', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: DeviceInfoPanel(device: testDevice)),
+          ),
+        );
+
+        expect(find.byType(Row), findsWidgets);
+      });
+    });
   });
 }

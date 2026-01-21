@@ -316,5 +316,203 @@ void main() {
       // AWS icon
       expect(find.byIcon(Icons.cloud), findsWidgets);
     });
+
+    group('widget properties', () {
+      test('is a StatefulWidget', () {
+        const modal = ShopModal();
+
+        expect(modal, isA<StatefulWidget>());
+      });
+
+      test('createState returns a State object', () {
+        const modal = ShopModal();
+        final state = modal.createState();
+
+        expect(state, isA<State<ShopModal>>());
+      });
+
+      test('key can be provided', () {
+        const key = Key('test-shop');
+        const modal = ShopModal(key: key);
+
+        expect(modal.key, key);
+      });
+    });
+
+    group('credit display variations', () {
+      testWidgets('displays zero credits', (tester) async {
+        final model = GameModel.initial().copyWith(shopOpen: true, credits: 0);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.text('\$0'), findsOneWidget);
+      });
+
+      testWidgets('displays large credits', (tester) async {
+        final model = GameModel.initial().copyWith(
+          shopOpen: true,
+          credits: 999999,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.text('\$999999'), findsOneWidget);
+      });
+    });
+
+    group('tab navigation', () {
+      testWidgets('can switch to Services tab', (tester) async {
+        final model = GameModel.initial().copyWith(shopOpen: true);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        await tester.tap(find.text('Services'));
+        await tester.pumpAndSettle();
+
+        // CloudServicesTab should be visible
+        expect(find.byType(CloudServicesTab), findsOneWidget);
+      });
+
+      testWidgets('can switch back to Devices tab', (tester) async {
+        final model = GameModel.initial().copyWith(shopOpen: true);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        // Switch to Services then back to Devices
+        await tester.tap(find.text('Services'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Devices'));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DeviceCard), findsWidgets);
+      });
+    });
+
+    group('room types', () {
+      testWidgets('displays GCP room correctly', (tester) async {
+        const room = RoomModel(
+          id: 'gcp-room',
+          name: 'GCP Room',
+          type: RoomType.gcp,
+        );
+        final model = GameModel.initial().copyWith(
+          shopOpen: true,
+          rooms: [room],
+          currentRoomId: room.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+        await tester.tap(find.text('Rooms'));
+        await tester.pumpAndSettle();
+
+        // Room info shows Current: prefix with room name
+        expect(find.textContaining('GCP Room'), findsWidgets);
+      });
+
+      testWidgets('displays Azure room correctly', (tester) async {
+        const room = RoomModel(
+          id: 'azure-room',
+          name: 'Azure Room',
+          type: RoomType.azure,
+        );
+        final model = GameModel.initial().copyWith(
+          shopOpen: true,
+          rooms: [room],
+          currentRoomId: room.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+        await tester.tap(find.text('Rooms'));
+        await tester.pumpAndSettle();
+
+        // Room info shows Current: prefix with room name
+        expect(find.textContaining('Azure Room'), findsWidgets);
+      });
+
+      testWidgets('displays serverRoom correctly', (tester) async {
+        const room = RoomModel(
+          id: 'server-room',
+          name: 'Server Room',
+          type: RoomType.serverRoom,
+        );
+        final model = GameModel.initial().copyWith(
+          shopOpen: true,
+          rooms: [room],
+          currentRoomId: room.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+        await tester.tap(find.text('Rooms'));
+        await tester.pumpAndSettle();
+
+        // Room info shows Current: prefix with room name
+        expect(find.textContaining('Server Room'), findsWidgets);
+      });
+    });
+
+    group('edge cases', () {
+      testWidgets('handles model with empty rooms list', (tester) async {
+        final model = GameModel.initial().copyWith(shopOpen: true);
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+        await tester.tap(find.text('Rooms'));
+        await tester.pumpAndSettle();
+
+        // Should show Add New Room button
+        expect(find.text('Add New Room'), findsOneWidget);
+      });
+
+      testWidgets('handles multiple child rooms', (tester) async {
+        const parentRoom = RoomModel(
+          id: 'parent',
+          name: 'Parent Room',
+          type: RoomType.serverRoom,
+        );
+        const child1 = RoomModel(
+          id: 'child1',
+          name: 'Child 1',
+          type: RoomType.aws,
+          parentId: 'parent',
+        );
+        const child2 = RoomModel(
+          id: 'child2',
+          name: 'Child 2',
+          type: RoomType.gcp,
+          parentId: 'parent',
+        );
+        final model = GameModel.initial().copyWith(
+          shopOpen: true,
+          rooms: [parentRoom, child1, child2],
+          currentRoomId: parentRoom.id,
+        );
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+
+        await tester.pumpWidget(buildTestWidget());
+        await tester.tap(find.text('Rooms'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Child Rooms (2)'), findsOneWidget);
+        expect(find.text('Child 1'), findsOneWidget);
+        expect(find.text('Child 2'), findsOneWidget);
+      });
+    });
+
+    group('GameError state', () {
+      testWidgets('renders nothing when state is GameError', (tester) async {
+        when(() => mockGameBloc.state).thenReturn(const GameError('test error'));
+
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.text('TERMINAL'), findsNothing);
+      });
+    });
   });
 }
