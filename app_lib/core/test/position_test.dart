@@ -201,4 +201,158 @@ void main() {
       });
     });
   });
+
+  group('GridOccupancy', () {
+    // Test implementation using a simple mock class
+    late _TestGridOccupancy subject;
+
+    group('occupiedCells', () {
+      test('returns single cell for 1x1 object', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(5, 5),
+          width: 1,
+          height: 1,
+        );
+
+        expect(subject.occupiedCells, [const GridPosition(5, 5)]);
+      });
+
+      test('returns all cells for 2x2 object', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(3, 4),
+          width: 2,
+          height: 2,
+        );
+
+        expect(subject.occupiedCells, [
+          const GridPosition(3, 4),
+          const GridPosition(3, 5),
+          const GridPosition(4, 4),
+          const GridPosition(4, 5),
+        ]);
+      });
+
+      test('returns all cells for wide object (3x1)', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(0, 0),
+          width: 3,
+          height: 1,
+        );
+
+        expect(subject.occupiedCells, [
+          const GridPosition(0, 0),
+          const GridPosition(1, 0),
+          const GridPosition(2, 0),
+        ]);
+      });
+
+      test('returns all cells for tall object (1x3)', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(2, 2),
+          width: 1,
+          height: 3,
+        );
+
+        expect(subject.occupiedCells, [
+          const GridPosition(2, 2),
+          const GridPosition(2, 3),
+          const GridPosition(2, 4),
+        ]);
+      });
+
+      test('returns empty list for zero dimensions', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(5, 5),
+          width: 0,
+          height: 0,
+        );
+
+        expect(subject.occupiedCells, isEmpty);
+      });
+    });
+
+    group('occupiesCell', () {
+      test('returns true for cell at position', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(5, 5),
+          width: 1,
+          height: 1,
+        );
+
+        expect(subject.occupiesCell(const GridPosition(5, 5)), isTrue);
+      });
+
+      test('returns false for cell outside object', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(5, 5),
+          width: 1,
+          height: 1,
+        );
+
+        expect(subject.occupiesCell(const GridPosition(4, 5)), isFalse);
+        expect(subject.occupiesCell(const GridPosition(6, 5)), isFalse);
+        expect(subject.occupiesCell(const GridPosition(5, 4)), isFalse);
+        expect(subject.occupiesCell(const GridPosition(5, 6)), isFalse);
+      });
+
+      test('returns true for all cells in 2x2 object', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(3, 4),
+          width: 2,
+          height: 2,
+        );
+
+        expect(subject.occupiesCell(const GridPosition(3, 4)), isTrue);
+        expect(subject.occupiesCell(const GridPosition(4, 4)), isTrue);
+        expect(subject.occupiesCell(const GridPosition(3, 5)), isTrue);
+        expect(subject.occupiesCell(const GridPosition(4, 5)), isTrue);
+      });
+
+      test('returns false for cells adjacent to 2x2 object', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(3, 4),
+          width: 2,
+          height: 2,
+        );
+
+        // Left edge
+        expect(subject.occupiesCell(const GridPosition(2, 4)), isFalse);
+        // Right edge
+        expect(subject.occupiesCell(const GridPosition(5, 4)), isFalse);
+        // Top edge
+        expect(subject.occupiesCell(const GridPosition(3, 3)), isFalse);
+        // Bottom edge
+        expect(subject.occupiesCell(const GridPosition(3, 6)), isFalse);
+      });
+
+      test('handles object at origin', () {
+        subject = _TestGridOccupancy(
+          position: const GridPosition(0, 0),
+          width: 2,
+          height: 2,
+        );
+
+        expect(subject.occupiesCell(const GridPosition(0, 0)), isTrue);
+        expect(subject.occupiesCell(const GridPosition(1, 1)), isTrue);
+        expect(subject.occupiesCell(const GridPosition(-1, 0)), isFalse);
+        expect(subject.occupiesCell(const GridPosition(0, -1)), isFalse);
+      });
+    });
+  });
+}
+
+/// Test implementation of GridOccupancy mixin
+class _TestGridOccupancy with GridOccupancy {
+  @override
+  final GridPosition position;
+  @override
+  final int width;
+  @override
+  final int height;
+
+  _TestGridOccupancy({
+    required this.position,
+    required this.width,
+    required this.height,
+  });
 }

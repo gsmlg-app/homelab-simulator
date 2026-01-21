@@ -2,14 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 
 /// A cloud service object placed in a room
-class CloudServiceModel extends Equatable {
+class CloudServiceModel extends Equatable with GridOccupancy {
   final String id;
   final String name;
   final CloudProvider provider;
   final ServiceCategory category;
   final String serviceType; // e.g., "EC2", "S3", "Cloud Run"
+  @override
   final GridPosition position;
+  @override
   final int width;
+  @override
   final int height;
   final Map<String, dynamic> metadata;
 
@@ -24,25 +27,6 @@ class CloudServiceModel extends Equatable {
     this.height = 1,
     this.metadata = const {},
   });
-
-  /// Get all cells occupied by this service
-  List<GridPosition> get occupiedCells {
-    final cells = <GridPosition>[];
-    for (var dx = 0; dx < width; dx++) {
-      for (var dy = 0; dy < height; dy++) {
-        cells.add(GridPosition(position.x + dx, position.y + dy));
-      }
-    }
-    return cells;
-  }
-
-  /// Check if this service occupies a specific cell
-  bool occupiesCell(GridPosition cell) {
-    return cell.x >= position.x &&
-        cell.x < position.x + width &&
-        cell.y >= position.y &&
-        cell.y < position.y + height;
-  }
 
   CloudServiceModel copyWith({
     String? id,

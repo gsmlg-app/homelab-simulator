@@ -59,3 +59,54 @@ class GridPosition extends Equatable {
   @override
   String toString() => 'GridPosition($x, $y)';
 }
+
+/// Mixin providing grid cell occupancy calculations.
+///
+/// Use this mixin for any object that occupies rectangular grid space.
+/// Implementing classes must provide [position], [width], and [height].
+///
+/// Example:
+/// ```dart
+/// class DeviceModel with GridOccupancy {
+///   @override
+///   final GridPosition position;
+///   @override
+///   final int width;
+///   @override
+///   final int height;
+/// }
+/// ```
+mixin GridOccupancy {
+  /// The top-left position of this object on the grid.
+  GridPosition get position;
+
+  /// The width of this object in grid cells.
+  int get width;
+
+  /// The height of this object in grid cells.
+  int get height;
+
+  /// Returns all grid cells occupied by this object.
+  ///
+  /// The cells are returned in row-major order, starting from [position].
+  List<GridPosition> get occupiedCells {
+    final cells = <GridPosition>[];
+    for (var dx = 0; dx < width; dx++) {
+      for (var dy = 0; dy < height; dy++) {
+        cells.add(GridPosition(position.x + dx, position.y + dy));
+      }
+    }
+    return cells;
+  }
+
+  /// Returns true if this object occupies the given [cell].
+  ///
+  /// A cell is occupied if it falls within the rectangle defined by
+  /// [position], [width], and [height].
+  bool occupiesCell(GridPosition cell) {
+    return cell.x >= position.x &&
+        cell.x < position.x + width &&
+        cell.y >= position.y &&
+        cell.y < position.y + height;
+  }
+}
