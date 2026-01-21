@@ -646,7 +646,7 @@ void main() {
         // ignore: equal_elements_in_set - intentional duplicate to test deduplication
         final templateSet = <CloudServiceTemplate>{
           template1,
-          template2,
+          template2, // ignore: equal_elements_in_set
           template3,
         };
         expect(templateSet.length, 2);
