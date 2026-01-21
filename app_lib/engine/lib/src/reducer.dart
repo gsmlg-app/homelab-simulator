@@ -9,12 +9,10 @@ import 'events/domain_events.dart';
 
 /// Finds a device template by ID.
 ///
+/// Delegates to [getDeviceTemplateById] for O(1) lookup.
 /// Returns null if the template is not found.
 DeviceTemplate? findDeviceTemplateById(String templateId) {
-  for (final template in defaultDeviceTemplates) {
-    if (template.id == templateId) return template;
-  }
-  return null;
+  return getDeviceTemplateById(templateId);
 }
 
 /// Pure function reducer for game state

@@ -400,4 +400,39 @@ void main() {
       expect(iot, isNotEmpty);
     });
   });
+
+  group('getDeviceTemplateById', () {
+    test('finds existing template by id', () {
+      final template = getDeviceTemplateById('server_basic');
+
+      expect(template, isNotNull);
+      expect(template!.id, 'server_basic');
+      expect(template.name, 'Basic Server');
+    });
+
+    test('returns null for unknown id', () {
+      final template = getDeviceTemplateById('unknown_device');
+
+      expect(template, isNull);
+    });
+
+    test('finds all default templates by id', () {
+      for (final expected in defaultDeviceTemplates) {
+        final found = getDeviceTemplateById(expected.id);
+        expect(found, expected);
+      }
+    });
+
+    test('returns null for empty id', () {
+      final template = getDeviceTemplateById('');
+
+      expect(template, isNull);
+    });
+
+    test('is case-sensitive', () {
+      final template = getDeviceTemplateById('Server_Basic');
+
+      expect(template, isNull);
+    });
+  });
 }

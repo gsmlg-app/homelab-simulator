@@ -123,3 +123,17 @@ const defaultDeviceTemplates = [
     cost: 50,
   ),
 ];
+
+/// Cached map of device templates by ID for O(1) lookup.
+///
+/// Lazily initialized from [defaultDeviceTemplates].
+final Map<String, DeviceTemplate> _deviceTemplateMap = {
+  for (final template in defaultDeviceTemplates) template.id: template,
+};
+
+/// Finds a device template by ID with O(1) lookup.
+///
+/// Returns null if the template is not found.
+DeviceTemplate? getDeviceTemplateById(String templateId) {
+  return _deviceTemplateMap[templateId];
+}
