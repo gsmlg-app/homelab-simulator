@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:homelab_simulator/screens/game_screen.dart';
@@ -154,7 +155,7 @@ void main() {
         await tester.pump();
 
         final iconWidget = tester.widget<Icon>(find.byIcon(Icons.error));
-        expect(iconWidget.color, Colors.red);
+        expect(iconWidget.color, AppColors.redAccent);
         expect(iconWidget.size, 48);
       });
 
@@ -174,7 +175,7 @@ void main() {
         await tester.pump();
 
         final textWidget = tester.widget<Text>(find.text('Error: Test error'));
-        expect(textWidget.style?.color, Colors.red);
+        expect(textWidget.style?.color, AppColors.redAccent);
       });
 
       testWidgets('retry button dispatches GameInitialize', (tester) async {

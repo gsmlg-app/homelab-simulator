@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
+import 'package:app_lib_core/app_lib_core.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 import 'package:game_objects_world/game_objects_world.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
@@ -42,7 +43,7 @@ class _GameScreenState extends State<GameScreen> {
                   SizedBox(height: 16),
                   Text(
                     'Loading Homelab...',
-                    style: TextStyle(color: Colors.white70),
+                    style: TextStyle(color: AppColors.textSecondary),
                   ),
                 ],
               ),
@@ -54,11 +55,11 @@ class _GameScreenState extends State<GameScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error, color: Colors.red, size: 48),
+                  const Icon(Icons.error, color: AppColors.redAccent, size: 48),
                   const SizedBox(height: 16),
                   Text(
                     'Error: ${gameState.message}',
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(color: AppColors.redAccent),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(

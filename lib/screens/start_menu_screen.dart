@@ -151,11 +151,11 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
         backgroundColor: AppColors.secondaryBackground,
         title: const Text(
           'Delete Character',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.textPrimary),
         ),
         content: Text(
           'Are you sure you want to delete "${character.name}"?',
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -163,7 +163,7 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
             child: const Text('Cancel'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.red800),
             onPressed: () => Navigator.of(context).pop(true),
             child: const Text('Delete'),
           ),
