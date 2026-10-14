@@ -4,15 +4,15 @@ version: 0.1.0
 publish_to: none
 
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.11.0
 
 resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
-  flame: ^1.29.0
-  flame_bloc: ^1.12.1
+  flame: ^1.38.2
+  flame_bloc: ^1.12.24
   app_lib_core:
     path: ../../app_lib/core
   app_lib_engine:
@@ -26,5 +26,5 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   bloc_test: ^10.0.0
-  mocktail: ^1.0.4
-  flame_test: ^1.18.0
+  mocktail: ^1.0.5
+  flame_test: ^2.3.1

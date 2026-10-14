@@ -115,6 +115,15 @@ void main() {
     });
 
     group('database connection', () {
+      test('executes a query using native SQLite', () async {
+        final db = AppDatabase.forTesting();
+        addTearDown(db.close);
+
+        final row = await db.customSelect('SELECT 1 AS value').getSingle();
+
+        expect(row.read<int>('value'), 1);
+      });
+
       test('has executor', () {
         final db = AppDatabase.forTesting();
         expect(db.executor, isA<QueryExecutor>());

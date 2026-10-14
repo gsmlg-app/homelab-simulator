@@ -4,10 +4,10 @@ publish_to: 'none'
 version: 0.1.0+1
 
 environment:
-  sdk: ^3.9.0
-  flutter: '>=3.32.0'
+  sdk: ^3.13.0
+  flutter: '>=3.47.0'
 
-# Melos 7.0+ workspace packages
+# Melos 8.0+ workspace packages
 workspace:
   - app_bloc/game
   - game_bloc/world
@@ -32,15 +32,15 @@ workspace:
 dependencies:
   flutter:
     sdk: flutter
-  flame: ^1.29.0
-  flame_bloc: ^1.12.1
+  flame: ^1.38.2
+  flame_bloc: ^1.12.24
   flutter_bloc: ^9.1.1
-  bloc: ^9.0.0
-  equatable: ^2.0.7
-  path_provider: ^2.1.5
-  uuid: ^4.5.1
-  go_router: ^14.8.1
-  gamepads: ^0.1.9
+  bloc: ^9.2.1
+  equatable: ^3.0.0
+  path_provider: ^2.1.6
+  uuid: ^4.6.0
+  go_router: ^18.0.2
+  gamepads: ^0.1.12
 
   # Local packages
   app_lib_core:
@@ -80,43 +80,51 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  melos: ^7.0.0
+  melos: ^8.9.0
   bloc_test: ^10.0.0
-  mocktail: ^1.0.4
-  shared_preferences: ^2.5.3
+  mocktail: ^1.0.5
+  shared_preferences: ^2.5.6
 
-# Melos 7.0+ configuration
+# Melos 8.0+ configuration
 melos:
   repository: https://github.com/gsmlg-app/homelab_simulator
 
   scripts:
     analyze:
-      run: melos exec -- dart analyze .
+      exec:
+        command: dart analyze .
       description: Run dart analyze in all packages
 
     format:
-      run: melos exec -- dart format .
+      exec:
+        command: dart format .
       description: Run dart format in all packages
 
     format:check:
-      run: melos exec -- dart format --set-exit-if-changed .
+      exec:
+        command: dart format --set-exit-if-changed .
       description: Check dart format in all packages
 
     test:
-      run: melos exec -- flutter test
+      exec:
+        command: flutter test
       packageFilters:
         dirExists: test
       description: Run flutter test in all packages with tests
 
     clean:
-      run: melos exec -- flutter clean
+      exec:
+        command: flutter clean
       description: Run flutter clean in all packages
 
     build:runner:
-      run: melos exec -- dart run build_runner build --delete-conflicting-outputs
+      exec:
+        command: dart run build_runner build
       packageFilters:
         dependsOn: build_runner
       description: Run build_runner in packages that depend on it
 
 flutter:
+  config:
+    enable-swift-package-manager: true
   uses-material-design: true

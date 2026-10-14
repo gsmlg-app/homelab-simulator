@@ -10,7 +10,8 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_secure_storage: ^9.2.4
+  # Keep the v9 data migration bridge before adopting v11.
+  flutter_secure_storage: ^10.3.4
   logging: ^1.3.0
 
 dev_dependencies:
