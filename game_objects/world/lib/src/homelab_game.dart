@@ -37,11 +37,13 @@ class HomelabGame extends FlameGame
 
   /// Subscription to game state changes
   StreamSubscription<GameState>? _gameStateSubscription;
+  bool _removed = false;
 
   HomelabGame({required this.gameBloc, required this.worldBloc});
 
   @override
   Future<void> onLoad() async {
+    if (_removed) return;
     // Add BLoC providers
     await add(
       FlameBlocProvider<WorldBloc, WorldState>.value(
@@ -49,6 +51,7 @@ class HomelabGame extends FlameGame
         children: [_buildWorld()],
       ),
     );
+    if (_removed) return;
 
     // Add gamepad handler
     _gamepadHandler = GamepadHandler(
@@ -56,6 +59,7 @@ class HomelabGame extends FlameGame
       onButtonPressed: _onGamepadButtonPressed,
     );
     await add(_gamepadHandler);
+    if (_removed) return;
 
     // Listen to game state changes with proper error handling
     _gameStateSubscription = gameBloc.stream.listen(
@@ -64,12 +68,25 @@ class HomelabGame extends FlameGame
         _log.severe('Error in game state stream', error, stackTrace);
       },
     );
+    _onGameStateChanged(gameBloc.state);
+  }
+
+  @override
+  void onMount() {
+    super.onMount();
+    // GameWidget can finish mounting after its asynchronous load was removed.
+    if (_removed) dispose();
   }
 
   @override
   void onRemove() {
+    _removed = true;
     _gameStateSubscription?.cancel();
     _gameStateSubscription = null;
+    // GameWidget removes the game itself; dispose its children as well so
+    // their input and bloc subscriptions stop before the next session.
+    dispose();
+    worldBloc.add(const WorldReset());
     super.onRemove();
   }
 

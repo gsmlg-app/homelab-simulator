@@ -16,6 +16,7 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
 
   WorldBloc({this.terminalPosition = GameConstants.terminalPosition})
     : super(const WorldState()) {
+    on<WorldReset>((event, emit) => emit(const WorldState()));
     on<CellHovered>(_onCellHovered);
     on<CellHoverEnded>(_onCellHoverEnded);
     on<EntitySelected>(_onEntitySelected);

@@ -6,6 +6,14 @@ sealed class WorldEvent extends Equatable {
   const WorldEvent();
 }
 
+/// Clear transient state when leaving the game.
+class WorldReset extends WorldEvent {
+  const WorldReset();
+
+  @override
+  List<Object?> get props => [];
+}
+
 /// Cell hovered by mouse/pointer
 class CellHovered extends WorldEvent {
   final GridPosition position;

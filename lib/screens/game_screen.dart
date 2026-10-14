@@ -8,6 +8,8 @@ import 'package:game_objects_world/game_objects_world.dart';
 import 'package:game_widgets_hud/game_widgets_hud.dart';
 import 'package:game_widgets_shop/game_widgets_shop.dart';
 
+import 'start_menu_screen.dart';
+
 /// Main game screen composing Flame game with Flutter overlays
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -18,6 +20,22 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   HomelabGame? _game;
+  bool _loggingOut = false;
+
+  void _logOut() {
+    if (_loggingOut) return;
+    _loggingOut = true;
+
+    final gameBloc = context.read<GameBloc>();
+    gameBloc.add(const GameSave());
+    gameBloc.add(const GameToggleShop(isOpen: false));
+    gameBloc.add(const GameCancelPlacement());
+    context.read<WorldBloc>().add(const WorldReset());
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute<void>(builder: (_) => const StartMenuScreen()),
+      (_) => false,
+    );
+  }
 
   @override
   void didChangeDependencies() {
@@ -32,6 +50,16 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton.icon(
+            onPressed: _logOut,
+            icon: const Icon(Icons.logout),
+            label: const Text('Log out'),
+          ),
+        ],
+      ),
       body: BlocBuilder<GameBloc, GameState>(
         builder: (context, gameState) {
           if (gameState is GameLoading) {

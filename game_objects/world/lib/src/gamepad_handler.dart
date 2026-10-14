@@ -47,8 +47,8 @@ class GamepadHandler extends Component {
   });
 
   @override
-  Future<void> onLoad() async {
-    await super.onLoad();
+  void onMount() {
+    super.onMount();
     _subscription = Gamepads.events.listen(
       _handleGamepadEvent,
       onError: (Object error, StackTrace stackTrace) {
@@ -60,6 +60,7 @@ class GamepadHandler extends Component {
   @override
   void onRemove() {
     _subscription?.cancel();
+    _subscription = null;
     super.onRemove();
   }
 
