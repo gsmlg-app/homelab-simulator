@@ -1,0 +1,12 @@
+/_build/
+/deps/
+/cover/
+/tmp/
+/.env
+/erl_crash.dump
+/.env.*
+/config/local*.json
+/config/connections*.json
+/secrets/
+/*.pem
+/*.key
