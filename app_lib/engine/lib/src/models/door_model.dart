@@ -22,6 +22,7 @@ class DoorModel extends Equatable {
   final String id;
   final String targetRoomId;
   final WallSide wallSide;
+  final String? targetSpawnId;
   final int wallPosition; // Position along the wall (in tiles from left/top)
 
   const DoorModel({
@@ -29,6 +30,7 @@ class DoorModel extends Equatable {
     required this.targetRoomId,
     required this.wallSide,
     required this.wallPosition,
+    this.targetSpawnId,
   });
 
   /// Get the grid position of the door (for interaction detection)
@@ -64,12 +66,14 @@ class DoorModel extends Equatable {
     String? targetRoomId,
     WallSide? wallSide,
     int? wallPosition,
+    String? targetSpawnId,
   }) {
     return DoorModel(
       id: id ?? this.id,
       targetRoomId: targetRoomId ?? this.targetRoomId,
       wallSide: wallSide ?? this.wallSide,
       wallPosition: wallPosition ?? this.wallPosition,
+      targetSpawnId: targetSpawnId ?? this.targetSpawnId,
     );
   }
 
@@ -78,6 +82,7 @@ class DoorModel extends Equatable {
     'targetRoomId': targetRoomId,
     'wallSide': wallSide.name,
     'wallPosition': wallPosition,
+    'targetSpawnId': targetSpawnId,
   };
 
   factory DoorModel.fromJson(Map<String, dynamic> json) {
@@ -90,11 +95,18 @@ class DoorModel extends Equatable {
         WallSide.bottom,
       ),
       wallPosition: json['wallPosition'] as int,
+      targetSpawnId: json['targetSpawnId'] as String?,
     );
   }
 
   @override
-  List<Object?> get props => [id, targetRoomId, wallSide, wallPosition];
+  List<Object?> get props => [
+    id,
+    targetRoomId,
+    wallSide,
+    wallPosition,
+    targetSpawnId,
+  ];
 
   @override
   String toString() =>

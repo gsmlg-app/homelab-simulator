@@ -1,8 +1,10 @@
+import 'dart:collection';
 import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'device_model.dart';
 import 'door_model.dart';
 import 'cloud_service_model.dart';
+import 'map_definition.dart';
 
 /// A room in the game world containing devices and cloud services
 class RoomModel extends Equatable {
@@ -16,6 +18,8 @@ class RoomModel extends Equatable {
   final List<DeviceModel> devices;
   final List<DoorModel> doors;
   final List<CloudServiceModel> cloudServices;
+  final MapDefinition? definition;
+  final String? definitionId;
   final String? regionCode; // e.g., "us-east-1" for provider region rooms
 
   const RoomModel({
@@ -30,6 +34,8 @@ class RoomModel extends Equatable {
     this.doors = const [],
     this.cloudServices = const [],
     this.regionCode,
+    this.definition,
+    this.definitionId,
   });
 
   RoomModel copyWith({
@@ -46,6 +52,8 @@ class RoomModel extends Equatable {
     List<CloudServiceModel>? cloudServices,
     String? regionCode,
     bool clearRegionCode = false,
+    MapDefinition? definition,
+    String? definitionId,
   }) {
     return RoomModel(
       id: id ?? this.id,
@@ -59,7 +67,51 @@ class RoomModel extends Equatable {
       doors: doors ?? this.doors,
       cloudServices: cloudServices ?? this.cloudServices,
       regionCode: clearRegionCode ? null : (regionCode ?? this.regionCode),
+      definition: definition ?? this.definition,
+      definitionId: definitionId ?? this.definitionId,
     );
+  }
+
+  bool containsCell(GridPosition cell) =>
+      cell.x >= 0 && cell.y >= 0 && cell.x < width && cell.y < height;
+
+  bool canWalk(GridPosition cell) =>
+      containsCell(cell) &&
+      !(definition?.blocksCell(cell, placement: false) ?? false) &&
+      !isCellOccupied(cell);
+
+  /// Shortest four-neighbor path, excluding start and including target.
+  List<GridPosition> findPath(GridPosition start, GridPosition target) {
+    if (!canWalk(start) || !canWalk(target) || start == target) return const [];
+    final queue = Queue<GridPosition>()..add(start);
+    final previous = <GridPosition, GridPosition?>{start: null};
+    const directions = [
+      GridPosition(0, -1),
+      GridPosition(1, 0),
+      GridPosition(0, 1),
+      GridPosition(-1, 0),
+    ];
+    while (queue.isNotEmpty) {
+      final cell = queue.removeFirst();
+      for (final delta in directions) {
+        final next = cell + delta;
+        if (previous.containsKey(next) || !canWalk(next)) continue;
+        previous[next] = cell;
+        if (next == target) {
+          final path = <GridPosition>[];
+          for (
+            var cursor = target;
+            cursor != start;
+            cursor = previous[cursor]!
+          ) {
+            path.add(cursor);
+          }
+          return List.unmodifiable(path.reversed);
+        }
+        queue.add(next);
+      }
+    }
+    return const [];
   }
 
   /// Check if a cell is occupied by any device or cloud service
@@ -90,10 +142,14 @@ class RoomModel extends Equatable {
     int deviceWidth,
     int deviceHeight,
   ) {
+    if (deviceWidth <= 0 || deviceHeight <= 0) return false;
     for (int dx = 0; dx < deviceWidth; dx++) {
       for (int dy = 0; dy < deviceHeight; dy++) {
         final cell = GridPosition(position.x + dx, position.y + dy);
-        if (!isWithinBounds(cell)) return false;
+        if (!containsCell(cell)) return false;
+        if (definition?.blocksCell(cell, placement: true) ?? false) {
+          return false;
+        }
         if (isCellOccupied(cell)) return false;
         if (cell == terminalPosition) return false;
         if (hasDoorAt(cell)) return false;
@@ -192,6 +248,7 @@ class RoomModel extends Equatable {
     'doors': doors.map((d) => d.toJson()).toList(),
     'cloudServices': cloudServices.map((s) => s.toJson()).toList(),
     'regionCode': regionCode,
+    'definitionId': definitionId,
   };
 
   factory RoomModel.fromJson(Map<String, dynamic> json) {
@@ -229,6 +286,7 @@ class RoomModel extends Equatable {
               .toList() ??
           [],
       regionCode: json['regionCode'] as String?,
+      definitionId: json['definitionId'] as String?,
     );
   }
 
@@ -280,6 +338,8 @@ class RoomModel extends Equatable {
     doors,
     cloudServices,
     regionCode,
+    definitionId,
+    definition,
   ];
 
   @override

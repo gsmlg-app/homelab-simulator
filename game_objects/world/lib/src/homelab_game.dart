@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
+import 'package:flame/cache.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -14,58 +17,77 @@ import 'package:game_bloc_world/game_bloc_world.dart';
 import 'package:game_objects_room/game_objects_room.dart';
 import 'package:game_objects_character/game_objects_character.dart';
 import 'package:game_objects_devices/game_objects_devices.dart';
+import 'package:game_asset_characters/game_asset_characters.dart';
 
 import 'gamepad_handler.dart';
 
-/// Main Flame game for Homelab Simulator
+/// Projects accepted domain state into one camera-controlled scene.
 class HomelabGame extends FlameGame
     with HasKeyboardHandlerComponents, TapCallbacks, MouseMovementDetector {
   static final _log = Logger('HomelabGame');
-
   final GameBloc gameBloc;
   final WorldBloc worldBloc;
-
-  late final RoomComponent _room;
+  final CharacterSpriteSheet spriteSheet;
+  late final Component _scene;
   late final PlayerComponent _player;
-  late final GamepadHandler _gamepadHandler;
+
+  /// Accepted-state projection, also available while its sprite is loading.
+  PlayerComponent get player => _player;
+  RoomComponent? _legacyRoom;
+  MapEnvironmentComponent? _environment;
   PlacementGhostComponent? _placementGhost;
-
-  final List<DeviceComponent> _deviceComponents = [];
-  final List<CloudServiceComponent> _cloudServiceComponents = [];
-  final List<DoorComponent> _doorComponents = [];
+  final List<DeviceComponent> _devices = [];
+  final List<CloudServiceComponent> _services = [];
+  final List<DoorComponent> _doors = [];
+  final Queue<GridPosition> _route = Queue();
+  GridPosition? _pendingStep;
+  void Function()? _afterRoute;
   String? _currentRoomId;
-
-  /// Subscription to game state changes
-  StreamSubscription<GameState>? _gameStateSubscription;
+  MapDefinition? _definition;
+  Rect _bounds = const Rect.fromLTWH(0, 0, 640, 384);
+  double _zoomFactor = 1;
+  StreamSubscription<GameState>? _subscription;
   bool _removed = false;
+  bool _sceneReady = false;
 
-  HomelabGame({required this.gameBloc, required this.worldBloc});
+  HomelabGame({
+    required this.gameBloc,
+    required this.worldBloc,
+    this.spriteSheet = GameCharacters.mainMale,
+  }) {
+    images = Images(prefix: '');
+  }
 
   @override
   Future<void> onLoad() async {
     if (_removed) return;
-    // Add BLoC providers
-    await add(
+    await super.onLoad();
+    final model = _model;
+    _player = PlayerComponent(
+      initialPosition:
+          model?.playerPosition ?? GameConstants.playerStartPosition,
+      spriteSheet: spriteSheet,
+    );
+    _scene = Component(children: [_player]);
+    await world.add(
       FlameBlocProvider<WorldBloc, WorldState>.value(
         value: worldBloc,
-        children: [_buildWorld()],
+        children: [_scene],
       ),
     );
     if (_removed) return;
-
-    // Add gamepad handler
-    _gamepadHandler = GamepadHandler(
-      onDirection: _onGamepadDirection,
-      onButtonPressed: _onGamepadButtonPressed,
+    _sceneReady = true;
+    await add(
+      GamepadHandler(
+        onDirection: _moveDirection,
+        onButtonPressed: _onGamepadButton,
+      ),
     );
-    await add(_gamepadHandler);
     if (_removed) return;
-
-    // Listen to game state changes with proper error handling
-    _gameStateSubscription = gameBloc.stream.listen(
+    _subscription = gameBloc.stream.listen(
       _onGameStateChanged,
-      onError: (Object error, StackTrace stackTrace) {
-        _log.severe('Error in game state stream', error, stackTrace);
+      onError: (Object error, StackTrace trace) {
+        _log.severe('Error in game state stream', error, trace);
       },
     );
     _onGameStateChanged(gameBloc.state);
@@ -74,343 +96,351 @@ class HomelabGame extends FlameGame
   @override
   void onMount() {
     super.onMount();
-    // GameWidget can finish mounting after its asynchronous load was removed.
     if (_removed) dispose();
   }
 
   @override
   void onRemove() {
     _removed = true;
-    _gameStateSubscription?.cancel();
-    _gameStateSubscription = null;
-    // GameWidget removes the game itself; dispose its children as well so
-    // their input and bloc subscriptions stop before the next session.
+    cancelRoute();
+    _subscription?.cancel();
+    _subscription = null;
+    _environment?.removeFromWorld();
     dispose();
-    worldBloc.add(const WorldReset());
+    if (!worldBloc.isClosed) worldBloc.add(const WorldReset());
     super.onRemove();
   }
 
-  void _onGamepadDirection(Direction direction) {
+  GameModel? get _model {
     final state = gameBloc.state;
-    if (state is! GameReady) return;
-    if (state.model.shopOpen) return; // Don't move when shop is open
-
-    gameBloc.add(GameMovePlayer(direction));
-    _player.moveInDirection(direction);
-  }
-
-  void _onGamepadButtonPressed(GamepadButton button) {
-    final state = gameBloc.state;
-    if (state is! GameReady) return;
-
-    switch (button) {
-      case GamepadButton.south: // A button - interact/confirm
-        final worldState = worldBloc.state;
-        if (worldState.canInteract) {
-          switch (worldState.availableInteraction) {
-            case InteractionType.terminal:
-              gameBloc.add(const GameToggleShop(isOpen: true));
-              return;
-            case InteractionType.door:
-              final doorId = worldState.interactableEntityId;
-              if (doorId != null) {
-                final door = state.model.findDoorById(doorId);
-                if (door != null) {
-                  _enterDoor(door, state.model);
-                }
-              }
-              return;
-            case InteractionType.device:
-            case InteractionType.none:
-              break;
-          }
-        }
-        // Handle placement mode if no interaction available
-        if (state.model.placementMode == PlacementMode.placing &&
-            state.model.selectedTemplate != null) {
-          // Place device at player position (or could use cursor)
-          final pos = _player.gridPosition;
-          if (state.model.currentRoom.canPlaceDevice(
-            pos,
-            state.model.selectedTemplate!.width,
-            state.model.selectedTemplate!.height,
-          )) {
-            gameBloc.add(GamePlaceDevice(pos));
-          }
-        }
-        break;
-
-      case GamepadButton.east: // B button - cancel/back
-        if (state.model.placementMode == PlacementMode.placing) {
-          gameBloc.add(const GameCancelPlacement());
-        } else if (state.model.shopOpen) {
-          gameBloc.add(const GameToggleShop(isOpen: false));
-        }
-        break;
-
-      case GamepadButton.start: // Start - toggle shop
-        gameBloc.add(GameToggleShop(isOpen: !state.model.shopOpen));
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  Component _buildWorld() {
-    return Component(
-      children: [
-        _room = RoomComponent(),
-        _player = PlayerComponent(initialPosition: _getInitialPlayerPosition()),
-      ],
-    );
-  }
-
-  GridPosition _getInitialPlayerPosition() {
-    final state = gameBloc.state;
-    if (state is GameReady) {
-      return state.model.playerPosition;
-    }
-    return GameConstants.playerStartPosition;
+    return state is GameReady ? state.model : null;
   }
 
   void _onGameStateChanged(GameState state) {
-    if (state is! GameReady) return;
-
-    final model = state.model;
-
-    // Check if room changed
-    final roomChanged = _currentRoomId != model.currentRoomId;
-    if (roomChanged) {
-      _currentRoomId = model.currentRoomId;
-      // Full resync needed when room changes
-      _syncDoors(model.currentRoom.doors);
-      _syncDevices(model.currentRoom.devices);
-      _syncCloudServices(model.currentRoom.cloudServices);
+    if (_removed || !_sceneReady) return;
+    if (state is! GameReady) {
+      cancelRoute();
+      return;
     }
-
-    // Update player position if changed externally
-    if (_player.gridPosition != model.playerPosition) {
+    final model = state.model;
+    final room = model.currentRoom;
+    final changed =
+        _currentRoomId != model.currentRoomId || _definition != room.definition;
+    if (changed) {
+      cancelRoute();
+      _currentRoomId = model.currentRoomId;
+      _definition = room.definition;
+      _environment?.removeFromWorld();
+      _environment = null;
+      _legacyRoom?.removeFromParent();
+      _legacyRoom = null;
+      _hideGhost();
+      for (final component in [..._devices, ..._services, ..._doors]) {
+        component.removeFromParent();
+      }
+      _devices.clear();
+      _services.clear();
+      _doors.clear();
+      final catalog = gameBloc.mapCatalog;
+      if (catalog != null && room.definition != null) {
+        final environment = MapEnvironmentComponent(
+          catalog: catalog,
+          definition: room.definition!,
+        );
+        _environment = environment;
+        unawaited(environment.attachToWorld(_scene));
+        _bounds = environment.visualBounds;
+      } else {
+        _legacyRoom = RoomComponent(
+          gridWidth: room.width,
+          gridHeight: room.height,
+        )..priority = -100000;
+        _scene.add(_legacyRoom!);
+        _bounds = Rect.fromLTWH(0, 0, room.width * 32, room.height * 32);
+      }
+      _player.snapTo(model.playerPosition);
+      worldBloc.add(
+        WorldRoomChanged(
+          terminalPosition: room.terminalPosition,
+          playerPosition: model.playerPosition,
+        ),
+      );
+      resetCamera();
+    } else if (_player.gridPosition != model.playerPosition) {
       _player.moveTo(model.playerPosition);
     }
-
-    // Handle placement mode
-    if (model.placementMode == PlacementMode.placing) {
+    if (model.shopOpen || model.placementMode == PlacementMode.placing) {
+      cancelRoute();
+    }
+    if (_pendingStep != null && model.playerPosition != _pendingStep) {
+      cancelRoute();
+    }
+    _syncObjects(room);
+    _environment?.setPlacementMode(
+      model.placementMode == PlacementMode.placing,
+    );
+    if (model.placementMode == PlacementMode.placing && _environment == null) {
+      _placementGhost ??= PlacementGhostComponent()..priority = 100001;
+      if (_placementGhost!.parent == null) _scene.add(_placementGhost!);
       if (model.selectedTemplate != null) {
-        _showPlacementGhost(model.selectedTemplate!);
-      } else if (model.selectedCloudService != null) {
-        _showCloudServicePlacementGhost(model.selectedCloudService!);
+        _placementGhost!.setTemplate(model.selectedTemplate);
+      } else {
+        _placementGhost!.setCloudService(model.selectedCloudService);
       }
     } else {
-      _hidePlacementGhost();
+      _hideGhost();
     }
+    _updateInteraction(model);
+  }
 
-    // Sync devices and cloud services (incremental if room didn't change)
-    if (!roomChanged) {
-      _syncDevices(model.currentRoom.devices);
-      _syncCloudServices(model.currentRoom.cloudServices);
+  void _syncObjects(RoomModel room) {
+    _devices.removeWhere((component) {
+      final keep = room.devices.any((device) => device == component.device);
+      if (!keep) component.removeFromParent();
+      return !keep;
+    });
+    for (final device in room.devices) {
+      if (!_devices.any((c) => c.device.id == device.id)) {
+        final component = DeviceComponent(device: device)
+          ..priority = ((device.position.y + device.height) * 32 * 100).round();
+        _devices.add(component);
+        _scene.add(component);
+      }
     }
-
-    // Update door interaction availability
-    _updateDoorInteraction(model);
-  }
-
-  /// Adds a component wrapped with the WorldBloc provider.
-  void _addWithWorldBloc(Component component) {
-    add(
-      FlameBlocProvider<WorldBloc, WorldState>.value(
-        value: worldBloc,
-        children: [component],
-      ),
-    );
-  }
-
-  void _showPlacementGhost(DeviceTemplate template) {
-    _ensurePlacementGhost();
-    _placementGhost!.setTemplate(template);
-  }
-
-  void _showCloudServicePlacementGhost(CloudServiceTemplate template) {
-    _ensurePlacementGhost();
-    _placementGhost!.setCloudService(template);
-  }
-
-  void _ensurePlacementGhost() {
-    if (_placementGhost == null) {
-      _placementGhost = PlacementGhostComponent();
-      _addWithWorldBloc(_placementGhost!);
+    _services.removeWhere((component) {
+      final keep = room.cloudServices.any(
+        (service) => service == component.service,
+      );
+      if (!keep) component.removeFromParent();
+      return !keep;
+    });
+    for (final service in room.cloudServices) {
+      if (!_services.any((c) => c.service.id == service.id)) {
+        final component = CloudServiceComponent(service: service)
+          ..priority = ((service.position.y + service.height) * 32 * 100)
+              .round();
+        _services.add(component);
+        _scene.add(component);
+      }
+    }
+    if (_environment == null) {
+      for (final old in _doors) {
+        old.removeFromParent();
+      }
+      _doors.clear();
+      for (final door in room.doors) {
+        final component = DoorComponent(
+          door: door,
+          roomWidth: room.width,
+          roomHeight: room.height,
+        );
+        _doors.add(component);
+        _scene.add(component);
+      }
     }
   }
 
-  void _hidePlacementGhost() {
+  void _hideGhost() {
     _placementGhost?.removeFromParent();
     _placementGhost = null;
   }
 
-  void _syncDevices(List<DeviceModel> devices) {
-    _syncComponents<DeviceModel, DeviceComponent>(
-      models: devices,
-      components: _deviceComponents,
-      getModelId: (d) => d.id,
-      getComponentId: (c) => c.device.id,
-      createComponent: (d) => DeviceComponent(device: d),
-    );
+  void cancelRoute() {
+    _route.clear();
+    _pendingStep = null;
+    _afterRoute = null;
   }
 
-  void _syncCloudServices(List<CloudServiceModel> services) {
-    _syncComponents<CloudServiceModel, CloudServiceComponent>(
-      models: services,
-      components: _cloudServiceComponents,
-      getModelId: (s) => s.id,
-      getComponentId: (c) => c.service.id,
-      createComponent: (s) => CloudServiceComponent(service: s),
-    );
+  void _routeTo(GridPosition target, {void Function()? then}) {
+    cancelRoute();
+    final model = _model;
+    if (model == null ||
+        model.shopOpen ||
+        model.placementMode != PlacementMode.none) {
+      return;
+    }
+    if (target != model.playerPosition) {
+      final path = model.currentRoom.findPath(model.playerPosition, target);
+      if (path.isEmpty) return;
+      _route.addAll(path);
+    }
+    _afterRoute = then;
   }
 
-  void _syncDoors(List<DoorModel> doors) {
-    // Doors use full replacement instead of incremental sync
-    for (final comp in _doorComponents) {
-      comp.removeFromParent();
+  void _advanceRoute() {
+    final model = _model;
+    if (model == null ||
+        model.shopOpen ||
+        model.placementMode != PlacementMode.none ||
+        _player.isMoving) {
+      return;
     }
-    _doorComponents.clear();
-
-    for (final door in doors) {
-      final comp = DoorComponent(door: door);
-      _doorComponents.add(comp);
-      _addWithWorldBloc(comp);
+    if (_pendingStep != null) {
+      if (model.playerPosition != _pendingStep) return;
+      _pendingStep = null;
     }
+    if (_route.isEmpty) {
+      final action = _afterRoute;
+      _afterRoute = null;
+      action?.call();
+      return;
+    }
+    final step = _route.removeFirst();
+    if (!model.currentRoom.canWalk(step) ||
+        (step.x - model.playerPosition.x).abs() +
+                (step.y - model.playerPosition.y).abs() !=
+            1) {
+      cancelRoute();
+      return;
+    }
+    _pendingStep = step;
+    gameBloc.add(GameMovePlayerTo(step));
   }
 
-  // Reusable Sets for sync operations to reduce GC pressure
-  final Set<String> _syncModelIds = {};
-  final Set<String> _syncExistingIds = {};
-
-  /// Generic sync helper for component lists.
-  ///
-  /// Removes components whose models no longer exist and adds components
-  /// for new models, minimizing unnecessary recreations.
-  void _syncComponents<M, C extends Component>({
-    required List<M> models,
-    required List<C> components,
-    required String Function(M) getModelId,
-    required String Function(C) getComponentId,
-    required C Function(M) createComponent,
-  }) {
-    // Build model IDs set (reuse to reduce allocations)
-    _syncModelIds.clear();
-    for (final model in models) {
-      _syncModelIds.add(getModelId(model));
-    }
-
-    // Remove components for deleted models
-    components.removeWhere((comp) {
-      if (!_syncModelIds.contains(getComponentId(comp))) {
-        comp.removeFromParent();
-        return true;
-      }
-      return false;
-    });
-
-    // Build existing IDs set (reuse to reduce allocations)
-    _syncExistingIds.clear();
-    for (final comp in components) {
-      _syncExistingIds.add(getComponentId(comp));
-    }
-
-    // Add components for new models
-    for (final model in models) {
-      if (!_syncExistingIds.contains(getModelId(model))) {
-        final comp = createComponent(model);
-        components.add(comp);
-        _addWithWorldBloc(comp);
-      }
-    }
-  }
-
-  void _updateDoorInteraction(GameModel model) {
-    final playerPos = model.playerPosition;
-    final room = model.currentRoom;
-
-    // Check if player is adjacent to any door
-    for (final door in room.doors) {
-      final doorPos = door.getPosition(room.width, room.height);
-      if (playerPos.isAdjacentTo(doorPos) || playerPos == doorPos) {
-        worldBloc.add(InteractionAvailable(door.id, InteractionType.door));
+  void navigateToRoom(String targetRoomId) {
+    final model = _model;
+    if (model == null || model.shopOpen) return;
+    for (final door in model.currentRoom.doors.where(
+      (d) => d.targetRoomId == targetRoomId,
+    )) {
+      final cell = door.getSpawnPosition(
+        model.currentRoom.width,
+        model.currentRoom.height,
+      );
+      if (cell == model.playerPosition ||
+          model.currentRoom.findPath(model.playerPosition, cell).isNotEmpty) {
+        _routeTo(
+          cell,
+          then: () {
+            final current = _model;
+            if (current != null &&
+                current.currentRoomId == model.currentRoomId) {
+              _enterDoor(door, current);
+            }
+          },
+        );
         return;
       }
-    }
-
-    // If player was interacting with a door but is no longer near it
-    final worldState = worldBloc.state;
-    if (worldState.availableInteraction == InteractionType.door) {
-      worldBloc.add(const InteractionUnavailable());
     }
   }
 
   void _enterDoor(DoorModel door, GameModel model) {
-    final targetRoom = model.getRoomById(door.targetRoomId);
-    if (targetRoom == null) return;
-
-    // Calculate spawn position in target room
-    final spawnPos = door.getSpawnPosition(targetRoom.width, targetRoom.height);
-
-    gameBloc.add(
-      GameEnterRoom(roomId: door.targetRoomId, spawnPosition: spawnPos),
-    );
+    final target = model.getRoomById(door.targetRoomId);
+    if (target == null) return;
+    final spawn = door.targetSpawnId == null
+        ? door.getSpawnPosition(target.width, target.height)
+        : target.definition?.spawns[door.targetSpawnId];
+    if (spawn == null || !target.canWalk(spawn)) return;
+    cancelRoute();
+    gameBloc.add(GameEnterRoom(roomId: target.id, spawnPosition: spawn));
   }
 
-  @override
-  void onTapUp(TapUpEvent event) {
-    final state = gameBloc.state;
-    if (state is! GameReady) return;
-
-    final model = state.model;
-    final worldPos = event.localPosition;
-    final gridPos = pixelToGrid(worldPos.x, worldPos.y);
-
-    if (!isWithinBounds(gridPos)) return;
-
-    // In placement mode, place device or cloud service
-    if (model.placementMode == PlacementMode.placing) {
-      if (model.selectedTemplate != null) {
-        if (model.currentRoom.canPlaceDevice(
-          gridPos,
-          model.selectedTemplate!.width,
-          model.selectedTemplate!.height,
-        )) {
-          gameBloc.add(GamePlaceDevice(gridPos));
-        }
-        return;
-      } else if (model.selectedCloudService != null) {
-        if (model.currentRoom.canPlaceDevice(
-          gridPos,
-          model.selectedCloudService!.width,
-          model.selectedCloudService!.height,
-        )) {
-          gameBloc.add(GamePlaceCloudService(gridPos));
-        }
+  void _updateInteraction(GameModel model) {
+    final cell = model.playerPosition;
+    for (final door in model.currentRoom.doors) {
+      final position = door.getPosition(
+        model.currentRoom.width,
+        model.currentRoom.height,
+      );
+      if (cell == position ||
+          (cell.x - position.x).abs() + (cell.y - position.y).abs() == 1) {
+        worldBloc.add(InteractionAvailable(door.id, InteractionType.door));
         return;
       }
     }
-
-    // Check if tapping terminal
-    if (gridPos == model.currentRoom.terminalPosition &&
-        _player.gridPosition.isAdjacentTo(gridPos)) {
+    if (cell == model.currentRoom.terminalPosition ||
+        cell.isAdjacentTo(model.currentRoom.terminalPosition)) {
       worldBloc.add(
-        const InteractionRequested(
+        const InteractionAvailable(
           GameConstants.terminalEntityId,
           InteractionType.terminal,
         ),
       );
+    } else {
+      worldBloc.add(const InteractionUnavailable());
+    }
+  }
+
+  void interact() {
+    final model = _model;
+    if (model == null || model.shopOpen) return;
+    cancelRoute();
+    final focus = worldBloc.state;
+    if (focus.availableInteraction == InteractionType.terminal) {
       gameBloc.add(const GameToggleShop(isOpen: true));
+    }
+    if (focus.availableInteraction == InteractionType.door) {
+      final door = model.findDoorById(focus.interactableEntityId ?? '');
+      if (door != null) _enterDoor(door, model);
+    }
+  }
+
+  GridPosition _screenCell(Vector2 point) {
+    final position = camera.globalToLocal(point);
+    return pixelToGrid(position.x, position.y);
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    final model = _model;
+    if (model == null || model.shopOpen) return;
+    final cell = _screenCell(event.localPosition);
+    if (!model.currentRoom.containsCell(cell)) return;
+    if (model.placementMode == PlacementMode.placing) {
+      cancelRoute();
+      final template = model.selectedTemplate;
+      final service = model.selectedCloudService;
+      if (template != null &&
+          model.currentRoom.canPlaceDevice(
+            cell,
+            template.width,
+            template.height,
+          )) {
+        gameBloc.add(GamePlaceDevice(cell));
+      } else if (service != null &&
+          model.currentRoom.canPlaceDevice(
+            cell,
+            service.width,
+            service.height,
+          )) {
+        gameBloc.add(GamePlaceCloudService(cell));
+      }
       return;
     }
-
-    // Otherwise, move player
-    if (!model.currentRoom.isCellOccupied(gridPos)) {
-      gameBloc.add(GameMovePlayerTo(gridPos));
-      _player.moveTo(gridPos);
+    if (cell == model.currentRoom.terminalPosition) {
+      if (model.playerPosition.isAdjacentTo(cell)) {
+        cancelRoute();
+        gameBloc.add(const GameToggleShop(isOpen: true));
+      }
+      return;
     }
+    for (final door in model.currentRoom.doors) {
+      if (cell ==
+          door.getPosition(model.currentRoom.width, model.currentRoom.height)) {
+        navigateToRoom(door.targetRoomId);
+        return;
+      }
+    }
+    final device = model.currentRoom.getDeviceAt(cell);
+    final service = model.currentRoom.getCloudServiceAt(cell);
+    if (device != null || service != null) {
+      cancelRoute();
+      worldBloc.add(EntitySelected(device?.id ?? service!.id));
+      return;
+    }
+    _routeTo(cell);
+  }
+
+  void _moveDirection(Direction direction) {
+    cancelRoute();
+    final model = _model;
+    if (!_sceneReady ||
+        model == null ||
+        model.shopOpen ||
+        model.placementMode != PlacementMode.none) {
+      return;
+    }
+    gameBloc.add(GameMovePlayer(direction));
   }
 
   @override
@@ -418,109 +448,129 @@ class HomelabGame extends FlameGame
     KeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
-    if (event is! KeyDownEvent) return KeyEventResult.ignored;
-
-    final state = gameBloc.state;
-    if (state is! GameReady) return KeyEventResult.ignored;
-
-    // Escape to cancel placement
-    if (event.logicalKey == LogicalKeyboardKey.escape) {
-      if (state.model.placementMode == PlacementMode.placing) {
+    if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
+      return KeyEventResult.ignored;
+    }
+    final model = _model;
+    if (model == null) return KeyEventResult.ignored;
+    final key = event.logicalKey;
+    if (key == LogicalKeyboardKey.escape) {
+      cancelRoute();
+      if (model.placementMode == PlacementMode.placing) {
         gameBloc.add(const GameCancelPlacement());
-        return KeyEventResult.handled;
-      }
-      if (state.model.shopOpen) {
+      } else if (model.shopOpen) {
         gameBloc.add(const GameToggleShop(isOpen: false));
-        return KeyEventResult.handled;
       }
-    }
-
-    // Movement keys
-    Direction? direction;
-    if (event.logicalKey == LogicalKeyboardKey.keyW ||
-        event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      direction = Direction.up;
-    } else if (event.logicalKey == LogicalKeyboardKey.keyS ||
-        event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      direction = Direction.down;
-    } else if (event.logicalKey == LogicalKeyboardKey.keyA ||
-        event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      direction = Direction.left;
-    } else if (event.logicalKey == LogicalKeyboardKey.keyD ||
-        event.logicalKey == LogicalKeyboardKey.arrowRight) {
-      direction = Direction.right;
-    }
-
-    if (direction != null) {
-      gameBloc.add(GameMovePlayer(direction));
-      _player.moveInDirection(direction);
       return KeyEventResult.handled;
     }
+    final direction = switch (key) {
+      LogicalKeyboardKey.keyW || LogicalKeyboardKey.arrowUp => Direction.up,
+      LogicalKeyboardKey.keyS || LogicalKeyboardKey.arrowDown => Direction.down,
+      LogicalKeyboardKey.keyA || LogicalKeyboardKey.arrowLeft => Direction.left,
+      LogicalKeyboardKey.keyD ||
+      LogicalKeyboardKey.arrowRight => Direction.right,
+      _ => null,
+    };
+    if (direction != null) {
+      _moveDirection(direction);
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.keyE) {
+      interact();
+      return KeyEventResult.handled;
+    }
+    return super.onKeyEvent(event, keysPressed);
+  }
 
-    // E to interact
-    if (event.logicalKey == LogicalKeyboardKey.keyE) {
-      final worldState = worldBloc.state;
-      if (worldState.canInteract) {
-        switch (worldState.availableInteraction) {
-          case InteractionType.terminal:
-            gameBloc.add(const GameToggleShop(isOpen: true));
-            return KeyEventResult.handled;
-          case InteractionType.door:
-            // Find the door by its ID and enter
-            final doorId = worldState.interactableEntityId;
-            if (doorId != null) {
-              final door = state.model.findDoorById(doorId);
-              if (door != null) {
-                _enterDoor(door, state.model);
-                return KeyEventResult.handled;
-              }
-            }
-            break;
-          case InteractionType.device:
-          case InteractionType.none:
-            break;
-        }
+  void _onGamepadButton(GamepadButton button) {
+    final model = _model;
+    if (model == null) return;
+    if (button == GamepadButton.south) interact();
+    if (button == GamepadButton.start) {
+      cancelRoute();
+      gameBloc.add(GameToggleShop(isOpen: !model.shopOpen));
+    }
+    if (button == GamepadButton.east) {
+      cancelRoute();
+      if (model.placementMode == PlacementMode.placing) {
+        gameBloc.add(const GameCancelPlacement());
+      } else if (model.shopOpen) {
+        gameBloc.add(const GameToggleShop(isOpen: false));
       }
     }
-
-    return super.onKeyEvent(event, keysPressed);
   }
 
   @override
   void onMouseMove(PointerHoverInfo info) {
-    _room.onHoverPosition(info.eventPosition.widget);
+    final model = _model;
+    if (model == null || model.shopOpen) return;
+    final cell = _screenCell(info.eventPosition.widget);
+    if (model.currentRoom.containsCell(cell)) {
+      worldBloc.add(CellHovered(cell));
+    } else {
+      worldBloc.add(const CellHoverEnded());
+    }
+  }
+
+  void zoomIn() {
+    _zoomFactor = (_zoomFactor * 1.25).clamp(0.75, 2.5);
+    _fitCamera();
+  }
+
+  void zoomOut() {
+    _zoomFactor = (_zoomFactor / 1.25).clamp(0.75, 2.5);
+    _fitCamera();
+  }
+
+  void resetCamera() {
+    _zoomFactor = 1;
+    _fitCamera();
+  }
+
+  void _fitCamera() {
+    if (size.x <= 0 || size.y <= 0) return;
+    camera.viewfinder.anchor = Anchor.center;
+    camera.viewfinder.position = Vector2(_bounds.center.dx, _bounds.center.dy);
+    final fit = math.min(
+      math.max(1, size.x - 48) / _bounds.width,
+      math.max(1, size.y - 48) / _bounds.height,
+    );
+    camera.viewfinder.zoom = fit * _zoomFactor;
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    _fitCamera();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-
-    // Update placement ghost validity
-    if (_placementGhost != null) {
-      final state = gameBloc.state;
-      if (state is GameReady) {
-        final pos = _placementGhost!.currentPosition;
-        if (pos != null) {
-          int width = 1;
-          int height = 1;
-
-          if (state.model.selectedTemplate != null) {
-            width = state.model.selectedTemplate!.width;
-            height = state.model.selectedTemplate!.height;
-          } else if (state.model.selectedCloudService != null) {
-            width = state.model.selectedCloudService!.width;
-            height = state.model.selectedCloudService!.height;
-          }
-
-          final valid = state.model.currentRoom.canPlaceDevice(
-            pos,
-            width,
-            height,
-          );
-          _placementGhost!.setValid(valid);
-          _room.setPlacementValid(valid);
-        }
-      }
+    if (!_sceneReady || _removed) return;
+    _environment?.setActorGroundPosition(_player.groundAnchor);
+    final model = _model;
+    if (model != null && model.placementMode == PlacementMode.placing) {
+      final cell = worldBloc.state.hoveredCell;
+      final width =
+          model.selectedTemplate?.width ??
+          model.selectedCloudService?.width ??
+          1;
+      final height =
+          model.selectedTemplate?.height ??
+          model.selectedCloudService?.height ??
+          1;
+      final valid =
+          cell != null && model.currentRoom.canPlaceDevice(cell, width, height);
+      _environment?.setPlacementPreview(
+        cell,
+        valid: valid,
+        width: width,
+        height: height,
+      );
+      _placementGhost?.setValid(valid);
+      _legacyRoom?.setPlacementValid(valid);
     }
+    _advanceRoute();
   }
 }

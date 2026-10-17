@@ -17,6 +17,8 @@ dependencies:
     path: ../../app_lib/core
   game_bloc_world:
     path: ../../game_bloc/world
+  game_asset_characters:
+    path: ../../game_asset/characters
 
 dev_dependencies:
   flutter_test:

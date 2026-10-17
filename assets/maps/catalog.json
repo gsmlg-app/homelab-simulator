@@ -1,0 +1,1459 @@
+{
+  "schemaVersion": 1,
+  "atlasAsset": "assets/maps/homelab_atlas.png",
+  "initialMapId": "server-lab",
+  "tiles": [
+    {
+      "id": "floor.metal",
+      "frame": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": false
+    },
+    {
+      "id": "floor.alt",
+      "frame": [
+        64,
+        0,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": false
+    },
+    {
+      "id": "floor.grate",
+      "frame": [
+        128,
+        0,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": false
+    },
+    {
+      "id": "floor.service",
+      "frame": [
+        192,
+        0,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": false
+    },
+    {
+      "id": "floor.path",
+      "frame": [
+        256,
+        0,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": false
+    },
+    {
+      "id": "wall.north",
+      "frame": [
+        0,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.south",
+      "frame": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.west",
+      "frame": [
+        128,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.east",
+      "frame": [
+        192,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.corner",
+      "frame": [
+        256,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "door.east",
+      "frame": [
+        320,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": true
+    },
+    {
+      "id": "door.west",
+      "frame": [
+        384,
+        64,
+        64,
+        64
+      ],
+      "blocksMovement": false,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.sign",
+      "frame": [
+        384,
+        384,
+        192,
+        80
+      ],
+      "blocksMovement": true,
+      "blocksPlacement": true
+    }
+  ],
+  "prefabs": [
+    {
+      "id": "rack.compute",
+      "frame": [
+        0,
+        160,
+        128,
+        192
+      ],
+      "width": 2,
+      "height": 1,
+      "drawWidth": 64,
+      "drawHeight": 96,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "rack.storage",
+      "frame": [
+        144,
+        160,
+        128,
+        192
+      ],
+      "width": 2,
+      "height": 1,
+      "drawWidth": 64,
+      "drawHeight": 96,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "cooling",
+      "frame": [
+        304,
+        160,
+        64,
+        160
+      ],
+      "width": 1,
+      "height": 2,
+      "drawWidth": 32,
+      "drawHeight": 80,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "ups",
+      "frame": [
+        384,
+        160,
+        128,
+        96
+      ],
+      "width": 2,
+      "height": 1,
+      "drawWidth": 64,
+      "drawHeight": 48,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "workbench",
+      "frame": [
+        528,
+        160,
+        192,
+        128
+      ],
+      "width": 3,
+      "height": 1,
+      "drawWidth": 96,
+      "drawHeight": 64,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "terminal",
+      "frame": [
+        736,
+        160,
+        128,
+        128
+      ],
+      "width": 2,
+      "height": 1,
+      "drawWidth": 64,
+      "drawHeight": 64,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "ops.table",
+      "frame": [
+        0,
+        384,
+        192,
+        160
+      ],
+      "width": 3,
+      "height": 2,
+      "drawWidth": 96,
+      "drawHeight": 80,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "ops.chair",
+      "frame": [
+        208,
+        384,
+        64,
+        80
+      ],
+      "width": 1,
+      "height": 1,
+      "drawWidth": 32,
+      "drawHeight": 40,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "planter",
+      "frame": [
+        288,
+        384,
+        64,
+        96
+      ],
+      "width": 1,
+      "height": 1,
+      "drawWidth": 32,
+      "drawHeight": 48,
+      "blocksMovement": true,
+      "blocksPlacement": true
+    },
+    {
+      "id": "wall.sign",
+      "frame": [
+        384,
+        384,
+        192,
+        80
+      ],
+      "width": 3,
+      "height": 1,
+      "drawWidth": 96,
+      "drawHeight": 40,
+      "blocksMovement": false,
+      "blocksPlacement": true
+    }
+  ],
+  "maps": [
+    {
+      "id": "server-lab",
+      "name": "Server Lab",
+      "width": 20,
+      "height": 12,
+      "spawns": {
+        "entry": [
+          18,
+          8
+        ],
+        "center": [
+          10,
+          9
+        ]
+      },
+      "terminalPosition": [
+        2,
+        2
+      ],
+      "layers": [
+        {
+          "id": "architecture",
+          "foreground": false,
+          "cells": [
+            [
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "door.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.metal",
+              "floor.alt",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal"
+            ]
+          ]
+        },
+        {
+          "id": "front-sill",
+          "foreground": true,
+          "cells": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south"
+            ]
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "lab-terminal",
+          "prefabId": "terminal",
+          "position": [
+            2,
+            2
+          ],
+          "interaction": "shop"
+        },
+        {
+          "id": "compute-a",
+          "prefabId": "rack.compute",
+          "position": [
+            5,
+            3
+          ],
+          "bindingSlot": "compute-a"
+        },
+        {
+          "id": "compute-b",
+          "prefabId": "rack.compute",
+          "position": [
+            8,
+            3
+          ],
+          "bindingSlot": "compute-b"
+        },
+        {
+          "id": "storage-a",
+          "prefabId": "rack.storage",
+          "position": [
+            11,
+            3
+          ],
+          "bindingSlot": "storage-a"
+        },
+        {
+          "id": "compute-c",
+          "prefabId": "rack.compute",
+          "position": [
+            5,
+            6
+          ],
+          "bindingSlot": "compute-c"
+        },
+        {
+          "id": "storage-b",
+          "prefabId": "rack.storage",
+          "position": [
+            8,
+            6
+          ],
+          "bindingSlot": "storage-b"
+        },
+        {
+          "id": "storage-c",
+          "prefabId": "rack.storage",
+          "position": [
+            11,
+            6
+          ],
+          "bindingSlot": "storage-c"
+        },
+        {
+          "id": "cooling-a",
+          "prefabId": "cooling",
+          "position": [
+            2,
+            5
+          ]
+        },
+        {
+          "id": "lab-ups",
+          "prefabId": "ups",
+          "position": [
+            2,
+            9
+          ]
+        },
+        {
+          "id": "lab-workbench",
+          "prefabId": "workbench",
+          "position": [
+            15,
+            3
+          ]
+        },
+        {
+          "id": "lab-planter",
+          "prefabId": "planter",
+          "position": [
+            16,
+            9
+          ]
+        },
+        {
+          "id": "lab-sign",
+          "prefabId": "wall.sign",
+          "position": [
+            15,
+            1
+          ]
+        }
+      ],
+      "portals": [
+        {
+          "id": "to-operations",
+          "targetMapId": "operations",
+          "wallSide": "right",
+          "wallPosition": 8,
+          "targetSpawnId": "entry"
+        }
+      ]
+    },
+    {
+      "id": "operations",
+      "name": "Operations",
+      "width": 16,
+      "height": 10,
+      "spawns": {
+        "entry": [
+          1,
+          7
+        ],
+        "center": [
+          8,
+          7
+        ]
+      },
+      "terminalPosition": [
+        2,
+        2
+      ],
+      "layers": [
+        {
+          "id": "architecture",
+          "foreground": false,
+          "cells": [
+            [
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north",
+              "wall.north"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.grate",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.grate",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "door.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.grate",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.path",
+              "floor.grate",
+              "floor.alt",
+              "wall.east"
+            ],
+            [
+              "wall.west",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.alt",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "wall.east"
+            ],
+            [
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal",
+              "floor.metal"
+            ]
+          ]
+        },
+        {
+          "id": "front-sill",
+          "foreground": true,
+          "cells": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south",
+              "wall.south"
+            ]
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "ops-terminal",
+          "prefabId": "terminal",
+          "position": [
+            2,
+            2
+          ],
+          "interaction": "shop"
+        },
+        {
+          "id": "ops-console",
+          "prefabId": "workbench",
+          "position": [
+            6,
+            2
+          ],
+          "bindingSlot": "operations-console"
+        },
+        {
+          "id": "ops-console-2",
+          "prefabId": "workbench",
+          "position": [
+            10,
+            2
+          ]
+        },
+        {
+          "id": "ops-table",
+          "prefabId": "ops.table",
+          "position": [
+            6,
+            5
+          ]
+        },
+        {
+          "id": "ops-chair-a",
+          "prefabId": "ops.chair",
+          "position": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": "ops-chair-b",
+          "prefabId": "ops.chair",
+          "position": [
+            10,
+            6
+          ]
+        },
+        {
+          "id": "ops-planter",
+          "prefabId": "planter",
+          "position": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": "ops-ups",
+          "prefabId": "ups",
+          "position": [
+            2,
+            5
+          ]
+        },
+        {
+          "id": "ops-sign",
+          "prefabId": "wall.sign",
+          "position": [
+            10,
+            1
+          ]
+        }
+      ],
+      "portals": [
+        {
+          "id": "to-server-lab",
+          "targetMapId": "server-lab",
+          "wallSide": "left",
+          "wallPosition": 7,
+          "targetSpawnId": "entry"
+        }
+      ]
+    }
+  ]
+}

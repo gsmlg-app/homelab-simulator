@@ -40,7 +40,8 @@ GameModel reduce(GameModel model, DomainEvent event) {
     ),
     GameModeChanged(:final mode) => model.copyWith(gameMode: mode),
     GameLoaded() => model,
-    RoomEntered(:final roomId, :final spawnPosition) => model.enterRoom(
+    RoomEntered(:final roomId, :final spawnPosition) => _handleRoomEntered(
+      model,
       roomId,
       spawnPosition,
     ),
@@ -81,9 +82,24 @@ GameModel reduce(GameModel model, DomainEvent event) {
 }
 
 GameModel _handlePlayerMoved(GameModel model, GridPosition newPosition) {
-  if (!isWithinBounds(newPosition)) return model;
-  if (model.currentRoom.isCellOccupied(newPosition)) return model;
+  if (!model.currentRoom.canWalk(newPosition)) return model;
+  if (model.currentRoom.definition != null &&
+      (newPosition.x - model.playerPosition.x).abs() +
+              (newPosition.y - model.playerPosition.y).abs() !=
+          1) {
+    return model;
+  }
   return model.copyWith(playerPosition: newPosition);
+}
+
+GameModel _handleRoomEntered(
+  GameModel model,
+  String roomId,
+  GridPosition spawn,
+) {
+  final target = model.getRoomById(roomId);
+  if (target == null || !target.canWalk(spawn)) return model;
+  return model.enterRoom(roomId, spawn);
 }
 
 /// Places a device at the specified position if valid.

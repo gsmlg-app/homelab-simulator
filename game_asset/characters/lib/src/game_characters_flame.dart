@@ -8,6 +8,7 @@ import 'game_characters.dart';
 
 /// Flame helpers for loading and animating character sprites.
 extension CharacterSpriteSheetFlame on CharacterSpriteSheet {
+  /// Package-qualified paths require an image cache with an empty prefix.
   Future<Image> loadImage(Images images) => images.load(path);
 
   SpriteSheet spriteSheet(Image image) =>

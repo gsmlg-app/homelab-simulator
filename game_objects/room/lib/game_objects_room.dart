@@ -6,3 +6,4 @@ export 'src/grid_component.dart';
 export 'src/terminal_component.dart';
 export 'src/hover_cell_component.dart';
 export 'src/door_component.dart';
+export 'src/map_environment_component.dart';

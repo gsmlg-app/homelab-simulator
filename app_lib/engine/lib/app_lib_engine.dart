@@ -10,3 +10,5 @@ export 'src/models/door_model.dart';
 export 'src/models/cloud_service_model.dart';
 export 'src/events/domain_events.dart';
 export 'src/reducer.dart';
+export 'src/models/map_definition.dart';
+export 'src/models/map_catalog.dart';

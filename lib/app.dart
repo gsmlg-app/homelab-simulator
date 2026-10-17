@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
 
+import 'map_assets.dart';
 import 'screens/start_menu_screen.dart';
 
 /// Root application widget providing BLoC state management.
@@ -25,7 +26,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _gameBloc = GameBloc()..add(const GameInitialize());
+    _gameBloc = GameBloc(mapCatalogLoader: loadMapCatalog)
+      ..add(const GameInitialize());
     _worldBloc = WorldBloc();
   }
 

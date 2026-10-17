@@ -84,3 +84,15 @@ class PlayerPositionUpdated extends WorldEvent {
   @override
   List<Object?> get props => [position];
 }
+
+/// Replace room-local interaction context and discard the previous scene focus.
+class WorldRoomChanged extends WorldEvent {
+  final GridPosition terminalPosition;
+  final GridPosition playerPosition;
+  const WorldRoomChanged({
+    required this.terminalPosition,
+    required this.playerPosition,
+  });
+  @override
+  List<Object?> get props => [terminalPosition, playerPosition];
+}

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:app_database/app_database.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'package:app_lib_engine/app_lib_engine.dart';
@@ -132,9 +133,11 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
     final updated = character.copyWith(lastPlayedAt: DateTime.now());
     unawaited(_storage.save(updated));
 
-    Navigator.of(
-      context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => GameScreen(spriteSheet: character.spriteSheet),
+      ),
+    );
   }
 
   Future<void> _createNewCharacter() async {
@@ -148,9 +151,11 @@ class _StartMenuScreenState extends State<StartMenuScreen> {
 
     if (!mounted) return;
 
-    Navigator.of(
-      context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const GameScreen()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => GameScreen(spriteSheet: result.spriteSheet),
+      ),
+    );
   }
 
   Future<void> _deleteCharacter(CharacterModel character) async {
@@ -402,6 +407,7 @@ class _CharacterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sheet = character.spriteSheet;
     return Card(
       margin: const EdgeInsets.only(bottom: AppSpacing.ms),
       color: isSelected
@@ -433,16 +439,20 @@ class _CharacterCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: AppSpacing.borderRadiusMedium,
-                  child: ClipRect(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      widthFactor: 1 / character.spriteSheet.columns,
-                      heightFactor: 1 / character.spriteSheet.rows,
-                      child: Image.asset(
-                        character.spritePath,
-                        width: AppSpacing.avatarSize * character.spriteSheet.columns,
-                        height: AppSpacing.avatarSize * character.spriteSheet.rows,
-                        fit: BoxFit.contain,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: SizedBox(
+                      width: sheet.frameWidth,
+                      height: sheet.frameHeight,
+                      child: ClipRect(
+                        child: OverflowBox(
+                          alignment: Alignment.topLeft,
+                          minWidth: sheet.frameWidth * sheet.columns,
+                          maxWidth: sheet.frameWidth * sheet.columns,
+                          minHeight: sheet.frameHeight * sheet.rows,
+                          maxHeight: sheet.frameHeight * sheet.rows,
+                          child: Image.asset(character.spritePath),
+                        ),
                       ),
                     ),
                   ),

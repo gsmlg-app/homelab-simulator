@@ -29,6 +29,8 @@ dependencies:
     path: ../character
   game_objects_devices:
     path: ../devices
+  game_asset_characters:
+    path: ../../game_asset/characters
 
 dev_dependencies:
   flutter_test:

@@ -30,6 +30,7 @@ void main() {
     setUp(() {
       mockGameBloc = MockGameBloc();
       mockWorldBloc = MockWorldBloc();
+      when(() => mockWorldBloc.isClosed).thenReturn(false);
     });
 
     Widget buildSubject({Size? screenSize}) {

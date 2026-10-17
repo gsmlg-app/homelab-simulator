@@ -71,7 +71,7 @@ void main() {
     test('mainMale has correct path', () {
       expect(
         GameCharacters.mainMale.path,
-        'packages/game_asset_characters/assets/boy.png',
+        'packages/game_asset_characters/assets/boy_sprite_sheet.png',
       );
     });
 
@@ -93,7 +93,7 @@ void main() {
     test('mainFemale has correct path', () {
       expect(
         GameCharacters.mainFemale.path,
-        'packages/game_asset_characters/assets/girl.png',
+        'packages/game_asset_characters/assets/girl_sprite_sheet.png',
       );
     });
 

@@ -12,10 +12,20 @@ import 'world_state.dart';
 /// - Interaction focus (terminal/device)
 /// - Transient in-world signals
 class WorldBloc extends Bloc<WorldEvent, WorldState> {
-  final GridPosition terminalPosition;
+  GridPosition _terminalPosition;
+  GridPosition get terminalPosition => _terminalPosition;
 
-  WorldBloc({this.terminalPosition = GameConstants.terminalPosition})
-    : super(const WorldState()) {
+  WorldBloc({GridPosition terminalPosition = GameConstants.terminalPosition})
+    : _terminalPosition = terminalPosition,
+      super(const WorldState()) {
+    on<WorldRoomChanged>((event, emit) {
+      _terminalPosition = event.terminalPosition;
+      emit(WorldState(playerPosition: event.playerPosition));
+      _onPlayerPositionUpdated(
+        PlayerPositionUpdated(event.playerPosition),
+        emit,
+      );
+    });
     on<WorldReset>((event, emit) => emit(const WorldState()));
     on<CellHovered>(_onCellHovered);
     on<CellHoverEnded>(_onCellHoverEnded);

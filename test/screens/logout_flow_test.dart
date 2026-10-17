@@ -7,12 +7,12 @@ import 'package:app_lib_engine/app_lib_engine.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_bloc_world/game_bloc_world.dart';
+import 'package:game_asset_characters/game_asset_characters.dart';
 import 'package:game_objects_devices/game_objects_devices.dart';
 import 'package:game_objects_world/game_objects_world.dart';
 import 'package:homelab_simulator/screens/game_screen.dart';
@@ -32,7 +32,11 @@ class _PausedLoadGame extends HomelabGame {
     required super.gameBloc,
     required super.worldBloc,
     required this.pauseGamepad,
-  });
+  }) {
+    if (!pauseGamepad) {
+      images.bundle = _PausedSpriteBundle(loadPaused, resume);
+    }
+  }
 
   final bool pauseGamepad;
   final loadPaused = Completer<void>();
@@ -41,9 +45,7 @@ class _PausedLoadGame extends HomelabGame {
   @override
   FutureOr<void> add(Component component) {
     final result = super.add(component);
-    final shouldPause = pauseGamepad
-        ? component is GamepadHandler
-        : component is FlameBlocProvider<WorldBloc, WorldState>;
+    final shouldPause = pauseGamepad && component is GamepadHandler;
     if (!shouldPause) return result;
     return Future<void>(() async {
       await result;
@@ -53,8 +55,27 @@ class _PausedLoadGame extends HomelabGame {
   }
 }
 
+class _PausedSpriteBundle extends CachingAssetBundle {
+  _PausedSpriteBundle(this.started, this.resume);
+
+  final Completer<void> started;
+  final Completer<void> resume;
+
+  @override
+  Future<ByteData> load(String key) async {
+    if (key == GameCharacters.mainMale.path) {
+      started.complete();
+      await resume.future;
+    }
+    return rootBundle.load(key);
+  }
+}
+
 Future<void> _pumpFrames(WidgetTester tester) async {
   for (var i = 0; i < 20; i++) {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
     await tester.pump(const Duration(milliseconds: 50));
   }
 }
@@ -103,10 +124,15 @@ void main() {
           await tester.pump(const Duration(milliseconds: 10));
         }
         expect(game.loadPaused.isCompleted, isTrue);
+        final player = game.player;
+        if (!pauseGamepad) expect(player.isLoaded, isFalse);
         await tester.pumpWidget(const SizedBox.shrink());
         game.resume.complete();
-        await tester.pump();
-        await tester.pump();
+        await _pumpFrames(tester);
+        if (!pauseGamepad) {
+          expect(player.isLoaded, isTrue);
+          expect(player.children, isEmpty);
+        }
 
         if (pauseGamepad) {
           // Deliver a native Start-button event after the unmounted child loaded.

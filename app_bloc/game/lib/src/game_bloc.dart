@@ -11,11 +11,20 @@ import 'game_state.dart';
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameStorage _storage;
   final AppLogger _logger;
+  final Future<MapCatalog> Function()? _mapCatalogLoader;
+  MapCatalog? _mapCatalog;
 
-  GameBloc({GameStorage? storage, AppLogger? logger})
-    : _storage = storage ?? GameStorage(),
-      _logger = logger ?? AppLogger(),
-      super(const GameLoading()) {
+  /// Catalog loaded for the current map-enabled world, if configured.
+  MapCatalog? get mapCatalog => _mapCatalog;
+
+  GameBloc({
+    GameStorage? storage,
+    AppLogger? logger,
+    Future<MapCatalog> Function()? mapCatalogLoader,
+  }) : _storage = storage ?? GameStorage(),
+       _logger = logger ?? AppLogger(),
+       _mapCatalogLoader = mapCatalogLoader,
+       super(const GameLoading()) {
     on<GameInitialize>(_onInitialize);
     on<GameMovePlayer>(_onMovePlayer);
     on<GameMovePlayerTo>(_onMovePlayerTo);
@@ -54,7 +63,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) async {
     try {
       final saved = await _storage.load();
-      final model = saved ?? GameModel.initial();
+      final loader = _mapCatalogLoader;
+      final catalog = loader == null ? null : await loader();
+      final model = catalog == null
+          ? saved ?? GameModel.initial()
+          : saved == null
+          ? catalog.createGame()
+          : catalog.resolveGame(saved);
+      _mapCatalog = catalog;
       emit(GameReady(model));
     } catch (e) {
       emit(GameError('Failed to initialize: $e'));

@@ -3,7 +3,7 @@ class GameCharacters {
   GameCharacters._();
 
   static const CharacterSpriteSheet mainMale = CharacterSpriteSheet(
-    path: 'packages/game_asset_characters/assets/boy.png',
+    path: 'packages/game_asset_characters/assets/boy_sprite_sheet.png',
     frameWidth: 192,
     frameHeight: 256,
     columns: 8,
@@ -13,7 +13,7 @@ class GameCharacters {
   );
 
   static const CharacterSpriteSheet mainFemale = CharacterSpriteSheet(
-    path: 'packages/game_asset_characters/assets/girl.png',
+    path: 'packages/game_asset_characters/assets/girl_sprite_sheet.png',
     frameWidth: 192,
     frameHeight: 256,
     columns: 8,

@@ -7,8 +7,13 @@ import 'package:app_widget_common/app_widget_common.dart';
 /// Shows interaction hints when near interactable objects
 class InteractionHint extends StatelessWidget {
   final InteractionType interactionType;
+  final VoidCallback? onInteract;
 
-  const InteractionHint({super.key, required this.interactionType});
+  const InteractionHint({
+    super.key,
+    required this.interactionType,
+    this.onInteract,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +22,12 @@ class InteractionHint extends StatelessWidget {
     }
 
     final message = switch (interactionType) {
-      InteractionType.terminal => 'Press E to open shop',
-      InteractionType.device => 'Press E to interact',
-      InteractionType.door => 'Press E to enter',
+      InteractionType.terminal =>
+        onInteract == null ? 'Press E to open shop' : 'Open shop',
+      InteractionType.device =>
+        onInteract == null ? 'Press E to interact' : 'Interact',
+      InteractionType.door =>
+        onInteract == null ? 'Press E to enter' : 'Enter room',
       InteractionType.none => '',
     };
 
@@ -28,7 +36,7 @@ class InteractionHint extends StatelessWidget {
         if (state is! GameReady) return const SizedBox.shrink();
         if (state.model.shopOpen) return const SizedBox.shrink();
 
-        return AnimatedOpacity(
+        final hint = AnimatedOpacity(
           opacity: 1.0,
           duration: AppSpacing.animationFast,
           child: Container(
@@ -74,6 +82,9 @@ class InteractionHint extends StatelessWidget {
             ),
           ),
         );
+        return onInteract == null
+            ? hint
+            : GestureDetector(onTap: onInteract, child: hint);
       },
     );
   }
