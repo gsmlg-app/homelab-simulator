@@ -197,3 +197,7 @@ Introduce a navigable 2D world where players start in a default `server_room`, m
 
 ## Risks & Open Questions
 - Define room layout rules for door placement in 2D view.
+
+## Cloud Center phase one
+
+The independent Cloud Center scope adds read-only cloud usage and costs through a self-hosted backend. See [implementation plan](docs/cloud-center/implementation-plan.md), [API contract](docs/cloud-center/api-contract.md) and [validation report](docs/cloud-center/validation-report.md). Existing room and character scope remains unchanged.
