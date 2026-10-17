@@ -38,6 +38,7 @@ void main() {
   ) async {
     final gameBloc = _MockGameBloc();
     final states = StreamController<GameState>.broadcast();
+    when(() => gameBloc.isClosed).thenReturn(false);
     when(() => gameBloc.state).thenReturn(GameReady(GameModel.initial()));
     when(() => gameBloc.stream).thenAnswer((_) => states.stream);
     final worldBloc = WorldBloc();

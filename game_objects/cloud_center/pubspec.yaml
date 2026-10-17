@@ -1,0 +1,23 @@
+name: game_objects_cloud_center
+description: Cloud Center consoles and small accepted summary projections.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.38.2
+  flame_bloc: ^1.12.24
+  app_cloud:
+    path: ../../app_lib/cloud
+  app_lib_core:
+    path: ../../app_lib/core
+  app_lib_engine:
+    path: ../../app_lib/engine
+  game_bloc_world:
+    path: ../../game_bloc/world
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

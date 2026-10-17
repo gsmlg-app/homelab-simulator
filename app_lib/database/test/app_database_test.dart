@@ -16,9 +16,9 @@ void main() {
         db.close();
       });
 
-      test('schemaVersion is 1', () {
+      test('schemaVersion is 2', () {
         final db = AppDatabase.forTesting();
-        expect(db.schemaVersion, 1);
+        expect(db.schemaVersion, 2);
         db.close();
       });
     });
@@ -109,7 +109,7 @@ void main() {
       test('creates usable database', () {
         final db = AppDatabase.forTesting();
         // Database should be usable (not closed)
-        expect(db.schemaVersion, 1);
+        expect(db.schemaVersion, 2);
         db.close();
       });
     });
@@ -160,7 +160,7 @@ void main() {
       test('can create and close databases rapidly', () async {
         for (int i = 0; i < 10; i++) {
           final db = AppDatabase.forTesting();
-          expect(db.schemaVersion, 1);
+          expect(db.schemaVersion, 2);
           await db.close();
         }
       });

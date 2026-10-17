@@ -105,6 +105,7 @@ void main() {
       'removal during ${pauseGamepad ? 'input' : 'world'} loading stops subscriptions',
       (tester) async {
         final gameBloc = _MockGameBloc();
+        when(() => gameBloc.isClosed).thenReturn(false);
         final states = StreamController<GameState>.broadcast();
         when(() => gameBloc.state).thenReturn(GameReady(GameModel.initial()));
         when(() => gameBloc.stream).thenAnswer((_) => states.stream);
@@ -170,6 +171,7 @@ void main() {
       tester,
     ) async {
       final gameBloc = _MockGameBloc();
+      when(() => gameBloc.isClosed).thenReturn(false);
       final states = StreamController<GameState>.broadcast();
       var activeSubscriptions = 0;
       final stream = Stream<GameState>.multi((controller) {
@@ -304,7 +306,9 @@ void main() {
     expect(prefs.getString('homelab_characters'), characters);
     expect(
       jsonDecode(prefs.getString('homelab_game_state')!),
-      model.copyWith(playerPosition: latestPosition).toJson(),
+      installCloudCenter(model)
+          .copyWith(playerPosition: latestPosition)
+          .toJson(),
     );
 
     final position = gameBloc.currentModel!.playerPosition;

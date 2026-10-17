@@ -159,3 +159,11 @@ class GameRemoveCloudService extends GameEvent {
   @override
   List<Object?> get props => [serviceId];
 }
+
+/// Modal scene input lock. This is application UI state and is never persisted.
+class GameSetCloudPanelOpen extends GameEvent {
+  final bool isOpen;
+  const GameSetCloudPanelOpen(this.isOpen);
+  @override
+  List<Object?> get props => [isOpen];
+}

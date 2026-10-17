@@ -9,17 +9,20 @@ import 'package:game_bloc_world/game_bloc_world.dart';
 /// Door component that allows player to transition between rooms
 class DoorComponent extends PositionComponent
     with FlameBlocReader<WorldBloc, WorldState> {
-  final DoorModel door;
-  final int roomWidth;
-  final int roomHeight;
+  DoorModel _door;
+  DoorModel get door => _door;
+  int _roomWidth;
+  int get roomWidth => _roomWidth;
+  int _roomHeight;
+  int get roomHeight => _roomHeight;
   final double tileSize;
   bool _isHighlighted = false;
 
   // Animation state for glow effect
   double _glowTime = 0;
 
-  // Cached arrow path (built once in onLoad)
-  late final Path _arrowPath;
+  // Cached arrow path (updated with accepted door geometry)
+  late Path _arrowPath;
 
   // Cached paint objects for performance
   static final _framePaint = Paint()
@@ -44,17 +47,36 @@ class DoorComponent extends PositionComponent
   final Paint _glowPaint = Paint()..style = PaintingStyle.stroke;
 
   DoorComponent({
-    required this.door,
-    this.roomWidth = GameConstants.roomWidth,
-    this.roomHeight = GameConstants.roomHeight,
+    required DoorModel door,
+    int roomWidth = GameConstants.roomWidth,
+    int roomHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
-  }) : super(size: Vector2.all(tileSize));
+  }) : _door = door,
+       _roomWidth = roomWidth,
+       _roomHeight = roomHeight,
+       super(size: Vector2.all(tileSize)) {
+    _refreshGeometry();
+  }
+
+  /// Synchronize the same portal, including changes to its room dimensions.
+  void updateDoor(
+    DoorModel value, {
+    required int roomWidth,
+    required int roomHeight,
+  }) {
+    assert(value.id == door.id);
+    if (value == door && roomWidth == _roomWidth && roomHeight == _roomHeight) {
+      return;
+    }
+    _door = value;
+    _roomWidth = roomWidth;
+    _roomHeight = roomHeight;
+    _refreshGeometry();
+  }
 
   GridPosition get gridPosition => door.getPosition(roomWidth, roomHeight);
 
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
+  void _refreshGeometry() {
     final pos = gridPosition;
     position = Vector2(pos.x * tileSize, pos.y * tileSize);
     _arrowPath = _buildArrowPath();

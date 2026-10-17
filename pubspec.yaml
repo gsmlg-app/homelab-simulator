@@ -10,8 +10,11 @@ environment:
 # Melos 8.0+ workspace packages
 workspace:
   - app_bloc/game
+  - app_bloc/cloud_center
   - game_bloc/world
   - app_lib/core
+  - app_lib/cloud
+  - app_lib/cloud_client
   - app_lib/database
   - app_lib/engine
   - app_lib/locale
@@ -21,7 +24,9 @@ workspace:
   - game_widgets/hud
   - game_widgets/shop
   - game_widgets/panels
+  - game_widgets/cloud_center
   - game_objects/world
+  - game_objects/cloud_center
   - game_objects/room
   - game_objects/character
   - game_objects/devices
@@ -43,6 +48,14 @@ dependencies:
   gamepads: ^0.1.12
 
   # Local packages
+  app_cloud:
+    path: app_lib/cloud
+  app_cloud_client:
+    path: app_lib/cloud_client
+  app_bloc_cloud_center:
+    path: app_bloc/cloud_center
+  game_widgets_cloud_center:
+    path: game_widgets/cloud_center
   app_lib_core:
     path: app_lib/core
   app_database:
@@ -129,5 +142,6 @@ flutter:
     enable-swift-package-manager: true
   uses-material-design: true
   assets:
+    - docs/cloud-center/fixtures/demo-v1.json
     - assets/maps/catalog.json
     - assets/maps/homelab_atlas.png

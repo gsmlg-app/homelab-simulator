@@ -1,4 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:app_lib_engine/app_lib_engine.dart';
+
+import '../cloud_center/cloud_center_session.dart';
+import '../cloud_center/cloud_center_overlay.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:app_bloc_game/app_bloc_game.dart';
@@ -21,14 +28,43 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   HomelabGame? _game;
   bool _loggingOut = false;
+  final _gameFocus = FocusNode(debugLabel: 'CloudCenterGame');
+  late final CloudCenterSession _cloud;
 
-  void _logOut() {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _cloud = CloudCenterSession(
+      onClose: () {
+        _game?.setCloudPanelOpen(false);
+        if (mounted && !_loggingOut) _gameFocus.requestFocus();
+      },
+      onSummaries: (summaries) => _game?.updateCloudSummaries(summaries),
+    );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      _cloud.setForeground(state == AppLifecycleState.resumed);
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _cloud.dispose();
+    _gameFocus.dispose();
+    super.dispose();
+  }
+
+  Future<void> _logOut() async {
     if (_loggingOut) return;
     _loggingOut = true;
     _game?.cancelRoute();
+    await _cloud.signOut();
+    if (!mounted) return;
 
     final gameBloc = context.read<GameBloc>();
     gameBloc.add(const GameSave());
@@ -114,6 +150,8 @@ class _GameScreenState extends State<GameScreen> {
             gameBloc: context.read<GameBloc>(),
             worldBloc: context.read<WorldBloc>(),
             spriteSheet: widget.spriteSheet,
+            onCloudConsoleOpened: (console) => unawaited(_cloud.open(console)),
+            onCloudPanelCloseRequested: _cloud.closePanel,
           );
           return BlocBuilder<WorldBloc, WorldState>(
             builder: (context, worldState) {
@@ -121,7 +159,11 @@ class _GameScreenState extends State<GameScreen> {
                 children: [
                   // Flame game
                   Positioned.fill(
-                    child: GameWidget(key: ObjectKey(game), game: game),
+                    child: GameWidget(
+                      key: ObjectKey(game),
+                      game: game,
+                      focusNode: _gameFocus,
+                    ),
                   ),
 
                   // HUD overlay
@@ -137,8 +179,20 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
 
+                  if (gameState is GameReady &&
+                      gameState.model.cloudCenterEntryStatus !=
+                          CloudCenterEntryStatus.available)
+                    Positioned(
+                      left: 16,
+                      bottom: 16,
+                      child: Text(
+                        'Cloud Center entry: ${gameState.model.cloudCenterEntryStatus.name}',
+                      ),
+                    ),
+
                   // Shop modal
                   const Positioned.fill(child: ShopModal()),
+                  Positioned.fill(child: CloudCenterOverlay(session: _cloud)),
                 ],
               );
             },

@@ -36,6 +36,7 @@ class GamepadHandler extends Component {
 
   // Track current direction to avoid repeated events
   Direction _currentDirection = Direction.none;
+  bool _awaitingNeutral = false;
 
   // Debounce for D-pad
   double _dpadCooldown = 0;
@@ -45,6 +46,15 @@ class GamepadHandler extends Component {
     this.onButtonPressed,
     this.onButtonReleased,
   });
+
+  /// A modal boundary discards held movement until the stick/D-pad returns neutral.
+  void resetInput() {
+    _currentDirection = Direction.none;
+    _leftStickX = 0;
+    _leftStickY = 0;
+    _dpadCooldown = 0;
+    _awaitingNeutral = true;
+  }
 
   @override
   void onMount() {
@@ -88,6 +98,10 @@ class GamepadHandler extends Component {
     // Handle D-pad as direction
     final direction = _mapKeyToDirection(event.key);
     if (direction != null && direction != Direction.none) {
+      if (_awaitingNeutral) {
+        if (!pressed) _awaitingNeutral = false;
+        return;
+      }
       if (pressed && _dpadCooldown <= 0) {
         onDirection?.call(direction);
         _dpadCooldown = GameConstants.gamepadDpadCooldownSeconds;
@@ -121,6 +135,13 @@ class GamepadHandler extends Component {
   double _leftStickY = 0;
 
   void _updateAnalogDirection() {
+    if (_awaitingNeutral) {
+      if (_leftStickX.abs() <= GameConstants.gamepadAnalogDeadzone &&
+          _leftStickY.abs() <= GameConstants.gamepadAnalogDeadzone) {
+        _awaitingNeutral = false;
+      }
+      return;
+    }
     // Calculate direction from stick position
     Direction newDirection = Direction.none;
 

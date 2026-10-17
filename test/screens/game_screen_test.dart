@@ -29,6 +29,7 @@ void main() {
 
     setUp(() {
       mockGameBloc = MockGameBloc();
+      when(() => mockGameBloc.isClosed).thenReturn(false);
       mockWorldBloc = MockWorldBloc();
       when(() => mockWorldBloc.isClosed).thenReturn(false);
     });

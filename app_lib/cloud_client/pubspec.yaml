@@ -1,0 +1,13 @@
+name: app_cloud_client
+version: 1.0.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  app_cloud:
+    path: ../cloud
+  http: ^1.6.0
+  crypto: ^3.0.7
+dev_dependencies:
+  test: ^1.29.0

@@ -339,14 +339,14 @@ class MapCatalog {
     playerPosition: maps[initialMapId]!.spawn,
   );
 
-  /// Reattach transient definitions; incompatible worlds start from catalog data.
+  /// Reattach known definitions while retaining legacy and feature rooms.
   GameModel resolveGame(GameModel game) {
-    if (game.rooms.isEmpty ||
-        game.rooms.any((room) => !maps.containsKey(room.definitionId))) {
+    if (game.rooms.isEmpty) {
       return createGame();
     }
     final rooms = game.rooms.map((room) {
-      final definition = maps[room.definitionId]!;
+      final definition = maps[room.definitionId];
+      if (definition == null) return room;
       return room.copyWith(
         definition: definition,
         width: definition.width,
@@ -380,7 +380,8 @@ class MapCatalog {
     }
     if (!resolved.currentRoom.canWalk(resolved.playerPosition)) {
       resolved = resolved.copyWith(
-        playerPosition: resolved.currentRoom.definition!.spawn,
+        playerPosition:
+            resolved.currentRoom.definition?.spawn ?? resolved.playerPosition,
       );
     }
     return resolved;

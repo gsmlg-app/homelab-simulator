@@ -1,0 +1,12 @@
+name: app_cloud
+description: Immutable cloud monitoring contracts and exact cost calculations.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  app_lib_core:
+    path: ../core
+dev_dependencies:
+  test: ^1.29.0

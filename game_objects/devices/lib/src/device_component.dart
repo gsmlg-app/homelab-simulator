@@ -9,7 +9,8 @@ import 'package:game_bloc_world/game_bloc_world.dart';
 /// Renders a placed device in the game world
 class DeviceComponent extends PositionComponent
     with FlameBlocReader<WorldBloc, WorldState> {
-  final DeviceModel device;
+  DeviceModel _device;
+  DeviceModel get device => _device;
   final double tileSize;
   bool _isSelected = false;
 
@@ -27,21 +28,45 @@ class DeviceComponent extends PositionComponent
     ..style = PaintingStyle.fill;
 
   // Instance-level cached paints (depend on device type)
-  late final Paint _bodyPaint;
-  late final Paint _borderPaint;
+  final Paint _bodyPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _borderPaint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = GameConstants.glowStrokeBase;
   // Reusable paint for flicker animation (color updated per frame)
   final Paint _flickerPaint = Paint()..style = PaintingStyle.fill;
 
   DeviceComponent({
-    required this.device,
+    required DeviceModel device,
     this.tileSize = GameConstants.tileSize,
-  }) : super(
+  }) : _device = device,
+       super(
          position: Vector2(
            device.position.x * tileSize,
            device.position.y * tileSize,
          ),
          size: Vector2(device.width * tileSize, device.height * tileSize),
-       );
+       ) {
+    _refreshVisuals();
+  }
+
+  /// Apply accepted state without replacing the mounted component.
+  void updateDevice(DeviceModel value) {
+    assert(value.id == device.id);
+    if (value == device) return;
+    _device = value;
+    position.setValues(
+      value.position.x * tileSize,
+      value.position.y * tileSize,
+    );
+    size.setValues(value.width * tileSize, value.height * tileSize);
+    _refreshVisuals();
+  }
+
+  void _refreshVisuals() {
+    _bodyPaint.color = _deviceColor;
+    _borderPaint.color = _deviceColor.withValues(alpha: 0.5);
+    priority = ((device.position.y + device.height) * tileSize * 100).round();
+  }
 
   Color get _deviceColor {
     return switch (device.type) {
@@ -58,14 +83,6 @@ class DeviceComponent extends PositionComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // Initialize cached paints (depend on device type)
-    _bodyPaint = Paint()
-      ..color = _deviceColor
-      ..style = PaintingStyle.fill;
-    _borderPaint = Paint()
-      ..color = _deviceColor.withValues(alpha: 0.5)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = GameConstants.glowStrokeBase;
     // Random phase offset for subtle variety between devices
     _flickerPhase = math.Random().nextDouble() * GameConstants.animationPeriod;
   }

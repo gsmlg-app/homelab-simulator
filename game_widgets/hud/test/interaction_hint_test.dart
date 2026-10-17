@@ -39,6 +39,36 @@ void main() {
       expect(find.text('Press E'), findsNothing);
     });
 
+    testWidgets(
+      'cloud hint is an active touch control and hides while a cloud panel is open',
+      (tester) async {
+        var opened = 0;
+        final model = GameModel.initial();
+        when(() => mockGameBloc.state).thenReturn(GameReady(model));
+        Widget build() => MaterialApp(
+          home: Scaffold(
+            body: BlocProvider<GameBloc>.value(
+              value: mockGameBloc,
+              child: InteractionHint(
+                interactionType: InteractionType.cloudConsole,
+                onInteract: () => opened++,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpWidget(build());
+        expect(find.text('Open cloud console'), findsOneWidget);
+        await tester.tap(find.text('Open cloud console'));
+        expect(opened, 1);
+        when(
+          () => mockGameBloc.state,
+        ).thenReturn(GameReady(model.copyWith(cloudPanelOpen: true)));
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pumpWidget(build());
+        expect(find.text('Open cloud console'), findsNothing);
+      },
+    );
+
     testWidgets('shows terminal hint message', (tester) async {
       final model = GameModel.initial();
       when(() => mockGameBloc.state).thenReturn(GameReady(model));
@@ -438,7 +468,7 @@ void main() {
       });
 
       test('interaction type count is 4', () {
-        expect(InteractionType.values.length, 4);
+        expect(InteractionType.values.length, 5);
       });
     });
 

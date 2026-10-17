@@ -26,6 +26,23 @@ class GameBloc extends Bloc<GameEvent, GameState> {
        _mapCatalogLoader = mapCatalogLoader,
        super(const GameLoading()) {
     on<GameInitialize>(_onInitialize);
+    on<GameSetCloudPanelOpen>((event, emit) {
+      final model = currentModel;
+      if (model == null) return;
+      emit(
+        GameReady(
+          model.copyWith(
+            cloudPanelOpen: event.isOpen,
+            shopOpen: event.isOpen ? false : model.shopOpen,
+            placementMode: event.isOpen
+                ? PlacementMode.none
+                : model.placementMode,
+            clearSelectedTemplate: event.isOpen,
+            clearSelectedCloudService: event.isOpen,
+          ),
+        ),
+      );
+    });
     on<GameMovePlayer>(_onMovePlayer);
     on<GameMovePlayerTo>(_onMovePlayerTo);
     on<GameToggleShop>(_onToggleShop);
@@ -71,7 +88,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           ? catalog.createGame()
           : catalog.resolveGame(saved);
       _mapCatalog = catalog;
-      emit(GameReady(model));
+      emit(GameReady(installCloudCenter(model)));
     } catch (e) {
       emit(GameError('Failed to initialize: $e'));
     }
@@ -79,7 +96,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onMovePlayer(GameMovePlayer event, Emitter<GameState> emit) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final delta = switch (event.direction) {
       Direction.up => const GridPosition(0, -1),
@@ -96,7 +113,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onMovePlayerTo(GameMovePlayerTo event, Emitter<GameState> emit) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, PlayerMoved(event.position));
     emit(GameReady(newModel));
@@ -104,7 +121,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onToggleShop(GameToggleShop event, Emitter<GameState> emit) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final isOpen = event.isOpen ?? !model.shopOpen;
     final newModel = reduce(model, ShopToggled(isOpen));
@@ -113,7 +130,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onSelectTemplate(GameSelectTemplate event, Emitter<GameState> emit) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, TemplateSelected(event.template));
     emit(GameReady(newModel.copyWith(shopOpen: false)));
@@ -121,7 +138,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onCancelPlacement(GameCancelPlacement event, Emitter<GameState> emit) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(
       model,
@@ -135,7 +152,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final template = model.selectedTemplate;
     if (template == null) return;
@@ -156,7 +173,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, DeviceRemoved(event.deviceId));
     emit(GameReady(newModel));
@@ -203,7 +220,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<void> _onAddRoom(GameAddRoom event, Emitter<GameState> emit) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(
       model,
@@ -227,7 +244,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, RoomRemoved(event.roomId));
 
@@ -242,7 +259,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, CloudServiceSelected(event.template));
     emit(GameReady(newModel.copyWith(shopOpen: false)));
@@ -253,7 +270,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final template = model.selectedCloudService;
     if (template == null) return;
@@ -280,7 +297,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     final model = currentModel;
-    if (model == null) return;
+    if (model == null || model.cloudPanelOpen) return;
 
     final newModel = reduce(model, CloudServiceRemoved(event.serviceId));
     emit(GameReady(newModel));

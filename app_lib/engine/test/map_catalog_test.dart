@@ -266,7 +266,7 @@ void main() {
       );
       expect(
         catalog.resolveGame(GameModel.initial()).currentRoom.definitionId,
-        'lab',
+        isNull,
       );
     },
   );

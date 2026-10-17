@@ -14,6 +14,8 @@ class RoomComponent extends PositionComponent
   final int gridWidth;
   final int gridHeight;
   final double tileSize;
+  final GridPosition terminalPosition;
+  final bool showTerminal;
 
   // Cached background paint for performance
   static final _bgPaint = Paint()..color = AppColors.roomBackground;
@@ -26,6 +28,8 @@ class RoomComponent extends PositionComponent
     this.gridWidth = GameConstants.roomWidth,
     this.gridHeight = GameConstants.roomHeight,
     this.tileSize = GameConstants.tileSize,
+    this.terminalPosition = GameConstants.terminalPosition,
+    this.showTerminal = true,
   }) : super(size: Vector2(gridWidth * tileSize, gridHeight * tileSize));
 
   @override
@@ -44,8 +48,11 @@ class RoomComponent extends PositionComponent
     add(_grid);
 
     // Terminal
-    _terminal = TerminalComponent(tileSize: tileSize);
-    add(_terminal);
+    _terminal = TerminalComponent(
+      tileSize: tileSize,
+      gridPosition: terminalPosition,
+    );
+    if (showTerminal) add(_terminal);
 
     // Hover indicator
     _hoverCell = HoverCellComponent(tileSize: tileSize);

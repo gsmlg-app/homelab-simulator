@@ -1,0 +1,13 @@
+name: app_bloc_cloud_center
+version: 1.0.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  bloc: ^9.2.1
+  app_cloud:
+    path: ../../app_lib/cloud
+dev_dependencies:
+  test: ^1.29.0
+  mocktail: ^1.0.5

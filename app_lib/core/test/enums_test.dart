@@ -132,11 +132,12 @@ void main() {
 
   group('InteractionType', () {
     test('has all expected values', () {
-      expect(InteractionType.values, hasLength(4));
+      expect(InteractionType.values, hasLength(5));
       expect(InteractionType.values, contains(InteractionType.terminal));
       expect(InteractionType.values, contains(InteractionType.device));
       expect(InteractionType.values, contains(InteractionType.door));
       expect(InteractionType.values, contains(InteractionType.none));
+      expect(InteractionType.values.last, InteractionType.cloudConsole);
     });
 
     test('none represents no interaction', () {
@@ -146,7 +147,7 @@ void main() {
 
   group('RoomType', () {
     test('has all expected values', () {
-      expect(RoomType.values, hasLength(8));
+      expect(RoomType.values, hasLength(9));
       expect(RoomType.values, contains(RoomType.serverRoom));
       expect(RoomType.values, contains(RoomType.aws));
       expect(RoomType.values, contains(RoomType.gcp));
@@ -155,6 +156,7 @@ void main() {
       expect(RoomType.values, contains(RoomType.azure));
       expect(RoomType.values, contains(RoomType.digitalOcean));
       expect(RoomType.values, contains(RoomType.custom));
+      expect(RoomType.values.last, RoomType.cloudCenter);
     });
 
     test('has physical room type', () {

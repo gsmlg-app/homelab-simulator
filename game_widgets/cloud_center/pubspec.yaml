@@ -1,0 +1,19 @@
+name: game_widgets_cloud_center
+version: 1.0.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  app_cloud:
+    path: ../../app_lib/cloud
+  app_bloc_cloud_center:
+    path: ../../app_bloc/cloud_center
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  app_cloud_client:
+    path: ../../app_lib/cloud_client

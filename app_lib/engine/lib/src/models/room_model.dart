@@ -5,6 +5,7 @@ import 'device_model.dart';
 import 'door_model.dart';
 import 'cloud_service_model.dart';
 import 'map_definition.dart';
+import 'cloud_console_model.dart';
 
 /// A room in the game world containing devices and cloud services
 class RoomModel extends Equatable {
@@ -18,6 +19,7 @@ class RoomModel extends Equatable {
   final List<DeviceModel> devices;
   final List<DoorModel> doors;
   final List<CloudServiceModel> cloudServices;
+  final List<CloudConsoleModel> cloudConsoles;
   final MapDefinition? definition;
   final String? definitionId;
   final String? regionCode; // e.g., "us-east-1" for provider region rooms
@@ -33,6 +35,7 @@ class RoomModel extends Equatable {
     this.devices = const [],
     this.doors = const [],
     this.cloudServices = const [],
+    this.cloudConsoles = const [],
     this.regionCode,
     this.definition,
     this.definitionId,
@@ -50,6 +53,7 @@ class RoomModel extends Equatable {
     List<DeviceModel>? devices,
     List<DoorModel>? doors,
     List<CloudServiceModel>? cloudServices,
+    List<CloudConsoleModel>? cloudConsoles,
     String? regionCode,
     bool clearRegionCode = false,
     MapDefinition? definition,
@@ -66,6 +70,7 @@ class RoomModel extends Equatable {
       devices: devices ?? this.devices,
       doors: doors ?? this.doors,
       cloudServices: cloudServices ?? this.cloudServices,
+      cloudConsoles: cloudConsoles ?? this.cloudConsoles,
       regionCode: clearRegionCode ? null : (regionCode ?? this.regionCode),
       definition: definition ?? this.definition,
       definitionId: definitionId ?? this.definitionId,
@@ -117,7 +122,8 @@ class RoomModel extends Equatable {
   /// Check if a cell is occupied by any device or cloud service
   bool isCellOccupied(GridPosition cell) {
     return devices.any((device) => device.occupiesCell(cell)) ||
-        cloudServices.any((service) => service.occupiesCell(cell));
+        cloudServices.any((service) => service.occupiesCell(cell)) ||
+        cloudConsoles.any((console) => console.occupiesCell(cell));
   }
 
   /// Check if a cell has a door
@@ -247,6 +253,7 @@ class RoomModel extends Equatable {
     'devices': devices.map((d) => d.toJson()).toList(),
     'doors': doors.map((d) => d.toJson()).toList(),
     'cloudServices': cloudServices.map((s) => s.toJson()).toList(),
+    'cloudConsoles': cloudConsoles.map((console) => console.toJson()).toList(),
     'regionCode': regionCode,
     'definitionId': definitionId,
   };
@@ -285,6 +292,14 @@ class RoomModel extends Equatable {
               )
               .toList() ??
           [],
+      cloudConsoles:
+          (json['cloudConsoles'] as List<dynamic>?)
+              ?.map(
+                (value) =>
+                    CloudConsoleModel.fromJson(value as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
       regionCode: json['regionCode'] as String?,
       definitionId: json['definitionId'] as String?,
     );
@@ -337,6 +352,7 @@ class RoomModel extends Equatable {
     devices,
     doors,
     cloudServices,
+    cloudConsoles,
     regionCode,
     definitionId,
     definition,

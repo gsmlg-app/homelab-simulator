@@ -96,3 +96,17 @@ class WorldRoomChanged extends WorldEvent {
   @override
   List<Object?> get props => [terminalPosition, playerPosition];
 }
+
+/// One authoritative distance/ID-ranked scene focus, including accepted position.
+class WorldInteractionProjected extends WorldEvent {
+  final GridPosition playerPosition;
+  final String? entityId;
+  final InteractionType type;
+  const WorldInteractionProjected({
+    required this.playerPosition,
+    this.entityId,
+    required this.type,
+  });
+  @override
+  List<Object?> get props => [playerPosition, entityId, type];
+}

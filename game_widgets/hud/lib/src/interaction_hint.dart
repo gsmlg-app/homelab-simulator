@@ -28,13 +28,19 @@ class InteractionHint extends StatelessWidget {
         onInteract == null ? 'Press E to interact' : 'Interact',
       InteractionType.door =>
         onInteract == null ? 'Press E to enter' : 'Enter room',
+      InteractionType.cloudConsole =>
+        onInteract == null
+            ? 'Press E to open cloud console'
+            : 'Open cloud console',
       InteractionType.none => '',
     };
 
     return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
         if (state is! GameReady) return const SizedBox.shrink();
-        if (state.model.shopOpen) return const SizedBox.shrink();
+        if (state.model.shopOpen || state.model.cloudPanelOpen) {
+          return const SizedBox.shrink();
+        }
 
         final hint = AnimatedOpacity(
           opacity: 1.0,

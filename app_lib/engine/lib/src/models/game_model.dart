@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:app_lib_core/app_lib_core.dart';
 import 'door_model.dart';
+import 'cloud_console_model.dart';
 import 'room_model.dart';
 import 'device_template.dart';
 import 'cloud_service_model.dart';
@@ -17,6 +18,10 @@ class GameModel extends Equatable {
   final CloudServiceTemplate? selectedCloudService;
   final bool shopOpen;
 
+  /// Transient modal lock; never restored from a save.
+  final bool cloudPanelOpen;
+  final CloudCenterEntryStatus cloudCenterEntryStatus;
+
   const GameModel({
     required this.currentRoomId,
     required this.rooms,
@@ -27,6 +32,8 @@ class GameModel extends Equatable {
     this.selectedTemplate,
     this.selectedCloudService,
     this.shopOpen = false,
+    this.cloudPanelOpen = false,
+    this.cloudCenterEntryStatus = CloudCenterEntryStatus.notInstalled,
   });
 
   /// Get the current room.
@@ -53,6 +60,8 @@ class GameModel extends Equatable {
     bool clearSelectedTemplate = false,
     bool clearSelectedCloudService = false,
     bool? shopOpen,
+    bool? cloudPanelOpen,
+    CloudCenterEntryStatus? cloudCenterEntryStatus,
   }) {
     return GameModel(
       currentRoomId: currentRoomId ?? this.currentRoomId,
@@ -68,6 +77,9 @@ class GameModel extends Equatable {
           ? null
           : (selectedCloudService ?? this.selectedCloudService),
       shopOpen: shopOpen ?? this.shopOpen,
+      cloudPanelOpen: cloudPanelOpen ?? this.cloudPanelOpen,
+      cloudCenterEntryStatus:
+          cloudCenterEntryStatus ?? this.cloudCenterEntryStatus,
     );
   }
 
@@ -215,6 +227,8 @@ class GameModel extends Equatable {
     selectedTemplate,
     selectedCloudService,
     shopOpen,
+    cloudPanelOpen,
+    cloudCenterEntryStatus,
   ];
 
   @override

@@ -26,6 +26,16 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
         emit,
       );
     });
+    on<WorldInteractionProjected>(
+      (event, emit) => emit(
+        state.copyWith(
+          playerPosition: event.playerPosition,
+          interactableEntityId: event.entityId,
+          clearInteractableEntityId: event.entityId == null,
+          availableInteraction: event.type,
+        ),
+      ),
+    );
     on<WorldReset>((event, emit) => emit(const WorldState()));
     on<CellHovered>(_onCellHovered);
     on<CellHoverEnded>(_onCellHoverEnded);

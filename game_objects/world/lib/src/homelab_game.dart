@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
+import 'package:app_cloud/app_cloud.dart';
+import 'package:game_objects_cloud_center/game_objects_cloud_center.dart';
 
 import 'package:flame/components.dart';
 import 'package:flame/cache.dart';
@@ -28,6 +30,17 @@ class HomelabGame extends FlameGame
   final GameBloc gameBloc;
   final WorldBloc worldBloc;
   final CharacterSpriteSheet spriteSheet;
+  final void Function(CloudConsoleModel)? onCloudConsoleOpened;
+  final void Function()? onCloudPanelCloseRequested;
+  bool _cloudPanelOpen = false;
+  bool get cloudPanelOpen => _cloudPanelOpen;
+  bool _ignoreKeyRepeats = false;
+  GameMode? _currentGameMode;
+  GamepadHandler? _gamepadHandler;
+  final Map<String, CloudConsoleComponent> _consoles = {};
+  Map<String, ConsoleSummary> _cloudSummaries = {};
+  bool get _inputBlocked =>
+      _cloudPanelOpen || (_model?.cloudPanelOpen ?? false);
   late final Component _scene;
   late final PlayerComponent _player;
 
@@ -54,6 +67,8 @@ class HomelabGame extends FlameGame
     required this.gameBloc,
     required this.worldBloc,
     this.spriteSheet = GameCharacters.mainMale,
+    this.onCloudConsoleOpened,
+    this.onCloudPanelCloseRequested,
   }) {
     images = Images(prefix: '');
   }
@@ -77,12 +92,11 @@ class HomelabGame extends FlameGame
     );
     if (_removed) return;
     _sceneReady = true;
-    await add(
-      GamepadHandler(
-        onDirection: _moveDirection,
-        onButtonPressed: _onGamepadButton,
-      ),
+    _gamepadHandler = GamepadHandler(
+      onDirection: _moveDirection,
+      onButtonPressed: _onGamepadButton,
     );
+    await add(_gamepadHandler!);
     if (_removed) return;
     _subscription = gameBloc.stream.listen(
       _onGameStateChanged,
@@ -102,6 +116,8 @@ class HomelabGame extends FlameGame
   @override
   void onRemove() {
     _removed = true;
+    _cloudPanelOpen = false;
+    if (!gameBloc.isClosed) gameBloc.add(const GameSetCloudPanelOpen(false));
     cancelRoute();
     _subscription?.cancel();
     _subscription = null;
@@ -119,14 +135,20 @@ class HomelabGame extends FlameGame
   void _onGameStateChanged(GameState state) {
     if (_removed || !_sceneReady) return;
     if (state is! GameReady) {
+      _closeCloudForSceneChange();
       cancelRoute();
       return;
     }
     final model = state.model;
     final room = model.currentRoom;
+    if (_currentGameMode != null && _currentGameMode != model.gameMode) {
+      _closeCloudForSceneChange();
+    }
+    _currentGameMode = model.gameMode;
     final changed =
         _currentRoomId != model.currentRoomId || _definition != room.definition;
     if (changed) {
+      _closeCloudForSceneChange();
       cancelRoute();
       _currentRoomId = model.currentRoomId;
       _definition = room.definition;
@@ -135,12 +157,18 @@ class HomelabGame extends FlameGame
       _legacyRoom?.removeFromParent();
       _legacyRoom = null;
       _hideGhost();
-      for (final component in [..._devices, ..._services, ..._doors]) {
+      for (final component in [
+        ..._devices,
+        ..._services,
+        ..._doors,
+        ..._consoles.values,
+      ]) {
         component.removeFromParent();
       }
       _devices.clear();
       _services.clear();
       _doors.clear();
+      _consoles.clear();
       final catalog = gameBloc.mapCatalog;
       if (catalog != null && room.definition != null) {
         final environment = MapEnvironmentComponent(
@@ -150,13 +178,6 @@ class HomelabGame extends FlameGame
         _environment = environment;
         unawaited(environment.attachToWorld(_scene));
         _bounds = environment.visualBounds;
-      } else {
-        _legacyRoom = RoomComponent(
-          gridWidth: room.width,
-          gridHeight: room.height,
-        )..priority = -100000;
-        _scene.add(_legacyRoom!);
-        _bounds = Rect.fromLTWH(0, 0, room.width * 32, room.height * 32);
       }
       _player.snapTo(model.playerPosition);
       worldBloc.add(
@@ -169,17 +190,22 @@ class HomelabGame extends FlameGame
     } else if (_player.gridPosition != model.playerPosition) {
       _player.moveTo(model.playerPosition);
     }
-    if (model.shopOpen || model.placementMode == PlacementMode.placing) {
+    if (_inputBlocked ||
+        model.shopOpen ||
+        model.placementMode == PlacementMode.placing) {
       cancelRoute();
     }
     if (_pendingStep != null && model.playerPosition != _pendingStep) {
       cancelRoute();
     }
+    _syncLegacyRoom(room, model.playerPosition);
     _syncObjects(room);
     _environment?.setPlacementMode(
-      model.placementMode == PlacementMode.placing,
+      !_inputBlocked && model.placementMode == PlacementMode.placing,
     );
-    if (model.placementMode == PlacementMode.placing && _environment == null) {
+    if (!_inputBlocked &&
+        model.placementMode == PlacementMode.placing &&
+        _environment == null) {
       _placementGhost ??= PlacementGhostComponent()..priority = 100001;
       if (_placementGhost!.parent == null) _scene.add(_placementGhost!);
       if (model.selectedTemplate != null) {
@@ -193,42 +219,118 @@ class HomelabGame extends FlameGame
     _updateInteraction(model);
   }
 
+  void _syncLegacyRoom(RoomModel room, GridPosition playerPosition) {
+    if (_environment != null) return;
+    final current = _legacyRoom;
+    if (current != null &&
+        current.gridWidth == room.width &&
+        current.gridHeight == room.height &&
+        current.terminalPosition == room.terminalPosition &&
+        current.showTerminal == (room.type != RoomType.cloudCenter)) {
+      return;
+    }
+    current?.removeFromParent();
+    _legacyRoom = RoomComponent(
+      gridWidth: room.width,
+      gridHeight: room.height,
+      terminalPosition: room.terminalPosition,
+      showTerminal: room.type != RoomType.cloudCenter,
+    )..priority = -100000;
+    _scene.add(_legacyRoom!);
+    _bounds = Rect.fromLTWH(
+      0,
+      0,
+      room.width * GameConstants.tileSize,
+      room.height * GameConstants.tileSize,
+    );
+    worldBloc.add(
+      WorldRoomChanged(
+        terminalPosition: room.terminalPosition,
+        playerPosition: playerPosition,
+      ),
+    );
+    _fitCamera();
+  }
+
   void _syncObjects(RoomModel room) {
+    final consoles = {
+      for (final console in room.cloudConsoles) console.id: console,
+    };
+    for (final id
+        in _consoles.keys.where((id) => !consoles.containsKey(id)).toList()) {
+      _consoles.remove(id)!.removeFromParent();
+    }
+    for (final console in consoles.values) {
+      final existing = _consoles[console.id];
+      if (existing != null) {
+        existing.updateConsole(console);
+      } else {
+        final component = CloudConsoleComponent(
+          console: console,
+          summary: _cloudSummaries[console.id],
+        );
+        _consoles[console.id] = component;
+        _scene.add(component);
+      }
+    }
+    final devices = {for (final device in room.devices) device.id: device};
     _devices.removeWhere((component) {
-      final keep = room.devices.any((device) => device == component.device);
+      final keep = devices.containsKey(component.device.id);
       if (!keep) component.removeFromParent();
       return !keep;
     });
-    for (final device in room.devices) {
-      if (!_devices.any((c) => c.device.id == device.id)) {
-        final component = DeviceComponent(device: device)
-          ..priority = ((device.position.y + device.height) * 32 * 100).round();
+    final mountedDevices = {
+      for (final component in _devices) component.device.id: component,
+    };
+    for (final device in devices.values) {
+      final existing = mountedDevices[device.id];
+      if (existing != null) {
+        existing.updateDevice(device);
+      } else {
+        final component = DeviceComponent(device: device);
         _devices.add(component);
         _scene.add(component);
       }
     }
+    final services = {
+      for (final service in room.cloudServices) service.id: service,
+    };
     _services.removeWhere((component) {
-      final keep = room.cloudServices.any(
-        (service) => service == component.service,
-      );
+      final keep = services.containsKey(component.service.id);
       if (!keep) component.removeFromParent();
       return !keep;
     });
-    for (final service in room.cloudServices) {
-      if (!_services.any((c) => c.service.id == service.id)) {
-        final component = CloudServiceComponent(service: service)
-          ..priority = ((service.position.y + service.height) * 32 * 100)
-              .round();
+    final mountedServices = {
+      for (final component in _services) component.service.id: component,
+    };
+    for (final service in services.values) {
+      final existing = mountedServices[service.id];
+      if (existing != null) {
+        existing.updateService(service);
+      } else {
+        final component = CloudServiceComponent(service: service);
         _services.add(component);
         _scene.add(component);
       }
     }
-    if (_environment == null) {
-      for (final old in _doors) {
-        old.removeFromParent();
-      }
-      _doors.clear();
-      for (final door in room.doors) {
+    final doors = {for (final door in room.doors) door.id: door};
+    _doors.removeWhere((component) {
+      final keep = doors.containsKey(component.door.id);
+      if (!keep) component.removeFromParent();
+      return !keep;
+    });
+    final mountedDoors = {
+      for (final component in _doors) component.door.id: component,
+    };
+    for (final door in doors.values) {
+      final existing = mountedDoors[door.id];
+      if (existing != null) {
+        existing.updateDoor(
+          door,
+          roomWidth: room.width,
+          roomHeight: room.height,
+        );
+      } else {
         final component = DoorComponent(
           door: door,
           roomWidth: room.width,
@@ -254,7 +356,8 @@ class HomelabGame extends FlameGame
   void _routeTo(GridPosition target, {void Function()? then}) {
     cancelRoute();
     final model = _model;
-    if (model == null ||
+    if (_inputBlocked ||
+        model == null ||
         model.shopOpen ||
         model.placementMode != PlacementMode.none) {
       return;
@@ -269,7 +372,8 @@ class HomelabGame extends FlameGame
 
   void _advanceRoute() {
     final model = _model;
-    if (model == null ||
+    if (_inputBlocked ||
+        model == null ||
         model.shopOpen ||
         model.placementMode != PlacementMode.none ||
         _player.isMoving) {
@@ -299,7 +403,7 @@ class HomelabGame extends FlameGame
 
   void navigateToRoom(String targetRoomId) {
     final model = _model;
-    if (model == null || model.shopOpen) return;
+    if (_removed || _inputBlocked || model == null || model.shopOpen) return;
     for (final door in model.currentRoom.doors.where(
       (d) => d.targetRoomId == targetRoomId,
     )) {
@@ -327,52 +431,90 @@ class HomelabGame extends FlameGame
   void _enterDoor(DoorModel door, GameModel model) {
     final target = model.getRoomById(door.targetRoomId);
     if (target == null) return;
-    final spawn = door.targetSpawnId == null
-        ? door.getSpawnPosition(target.width, target.height)
-        : target.definition?.spawns[door.targetSpawnId];
+    final spawn =
+        door.targetSpawnPosition ??
+        (door.targetSpawnId == null
+            ? door.getSpawnPosition(target.width, target.height)
+            : target.definition?.spawns[door.targetSpawnId]);
     if (spawn == null || !target.canWalk(spawn)) return;
     cancelRoute();
     gameBloc.add(GameEnterRoom(roomId: target.id, spawnPosition: spawn));
   }
 
   void _updateInteraction(GameModel model) {
-    final cell = model.playerPosition;
-    for (final door in model.currentRoom.doors) {
-      final position = door.getPosition(
-        model.currentRoom.width,
-        model.currentRoom.height,
-      );
-      if (cell == position ||
-          (cell.x - position.x).abs() + (cell.y - position.y).abs() == 1) {
-        worldBloc.add(InteractionAvailable(door.id, InteractionType.door));
-        return;
-      }
-    }
-    if (cell == model.currentRoom.terminalPosition ||
-        cell.isAdjacentTo(model.currentRoom.terminalPosition)) {
-      worldBloc.add(
-        const InteractionAvailable(
-          GameConstants.terminalEntityId,
-          InteractionType.terminal,
-        ),
-      );
-    } else {
-      worldBloc.add(const InteractionUnavailable());
-    }
+    final target = _inputBlocked
+        ? null
+        : selectInteractionTarget(model.currentRoom, model.playerPosition);
+    worldBloc.add(
+      WorldInteractionProjected(
+        playerPosition: model.playerPosition,
+        entityId: target?.id,
+        type: target?.type ?? InteractionType.none,
+      ),
+    );
   }
 
   void interact() {
     final model = _model;
-    if (model == null || model.shopOpen) return;
-    cancelRoute();
-    final focus = worldBloc.state;
-    if (focus.availableInteraction == InteractionType.terminal) {
-      gameBloc.add(const GameToggleShop(isOpen: true));
+    if (_removed ||
+        _inputBlocked ||
+        model == null ||
+        model.shopOpen ||
+        model.placementMode != PlacementMode.none) {
+      return;
     }
-    if (focus.availableInteraction == InteractionType.door) {
-      final door = model.findDoorById(focus.interactableEntityId ?? '');
+    cancelRoute();
+    final focus = selectInteractionTarget(
+      model.currentRoom,
+      model.playerPosition,
+    );
+    if (focus?.type == InteractionType.cloudConsole) {
+      final console = model.currentRoom.cloudConsoles
+          .where((console) => console.id == focus!.id)
+          .firstOrNull;
+      if (console != null && onCloudConsoleOpened != null) {
+        setCloudPanelOpen(true);
+        onCloudConsoleOpened!(console);
+      }
+    } else if (focus?.type == InteractionType.terminal) {
+      gameBloc.add(const GameToggleShop(isOpen: true));
+    } else if (focus?.type == InteractionType.door) {
+      final door = model.findDoorById(focus!.id);
       if (door != null) _enterDoor(door, model);
     }
+  }
+
+  /// The host controls one Flutter panel; collectors are independent of it.
+  void setCloudPanelOpen(bool isOpen) {
+    if (_removed ||
+        (_cloudPanelOpen == isOpen &&
+            (_model?.cloudPanelOpen ?? false) == isOpen)) {
+      return;
+    }
+    _cloudPanelOpen = isOpen;
+    _ignoreKeyRepeats = true;
+    cancelRoute();
+    _gamepadHandler?.resetInput();
+    _hideGhost();
+    _environment?.setPlacementMode(false);
+    if (!gameBloc.isClosed) gameBloc.add(GameSetCloudPanelOpen(isOpen));
+    final model = _model;
+    if (_sceneReady && model != null) _updateInteraction(model);
+  }
+
+  /// Keys are stable console IDs. No amount aggregation occurs in Flame.
+  void updateCloudSummaries(Map<String, ConsoleSummary> summaries) {
+    if (_removed) return;
+    _cloudSummaries = Map.unmodifiable(summaries);
+    for (final entry in _consoles.entries) {
+      entry.value.updateSummary(_cloudSummaries[entry.key]);
+    }
+  }
+
+  void _closeCloudForSceneChange() {
+    if (!_cloudPanelOpen) return;
+    setCloudPanelOpen(false);
+    onCloudPanelCloseRequested?.call();
   }
 
   GridPosition _screenCell(Vector2 point) {
@@ -383,7 +525,7 @@ class HomelabGame extends FlameGame
   @override
   void onTapUp(TapUpEvent event) {
     final model = _model;
-    if (model == null || model.shopOpen) return;
+    if (_removed || _inputBlocked || model == null || model.shopOpen) return;
     final cell = _screenCell(event.localPosition);
     if (!model.currentRoom.containsCell(cell)) return;
     if (model.placementMode == PlacementMode.placing) {
@@ -407,7 +549,18 @@ class HomelabGame extends FlameGame
       }
       return;
     }
-    if (cell == model.currentRoom.terminalPosition) {
+    for (final console in model.currentRoom.cloudConsoles) {
+      if (console.occupiesCell(cell)) {
+        final target = selectInteractionTarget(
+          model.currentRoom,
+          model.playerPosition,
+        );
+        if (target?.id == console.id) interact();
+        return;
+      }
+    }
+    if (model.currentRoom.type != RoomType.cloudCenter &&
+        cell == model.currentRoom.terminalPosition) {
       if (model.playerPosition.isAdjacentTo(cell)) {
         cancelRoute();
         gameBloc.add(const GameToggleShop(isOpen: true));
@@ -434,7 +587,9 @@ class HomelabGame extends FlameGame
   void _moveDirection(Direction direction) {
     cancelRoute();
     final model = _model;
-    if (!_sceneReady ||
+    if (_removed ||
+        _inputBlocked ||
+        !_sceneReady ||
         model == null ||
         model.shopOpen ||
         model.placementMode != PlacementMode.none) {
@@ -448,12 +603,23 @@ class HomelabGame extends FlameGame
     KeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
+    if (_removed) return KeyEventResult.ignored;
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
       return KeyEventResult.ignored;
     }
     final model = _model;
     if (model == null) return KeyEventResult.ignored;
     final key = event.logicalKey;
+    if (_inputBlocked) {
+      if (key == LogicalKeyboardKey.escape && event is KeyDownEvent) {
+        onCloudPanelCloseRequested?.call();
+      }
+      return KeyEventResult.handled;
+    }
+    if (event is KeyRepeatEvent && _ignoreKeyRepeats) {
+      return KeyEventResult.handled;
+    }
+    if (event is KeyDownEvent) _ignoreKeyRepeats = false;
     if (key == LogicalKeyboardKey.escape) {
       cancelRoute();
       if (model.placementMode == PlacementMode.placing) {
@@ -484,7 +650,11 @@ class HomelabGame extends FlameGame
 
   void _onGamepadButton(GamepadButton button) {
     final model = _model;
-    if (model == null) return;
+    if (_removed || model == null) return;
+    if (_inputBlocked) {
+      if (button == GamepadButton.east) onCloudPanelCloseRequested?.call();
+      return;
+    }
     if (button == GamepadButton.south) interact();
     if (button == GamepadButton.start) {
       cancelRoute();
@@ -503,7 +673,7 @@ class HomelabGame extends FlameGame
   @override
   void onMouseMove(PointerHoverInfo info) {
     final model = _model;
-    if (model == null || model.shopOpen) return;
+    if (_removed || _inputBlocked || model == null || model.shopOpen) return;
     final cell = _screenCell(info.eventPosition.widget);
     if (model.currentRoom.containsCell(cell)) {
       worldBloc.add(CellHovered(cell));
@@ -550,7 +720,9 @@ class HomelabGame extends FlameGame
     if (!_sceneReady || _removed) return;
     _environment?.setActorGroundPosition(_player.groundAnchor);
     final model = _model;
-    if (model != null && model.placementMode == PlacementMode.placing) {
+    if (!_inputBlocked &&
+        model != null &&
+        model.placementMode == PlacementMode.placing) {
       final cell = worldBloc.state.hoveredCell;
       final width =
           model.selectedTemplate?.width ??

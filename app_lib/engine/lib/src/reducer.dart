@@ -17,6 +17,20 @@ DeviceTemplate? findDeviceTemplateById(String templateId) {
 
 /// Pure function reducer for game state
 GameModel reduce(GameModel model, DomainEvent event) {
+  if (model.cloudPanelOpen &&
+      (event is PlayerMoved ||
+          event is ShopToggled ||
+          event is TemplateSelected ||
+          event is PlacementModeChanged ||
+          event is DevicePlaced ||
+          event is DeviceRemoved ||
+          event is CloudServiceSelected ||
+          event is CloudServicePlaced ||
+          event is CloudServiceRemoved ||
+          event is RoomAdded ||
+          event is RoomRemoved)) {
+    return model;
+  }
   return switch (event) {
     PlayerMoved(:final newPosition) => _handlePlayerMoved(model, newPosition),
     ShopToggled(:final isOpen) => model.copyWith(shopOpen: isOpen),
@@ -38,7 +52,10 @@ GameModel reduce(GameModel model, DomainEvent event) {
     CreditsChanged(:final amount) => model.copyWith(
       credits: model.credits + amount,
     ),
-    GameModeChanged(:final mode) => model.copyWith(gameMode: mode),
+    GameModeChanged(:final mode) => model.copyWith(
+      gameMode: mode,
+      cloudPanelOpen: false,
+    ),
     GameLoaded() => model,
     RoomEntered(:final roomId, :final spawnPosition) => _handleRoomEntered(
       model,
@@ -99,7 +116,7 @@ GameModel _handleRoomEntered(
 ) {
   final target = model.getRoomById(roomId);
   if (target == null || !target.canWalk(spawn)) return model;
-  return model.enterRoom(roomId, spawn);
+  return model.enterRoom(roomId, spawn).copyWith(cloudPanelOpen: false);
 }
 
 /// Places a device at the specified position if valid.

@@ -26,7 +26,7 @@ enum HairColor { black, brown, blonde, red, gray, blue, green, purple }
 enum OutfitVariant { casual, formal, tech, sporty }
 
 /// Interaction type
-enum InteractionType { terminal, device, door, none }
+enum InteractionType { terminal, device, door, none, cloudConsole }
 
 /// Room type presets
 enum RoomType {
@@ -38,6 +38,7 @@ enum RoomType {
   azure,
   digitalOcean,
   custom,
+  cloudCenter,
 }
 
 /// Cloud provider types

@@ -53,6 +53,7 @@ class _CloudServicesTabState extends State<CloudServicesTab> {
       RoomType.digitalOcean => CloudProvider.digitalOcean,
       RoomType.serverRoom => null,
       RoomType.custom => null,
+      RoomType.cloudCenter => null,
     };
   }
 

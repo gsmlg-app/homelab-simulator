@@ -14,6 +14,7 @@ extension RoomTypeUI on RoomType {
       RoomType.azure => Icons.cloud_queue,
       RoomType.digitalOcean => Icons.water_drop,
       RoomType.custom => Icons.folder_special,
+      RoomType.cloudCenter => Icons.cloud_sync,
     };
   }
 
@@ -28,6 +29,7 @@ extension RoomTypeUI on RoomType {
       RoomType.azure => AppColors.providerAzure,
       RoomType.digitalOcean => AppColors.providerDigitalOcean,
       RoomType.custom => AppColors.roomCustom,
+      RoomType.cloudCenter => AppColors.roomCustom,
     };
   }
 
@@ -42,6 +44,7 @@ extension RoomTypeUI on RoomType {
       RoomType.azure => 'Azure',
       RoomType.digitalOcean => 'DigitalOcean',
       RoomType.custom => 'Custom',
+      RoomType.cloudCenter => 'Cloud Center',
     };
   }
 }

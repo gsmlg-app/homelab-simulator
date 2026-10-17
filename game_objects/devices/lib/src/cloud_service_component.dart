@@ -9,7 +9,8 @@ import 'package:game_bloc_world/game_bloc_world.dart';
 /// Renders a placed cloud service in the game world
 class CloudServiceComponent extends PositionComponent
     with FlameBlocReader<WorldBloc, WorldState> {
-  final CloudServiceModel service;
+  CloudServiceModel _service;
+  CloudServiceModel get service => _service;
   final double tileSize;
   bool _isSelected = false;
 
@@ -23,47 +24,54 @@ class CloudServiceComponent extends PositionComponent
     ..style = PaintingStyle.fill;
 
   // Instance-level cached paints (depend on service properties)
-  late final Paint _bgPaint;
-  late final Paint _bodyPaint;
-  late final Paint _providerPaint;
-  late final Paint _borderPaint;
+  final Paint _bgPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _bodyPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _providerPaint = Paint()..style = PaintingStyle.fill;
+  final Paint _borderPaint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = GameConstants.glowStrokeBase;
 
-  // Cached render values (computed once in onLoad)
-  late final double _iconScale;
-  late final double _centerX;
-  late final double _centerY;
+  // Cached render values (refreshed when the accepted model changes)
+  late double _iconScale;
+  late double _centerX;
+  late double _centerY;
 
   CloudServiceComponent({
-    required this.service,
+    required CloudServiceModel service,
     this.tileSize = GameConstants.tileSize,
-  }) : super(
+  }) : _service = service,
+       super(
          position: Vector2(
            service.position.x * tileSize,
            service.position.y * tileSize,
          ),
          size: Vector2(service.width * tileSize, service.height * tileSize),
-       );
+       ) {
+    _refreshVisuals();
+  }
+
+  /// Apply accepted state without replacing the mounted component.
+  void updateService(CloudServiceModel value) {
+    assert(value.id == service.id);
+    if (value == service) return;
+    _service = value;
+    position.setValues(
+      value.position.x * tileSize,
+      value.position.y * tileSize,
+    );
+    size.setValues(value.width * tileSize, value.height * tileSize);
+    _refreshVisuals();
+  }
 
   Color get _providerColor => service.provider.color;
   Color get _categoryColor => service.category.color;
 
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    // Initialize cached paints (depend on service properties)
-    _bgPaint = Paint()
-      ..color = _providerColor.withValues(alpha: 0.3)
-      ..style = PaintingStyle.fill;
-    _bodyPaint = Paint()
-      ..color = _categoryColor
-      ..style = PaintingStyle.fill;
-    _providerPaint = Paint()
-      ..color = _providerColor
-      ..style = PaintingStyle.fill;
-    _borderPaint = Paint()
-      ..color = _providerColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = GameConstants.glowStrokeBase;
+  void _refreshVisuals() {
+    _bgPaint.color = _providerColor.withValues(alpha: 0.3);
+    _bodyPaint.color = _categoryColor;
+    _providerPaint.color = _providerColor;
+    _borderPaint.color = _providerColor;
+    priority = ((service.position.y + service.height) * tileSize * 100).round();
 
     // Cache render values
     _iconScale = size.x / GameConstants.cloudServiceIconScaleDivisor;

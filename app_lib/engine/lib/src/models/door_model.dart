@@ -23,6 +23,10 @@ class DoorModel extends Equatable {
   final String targetRoomId;
   final WallSide wallSide;
   final String? targetSpawnId;
+
+  /// Optional floor gateway; old wall-edge doors retain their coordinates.
+  final GridPosition? gridPosition;
+  final GridPosition? targetSpawnPosition;
   final int wallPosition; // Position along the wall (in tiles from left/top)
 
   const DoorModel({
@@ -31,10 +35,13 @@ class DoorModel extends Equatable {
     required this.wallSide,
     required this.wallPosition,
     this.targetSpawnId,
+    this.gridPosition,
+    this.targetSpawnPosition,
   });
 
   /// Get the grid position of the door (for interaction detection)
   GridPosition getPosition(int roomWidth, int roomHeight) {
+    if (gridPosition != null) return gridPosition!;
     switch (wallSide) {
       case WallSide.top:
         return GridPosition(wallPosition, 0);
@@ -49,6 +56,7 @@ class DoorModel extends Equatable {
 
   /// Get the spawn position when entering through this door
   GridPosition getSpawnPosition(int roomWidth, int roomHeight) {
+    if (gridPosition != null) return gridPosition!;
     switch (wallSide) {
       case WallSide.top:
         return GridPosition(wallPosition, 1);
@@ -67,6 +75,8 @@ class DoorModel extends Equatable {
     WallSide? wallSide,
     int? wallPosition,
     String? targetSpawnId,
+    GridPosition? gridPosition,
+    GridPosition? targetSpawnPosition,
   }) {
     return DoorModel(
       id: id ?? this.id,
@@ -74,6 +84,8 @@ class DoorModel extends Equatable {
       wallSide: wallSide ?? this.wallSide,
       wallPosition: wallPosition ?? this.wallPosition,
       targetSpawnId: targetSpawnId ?? this.targetSpawnId,
+      gridPosition: gridPosition ?? this.gridPosition,
+      targetSpawnPosition: targetSpawnPosition ?? this.targetSpawnPosition,
     );
   }
 
@@ -83,6 +95,9 @@ class DoorModel extends Equatable {
     'wallSide': wallSide.name,
     'wallPosition': wallPosition,
     'targetSpawnId': targetSpawnId,
+    if (gridPosition != null) 'gridPosition': gridPosition!.toJson(),
+    if (targetSpawnPosition != null)
+      'targetSpawnPosition': targetSpawnPosition!.toJson(),
   };
 
   factory DoorModel.fromJson(Map<String, dynamic> json) {
@@ -96,6 +111,14 @@ class DoorModel extends Equatable {
       ),
       wallPosition: json['wallPosition'] as int,
       targetSpawnId: json['targetSpawnId'] as String?,
+      gridPosition: json['gridPosition'] == null
+          ? null
+          : GridPosition.fromJson(json['gridPosition'] as Map<String, dynamic>),
+      targetSpawnPosition: json['targetSpawnPosition'] == null
+          ? null
+          : GridPosition.fromJson(
+              json['targetSpawnPosition'] as Map<String, dynamic>,
+            ),
     );
   }
 
@@ -106,6 +129,8 @@ class DoorModel extends Equatable {
     wallSide,
     wallPosition,
     targetSpawnId,
+    gridPosition,
+    targetSpawnPosition,
   ];
 
   @override

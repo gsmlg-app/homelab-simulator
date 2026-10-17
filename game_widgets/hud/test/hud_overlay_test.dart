@@ -140,7 +140,7 @@ void main() {
 
       test('interaction type values have expected count', () {
         // terminal, device, door, none
-        expect(InteractionType.values.length, 4);
+        expect(InteractionType.values.length, 5);
       });
     });
 
